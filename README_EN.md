@@ -83,7 +83,7 @@ curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
 
 When prompted to install Marketplace during installation, enter Y. Using it with the FullScreen extension from Marketplace provides a better experience.
 
-### 3. Install Lyrics Plus
+### 3. Install ivLyrics
 
 #### Automatic Installation (Recommended)
 
@@ -118,7 +118,7 @@ Updates can also be done with the same command.
 
 ## Initial Setup
 
-1. Launch Spotify and select Lyrics Plus from the left menu.
+1. Launch Spotify and select ivLyrics from the left menu.
 2. Click the settings button at the bottom right.
 3. Enter your Gemini API key in the Advanced tab.
    - You can get an API key for free from [Google AI Studio](https://aistudio.google.com/apikey).
@@ -150,6 +150,7 @@ If you experience issues with settings or lyrics display:
 If you'd like to support development, please buy me a coffee.
 
 <a href="https://www.buymeacoffee.com/ivlis" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
 
 
 
