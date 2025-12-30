@@ -1,4 +1,5 @@
-<img width="100%" alt="preview-eng" src="https://github.com/user-attachments/assets/f42d4732-4960-4f2b-99e6-a68973b00f7d" />
+
+<img width="2208" height="512" alt="en" src="https://github.com/user-attachments/assets/5ecfbcab-8633-4862-a819-a22fe889a7ca" />
 
 ### preview
 ![preview](https://github.com/user-attachments/assets/c8643d11-44aa-49e2-ab59-b056884e798a)
@@ -8,13 +9,13 @@
 ##### Windows
 Run the following command in PowerShell.
 ```powershell
-iwr -useb https://ivlis.kr/lyrics-plus/install.ps1 | iex
+iwr -useb https://ivlis.kr/ivLyrics/install.ps1 | iex
 ```
 
 ##### macOS / Linux
 Run the following command in Terminal.
 ```bash
-curl -fsSL https://ivlis.kr/lyrics-plus/install.sh | sh
+curl -fsSL https://ivlis.kr/ivLyrics/install.sh | sh
 ```
 
 ---
@@ -51,7 +52,7 @@ Korean, English, Japanese, Chinese (Simplified/Traditional), Spanish, French, Ge
 
 ## Initial Setup
 
-1. Launch Spotify and select Lyrics Plus from the left menu.
+1. Launch Spotify and select ivLyrics from the left menu.
 2. Click the settings button at the bottom right.
 3. Enter your Gemini API key in the Advanced tab.
    - You can get a free API key from [Google AI Studio](https://aistudio.google.com/apikey).
@@ -83,4 +84,5 @@ If you experience issues with settings or lyrics display:
 If you'd like to support the development, please buy me a coffee.
 
 <a href="https://www.buymeacoffee.com/ivlis" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
 
