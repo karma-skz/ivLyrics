@@ -1,9 +1,9 @@
-﻿// Russian language file for Lyrics Plus
+﻿// Russian language file for ivLyrics
 window.LANG_RU = {
   "meta": {
     "language": "Русский",
     "code": "ru",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "Общие",
@@ -661,7 +661,7 @@ window.LANG_RU = {
       "subtitle": "Настройки функций, связанных с воспроизведением",
       "replaceButton": {
         "label": "Заменить кнопку текста",
-        "info": "Заменить стандартную кнопку текста Spotify на Lyrics Plus"
+        "info": "Заменить стандартную кнопку текста Spotify на ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "Горячая клавиша полноэкранного режима",
@@ -959,7 +959,7 @@ window.LANG_RU = {
         "subtitle": "История последних обновлений",
         "loading": "Загрузка примечаний к патчу..."
       },
-      "subtitle": "О Lyrics Plus",
+      "subtitle": "О ivLyrics",
       "appDescription": "Расширение для текстов песен с поддержкой русского языка для Spicetify.",
       "versionPrefix": "Версия",
       "viewOnGithub": "Посмотреть на GitHub",
@@ -1036,7 +1036,7 @@ window.LANG_RU = {
     "autoSubmitEnabled": "⚡ Автоотправка включена"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "Загрузка информации о видео...",

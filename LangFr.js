@@ -1,9 +1,9 @@
-﻿// French language file for Lyrics Plus
+﻿// French language file for ivLyrics
 window.LANG_FR = {
   "meta": {
     "language": "Français",
     "code": "fr",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "Général",
@@ -661,7 +661,7 @@ window.LANG_FR = {
       "subtitle": "Paramètres des fonctions liées à la lecture",
       "replaceButton": {
         "label": "Remplacer le bouton des paroles",
-        "info": "Remplace le bouton des paroles par défaut de Spotify par Lyrics Plus"
+        "info": "Remplace le bouton des paroles par défaut de Spotify par ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "Raccourci plein écran",
@@ -959,7 +959,7 @@ window.LANG_FR = {
         "subtitle": "Historique des mises à jour récentes",
         "loading": "Chargement des notes de patch..."
       },
-      "subtitle": "À propos de Lyrics Plus",
+      "subtitle": "À propos de ivLyrics",
       "appDescription": "Extension de paroles compatible avec le français pour Spicetify.",
       "versionPrefix": "Version",
       "viewOnGithub": "Voir sur GitHub",
@@ -1036,7 +1036,7 @@ window.LANG_FR = {
     "autoSubmitEnabled": "⚡ L'envoi automatique est activé"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "Chargement des informations vidéo...",

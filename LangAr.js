@@ -1,9 +1,9 @@
-﻿// Arabic language file for Lyrics Plus
+﻿// Arabic language file for ivLyrics
 window.LANG_AR = {
   "meta": {
     "language": "العربية",
     "code": "ar",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "عام",
@@ -661,7 +661,7 @@ window.LANG_AR = {
       "subtitle": "إعدادات الوظائف المتعلقة بالتشغيل",
       "replaceButton": {
         "label": "استبدال زر الكلمات",
-        "info": "استبدال زر كلمات Spotify الافتراضي بـ Lyrics Plus"
+        "info": "استبدال زر كلمات Spotify الافتراضي بـ ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "اختصار ملء الشاشة",
@@ -963,7 +963,7 @@ window.LANG_AR = {
         "subtitle": "تاريخ التحديثات الأخيرة",
         "loading": "جاري تحميل ملاحظات التحديث..."
       },
-      "subtitle": "حول Lyrics Plus",
+      "subtitle": "حول ivLyrics",
       "appDescription": "إضافة كلمات متوافقة مع اللغة العربية لـ Spicetify.",
       "versionPrefix": "الإصدار",
       "viewOnGithub": "عرض على GitHub",
@@ -1040,7 +1040,7 @@ window.LANG_AR = {
     "autoSubmitEnabled": "⚡ الإرسال التلقائي مفعل"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "جاري تحميل معلومات الفيديو...",

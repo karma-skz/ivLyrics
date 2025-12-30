@@ -1,9 +1,9 @@
-﻿// Persian (Farsi) language file for Lyrics Plus
+﻿// Persian (Farsi) language file for ivLyrics
 window.LANG_FA = {
   "meta": {
     "language": "فارسی",
     "code": "fa",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "عمومی",
@@ -661,7 +661,7 @@ window.LANG_FA = {
       "subtitle": "تنظیمات ویژگی‌های پخش",
       "replaceButton": {
         "label": "جایگزینی دکمه متن آهنگ",
-        "info": "جایگزینی دکمه پیش‌فرض متن آهنگ Spotify با Lyrics Plus"
+        "info": "جایگزینی دکمه پیش‌فرض متن آهنگ Spotify با ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "میانبر تمام صفحه",
@@ -963,7 +963,7 @@ window.LANG_FA = {
         "subtitle": "آخرین تغییرات به‌روزرسانی",
         "loading": "در حال بارگذاری یادداشت‌های پچ..."
       },
-      "subtitle": "درباره Lyrics Plus",
+      "subtitle": "درباره ivLyrics",
       "appDescription": "افزونه متن آهنگ سازگار با زبان فارسی برای Spicetify.",
       "versionPrefix": "نسخه",
       "viewOnGithub": "مشاهده در GitHub",

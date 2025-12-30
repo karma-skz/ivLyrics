@@ -1,9 +1,9 @@
-﻿// German language file for Lyrics Plus
+﻿// German language file for ivLyrics
 window.LANG_DE = {
   "meta": {
     "language": "Deutsch",
     "code": "de",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "Allgemein",
@@ -661,7 +661,7 @@ window.LANG_DE = {
       "subtitle": "Einstellungen für wiedergabebezogene Funktionen",
       "replaceButton": {
         "label": "Songtext-Button ersetzen",
-        "info": "Ersetzt den Standard-Spotify-Songtext-Button durch Lyrics Plus"
+        "info": "Ersetzt den Standard-Spotify-Songtext-Button durch ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "Vollbild-Tastenkürzel",
@@ -959,7 +959,7 @@ window.LANG_DE = {
         "subtitle": "Verlauf der letzten Updates",
         "loading": "Lade Patch-Notizen..."
       },
-      "subtitle": "Über Lyrics Plus",
+      "subtitle": "Über ivLyrics",
       "appDescription": "Songtext-Erweiterung mit deutscher Unterstützung für Spicetify.",
       "versionPrefix": "Version",
       "viewOnGithub": "Auf GitHub ansehen",
@@ -1036,7 +1036,7 @@ window.LANG_DE = {
     "autoSubmitEnabled": "⚡ Automatisches Senden ist aktiviert"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "Lade Videoinformationen...",

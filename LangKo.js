@@ -1,9 +1,9 @@
-// Korean language file for Lyrics Plus
+// Korean language file for ivLyrics
 window.LANG_KO = {
   "meta": {
     "language": "한국어",
     "code": "ko",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "일반",
@@ -661,7 +661,7 @@ window.LANG_KO = {
       "subtitle": "재생 관련 기능 설정",
       "replaceButton": {
         "label": "가사 버튼 교체",
-        "info": "Spotify의 기본 가사 버튼을 Lyrics Plus로 교체합니다"
+        "info": "Spotify의 기본 가사 버튼을 ivLyrics로 교체합니다"
       },
       "fullscreenShortcut": {
         "label": "전체화면 단축키",
@@ -959,7 +959,7 @@ window.LANG_KO = {
         "subtitle": "최신 업데이트 내역",
         "loading": "패치 노트를 불러오는 중..."
       },
-      "subtitle": "Lyrics Plus에 대해",
+      "subtitle": "ivLyrics에 대해",
       "appDescription": "Spicetify를 위한 한국어 대응 가사 확장 프로그램.",
       "versionPrefix": "버전",
       "viewOnGithub": "GitHub에서 보기",

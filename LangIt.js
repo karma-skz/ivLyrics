@@ -1,9 +1,9 @@
-﻿// Italian language file for Lyrics Plus
+﻿// Italian language file for ivLyrics
 window.LANG_IT = {
   "meta": {
     "language": "Italiano",
     "code": "it",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "Generale",
@@ -661,7 +661,7 @@ window.LANG_IT = {
       "subtitle": "Impostazioni funzioni relative alla riproduzione",
       "replaceButton": {
         "label": "Sostituisci Pulsante Testo",
-        "info": "Sostituisci il pulsante testo predefinito di Spotify con Lyrics Plus"
+        "info": "Sostituisci il pulsante testo predefinito di Spotify con ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "Scorciatoia Schermo Intero",
@@ -959,7 +959,7 @@ window.LANG_IT = {
         "subtitle": "Cronologia aggiornamenti recenti",
         "loading": "Caricamento note patch..."
       },
-      "subtitle": "Informazioni su Lyrics Plus",
+      "subtitle": "Informazioni su ivLyrics",
       "appDescription": "Estensione testi con supporto italiano per Spicetify.",
       "versionPrefix": "Versione",
       "viewOnGithub": "Vedi su GitHub",
@@ -1036,7 +1036,7 @@ window.LANG_IT = {
     "autoSubmitEnabled": "⚡ Invio automatico attivo"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "Caricamento informazioni video...",

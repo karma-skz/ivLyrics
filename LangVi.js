@@ -1,9 +1,9 @@
-﻿// Vietnamese language file for Lyrics Plus
+﻿// Vietnamese language file for ivLyrics
 window.LANG_VI = {
   "meta": {
     "language": "Tiếng Việt",
     "code": "vi",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "Chung",
@@ -661,7 +661,7 @@ window.LANG_VI = {
       "subtitle": "Cài đặt các chức năng liên quan đến phát nhạc",
       "replaceButton": {
         "label": "Thay thế nút lời bài hát",
-        "info": "Thay thế nút lời bài hát mặc định của Spotify bằng Lyrics Plus"
+        "info": "Thay thế nút lời bài hát mặc định của Spotify bằng ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "Phím tắt toàn màn hình",
@@ -963,7 +963,7 @@ window.LANG_VI = {
         "subtitle": "Lịch sử cập nhật gần đây",
         "loading": "Đang tải ghi chú bản vá..."
       },
-      "subtitle": "Về Lyrics Plus",
+      "subtitle": "Về ivLyrics",
       "appDescription": "Tiện ích mở rộng lời bài hát cho Spicetify hỗ trợ tiếng Việt.",
       "versionPrefix": "Phiên bản",
       "viewOnGithub": "Xem trên GitHub",
@@ -1040,7 +1040,7 @@ window.LANG_VI = {
     "autoSubmitEnabled": "⚡ Tự động gửi đang được bật"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "Đang tải thông tin video...",

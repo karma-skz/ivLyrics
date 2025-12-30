@@ -1,9 +1,9 @@
-// Traditional Chinese language file for Lyrics Plus
+// Traditional Chinese language file for ivLyrics
 window.LANG_ZH_TW = {
   "meta": {
     "language": "繁體中文",
     "code": "zh-TW",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "一般",
@@ -661,7 +661,7 @@ window.LANG_ZH_TW = {
       "subtitle": "與播放相關的功能設定",
       "replaceButton": {
         "label": "取代Spotify歌詞按鈕",
-        "info": "用Lyrics Plus取代Spotify的預設歌詞按鈕"
+        "info": "用ivLyrics取代Spotify的預設歌詞按鈕"
       },
       "fullscreenShortcut": {
         "label": "全螢幕快速鍵",
@@ -959,7 +959,7 @@ window.LANG_ZH_TW = {
         "subtitle": "最新更新歷史",
         "loading": "正在載入更新說明..."
       },
-      "subtitle": "關於Lyrics Plus",
+      "subtitle": "關於ivLyrics",
       "appDescription": "Spicetify的多語言歌詞擴充功能。",
       "versionPrefix": "版本",
       "viewOnGithub": "在GitHub上查看",
@@ -1036,7 +1036,7 @@ window.LANG_ZH_TW = {
     "autoSubmitEnabled": "⚡ 自動提交已啟用"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "正在載入影片資訊...",

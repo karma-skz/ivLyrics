@@ -120,7 +120,7 @@ class Translator {
     }
 
     // API 키 확인 및 파싱 (JSON 배열 또는 단일 문자열 지원)
-    const apiKeyRaw = StorageManager.getItem("lyrics-plus:visual:gemini-api-key");
+    const apiKeyRaw = StorageManager.getItem("ivLyrics:visual:gemini-api-key");
     if (!apiKeyRaw || apiKeyRaw.trim() === "") {
       return null;
     }
@@ -327,7 +327,7 @@ class Translator {
     if (!text?.trim()) throw new Error("No text provided for translation");
 
     // Get API key from localStorage
-    const apiKeyRaw = StorageManager.getItem("lyrics-plus:visual:gemini-api-key");
+    const apiKeyRaw = StorageManager.getItem("ivLyrics:visual:gemini-api-key");
     let apiKeys = [];
 
     // Parse API keys (support both single string and JSON array)

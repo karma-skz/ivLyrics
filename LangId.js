@@ -1,9 +1,9 @@
-﻿// Indonesian language file for Lyrics Plus
+﻿// Indonesian language file for ivLyrics
 window.LANG_ID = {
   "meta": {
     "language": "Bahasa Indonesia",
     "code": "id",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "Umum",
@@ -661,7 +661,7 @@ window.LANG_ID = {
       "subtitle": "Pengaturan fungsi terkait pemutaran",
       "replaceButton": {
         "label": "Ganti Tombol Lirik",
-        "info": "Ganti tombol lirik default Spotify dengan Lyrics Plus"
+        "info": "Ganti tombol lirik default Spotify dengan ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "Pintasan Layar Penuh",
@@ -963,7 +963,7 @@ window.LANG_ID = {
         "subtitle": "Riwayat pembaruan terkini",
         "loading": "Memuat catatan patch..."
       },
-      "subtitle": "Tentang Lyrics Plus",
+      "subtitle": "Tentang ivLyrics",
       "appDescription": "Ekstensi lirik untuk Spicetify dengan dukungan Bahasa Indonesia.",
       "versionPrefix": "Versi",
       "viewOnGithub": "Lihat di GitHub",
@@ -1040,7 +1040,7 @@ window.LANG_ID = {
     "autoSubmitEnabled": "⚡ Kirim otomatis sedang aktif"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "Memuat info video...",

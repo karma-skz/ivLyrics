@@ -1,9 +1,9 @@
-// English language file for Lyrics Plus
+// English language file for ivLyrics
 window.LANG_EN = {
   "meta": {
     "language": "English",
     "code": "en",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "General",
@@ -661,7 +661,7 @@ window.LANG_EN = {
       "subtitle": "Playback-related feature settings",
       "replaceButton": {
         "label": "Replace Lyrics Button",
-        "info": "Replaces Spotify's default lyrics button with Lyrics Plus"
+        "info": "Replaces Spotify's default lyrics button with ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "Fullscreen Shortcut",
@@ -959,7 +959,7 @@ window.LANG_EN = {
         "subtitle": "Latest update history",
         "loading": "Loading patch notes..."
       },
-      "subtitle": "About Lyrics Plus",
+      "subtitle": "About ivLyrics",
       "appDescription": "A Korean-supported lyrics extension for Spicetify.",
       "versionPrefix": "Version",
       "viewOnGithub": "View on GitHub",
@@ -1036,7 +1036,7 @@ window.LANG_EN = {
     "autoSubmitEnabled": "⚡ Auto-submit is enabled"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "Loading video info...",

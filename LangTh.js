@@ -1,9 +1,9 @@
-﻿// Thai language file for Lyrics Plus
+﻿// Thai language file for ivLyrics
 window.LANG_TH = {
   "meta": {
     "language": "ไทย",
     "code": "th",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "ทั่วไป",
@@ -661,7 +661,7 @@ window.LANG_TH = {
       "subtitle": "ตั้งค่าฟังก์ชันที่เกี่ยวข้องกับการเล่น",
       "replaceButton": {
         "label": "แทนที่ปุ่มเนื้อเพลง",
-        "info": "แทนที่ปุ่มเนื้อเพลงเริ่มต้นของ Spotify ด้วย Lyrics Plus"
+        "info": "แทนที่ปุ่มเนื้อเพลงเริ่มต้นของ Spotify ด้วย ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "คีย์ลัดเต็มหน้าจอ",
@@ -963,7 +963,7 @@ window.LANG_TH = {
         "subtitle": "ประวัติการอัปเดตล่าสุด",
         "loading": "กำลังโหลดบันทึกแพทช์..."
       },
-      "subtitle": "เกี่ยวกับ Lyrics Plus",
+      "subtitle": "เกี่ยวกับ ivLyrics",
       "appDescription": "ส่วนขยายเนื้อเพลงสำหรับ Spicetify ที่รองรับภาษาไทย",
       "versionPrefix": "เวอร์ชัน",
       "viewOnGithub": "ดูบน GitHub",
@@ -1040,7 +1040,7 @@ window.LANG_TH = {
     "autoSubmitEnabled": "⚡ การส่งอัตโนมัติเปิดใช้งานอยู่"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "กำลังโหลดข้อมูลวิดีโอ...",

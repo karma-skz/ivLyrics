@@ -1,9 +1,9 @@
-﻿// Hindi language file for Lyrics Plus
+﻿// Hindi language file for ivLyrics
 window.LANG_HI = {
   "meta": {
     "language": "हिन्दी",
     "code": "hi",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "सामान्य",
@@ -661,7 +661,7 @@ window.LANG_HI = {
       "subtitle": "प्लेबैक संबंधित फ़ंक्शन सेटिंग्स",
       "replaceButton": {
         "label": "लिरिक्स बटन बदलें",
-        "info": "Spotify के डिफ़ॉल्ट लिरिक्स बटन को Lyrics Plus से बदलें"
+        "info": "Spotify के डिफ़ॉल्ट लिरिक्स बटन को ivLyrics से बदलें"
       },
       "fullscreenShortcut": {
         "label": "फुल स्क्रीन शॉर्टकट",
@@ -956,7 +956,7 @@ window.LANG_HI = {
         "subtitle": "नवीनतम अपडेट इतिहास",
         "loading": "पैच नोट्स लोड हो रहे हैं..."
       },
-      "subtitle": "Lyrics Plus के बारे में",
+      "subtitle": "ivLyrics के बारे में",
       "appDescription": "Spicetify के लिए हिन्दी समर्थित लिरिक्स एक्सटेंशन।",
       "versionPrefix": "संस्करण",
       "viewOnGithub": "GitHub पर देखें",
@@ -1033,7 +1033,7 @@ window.LANG_HI = {
     "autoSubmitEnabled": "⚡ ऑटो सबमिट सक्रिय है"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "वीडियो जानकारी लोड हो रही है...",

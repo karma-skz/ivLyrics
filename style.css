@@ -106,12 +106,12 @@
 }
 
 /* Update Banner Styles - Fluent Design */
-.lyrics-plus-update-banner {
+.ivLyrics-update-banner {
   animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* 전체화면 모드에서 업데이트 배너 숨기기 */
-#lyrics-fullscreen-container .lyrics-plus-update-banner {
+#lyrics-fullscreen-container .ivLyrics-update-banner {
   display: none !important;
 }
 
@@ -601,18 +601,18 @@
   margin-left: 8px;
 }
 
-#lyrics-plus-config-container option {
+#ivLyrics-config-container option {
   background-color: var(--spice-button);
 }
 
 /* Strong styles for input fields to ensure visibility */
-#lyrics-plus-config-container input[type="text"],
-#lyrics-plus-config-container input[type="password"],
-#lyrics-plus-config-container input[type="number"],
-#lyrics-plus-config-container input[type="url"],
-#lyrics-plus-config-container input,
-#lyrics-plus-config-container select,
-#lyrics-plus-config-container textarea {
+#ivLyrics-config-container input[type="text"],
+#ivLyrics-config-container input[type="password"],
+#ivLyrics-config-container input[type="number"],
+#ivLyrics-config-container input[type="url"],
+#ivLyrics-config-container input,
+#ivLyrics-config-container select,
+#ivLyrics-config-container textarea {
   background-color: #1a1a1a !important;
   border: 2px solid #404040 !important;
   border-radius: 8px !important;
@@ -623,16 +623,16 @@
   box-sizing: border-box !important;
 }
 
-#lyrics-plus-config-container input:hover,
-#lyrics-plus-config-container select:hover,
-#lyrics-plus-config-container textarea:hover {
+#ivLyrics-config-container input:hover,
+#ivLyrics-config-container select:hover,
+#ivLyrics-config-container textarea:hover {
   border-color: #606060 !important;
   background-color: #252525 !important;
 }
 
-#lyrics-plus-config-container input:focus,
-#lyrics-plus-config-container select:focus,
-#lyrics-plus-config-container textarea:focus {
+#ivLyrics-config-container input:focus,
+#ivLyrics-config-container select:focus,
+#ivLyrics-config-container textarea:focus {
   border-color: #1ed760 !important;
   background-color: #252525 !important;
   box-shadow: 0 0 0 2px rgba(30, 215, 96, 0.2) !important;
@@ -844,27 +844,27 @@ div.lyrics-tabBar-headerItemLink {
 
 /** Setting menu */
 .lyrics-tooltip-wrapper .setting-row::after,
-#lyrics-plus-config-container .setting-row::after {
+#ivLyrics-config-container .setting-row::after {
   content: "";
   display: table;
   clear: both;
 }
 
 .lyrics-tooltip-wrapper .setting-row .col,
-#lyrics-plus-config-container .setting-row .col {
+#ivLyrics-config-container .setting-row .col {
   padding: 16px 0 4px;
   align-items: center;
 }
 
 .lyrics-tooltip-wrapper .setting-row .col.description,
-#lyrics-plus-config-container .setting-row .col.description {
+#ivLyrics-config-container .setting-row .col.description {
   float: left;
   padding-right: 15px;
   cursor: default;
 }
 
 .lyrics-tooltip-wrapper .setting-row .col.action,
-#lyrics-plus-config-container .setting-row .col.action {
+#ivLyrics-config-container .setting-row .col.action {
   float: right;
   display: flex;
   justify-content: flex-end;
@@ -872,7 +872,7 @@ div.lyrics-tabBar-headerItemLink {
 }
 
 .lyrics-tooltip-wrapper button.switch,
-#lyrics-plus-config-container button.switch {
+#ivLyrics-config-container button.switch {
   align-items: center;
   border: 0px;
   border-radius: 50%;
@@ -887,20 +887,20 @@ div.lyrics-tabBar-headerItemLink {
 
 .lyrics-tooltip-wrapper button.switch.disabled,
 .lyrics-tooltip-wrapper button.switch[disabled],
-#lyrics-plus-config-container button.switch.disabled,
-#lyrics-plus-config-container button.switch[disabled] {
+#ivLyrics-config-container button.switch.disabled,
+#ivLyrics-config-container button.switch[disabled] {
   color: rgba(var(--spice-rgb-text), 0.3);
 }
 
 .lyrics-tooltip-wrapper button.switch.small,
-#lyrics-plus-config-container button.switch.small {
+#ivLyrics-config-container button.switch.small {
   width: 22px;
   height: 22px;
   padding: 3px;
 }
 
 .lyrics-tooltip-wrapper input,
-#lyrics-plus-config-container input {
+#ivLyrics-config-container input {
   width: 100%;
   padding: 0 5px;
   height: 32px;
@@ -911,20 +911,20 @@ div.lyrics-tabBar-headerItemLink {
 }
 
 .lyrics-tooltip-wrapper .col.action .adjust-value,
-#lyrics-plus-config-container .col.action .adjust-value {
+#ivLyrics-config-container .col.action .adjust-value {
   margin-inline-start: 12px;
   min-width: 22px;
   text-align: center;
 }
 
 .lyrics-tooltip-wrapper .col.action span,
-#lyrics-plus-config-container .col.action span {
+#ivLyrics-config-container .col.action span {
   font-size: 14px;
   opacity: 0.8;
 }
 
 .lyrics-tooltip-wrapper .col.action .btn,
-#lyrics-plus-config-container .col.action .btn {
+#ivLyrics-config-container .col.action .btn {
   font-weight: 700;
   background-color: transparent;
   border-radius: 500px;
@@ -939,21 +939,21 @@ div.lyrics-tabBar-headerItemLink {
 }
 
 .lyrics-tooltip-wrapper .col.action .btn:hover,
-#lyrics-plus-config-container .col.action .btn:hover {
+#ivLyrics-config-container .col.action .btn:hover {
   transform: scale(1.04);
   border-color: var(--spice-text);
 }
 
 .lyrics-tooltip-wrapper .col.action .btn:disabled,
-#lyrics-plus-config-container .col.action .btn:disabled {
+#ivLyrics-config-container .col.action .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
 .lyrics-tooltip-wrapper .col.action .main-dropDown-dropDown,
 .lyrics-tooltip-wrapper .col.action input,
-#lyrics-plus-config-container .col.action .main-dropDown-dropDown,
-#lyrics-plus-config-container .col.action input {
+#ivLyrics-config-container .col.action .main-dropDown-dropDown,
+#ivLyrics-config-container .col.action input {
   width: 150px;
 }
 
@@ -1247,7 +1247,7 @@ div.lyrics-tabBar-headerItemLink {
   -webkit-text-stroke: 0px rgba(0, 0, 0, 0.45);
 }
 
-#lyrics-plus-gradient-background {
+#ivLyrics-gradient-background {
   position: fixed;
   /* 배경을 화면에 고정 */
   top: 0;
@@ -1709,7 +1709,7 @@ ruby .lyrics-karaoke-char.sung {
   grid-area: unset;
 }
 
-.lyrics-lyricsContainer-LyricsContainer.fullscreen-active #lyrics-plus-gradient-background {
+.lyrics-lyricsContainer-LyricsContainer.fullscreen-active #ivLyrics-gradient-background {
   position: absolute;
   top: 0;
   left: 0;

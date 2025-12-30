@@ -1,9 +1,9 @@
-﻿// Bengali language file for Lyrics Plus
+﻿// Bengali language file for ivLyrics
 window.LANG_BN = {
   "meta": {
     "language": "বাংলা",
     "code": "bn",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "সাধারণ",
@@ -661,7 +661,7 @@ window.LANG_BN = {
       "subtitle": "প্লেব্যাক সম্পর্কিত ফাংশন সেটিংস",
       "replaceButton": {
         "label": "লিরিক্স বোতাম প্রতিস্থাপন করুন",
-        "info": "Spotify-এর ডিফল্ট লিরিক্স বোতাম Lyrics Plus দিয়ে প্রতিস্থাপন করুন"
+        "info": "Spotify-এর ডিফল্ট লিরিক্স বোতাম ivLyrics দিয়ে প্রতিস্থাপন করুন"
       },
       "fullscreenShortcut": {
         "label": "পূর্ণ পর্দা শর্টকাট",
@@ -963,7 +963,7 @@ window.LANG_BN = {
         "subtitle": "সাম্প্রতিক আপডেটের ইতিহাস",
         "loading": "আপডেট নোট লোড হচ্ছে..."
       },
-      "subtitle": "Lyrics Plus সম্পর্কে",
+      "subtitle": "ivLyrics সম্পর্কে",
       "appDescription": "Spicetify-এর জন্য বাংলা সমর্থিত লিরিক্স এক্সটেনশন।",
       "versionPrefix": "সংস্করণ",
       "viewOnGithub": "GitHub এ দেখুন",
@@ -1040,7 +1040,7 @@ window.LANG_BN = {
     "autoSubmitEnabled": "⚡ অটো সাবমিট সক্রিয়"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "ভিডিও তথ্য লোড হচ্ছে...",

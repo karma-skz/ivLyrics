@@ -1,9 +1,9 @@
-﻿// Spanish language file for Lyrics Plus
+﻿// Spanish language file for ivLyrics
 window.LANG_ES = {
   "meta": {
     "language": "Español",
     "code": "es",
-    "author": "lyrics-plus"
+    "author": "ivLyrics"
   },
   "tabs": {
     "general": "General",
@@ -661,7 +661,7 @@ window.LANG_ES = {
       "subtitle": "Configuración de funciones relacionadas con la reproducción",
       "replaceButton": {
         "label": "Reemplazar botón de letras",
-        "info": "Reemplaza el botón de letras predeterminado de Spotify con Lyrics Plus"
+        "info": "Reemplaza el botón de letras predeterminado de Spotify con ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "Atajo de pantalla completa",
@@ -959,7 +959,7 @@ window.LANG_ES = {
         "subtitle": "Historial de actualizaciones recientes",
         "loading": "Cargando notas de parche..."
       },
-      "subtitle": "Acerca de Lyrics Plus",
+      "subtitle": "Acerca de ivLyrics",
       "appDescription": "Extensión de letras compatible con español para Spicetify.",
       "versionPrefix": "Versión",
       "viewOnGithub": "Ver en GitHub",
@@ -1036,7 +1036,7 @@ window.LANG_ES = {
     "autoSubmitEnabled": "⚡ Envío automático activado"
   },
   "playbarButton": {
-    "label": "Lyrics Plus"
+    "label": "ivLyrics"
   },
   "videoBackground": {
     "loading": "Cargando información del video...",
