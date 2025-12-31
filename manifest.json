@@ -45,6 +45,7 @@
 		"OptionsMenu.js",
 		"TabBar.js",
 		"Utils.js",
+		"LyricsShareImage.js",
 		"Translator.js",
 		"CommunityVideoSelector.js",
 		"VideoBackground.js",

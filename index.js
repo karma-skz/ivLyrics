@@ -342,7 +342,7 @@ const OverlaySender = {
     // 연결됨 상태로 변경될 때
     if (value && !wasConnected) {
       console.log('[OverlaySender] 오버레이 연결됨 ✓');
-      Spicetify.showNotification?.('오버레이 연결됨', false);
+      Toast?.success?.(I18n.t("notifications.overlayConnected"));
       // 가사 재전송
       setTimeout(() => this.resendWithNewOffset(), 100);
     }
@@ -709,10 +709,10 @@ const UpdateBanner = ({ updateInfo, onDismiss }) => {
     const success = await Utils.copyToClipboard(installCommand);
     if (success) {
       setCopied(true);
-      Spicetify.showNotification(I18n.t("notifications.installCommandCopied"));
+      Toast.success(I18n.t("notifications.installCommandCopied"));
       setTimeout(() => setCopied(false), 2500);
     } else {
-      Spicetify.showNotification(I18n.t("notifications.copyFailed"), true);
+      Toast.error(I18n.t("notifications.copyFailed"));
     }
   };
 
@@ -2645,7 +2645,7 @@ class LyricsContainer extends react.Component {
 
     // 현재 가사가 있는지 확인
     if (!this.state.currentLyrics || this.state.currentLyrics.length === 0) {
-      Spicetify.showNotification(I18n.t("notifications.noLyricsLoaded"), true, 2000);
+      Toast.error(I18n.t("notifications.noLyricsLoaded"));
       return;
     }
 
@@ -2667,11 +2667,7 @@ class LyricsContainer extends react.Component {
       mode1?.startsWith("gemini") || mode2?.startsWith("gemini");
 
     if (!isGeminiMode) {
-      Spicetify.showNotification(
-        I18n.t("notifications.translationRegenerateGeminiOnly"),
-        true,
-        3000
-      );
+      Toast.error(I18n.t("notifications.translationRegenerateGeminiOnly"));
       return;
     }
 
@@ -2682,14 +2678,14 @@ class LyricsContainer extends react.Component {
     // trackId 가져오기
     const trackId = Spicetify.Player.data?.item?.uri?.split(':')[2];
     if (!trackId) {
-      Spicetify.showNotification("No track playing", true, 2000);
+      Toast.error(I18n.t("notifications.noTrackPlaying"));
       return;
     }
 
     try {
       this.startTranslationLoading();
 
-      Spicetify.showNotification(I18n.t("notifications.regeneratingTranslation"), false, 2000);
+      Toast.show(I18n.t("notifications.regeneratingTranslation"), false, 2000);
 
       // 먼저 로컬 캐시에서 해당 트랙의 번역 캐시 삭제
       const userLang = I18n.getCurrentLanguage();
@@ -2877,13 +2873,9 @@ class LyricsContainer extends react.Component {
       // lyricsSource를 다시 호출하여 기존 로직으로 화면 업데이트
       // 이렇게 하면 optimizeTranslations이 호출되어 사용자 설정에 따라 번역이 표시됨
       this.lyricsSource(this.state, currentMode);
-      Spicetify.showNotification(I18n.t("notifications.translationRegenerated"), false, 2000);
+      Toast.success(I18n.t("notifications.translationRegenerated"));
     } catch (error) {
-      Spicetify.showNotification(
-        `${I18n.t("notifications.translationRegenerateFailed")}: ${error.message}`,
-        true,
-        3000
-      );
+      Toast.error(`${I18n.t("notifications.translationRegenerateFailed")}: ${error.message}`);
     } finally {
       this.clearTranslationLoading();
     }
@@ -3263,13 +3255,9 @@ class LyricsContainer extends react.Component {
       } catch (error) {
         const modeDisplayName =
           mode === "gemini_romaji"
-            ? "Romaji, Romaja, Pinyin translation"
-            : "Korean translation";
-        Spicetify.showNotification(
-          `${modeDisplayName} failed: ${error.message || "Unknown error"}`,
-          true,
-          4000
-        );
+            ? I18n.t("notifications.romajiTranslationFailed")
+            : I18n.t("notifications.koreanTranslationFailed");
+        Toast.error(`${modeDisplayName}: ${error.message || "Unknown error"}`);
         return null; // Return null on failure
       }
     };
@@ -4046,11 +4034,7 @@ class LyricsContainer extends react.Component {
             (lyric, i) => (result?.[i] ?? "") !== (lyric?.text || "")
           );
           if (!anyChanged) {
-            Spicetify.showNotification(
-              "Pinyin library unavailable. Showing original. Allow jsDelivr or unpkg.",
-              true,
-              4000
-            );
+            Toast.error(I18n.t("notifications.pinyinLibraryUnavailable"));
           }
         } else {
           const map = {
@@ -4061,11 +4045,7 @@ class LyricsContainer extends react.Component {
 
           // prevent conversion between the same language.
           if (targetConvert === "cn") {
-            Spicetify.showNotification(
-              "Conversion skipped: Already in Simplified Chinese",
-              false,
-              2000
-            );
+            Toast.show(I18n.t("notifications.conversionSkippedSimplified"));
             return lyrics;
           }
 
@@ -4097,11 +4077,7 @@ class LyricsContainer extends react.Component {
             (lyric, i) => (result?.[i] ?? "") !== (lyric?.text || "")
           );
           if (!anyChanged) {
-            Spicetify.showNotification(
-              "Pinyin library unavailable. Showing original. Allow jsDelivr or unpkg.",
-              true,
-              4000
-            );
+            Toast.error(I18n.t("notifications.pinyinLibraryUnavailable"));
           }
         } else {
           const map = {
@@ -4127,17 +4103,10 @@ class LyricsContainer extends react.Component {
       }
 
       const res = Utils.processTranslatedLyrics(result, lyrics);
-      Spicetify.showNotification(
-        "✓ Conversion completed successfully",
-        false,
-        2000
-      );
+      Toast.success(I18n.t("notifications.conversionCompleted"));
       return res;
     } catch (error) {
-      Spicetify.showNotification(
-        `Conversion failed: ${error.message || "Unknown error"}`,
-        true,
-        3000
+      Toast.error(`${I18n.t("notifications.conversionFailed")}: ${error.message || "Unknown error"}`
       );
     }
   }
@@ -4305,17 +4274,9 @@ class LyricsContainer extends react.Component {
     this.lyricsSource(this.state, currentMode);
 
     if (hasTranslations) {
-      Spicetify.showNotification(
-        `✓ Reset ${clearedCount} translation cache entries`,
-        false,
-        2000
-      );
+      Toast.success(I18n.t("notifications.translationCacheReset").replace("{count}", clearedCount));
     } else {
-      Spicetify.showNotification(
-        I18n.t("notifications.translationCacheRemoved"),
-        false,
-        2000
-      );
+      Toast.success(I18n.t("notifications.translationCacheRemoved"));
     }
   }
 
@@ -4325,11 +4286,7 @@ class LyricsContainer extends react.Component {
     const reader = new FileReader();
 
     if (file[0].size > 1024 * 1024) {
-      Spicetify.showNotification(
-        "File too large: Maximum size is 1MB",
-        true,
-        3000
-      );
+      Toast.error(I18n.t("notifications.fileTooLarge"));
       return;
     }
 
@@ -4338,15 +4295,10 @@ class LyricsContainer extends react.Component {
         const localLyrics = Utils.parseLocalLyrics(e.target.result);
         const parsedKeys = Object.keys(localLyrics)
           .filter((key) => localLyrics[key])
-          .map((key) => key[0].toUpperCase() + key.slice(1))
-          .map((key) => `<strong>${key}</strong>`);
+          .map((key) => key[0].toUpperCase() + key.slice(1));
 
         if (!parsedKeys.length) {
-          Spicetify.showNotification(
-            "No valid lyrics found in file",
-            true,
-            3000
-          );
+          Toast.error(I18n.t("notifications.noValidLyricsInFile"));
           return;
         }
 
@@ -4362,26 +4314,14 @@ class LyricsContainer extends react.Component {
         };
         this.saveLocalLyrics(this.currentTrackUri, localLyrics);
 
-        Spicetify.showNotification(
-          `✓ Successfully loaded ${parsedKeys.join(", ")} lyrics from file`,
-          false,
-          3000
-        );
+        Toast.success(I18n.t("notifications.lyricsLoadedFromFile").replace("{types}", parsedKeys.join(", ")));
       } catch (e) {
-        Spicetify.showNotification(
-          "Failed to load lyrics: Invalid file format",
-          true,
-          3000
-        );
+        Toast.error(I18n.t("notifications.lyricsLoadFailed"));
       }
     };
 
     reader.onerror = (e) => {
-      Spicetify.showNotification(
-        "Failed to read file: File may be corrupted",
-        true,
-        3000
-      );
+      Toast.error(I18n.t("notifications.fileReadFailed"));
     };
 
     reader.readAsText(file[0]);
@@ -5269,6 +5209,17 @@ class LyricsContainer extends react.Component {
             }
           },
         }),
+        react.createElement(ShareImageButton, {
+          lyrics: this.state.currentLyrics || [],
+          trackInfo: {
+            name: Spicetify.Player.data?.item?.name || Spicetify.Player.data?.item?.metadata?.title || '',
+            artist: Spicetify.Player.data?.item?.artists?.map(a => a.name).join(', ') || Spicetify.Player.data?.item?.metadata?.artist_name || '',
+            cover: Spicetify.Player.data?.item?.metadata?.image_xlarge_url || 
+                   Spicetify.Player.data?.item?.metadata?.image_large_url || 
+                   Spicetify.Player.data?.item?.metadata?.image_url ||
+                   Spicetify.Player.data?.item?.album?.images?.[0]?.url || '',
+          },
+        }),
         react.createElement(SettingsMenu),
         // Fullscreen toggle button
         (() => !document.getElementById("fad-ivLyrics-container"))() && react.createElement(
@@ -5418,7 +5369,7 @@ class LyricsContainer extends react.Component {
         // alert 파라미터가 있으면 알림 표시
         const alertMessage = searchParams.get('alert');
         if (alertMessage) {
-          Spicetify.showNotification(decodeURIComponent(alertMessage), false, 3000);
+          Toast.show(decodeURIComponent(alertMessage), false, 3000);
           console.log('[ivLyrics] URL Scheme alert:', alertMessage);
         }
 

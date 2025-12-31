@@ -520,12 +520,12 @@ const FullscreenOverlay = (() => {
                             const shareUrl = `https://open.spotify.com/track/${trackId}`;
                             try {
                                 await navigator.clipboard.writeText(shareUrl);
-                                Spicetify.showNotification(I18n.t("fullscreen.controls.shareCopied"));
+                                Toast.success(I18n.t("fullscreen.controls.shareCopied"));
                             } catch (e) {
                                 // Fallback
                                 if (Spicetify.Platform?.ClipboardAPI) {
                                     Spicetify.Platform.ClipboardAPI.copy(shareUrl);
-                                    Spicetify.showNotification(I18n.t("fullscreen.controls.shareCopied"));
+                                    Toast.success(I18n.t("fullscreen.controls.shareCopied"));
                                 }
                             }
                         }
@@ -918,7 +918,7 @@ const FullscreenOverlay = (() => {
             }
 
             if (!hasKey) {
-                Spicetify.showNotification(I18n.t("tmi.requireKey"), true);
+                Toast.error(I18n.t("tmi.requireKey"));
                 return;
             }
 

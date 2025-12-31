@@ -1706,7 +1706,7 @@ const Utils = {
   /**
    * Current version of the ivLyrics app
    */
-  currentVersion: "3.0.2",
+  currentVersion: "3.0.3",
 
   /**
    * Check for updates from remote repository
@@ -2575,3 +2575,136 @@ const Utils = {
     }
   },
 };
+
+// ============================================
+// Custom Toast Notification System
+// ============================================
+const Toast = {
+  _container: null,
+  _toasts: [],
+  _idCounter: 0,
+
+  /**
+   * Initialize toast container
+   */
+  _ensureContainer() {
+    if (this._container && document.body.contains(this._container)) {
+      return this._container;
+    }
+
+    this._container = document.createElement('div');
+    this._container.className = 'ivlyrics-toast-container';
+    document.body.appendChild(this._container);
+    return this._container;
+  },
+
+  /**
+   * Show a toast notification
+   * @param {string} message - The message to display
+   * @param {boolean} isError - Whether this is an error message
+   * @param {number} duration - Duration in ms (default: 3000)
+   * @returns {number} Toast ID
+   */
+  show(message, isError = false, duration = 3000) {
+    this._ensureContainer();
+
+    const id = ++this._idCounter;
+    const toast = document.createElement('div');
+    toast.className = `ivlyrics-toast ${isError ? 'ivlyrics-toast-error' : 'ivlyrics-toast-success'}`;
+    toast.dataset.toastId = id;
+
+    // Icon
+    const icon = document.createElement('span');
+    icon.className = 'ivlyrics-toast-icon';
+    icon.innerHTML = isError 
+      ? '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0-1A6 6 0 1 0 8 2a6 6 0 0 0 0 12zM7.25 5h1.5v4h-1.5V5zm0 5h1.5v1.5h-1.5V10z"/></svg>'
+      : '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0-1A6 6 0 1 0 8 2a6 6 0 0 0 0 12zm3.146-8.854a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L6.5 8.793l3.646-3.647a.5.5 0 0 1 .708 0z"/></svg>';
+
+    // Message
+    const text = document.createElement('span');
+    text.className = 'ivlyrics-toast-message';
+    text.textContent = message;
+
+    // Close button
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'ivlyrics-toast-close';
+    closeBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>';
+    closeBtn.onclick = (e) => {
+      e.stopPropagation();
+      this.dismiss(id);
+    };
+
+    toast.appendChild(icon);
+    toast.appendChild(text);
+    toast.appendChild(closeBtn);
+
+    // Click anywhere to dismiss
+    toast.onclick = () => this.dismiss(id);
+
+    this._container.appendChild(toast);
+    this._toasts.push({ id, element: toast, timeout: null });
+
+    // Trigger animation
+    requestAnimationFrame(() => {
+      toast.classList.add('ivlyrics-toast-show');
+    });
+
+    // Auto dismiss
+    if (duration > 0) {
+      const toastData = this._toasts.find(t => t.id === id);
+      if (toastData) {
+        toastData.timeout = setTimeout(() => this.dismiss(id), duration);
+      }
+    }
+
+    return id;
+  },
+
+  /**
+   * Dismiss a toast
+   * @param {number} id - Toast ID
+   */
+  dismiss(id) {
+    const index = this._toasts.findIndex(t => t.id === id);
+    if (index === -1) return;
+
+    const toastData = this._toasts[index];
+    if (toastData.timeout) {
+      clearTimeout(toastData.timeout);
+    }
+
+    toastData.element.classList.remove('ivlyrics-toast-show');
+    toastData.element.classList.add('ivlyrics-toast-hide');
+
+    setTimeout(() => {
+      if (toastData.element.parentNode) {
+        toastData.element.parentNode.removeChild(toastData.element);
+      }
+      this._toasts.splice(index, 1);
+    }, 300);
+  },
+
+  /**
+   * Dismiss all toasts
+   */
+  dismissAll() {
+    [...this._toasts].forEach(t => this.dismiss(t.id));
+  },
+
+  /**
+   * Success toast shorthand
+   */
+  success(message, duration = 3000) {
+    return this.show(message, false, duration);
+  },
+
+  /**
+   * Error toast shorthand
+   */
+  error(message, duration = 3000) {
+    return this.show(message, true, duration);
+  }
+};
+
+// Export Toast globally
+window.Toast = Toast;

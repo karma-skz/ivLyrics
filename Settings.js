@@ -224,11 +224,7 @@ const LocalCacheManager = () => {
 
       // 캐시는 이미 지웠으므로 clearCache=false로 호출
       reloadLyrics?.(false);
-      Spicetify.showNotification(
-        I18n.t("notifications.localCacheCleared"),
-        false,
-        2000
-      );
+      Toast.success(I18n.t("notifications.localCacheCleared"));
     } catch (e) {
       console.error('[LocalCacheManager] Clear all failed:', e);
     }
@@ -239,7 +235,7 @@ const LocalCacheManager = () => {
     const trackUri = Spicetify.Player.data?.item?.uri;
     const trackId = trackUri?.split(':')[2];
     if (!trackId) {
-      Spicetify.showNotification("No track playing", true, 2000);
+      Toast.error(I18n.t("notifications.noTrackPlaying"));
       return;
     }
 
@@ -258,11 +254,7 @@ const LocalCacheManager = () => {
 
       // 캐시는 이미 지웠으므로 clearCache=false로 호출
       reloadLyrics?.(false);
-      Spicetify.showNotification(
-        I18n.t("notifications.localCacheTrackCleared"),
-        false,
-        2000
-      );
+      Toast.success(I18n.t("notifications.localCacheTrackCleared"));
     } catch (e) {
       console.error('[LocalCacheManager] Clear track failed:', e);
     }
@@ -472,12 +464,12 @@ const DebugInfoPanel = () => {
     try {
       await navigator.clipboard.writeText(debugText);
       setCopied(true);
-      Spicetify.showNotification(I18n.t("settingsAdvanced.debugTab.copied"), false, 2000);
+      Toast.success(I18n.t("settingsAdvanced.debugTab.copied"));
 
       // 3초 후 copied 상태 리셋
       setTimeout(() => setCopied(false), 3000);
     } catch (e) {
-      Spicetify.showNotification(I18n.t("settingsAdvanced.debugTab.copyFailed"), true, 2000);
+      Toast.error(I18n.t("settingsAdvanced.debugTab.copyFailed"));
     }
   };
 
@@ -5712,9 +5704,9 @@ const ConfigModal = () => {
                 onClick: () => {
                   const clientId = StorageManager.getClientId();
                   navigator.clipboard.writeText(clientId).then(() => {
-                    Spicetify.showNotification(I18n.t("settingsAdvanced.aboutTab.clientInfo.copied"), false, 2000);
+                    Toast.success(I18n.t("settingsAdvanced.aboutTab.clientInfo.copied"));
                   }).catch(() => {
-                    Spicetify.showNotification(I18n.t("settingsAdvanced.aboutTab.clientInfo.copyFailed"), true, 2000);
+                    Toast.error(I18n.t("settingsAdvanced.aboutTab.clientInfo.copyFailed"));
                   });
                 },
                 style: {
@@ -5946,14 +5938,9 @@ const ConfigModal = () => {
                             copyBtn.style.color = "rgba(16, 185, 129, 1)";
                             copyBtn.style.cursor = "default";
                             copyBtn.disabled = true;
-                            Spicetify.showNotification(
-                              I18n.t("settingsAdvanced.aboutTab.update.installCopied")
-                            );
+                            Toast.success(I18n.t("settingsAdvanced.aboutTab.update.installCopied"));
                           } else {
-                            Spicetify.showNotification(
-                              I18n.t("settingsAdvanced.aboutTab.update.copyFailed"),
-                              true
-                            );
+                            Toast.error(I18n.t("settingsAdvanced.aboutTab.update.copyFailed"));
                           }
                         });
                       }
