@@ -683,6 +683,10 @@ window.LANG_ES = {
         "label": "Reemplazar botón de letras",
         "info": "Reemplaza el botón de letras predeterminado de Spotify con ivLyrics"
       },
+      "replaceFullscreenButton": {
+        "label": "Reemplazar botón de pantalla completa",
+        "info": "Reemplaza el botón de pantalla completa predeterminado de Spotify con ivLyrics"
+      },
       "fullscreenShortcut": {
         "label": "Atajo de pantalla completa",
         "desc": "Atajo de teclado para el modo de pantalla completa de letras"
@@ -803,6 +807,14 @@ window.LANG_ES = {
         "desc": "Atajo de pantalla completa",
         "info": "Establece el atajo de teclado para alternar el modo pantalla completa"
       },
+      "tvMode": {
+        "desc": "Modo TV",
+        "info": "Muestra la carátula del álbum e información de la pista en la parte inferior izquierda, las letras usan la pantalla completa"
+      },
+      "tvModeAlbumSize": {
+        "desc": "Tamaño del álbum en modo TV",
+        "info": "Establece el tamaño de la carátula del álbum en modo TV (píxeles)"
+      },
       "splitView": {
         "desc": "Vista dividida",
         "info": "Muestra el arte del álbum a la izquierda y las letras a la derecha en pantalla completa"
@@ -818,6 +830,10 @@ window.LANG_ES = {
       "showTrackInfo": {
         "desc": "Mostrar información de la pista",
         "info": "Muestra el título de la canción y el artista en pantalla completa"
+      },
+      "trimTitle": {
+        "desc": "Acortar título",
+        "info": "Elimina información adicional como (Remaster), [feat. xxx] de los títulos para una visualización más limpia"
       },
       "translateMetadata": {
         "desc": "Traducir título/artista",

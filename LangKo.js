@@ -705,6 +705,10 @@ window.LANG_KO = {
         "label": "가사 버튼 교체",
         "info": "Spotify의 기본 가사 버튼을 ivLyrics로 교체합니다"
       },
+      "replaceFullscreenButton": {
+        "label": "전체화면 버튼 교체",
+        "info": "Spotify의 기본 전체화면 버튼을 ivLyrics 전체화면으로 교체합니다"
+      },
       "fullscreenShortcut": {
         "label": "전체화면 단축키",
         "desc": "가사 전체화면 모드를 위한 키보드 단축키"
@@ -825,6 +829,14 @@ window.LANG_KO = {
         "desc": "전체화면 단축키",
         "info": "전체화면 모드를 토글하는 키보드 단축키를 설정합니다"
       },
+      "tvMode": {
+        "desc": "TV 모드",
+        "info": "좌측 하단에 앨범 아트와 곡 정보를 표시하고 가사는 전체 화면을 사용합니다"
+      },
+      "tvModeAlbumSize": {
+        "desc": "TV 모드 앨범 크기",
+        "info": "TV 모드에서 앨범 아트의 크기를 설정합니다 (픽셀)"
+      },
       "splitView": {
         "desc": "분할 레이아웃",
         "info": "전체화면에서 왼쪽에 앨범 아트, 오른쪽에 가사를 표시합니다"
@@ -840,6 +852,10 @@ window.LANG_KO = {
       "showTrackInfo": {
         "desc": "트랙 정보 표시",
         "info": "전체화면에서 곡 제목과 아티스트를 표시합니다"
+      },
+      "trimTitle": {
+        "desc": "짧은 제목 표시",
+        "info": "곡 제목에서 (Remaster), [feat. xxx] 등 부가 정보를 제거하여 간결하게 표시합니다"
       },
       "translateMetadata": {
         "desc": "제목/아티스트 번역",

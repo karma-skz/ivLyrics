@@ -683,6 +683,10 @@ window.LANG_VI = {
         "label": "Thay thế nút lời bài hát",
         "info": "Thay thế nút lời bài hát mặc định của Spotify bằng ivLyrics"
       },
+      "replaceFullscreenButton": {
+        "label": "Thay thế nút toàn màn hình",
+        "info": "Thay thế nút toàn màn hình mặc định của Spotify bằng ivLyrics"
+      },
       "fullscreenShortcut": {
         "label": "Phím tắt toàn màn hình",
         "desc": "Phím tắt để vào chế độ lời bài hát toàn màn hình"
@@ -802,6 +806,18 @@ window.LANG_VI = {
       "shortcut": {
         "desc": "Phím tắt toàn màn hình",
         "info": "Cài đặt phím tắt để bật/tắt chế độ toàn màn hình"
+      },
+      "tvMode": {
+        "desc": "Chế độ TV",
+        "info": "Hiển thị bìa album và thông tin bài hát ở góc dưới bên trái, lời bài hát sử dụng toàn màn hình"
+      },
+      "tvModeAlbumSize": {
+        "desc": "Kích thước album chế độ TV",
+        "info": "Cài đặt kích thước bìa album trong chế độ TV (pixel)"
+      },
+      "trimTitle": {
+        "desc": "Rút gọn tiêu đề",
+        "info": "Xóa thông tin bổ sung như (Remaster), [feat. xxx] khỏi tiêu đề để hiển thị gọn gàng hơn"
       },
       "splitView": {
         "desc": "Chế độ xem chia đôi",

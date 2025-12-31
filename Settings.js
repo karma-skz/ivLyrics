@@ -4447,6 +4447,12 @@ const ConfigModal = () => {
               info: I18n.t("settingsAdvanced.playback.replaceButton.info") || "Replaces Spotify's default lyrics button with ivLyrics",
               type: ConfigSlider,
             },
+            {
+              desc: I18n.t("settingsAdvanced.playback.replaceFullscreenButton.label"),
+              key: "fullscreen-button",
+              info: I18n.t("settingsAdvanced.playback.replaceFullscreenButton.info") || "Replaces Spotify's default fullscreen button with ivLyrics fullscreen",
+              type: ConfigSlider,
+            },
 
             {
               desc: I18n.t("settingsAdvanced.playback.fullscreenShortcut.label"),
@@ -5148,11 +5154,28 @@ const ConfigModal = () => {
               type: ConfigHotkey,
             },
             {
+              desc: I18n.t("settingsAdvanced.fullscreenMode.tvMode.desc"),
+              info: I18n.t("settingsAdvanced.fullscreenMode.tvMode.info"),
+              key: "fullscreen-tv-mode",
+              type: ConfigSlider,
+              defaultValue: CONFIG.visual["fullscreen-tv-mode"] ?? false,
+            },
+            {
+              desc: I18n.t("settingsAdvanced.fullscreenMode.tvModeAlbumSize.desc"),
+              info: I18n.t("settingsAdvanced.fullscreenMode.tvModeAlbumSize.info"),
+              key: "fullscreen-tv-album-size",
+              type: ConfigInput,
+              inputType: "number",
+              defaultValue: CONFIG.visual["fullscreen-tv-album-size"] || "140",
+              when: () => CONFIG.visual["fullscreen-tv-mode"] === true,
+            },
+            {
               desc: I18n.t("settingsAdvanced.fullscreenMode.twoColumnLayout.desc"),
               info: I18n.t("settingsAdvanced.fullscreenMode.splitView.info"),
               key: "fullscreen-two-column",
               type: ConfigSlider,
               defaultValue: CONFIG.visual["fullscreen-two-column"] ?? true,
+              when: () => CONFIG.visual["fullscreen-tv-mode"] !== true,
             },
             {
               desc: I18n.t("settingsAdvanced.fullscreenMode.invertPosition.desc"),
@@ -5177,6 +5200,13 @@ const ConfigModal = () => {
               type: ConfigSlider,
               defaultValue: CONFIG.visual["fullscreen-show-info"] ?? true,
               when: () => CONFIG.visual["fullscreen-two-column"] !== false,
+            },
+            {
+              desc: I18n.t("settingsAdvanced.fullscreenMode.trimTitle.desc"),
+              info: I18n.t("settingsAdvanced.fullscreenMode.trimTitle.info"),
+              key: "fullscreen-trim-title",
+              type: ConfigSlider,
+              defaultValue: CONFIG.visual["fullscreen-trim-title"] ?? false,
             },
             {
               desc: I18n.t("settingsAdvanced.fullscreenMode.translateMetadata.desc"),

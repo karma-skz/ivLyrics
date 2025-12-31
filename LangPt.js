@@ -683,6 +683,10 @@ window.LANG_PT = {
         "label": "Substituir Botão de Letra",
         "info": "Substituir o botão de letra padrão do Spotify pelo ivLyrics"
       },
+      "replaceFullscreenButton": {
+        "label": "Substituir Botão de Tela Cheia",
+        "info": "Substituir o botão de tela cheia padrão do Spotify pelo ivLyrics"
+      },
       "fullscreenShortcut": {
         "label": "Atalho de Tela Cheia",
         "desc": "Atalho de teclado para o modo de tela cheia de letras"
@@ -803,6 +807,14 @@ window.LANG_PT = {
         "desc": "Atalho de Tela Cheia",
         "info": "Definir atalho de teclado para alternar o modo tela cheia"
       },
+      "tvMode": {
+        "desc": "Modo TV",
+        "info": "Exibir capa do álbum e informações da faixa no canto inferior esquerdo, letras usam tela cheia"
+      },
+      "tvModeAlbumSize": {
+        "desc": "Tamanho do Álbum no Modo TV",
+        "info": "Definir o tamanho da capa do álbum no modo TV (pixels)"
+      },
       "splitView": {
         "desc": "Visualização Dividida",
         "info": "Mostrar capa do álbum à esquerda e letra à direita no modo tela cheia"
@@ -818,6 +830,10 @@ window.LANG_PT = {
       "showTrackInfo": {
         "desc": "Mostrar Info da Faixa",
         "info": "Mostrar título da música e artista no modo tela cheia"
+      },
+      "trimTitle": {
+        "desc": "Encurtar título",
+        "info": "Remove informações extras como (Remaster), [feat. xxx] dos títulos para uma exibição mais limpa"
       },
       "translateMetadata": {
         "desc": "Traduzir título/artista",

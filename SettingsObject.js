@@ -143,6 +143,10 @@ const SettingKeys = [
   "ivLyrics:visual:community-sync-auto-submit",
   "ivLyrics:visual:fullscreen-browser-fullscreen",
   "ivLyrics:visual:fullscreen-tmi-font-size",
+  "ivLyrics:visual:fullscreen-button",
+  "ivLyrics:visual:fullscreen-tv-mode",
+  "ivLyrics:visual:fullscreen-tv-album-size",
+  "ivLyrics:visual:fullscreen-trim-title",
 ];
 
 const BYTES_FOR_INDEX = Math.ceil(SettingKeys.length / 255);

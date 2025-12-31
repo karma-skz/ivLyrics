@@ -705,6 +705,10 @@ window.LANG_EN = {
         "label": "Replace Lyrics Button",
         "info": "Replaces Spotify's default lyrics button with ivLyrics"
       },
+      "replaceFullscreenButton": {
+        "label": "Replace Fullscreen Button",
+        "info": "Replaces Spotify's default fullscreen button with ivLyrics fullscreen"
+      },
       "fullscreenShortcut": {
         "label": "Fullscreen Shortcut",
         "desc": "Keyboard shortcut for lyrics fullscreen mode"
@@ -825,6 +829,14 @@ window.LANG_EN = {
         "desc": "Fullscreen Shortcut",
         "info": "Set keyboard shortcut to toggle fullscreen mode"
       },
+      "tvMode": {
+        "desc": "TV Mode",
+        "info": "Display album art and track info at bottom-left, lyrics use full screen"
+      },
+      "tvModeAlbumSize": {
+        "desc": "TV Mode Album Size",
+        "info": "Set album art size in TV mode (pixels)"
+      },
       "splitView": {
         "desc": "Split Layout",
         "info": "Display album art on left, lyrics on right in fullscreen"
@@ -840,6 +852,10 @@ window.LANG_EN = {
       "showTrackInfo": {
         "desc": "Show Track Info",
         "info": "Display song title and artist in fullscreen"
+      },
+      "trimTitle": {
+        "desc": "Trim Title",
+        "info": "Remove extra info like (Remaster), [feat. xxx] from song titles for cleaner display"
       },
       "translateMetadata": {
         "desc": "Translate Title/Artist",

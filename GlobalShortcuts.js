@@ -31,14 +31,7 @@
 
     // 전체화면 토글 함수 (LyricsContainer가 있으면 해당 메서드 사용, 없으면 직접 처리)
     const toggleFullscreen = () => {
-        // ivLyrics 페이지에 있으면, LyricsContainer가 처리하도록 함
-        if (isOnLyricsPage() && window.lyricContainer) {
-            // 이미 index.js에서 처리하므로 중복 방지
-            return;
-        }
-
-        // ivLyrics 페이지가 아닐 때 전체화면 요청
-        // LyricsContainer가 있으면 해당 toggle 사용
+        // LyricsContainer가 있으면 해당 toggle 사용 (ivLyrics 페이지에 있든 없든)
         if (window.lyricContainer && typeof window.lyricContainer.toggleFullscreen === 'function') {
             window.lyricContainer.toggleFullscreen();
             return;
@@ -128,6 +121,10 @@
         window.addEventListener("ivLyrics", (event) => {
             if (event.detail?.name === "fullscreen-key") {
                 updateKeyBinding();
+            }
+            // PlaybarButton에서 전체화면 버튼 클릭 시 발생하는 이벤트 처리
+            if (event.detail?.type === "fullscreen-toggle") {
+                toggleFullscreen();
             }
         });
 

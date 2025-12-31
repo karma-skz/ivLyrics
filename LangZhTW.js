@@ -683,6 +683,10 @@ window.LANG_ZH_TW = {
         "label": "取代Spotify歌詞按鈕",
         "info": "用ivLyrics取代Spotify的預設歌詞按鈕"
       },
+      "replaceFullscreenButton": {
+        "label": "取代全螢幕按鈕",
+        "info": "用ivLyrics全螢幕取代Spotify的預設全螢幕按鈕"
+      },
       "fullscreenShortcut": {
         "label": "全螢幕快速鍵",
         "desc": "歌詞全螢幕模式的鍵盤快速鍵"
@@ -803,6 +807,14 @@ window.LANG_ZH_TW = {
         "desc": "全螢幕快速鍵",
         "info": "設定切換全螢幕模式的鍵盤快速鍵"
       },
+      "tvMode": {
+        "desc": "TV模式",
+        "info": "在左下角顯示專輯封面和曲目資訊，歌詞使用全螢幕"
+      },
+      "tvModeAlbumSize": {
+        "desc": "TV模式專輯大小",
+        "info": "設定TV模式下專輯封面的大小（像素）"
+      },
       "splitView": {
         "desc": "分割版面配置",
         "info": "在全螢幕中左側顯示專輯封面，右側顯示歌詞"
@@ -818,6 +830,10 @@ window.LANG_ZH_TW = {
       "showTrackInfo": {
         "desc": "顯示曲目資訊",
         "info": "在全螢幕中顯示歌曲標題和藝術家"
+      },
+      "trimTitle": {
+        "desc": "精簡標題",
+        "info": "從歌曲標題中移除(Remaster)、[feat. xxx]等附加資訊，使顯示更簡潔"
       },
       "translateMetadata": {
         "desc": "翻譯標題/藝術家",

@@ -683,6 +683,10 @@ window.LANG_IT = {
         "label": "Sostituisci Pulsante Testo",
         "info": "Sostituisci il pulsante testo predefinito di Spotify con ivLyrics"
       },
+      "replaceFullscreenButton": {
+        "label": "Sostituisci Pulsante Schermo Intero",
+        "info": "Sostituisci il pulsante schermo intero predefinito di Spotify con ivLyrics"
+      },
       "fullscreenShortcut": {
         "label": "Scorciatoia Schermo Intero",
         "desc": "Scorciatoia da tastiera per la modalità schermo intero testi"
@@ -803,6 +807,14 @@ window.LANG_IT = {
         "desc": "Scorciatoia Schermo Intero",
         "info": "Imposta scorciatoia da tastiera per attivare modalità schermo intero"
       },
+      "tvMode": {
+        "desc": "Modalità TV",
+        "info": "Mostra copertina album e info traccia in basso a sinistra, il testo usa tutto lo schermo"
+      },
+      "tvModeAlbumSize": {
+        "desc": "Dimensione Album Modalità TV",
+        "info": "Imposta la dimensione della copertina album in modalità TV (pixel)"
+      },
       "splitView": {
         "desc": "Vista Divisa",
         "info": "Mostra copertina album a sinistra e testo a destra in schermo intero"
@@ -818,6 +830,10 @@ window.LANG_IT = {
       "showTrackInfo": {
         "desc": "Mostra Info Traccia",
         "info": "Mostra titolo brano e artista in schermo intero"
+      },
+      "trimTitle": {
+        "desc": "Abbrevia titolo",
+        "info": "Rimuove informazioni extra come (Remaster), [feat. xxx] dai titoli per una visualizzazione più pulita"
       },
       "translateMetadata": {
         "desc": "Traduci titolo/artista",

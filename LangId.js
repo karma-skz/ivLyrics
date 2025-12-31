@@ -683,6 +683,10 @@ window.LANG_ID = {
         "label": "Ganti Tombol Lirik",
         "info": "Ganti tombol lirik default Spotify dengan ivLyrics"
       },
+      "replaceFullscreenButton": {
+        "label": "Ganti Tombol Layar Penuh",
+        "info": "Ganti tombol layar penuh default Spotify dengan ivLyrics"
+      },
       "fullscreenShortcut": {
         "label": "Pintasan Layar Penuh",
         "desc": "Pintasan keyboard untuk masuk ke mode lirik layar penuh"
@@ -803,6 +807,14 @@ window.LANG_ID = {
         "desc": "Pintasan Layar Penuh",
         "info": "Atur pintasan keyboard untuk beralih mode layar penuh"
       },
+      "tvMode": {
+        "desc": "Mode TV",
+        "info": "Tampilkan sampul album dan info lagu di kiri bawah, lirik menggunakan layar penuh"
+      },
+      "tvModeAlbumSize": {
+        "desc": "Ukuran Album Mode TV",
+        "info": "Atur ukuran sampul album dalam mode TV (piksel)"
+      },
       "splitView": {
         "desc": "Tampilan Terpisah",
         "info": "Tampilkan sampul album di kiri dan lirik di kanan dalam mode layar penuh"
@@ -818,6 +830,10 @@ window.LANG_ID = {
       "showTrackInfo": {
         "desc": "Tampilkan Info Lagu",
         "info": "Tampilkan judul lagu dan artis dalam mode layar penuh"
+      },
+      "trimTitle": {
+        "desc": "Persingkat judul",
+        "info": "Hapus info tambahan seperti (Remaster), [feat. xxx] dari judul untuk tampilan lebih bersih"
       },
       "translateMetadata": {
         "desc": "Terjemahkan judul/artis",

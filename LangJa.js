@@ -683,6 +683,10 @@ window.LANG_JA = {
         "label": "歌詞ボタンを置換",
         "info": "Spotifyのデフォルト歌詞ボタンをivLyricsに置き換え"
       },
+      "replaceFullscreenButton": {
+        "label": "フルスクリーンボタンを置換",
+        "info": "SpotifyのデフォルトフルスクリーンボタンをivLyricsフルスクリーンに置き換え"
+      },
       "fullscreenShortcut": {
         "label": "フルスクリーンショートカット",
         "desc": "歌詞フルスクリーンモードのキーボードショートカット"
@@ -803,6 +807,14 @@ window.LANG_JA = {
         "desc": "フルスクリーンショートカット",
         "info": "フルスクリーンモード切り替えのキーボードショートカットを設定"
       },
+      "tvMode": {
+        "desc": "TVモード",
+        "info": "左下にアルバムカバーと曲情報を表示し、歌詞は全画面を使用します"
+      },
+      "tvModeAlbumSize": {
+        "desc": "TVモードアルバムサイズ",
+        "info": "TVモードでのアルバムカバーのサイズを設定（ピクセル）"
+      },
       "splitView": {
         "desc": "分割レイアウト",
         "info": "フルスクリーンで左にアルバムカバー、右に歌詞を表示"
@@ -818,6 +830,10 @@ window.LANG_JA = {
       "showTrackInfo": {
         "desc": "トラック情報を表示",
         "info": "フルスクリーンで曲名とアーティストを表示"
+      },
+      "trimTitle": {
+        "desc": "タイトル短縮",
+        "info": "曲名から(Remaster)、[feat. xxx]などの付加情報を削除してシンプルに表示"
       },
       "translateMetadata": {
         "desc": "タイトル/アーティスト翻訳",

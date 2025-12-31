@@ -1330,6 +1330,10 @@ const CONFIG = {
       "ivLyrics:visual:playbar-button",
       false
     ),
+    "fullscreen-button": StorageManager.get(
+      "ivLyrics:visual:fullscreen-button",
+      false
+    ),
     colorful: StorageManager.get("ivLyrics:visual:colorful", false),
     "gradient-background": StorageManager.get(
       "ivLyrics:visual:gradient-background"
@@ -5074,6 +5078,10 @@ class LyricsContainer extends react.Component {
       if (!hasLyrics && centerWhenNoLyrics) {
         fullscreenClasses += " fullscreen-no-lyrics";
       }
+      // TV Mode class
+      if (CONFIG.visual["fullscreen-tv-mode"] === true) {
+        fullscreenClasses += " tv-mode-active";
+      }
       // TMI 폰트 크기 CSS 변수 업데이트
       if (this.fullscreenContainer) {
         const tmiScale = (CONFIG.visual["fullscreen-tmi-font-size"] || 100) / 100;
@@ -5214,10 +5222,10 @@ class LyricsContainer extends react.Component {
           trackInfo: {
             name: Spicetify.Player.data?.item?.name || Spicetify.Player.data?.item?.metadata?.title || '',
             artist: Spicetify.Player.data?.item?.artists?.map(a => a.name).join(', ') || Spicetify.Player.data?.item?.metadata?.artist_name || '',
-            cover: Spicetify.Player.data?.item?.metadata?.image_xlarge_url || 
-                   Spicetify.Player.data?.item?.metadata?.image_large_url || 
-                   Spicetify.Player.data?.item?.metadata?.image_url ||
-                   Spicetify.Player.data?.item?.album?.images?.[0]?.url || '',
+            cover: Spicetify.Player.data?.item?.metadata?.image_xlarge_url ||
+              Spicetify.Player.data?.item?.metadata?.image_large_url ||
+              Spicetify.Player.data?.item?.metadata?.image_url ||
+              Spicetify.Player.data?.item?.album?.images?.[0]?.url || '',
           },
         }),
         react.createElement(SettingsMenu),

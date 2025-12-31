@@ -4589,3 +4589,151 @@ ruby .lyrics-karaoke-char.sung {
 .ivlyrics-toast-container .ivlyrics-toast:nth-child(n+5) {
   display: none;
 }
+
+/* =============================================
+   TV Mode - Fullscreen Layout
+   ============================================= */
+
+/* TV Mode Song Info - Bottom Left */
+.fullscreen-tv-song-info {
+  position: fixed;
+  bottom: 48px;
+  left: 48px;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+
+.fullscreen-tv-song-info.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* TV Mode Album Art */
+.fullscreen-tv-album {
+  flex-shrink: 0;
+  object-fit: cover;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+/* TV Mode Track Info */
+.fullscreen-tv-track-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  padding-bottom: 8px;
+  max-width: 50vw;
+}
+
+/* TV Mode Title */
+.fullscreen-tv-title {
+  font-weight: 700;
+  color: var(--spice-text, #fff);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6),
+    0 4px 16px rgba(0, 0, 0, 0.4);
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+}
+
+/* TV Mode Artist */
+.fullscreen-tv-artist {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+}
+
+/* TV Mode Album Name */
+.fullscreen-tv-album-name {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+}
+
+/* TV Mode - Hide left panel when active */
+.lyrics-lyricsContainer-LyricsContainer.fullscreen-active.tv-mode-active .lyrics-fullscreen-left-panel {
+  display: none !important;
+}
+
+/* TV Mode - Lyrics take full width */
+.lyrics-lyricsContainer-LyricsContainer.fullscreen-active.tv-mode-active {
+  grid-template-columns: 1fr !important;
+}
+
+.lyrics-lyricsContainer-LyricsContainer.fullscreen-active.tv-mode-active .lyrics-lyricsContainer-SyncedLyricsPage,
+.lyrics-lyricsContainer-LyricsContainer.fullscreen-active.tv-mode-active .lyrics-lyricsContainer-UnsyncedLyricsPage {
+  grid-column: 1 !important;
+  padding-bottom: 200px;
+}
+
+/* TV Mode - Responsive adjustments */
+@media (max-width: 1200px) {
+  .fullscreen-tv-song-info {
+    bottom: 36px;
+    left: 36px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fullscreen-tv-song-info {
+    bottom: 24px;
+    left: 24px;
+    gap: 12px;
+  }
+
+  .fullscreen-tv-track-info {
+    max-width: 60vw;
+  }
+}
+
+/* TV Mode - Portrait orientation override */
+@media (orientation: portrait) {
+  /* TV Mode: Keep single column layout, lyrics take full height */
+  .lyrics-lyricsContainer-LyricsContainer.fullscreen-active.tv-mode-active {
+    grid-template-columns: 100% !important;
+    grid-template-rows: 1fr !important;
+    gap: 0 !important;
+  }
+
+  /* TV Mode: Lyrics container takes full space */
+  .lyrics-lyricsContainer-LyricsContainer.fullscreen-active.tv-mode-active .lyrics-lyricsContainer-SyncedLyricsPage,
+  .lyrics-lyricsContainer-LyricsContainer.fullscreen-active.tv-mode-active .lyrics-lyricsContainer-UnsyncedLyricsPage {
+    grid-row: 1 !important;
+    grid-column: 1 !important;
+    height: 100% !important;
+    padding-bottom: 220px;
+  }
+
+  /* TV Mode: Song info at bottom-left in portrait */
+  .lyrics-lyricsContainer-LyricsContainer.fullscreen-active.tv-mode-active .fullscreen-tv-song-info {
+    bottom: 24px;
+    left: 24px;
+  }
+}

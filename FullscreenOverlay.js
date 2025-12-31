@@ -23,6 +23,17 @@ const FullscreenOverlay = (() => {
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     };
 
+    // Trim title helper - removes (Remaster), [feat. xxx], - Live Version, etc.
+    const trimTitle = (title) => {
+        if (!title) return title;
+        const trimmed = title
+            .replace(/\(.+?\)/g, "")  // Remove (...)
+            .replace(/\[.+?\]/g, "")  // Remove [...]
+            .replace(/\s-\s.+?$/g, "") // Remove - suffix
+            .trim();
+        return trimmed || title;
+    };
+
     // Clock Component
     const Clock = ({ show, showSeconds = false, size = 48 }) => {
         const [time, setTime] = useState(new Date());
@@ -155,6 +166,15 @@ const FullscreenOverlay = (() => {
 
             const checkNextTrack = () => {
                 try {
+                    // 반복 모드 확인: 0=off, 1=context(전체반복), 2=track(한곡반복)
+                    const repeatMode = Spicetify.Player.getRepeat?.() || 0;
+
+                    // 한 곡 반복 모드일 때는 다음 곡 미리보기를 표시하지 않음
+                    if (repeatMode === 2) {
+                        setVisible(false);
+                        return;
+                    }
+
                     const duration = Spicetify.Player.getDuration();
                     const position = Spicetify.Player.getProgress();
                     const remaining = (duration - position) / 1000;
@@ -164,12 +184,24 @@ const FullscreenOverlay = (() => {
                         // Get next track from queue
                         const queue = Spicetify.Queue;
                         if (queue?.nextTracks?.length > 0) {
-                            const next = queue.nextTracks[0];
-                            if (next?.contextTrack?.metadata) {
+                            // Unknown 트랙이 아닌 첫 번째 유효한 트랙 찾기
+                            const validNext = queue.nextTracks.find(track => {
+                                const meta = track?.contextTrack?.metadata;
+                                // Unknown 트랙 필터링 (제목과 아티스트 모두 Unknown이거나 비어있는 경우)
+                                if (!meta) return false;
+                                const title = meta.title || '';
+                                const artist = meta.artist_name || '';
+                                const isUnknown = (title.toLowerCase() === 'unknown' && artist.toLowerCase() === 'unknown') ||
+                                    (!title && !artist) ||
+                                    (title === '' && artist === '');
+                                return !isUnknown;
+                            });
+
+                            if (validNext?.contextTrack?.metadata) {
                                 setNextTrack({
-                                    title: next.contextTrack.metadata.title,
-                                    artist: next.contextTrack.metadata.artist_name,
-                                    image: next.contextTrack.metadata.image_url
+                                    title: validNext.contextTrack.metadata.title,
+                                    artist: validNext.contextTrack.metadata.artist_name,
+                                    image: validNext.contextTrack.metadata.image_url
                                 });
                                 setVisible(true);
                                 return;
@@ -636,9 +668,25 @@ const FullscreenOverlay = (() => {
                         });
                     }
 
-                    // 다음 곡들 (최대 15곡)
+                    // 다음 곡들 (최대 15곡) - Unknown 트랙 이후 필터링
                     if (queue?.nextTracks?.length > 0) {
-                        const next = queue.nextTracks.slice(0, 15).map((track, index) => {
+                        // Unknown 트랙의 인덱스 찾기 (컨텍스트 끝 마커)
+                        const unknownIndex = queue.nextTracks.findIndex(track => {
+                            const meta = track?.contextTrack?.metadata || {};
+                            const title = meta.title || '';
+                            const artist = meta.artist_name || '';
+                            // Unknown 트랙 감지: 제목과 아티스트 모두 Unknown이거나 비어있는 경우
+                            return (title.toLowerCase() === 'unknown' && artist.toLowerCase() === 'unknown') ||
+                                (!title && !artist) ||
+                                (title === '' && artist === '');
+                        });
+
+                        // Unknown 트랙이 있으면 그 이전까지만, 없으면 전체
+                        const tracksToShow = unknownIndex >= 0
+                            ? queue.nextTracks.slice(0, unknownIndex)
+                            : queue.nextTracks;
+
+                        const next = tracksToShow.slice(0, 15).map((track, index) => {
                             const meta = track.contextTrack?.metadata || {};
                             return {
                                 title: meta.title || "Unknown",
@@ -863,6 +911,11 @@ const FullscreenOverlay = (() => {
         const infoGapVal = CONFIG?.visual?.["fullscreen-info-gap"];
         const infoGap = (infoGapVal !== undefined && infoGapVal !== null) ? Number(infoGapVal) : 24;
 
+        // TV Mode settings
+        const tvModeEnabled = CONFIG?.visual?.["fullscreen-tv-mode"] === true;
+        const tvAlbumSize = Number(CONFIG?.visual?.["fullscreen-tv-album-size"]) || 140;
+        const trimTitleEnabled = CONFIG?.visual?.["fullscreen-trim-title"] === true;
+
         // Auto-hide UI on mouse inactivity
         useEffect(() => {
             if (!isFullscreen || !autoHideUI) {
@@ -985,9 +1038,76 @@ const FullscreenOverlay = (() => {
         const showControlsInLeftPanel = controlsPosition === "left-panel" && showControls;
         const showControlsInBottom = controlsPosition === "bottom" && showControls;
 
+        // In TV mode, hide the left panel (album/info shown at bottom-left instead)
+        const hideLeftPanelForTvMode = tvModeEnabled;
+
         return react.createElement(react.Fragment, null,
-            // Bottom-left: Context info
-            react.createElement("div", {
+            // Bottom-left: TV Mode Song Info OR Context info
+            tvModeEnabled ? react.createElement("div", {
+                className: "fullscreen-tv-song-info"
+            },
+                // Album art
+                react.createElement("img", {
+                    src: coverUrl || Spicetify.Player.data?.item?.metadata?.image_url,
+                    className: "fullscreen-tv-album",
+                    style: {
+                        width: `${tvAlbumSize}px`,
+                        height: `${tvAlbumSize}px`,
+                        borderRadius: `${albumRadius}px`
+                    }
+                }),
+                // Track info
+                react.createElement("div", { className: "fullscreen-tv-track-info" },
+                    // Title
+                    react.createElement("div", {
+                        className: "fullscreen-tv-title",
+                        style: { fontSize: `${Math.round(tvAlbumSize * 0.26)}px` }
+                    },
+                        (() => {
+                            const mode = CONFIG?.visual?.["translate-metadata-mode"] || "translated";
+                            const originalTitle = title || Spicetify.Player.data?.item?.metadata?.title;
+                            const translatedTitle = translatedMetadata?.translated?.title;
+                            const romanizedTitle = translatedMetadata?.romanized?.title;
+
+                            let result;
+                            if (mode === "translated") result = translatedTitle || originalTitle;
+                            else if (mode === "romanized") result = romanizedTitle || originalTitle;
+                            else result = originalTitle;
+                            return trimTitleEnabled ? trimTitle(result) : result;
+                        })()
+                    ),
+                    // Artist
+                    react.createElement("div", {
+                        className: "fullscreen-tv-artist",
+                        style: { fontSize: `${Math.round(tvAlbumSize * 0.16)}px` }
+                    },
+                        (() => {
+                            const mode = CONFIG?.visual?.["translate-metadata-mode"] || "translated";
+                            const originalArtist = artist || Spicetify.Player.data?.item?.metadata?.artist_name;
+                            const translatedArtist = translatedMetadata?.translated?.artist;
+                            const romanizedArtist = translatedMetadata?.romanized?.artist;
+
+                            let result;
+                            if (mode === "translated") result = translatedArtist || originalArtist;
+                            else if (mode === "romanized") result = romanizedArtist || originalArtist;
+                            else result = originalArtist;
+                            return trimTitleEnabled ? trimTitle(result) : result;
+                        })()
+                    ),
+                    // Album name (from context)
+                    react.createElement("div", { className: "fullscreen-tv-album-name" },
+                        (() => {
+                            try {
+                                const albumName = Spicetify.Player.data?.item?.metadata?.album_title;
+                                const releaseYear = Spicetify.Player.data?.item?.metadata?.album_disc_number
+                                    ? ""
+                                    : (Spicetify.Player.data?.item?.metadata?.year || "");
+                                return albumName ? `${albumName}${releaseYear ? ` • ${releaseYear}` : ''}` : '';
+                            } catch (e) { return ''; }
+                        })()
+                    )
+                )
+            ) : react.createElement("div", {
                 className: `fullscreen-bottom-left ${!uiVisible ? 'hidden' : ''}`
             },
                 react.createElement(ContextInfo, { show: showContext, showImage: showContextImage })
@@ -1006,8 +1126,8 @@ const FullscreenOverlay = (() => {
                     secondsBeforeEnd: nextTrackSeconds
                 })
             ),
-            // Left panel (Album, Info & Controls) OR TMI View
-            isTwoColumn && !hideLeftPanel && react.createElement("div", {
+            // Left panel (Album, Info & Controls) OR TMI View - Hidden in TV Mode
+            isTwoColumn && !hideLeftPanel && !hideLeftPanelForTvMode && react.createElement("div", {
                 className: `lyrics-fullscreen-left-panel ${!uiVisible && showControlsInLeftPanel ? 'controls-hidden' : ''} ${tmiMode ? 'tmi-mode' : ''}`
             },
                 // TMI Mode View

@@ -375,7 +375,7 @@ class Translator {
     // 1. 로컬 캐시 먼저 확인 (ignoreCache가 아닌 경우)
     if (!ignoreCache) {
       try {
-        const localCached = await LyricsCache.getTranslation(finalTrackId, userLang, wantSmartPhonetic);
+        const localCached = await LyricsCache.getTranslation(finalTrackId, userLang, wantSmartPhonetic, provider);
         if (localCached) {
           console.log(`[Translator] Using local cache for ${finalTrackId}:${userLang}:${wantSmartPhonetic ? 'phonetic' : 'translation'}`);
           // 캐시 히트 로깅
@@ -574,6 +574,24 @@ class Translator {
         const data = await res.json();
 
         if (data.error) {
+          // 응답 본문에서 429/403/RESOURCE_EXHAUSTED 감지 (서버가 200으로 응답하지만 에러를 포함하는 경우)
+          const errorStr = typeof data.error === 'string' ? data.error :
+            (data.message || JSON.stringify(data.error));
+          const isRateLimitError = errorStr.includes('429') ||
+            errorStr.includes('RESOURCE_EXHAUSTED') ||
+            errorStr.includes('quota') ||
+            errorStr.toLowerCase().includes('rate limit');
+          const isForbiddenError = errorStr.includes('403') ||
+            errorStr.includes('Forbidden') ||
+            errorStr.includes('API key not valid');
+
+          if (isRateLimitError) {
+            throw new Error(`429 Rate Limit: ${errorStr}`);
+          }
+          if (isForbiddenError) {
+            throw new Error(`403 Forbidden: ${errorStr}`);
+          }
+
           // 최적화 #7 - 표준화된 에러 처리 사용
           const errorCode = data.code;
           const errorConfig = API_ERROR_MESSAGES[400];
@@ -607,7 +625,7 @@ class Translator {
         }
 
         // 성공 시 로컬 캐시에 저장 (백그라운드)
-        LyricsCache.setTranslation(finalTrackId, userLang, wantSmartPhonetic, data).catch(() => { });
+        LyricsCache.setTranslation(finalTrackId, userLang, wantSmartPhonetic, data, provider).catch(() => { });
 
         return data;
       } catch (error) {

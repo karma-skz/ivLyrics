@@ -683,6 +683,10 @@ window.LANG_DE = {
         "label": "Songtext-Button ersetzen",
         "info": "Ersetzt den Standard-Spotify-Songtext-Button durch ivLyrics"
       },
+      "replaceFullscreenButton": {
+        "label": "Vollbild-Button ersetzen",
+        "info": "Ersetzt den Standard-Spotify-Vollbild-Button durch ivLyrics-Vollbild"
+      },
       "fullscreenShortcut": {
         "label": "Vollbild-Tastenkürzel",
         "desc": "Tastenkürzel für den Songtext-Vollbildmodus"
@@ -803,6 +807,14 @@ window.LANG_DE = {
         "desc": "Vollbild-Tastenkürzel",
         "info": "Legt das Tastenkürzel zum Umschalten des Vollbildmodus fest"
       },
+      "tvMode": {
+        "desc": "TV-Modus",
+        "info": "Zeigt Albumcover und Titelinformationen unten links an, Liedtexte nutzen den gesamten Bildschirm"
+      },
+      "tvModeAlbumSize": {
+        "desc": "TV-Modus Albumgröße",
+        "info": "Legt die Größe des Albumcovers im TV-Modus fest (Pixel)"
+      },
       "splitView": {
         "desc": "Geteilte Ansicht",
         "info": "Zeigt das Albumcover links und den Songtext rechts im Vollbildmodus an"
@@ -818,6 +830,10 @@ window.LANG_DE = {
       "showTrackInfo": {
         "desc": "Track-Info anzeigen",
         "info": "Zeigt Songtitel und Künstler im Vollbildmodus an"
+      },
+      "trimTitle": {
+        "desc": "Titel kürzen",
+        "info": "Entfernt Zusatzinfos wie (Remaster), [feat. xxx] aus Songtiteln für eine übersichtlichere Anzeige"
       },
       "translateMetadata": {
         "desc": "Titel/Künstler übersetzen",

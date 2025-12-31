@@ -683,6 +683,10 @@ window.LANG_FR = {
         "label": "Remplacer le bouton des paroles",
         "info": "Remplace le bouton des paroles par défaut de Spotify par ivLyrics"
       },
+      "replaceFullscreenButton": {
+        "label": "Remplacer le bouton plein écran",
+        "info": "Remplace le bouton plein écran par défaut de Spotify par ivLyrics"
+      },
       "fullscreenShortcut": {
         "label": "Raccourci plein écran",
         "desc": "Raccourci clavier pour le mode plein écran des paroles"
@@ -803,6 +807,14 @@ window.LANG_FR = {
         "desc": "Raccourci plein écran",
         "info": "Définit le raccourci clavier pour basculer en mode plein écran"
       },
+      "tvMode": {
+        "desc": "Mode TV",
+        "info": "Affiche la pochette et les informations de la piste en bas à gauche, les paroles utilisent tout l'écran"
+      },
+      "tvModeAlbumSize": {
+        "desc": "Taille de l'album en mode TV",
+        "info": "Définit la taille de la pochette de l'album en mode TV (pixels)"
+      },
       "splitView": {
         "desc": "Vue scindée",
         "info": "Affiche la pochette de l'album à gauche et les paroles à droite en plein écran"
@@ -818,6 +830,10 @@ window.LANG_FR = {
       "showTrackInfo": {
         "desc": "Afficher les infos de piste",
         "info": "Affiche le titre de la chanson et l'artiste en plein écran"
+      },
+      "trimTitle": {
+        "desc": "Raccourcir le titre",
+        "info": "Supprime les infos supplémentaires comme (Remaster), [feat. xxx] des titres pour un affichage plus épuré"
       },
       "translateMetadata": {
         "desc": "Traduire titre/artiste",

@@ -683,6 +683,10 @@ window.LANG_ZH_CN = {
         "label": "替换默认歌词按钮",
         "info": "用ivLyrics替换Spotify的默认歌词按钮"
       },
+      "replaceFullscreenButton": {
+        "label": "替换全屏按钮",
+        "info": "用ivLyrics全屏替换Spotify的默认全屏按钮"
+      },
       "fullscreenShortcut": {
         "label": "全屏快捷键",
         "desc": "歌词全屏模式的键盘快捷键"
@@ -803,6 +807,14 @@ window.LANG_ZH_CN = {
         "desc": "全屏快捷键",
         "info": "设置切换全屏模式的键盘快捷键"
       },
+      "tvMode": {
+        "desc": "TV模式",
+        "info": "在左下角显示专辑封面和曲目信息，歌词使用全屏"
+      },
+      "tvModeAlbumSize": {
+        "desc": "TV模式专辑大小",
+        "info": "设置TV模式下专辑封面的大小（像素）"
+      },
       "splitView": {
         "desc": "分割布局",
         "info": "在全屏中左侧显示专辑封面，右侧显示歌词"
@@ -818,6 +830,10 @@ window.LANG_ZH_CN = {
       "showTrackInfo": {
         "desc": "显示曲目信息",
         "info": "在全屏中显示歌曲标题和艺术家"
+      },
+      "trimTitle": {
+        "desc": "精简标题",
+        "info": "从歌曲标题中移除(Remaster)、[feat. xxx]等附加信息，使显示更简洁"
       },
       "translateMetadata": {
         "desc": "翻译标题/艺术家",
