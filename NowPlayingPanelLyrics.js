@@ -879,7 +879,7 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
                 style: containerStyle
             },
                 react.createElement("div", { className: "ivlyrics-panel-header" },
-                    react.createElement("h2", null, "Lyrics")
+                    react.createElement("h2", null, "ivLyrics")
                 ),
                 react.createElement("div", { className: "ivlyrics-panel-empty" },
                     "가사를 불러오는 중..."
@@ -895,7 +895,7 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
         },
             // 헤더
             react.createElement("div", { className: "ivlyrics-panel-header" },
-                react.createElement("h2", null, "Lyrics")
+                react.createElement("h2", null, "ivLyrics")
             ),
             // 가사 컨테이너
             react.createElement("div", {
