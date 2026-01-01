@@ -13,7 +13,12 @@
     // 전체화면 단축키 가져오기
     const getFullscreenKey = () => {
         try {
-            const stored = Spicetify.LocalStorage.get(FULLSCREEN_KEY_SETTING);
+            // StorageManager.saveConfig와 일치하도록 localStorage에서 먼저 읽고, 
+            // 없으면 Spicetify.LocalStorage에서 읽음 (Mac 호환성)
+            let stored = localStorage.getItem(FULLSCREEN_KEY_SETTING);
+            if (!stored) {
+                stored = Spicetify.LocalStorage.get(FULLSCREEN_KEY_SETTING);
+            }
             return stored || DEFAULT_KEY;
         } catch (e) {
             return DEFAULT_KEY;
@@ -23,7 +28,12 @@
     // TV 모드 전환 단축키 가져오기
     const getToggleTvKey = () => {
         try {
-            const stored = Spicetify.LocalStorage.get(TOGGLE_TV_MODE_KEY);
+            // StorageManager.saveConfig와 일치하도록 localStorage에서 먼저 읽고,
+            // 없으면 Spicetify.LocalStorage에서 읽음 (Mac 호환성)
+            let stored = localStorage.getItem(TOGGLE_TV_MODE_KEY);
+            if (!stored) {
+                stored = Spicetify.LocalStorage.get(TOGGLE_TV_MODE_KEY);
+            }
             return stored || DEFAULT_TOGGLE_TV_KEY;
         } catch (e) {
             return DEFAULT_TOGGLE_TV_KEY;

@@ -1091,7 +1091,7 @@ const FullscreenOverlay = (() => {
                 }),
                 // Track info (Title, Artist, Album)
                 react.createElement("div", { className: "fullscreen-tv-track-info" },
-                    // Title
+                    // Title (based on display mode - TV mode shows single line with best available)
                     react.createElement("div", {
                         className: "fullscreen-tv-title",
                         style: { fontSize: `${Math.round(tvAlbumSize * 0.26)}px` }
@@ -1101,15 +1101,28 @@ const FullscreenOverlay = (() => {
                             const originalTitle = title || Spicetify.Player.data?.item?.metadata?.title;
                             const translatedTitle = translatedMetadata?.translated?.title;
                             const romanizedTitle = translatedMetadata?.romanized?.title;
+                            const applyTrim = (text) => trimTitleEnabled ? trimTitle(text) : text;
 
                             let result;
-                            if (mode === "translated") result = translatedTitle || originalTitle;
-                            else if (mode === "romanized") result = romanizedTitle || originalTitle;
-                            else result = originalTitle;
-                            return trimTitleEnabled ? trimTitle(result) : result;
+                            switch (mode) {
+                                case "translated":
+                                case "original-translated":
+                                case "all":
+                                    // 번역이 있으면 번역, 없으면 원어
+                                    result = translatedTitle || originalTitle;
+                                    break;
+                                case "romanized":
+                                case "original-romanized":
+                                    // 발음이 있으면 발음, 없으면 원어
+                                    result = romanizedTitle || originalTitle;
+                                    break;
+                                default:
+                                    result = originalTitle;
+                            }
+                            return applyTrim(result);
                         })()
                     ),
-                    // Artist
+                    // Artist (based on display mode - TV mode shows single line with best available)
                     react.createElement("div", {
                         className: "fullscreen-tv-artist",
                         style: { fontSize: `${Math.round(tvAlbumSize * 0.16)}px` }
@@ -1119,12 +1132,25 @@ const FullscreenOverlay = (() => {
                             const originalArtist = artist || Spicetify.Player.data?.item?.metadata?.artist_name;
                             const translatedArtist = translatedMetadata?.translated?.artist;
                             const romanizedArtist = translatedMetadata?.romanized?.artist;
+                            const applyTrim = (text) => trimTitleEnabled ? trimTitle(text) : text;
 
                             let result;
-                            if (mode === "translated") result = translatedArtist || originalArtist;
-                            else if (mode === "romanized") result = romanizedArtist || originalArtist;
-                            else result = originalArtist;
-                            return trimTitleEnabled ? trimTitle(result) : result;
+                            switch (mode) {
+                                case "translated":
+                                case "original-translated":
+                                case "all":
+                                    // 번역이 있으면 번역, 없으면 원어
+                                    result = translatedArtist || originalArtist;
+                                    break;
+                                case "romanized":
+                                case "original-romanized":
+                                    // 발음이 있으면 발음, 없으면 원어
+                                    result = romanizedArtist || originalArtist;
+                                    break;
+                                default:
+                                    result = originalArtist;
+                            }
+                            return applyTrim(result);
                         })()
                     ),
                     // Album name (from context)
