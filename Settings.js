@@ -4543,12 +4543,12 @@ const ConfigModal = () => {
               key: "panel-lyrics-lines",
               info: I18n.t("settingsAdvanced.playback.panelLyricsLines.desc") || "Number of lyrics lines to show in the panel",
               type: ConfigSelection,
-              options: [
-                { key: "3", value: "3" },
-                { key: "5", value: "5" },
-                { key: "7", value: "7" },
-                { key: "9", value: "9" },
-              ],
+              options: {
+                "3": "3",
+                "5": "5",
+                "7": "7",
+                "9": "9",
+              },
             },
           ],
           onChange: (name, value) => {

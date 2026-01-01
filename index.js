@@ -1376,9 +1376,7 @@ const CONFIG = {
     ),
     // Info gap setting
     "fullscreen-info-gap":
-      Number(StorageManager.getItem("ivLyrics:visual:fullscreen-info-gap")) !== 0
-        ? Number(StorageManager.getItem("ivLyrics:visual:fullscreen-info-gap")) || 24
-        : 0,
+      Number(StorageManager.getItem("ivLyrics:visual:fullscreen-info-gap")) || 24,
     // Queue panel setting
     "fullscreen-show-queue": StorageManager.get(
       "ivLyrics:visual:fullscreen-show-queue",
