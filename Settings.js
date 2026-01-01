@@ -4532,6 +4532,24 @@ const ConfigModal = () => {
               info: I18n.t("settingsAdvanced.playback.fullscreenShortcut.desc"),
               type: ConfigHotkey,
             },
+            {
+              desc: I18n.t("settingsAdvanced.playback.panelLyrics.label") || "Show Lyrics in Right Panel",
+              key: "panel-lyrics-enabled",
+              info: I18n.t("settingsAdvanced.playback.panelLyrics.desc") || "Display current lyrics in the Now Playing panel",
+              type: ConfigSlider,
+            },
+            {
+              desc: I18n.t("settingsAdvanced.playback.panelLyricsLines.label") || "Panel Lyrics Lines",
+              key: "panel-lyrics-lines",
+              info: I18n.t("settingsAdvanced.playback.panelLyricsLines.desc") || "Number of lyrics lines to show in the panel",
+              type: ConfigSelection,
+              options: [
+                { key: "3", value: "3" },
+                { key: "5", value: "5" },
+                { key: "7", value: "7" },
+                { key: "9", value: "9" },
+              ],
+            },
           ],
           onChange: (name, value) => {
             CONFIG.visual[name] = value;

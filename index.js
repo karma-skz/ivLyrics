@@ -934,6 +934,12 @@ const CONFIG = {
       "ivLyrics:visual:fullscreen-button",
       false
     ),
+    "panel-lyrics-enabled": StorageManager.get(
+      "ivLyrics:visual:panel-lyrics-enabled",
+      true
+    ),
+    "panel-lyrics-lines":
+      StorageManager.getItem("ivLyrics:visual:panel-lyrics-lines") || "5",
     colorful: StorageManager.get("ivLyrics:visual:colorful", false),
     "gradient-background": StorageManager.get(
       "ivLyrics:visual:gradient-background"
@@ -1333,6 +1339,51 @@ const CONFIG = {
     "fullscreen-tmi-font-size":
       Number(StorageManager.getItem("ivLyrics:visual:fullscreen-tmi-font-size")) ||
       100,
+    // TV Mode settings
+    "fullscreen-tv-mode": StorageManager.get(
+      "ivLyrics:visual:fullscreen-tv-mode",
+      false
+    ),
+    "fullscreen-tv-album-size":
+      Number(StorageManager.getItem("ivLyrics:visual:fullscreen-tv-album-size")) ||
+      140,
+    "fullscreen-tv-show-album-name": StorageManager.get(
+      "ivLyrics:visual:fullscreen-tv-show-album-name",
+      true
+    ),
+    "fullscreen-tv-show-controls": StorageManager.get(
+      "ivLyrics:visual:fullscreen-tv-show-controls",
+      false
+    ),
+    "fullscreen-tv-show-progress": StorageManager.get(
+      "ivLyrics:visual:fullscreen-tv-show-progress",
+      false
+    ),
+    // Normal mode album name display
+    "fullscreen-show-album-name": StorageManager.get(
+      "ivLyrics:visual:fullscreen-show-album-name",
+      false
+    ),
+    // Title trim setting
+    "fullscreen-trim-title": StorageManager.get(
+      "ivLyrics:visual:fullscreen-trim-title",
+      false
+    ),
+    // Context image setting
+    "fullscreen-show-context-image": StorageManager.get(
+      "ivLyrics:visual:fullscreen-show-context-image",
+      true
+    ),
+    // Info gap setting
+    "fullscreen-info-gap":
+      Number(StorageManager.getItem("ivLyrics:visual:fullscreen-info-gap")) !== 0
+        ? Number(StorageManager.getItem("ivLyrics:visual:fullscreen-info-gap")) || 24
+        : 0,
+    // Queue panel setting
+    "fullscreen-show-queue": StorageManager.get(
+      "ivLyrics:visual:fullscreen-show-queue",
+      true
+    ),
 
     delay: 0,
   },

@@ -718,6 +718,14 @@ window.LANG_EN = {
       "fullscreenShortcut": {
         "label": "Fullscreen Shortcut",
         "desc": "Keyboard shortcut for lyrics fullscreen mode"
+      },
+      "panelLyrics": {
+        "label": "Show Lyrics in Right Panel",
+        "desc": "Display current lyrics in the Now Playing panel"
+      },
+      "panelLyricsLines": {
+        "label": "Panel Lyrics Lines",
+        "desc": "Number of lyrics lines to show in the panel (default: 5)"
       }
     },
     "karaokeMode": {

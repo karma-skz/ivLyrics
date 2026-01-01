@@ -52,6 +52,7 @@
 		"LyricsService.js",
 		"PlaybarButton.js",
 		"VideoBackgroundDepend.js",
-		"GlobalShortcuts.js"
+		"GlobalShortcuts.js",
+		"NowPlayingPanelLyrics.js"
 	]
 }

@@ -718,6 +718,14 @@ window.LANG_KO = {
       "fullscreenShortcut": {
         "label": "전체화면 단축키",
         "desc": "가사 전체화면 모드를 위한 키보드 단축키"
+      },
+      "panelLyrics": {
+        "label": "우측 패널에 가사 표시",
+        "desc": "지금 재생 중 패널에 현재 가사를 표시합니다"
+      },
+      "panelLyricsLines": {
+        "label": "패널 가사 줄 수",
+        "desc": "패널에 표시할 가사 줄 수 (기본: 5)"
       }
     },
     "karaokeMode": {
