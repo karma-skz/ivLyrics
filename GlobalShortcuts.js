@@ -223,6 +223,34 @@
         }
     };
 
+    // fullscreen container 정리 함수 (ivLyrics 페이지 아닐 때 container가 남아있으면 삭제)
+    const cleanupOrphanedFullscreenContainer = () => {
+        // ivLyrics 페이지가 아닌데 fullscreen container가 남아있으면 삭제
+        if (!isOnLyricsPage()) {
+            const fullscreenContainer = document.getElementById('lyrics-fullscreen-container');
+            if (fullscreenContainer) {
+                console.debug("[ivLyrics] Cleaning up orphaned fullscreen container (not on ivLyrics page)");
+
+                // body에서 fullscreen 관련 클래스 제거
+                document.body.classList.remove('ivlyrics-fullscreen-active');
+
+                // container 삭제
+                fullscreenContainer.remove();
+
+                // 상태 초기화
+                if (window.lyricContainer?.state) {
+                    window.lyricContainer.state.isFullscreen = false;
+                }
+
+                // 전체화면 종료 이벤트 발생 (이전 페이지로 돌아가기 위해)
+                window.dispatchEvent(new CustomEvent("ivLyrics:fullscreen-closed"));
+
+                return true; // 정리됨
+            }
+        }
+        return false; // 정리할 것 없음
+    };
+
     // 초기화
     const init = () => {
         // Mousetrap이 준비될 때까지 대기
@@ -237,6 +265,22 @@
         // 초기 바인딩
         updateKeyBinding();
         updateTvModeKey();
+
+        // 페이지 이동 감지하여 orphaned fullscreen container 정리
+        // Spicetify History 이벤트 리스너 등록
+        if (Spicetify.Platform?.History) {
+            Spicetify.Platform.History.listen((location) => {
+                // 페이지 이동 시 약간의 딜레이 후 체크 (DOM 업데이트 대기)
+                setTimeout(() => {
+                    cleanupOrphanedFullscreenContainer();
+                }, 100);
+            });
+        }
+
+        // 초기 로드 시에도 체크 (이전에 fullscreen이 남아있는 경우를 위해)
+        setTimeout(() => {
+            cleanupOrphanedFullscreenContainer();
+        }, 500);
 
         // 설정 변경 감지
         window.addEventListener("ivLyrics", (event) => {
@@ -266,8 +310,11 @@
             }
         };
 
-        // 5초마다 설정 변경 확인 (Storage 이벤트가 작동하지 않을 경우 대비)
-        setInterval(checkKeyChange, 5000);
+        // 주기적 체크: 설정 변경 확인 + orphaned container 정리
+        setInterval(() => {
+            checkKeyChange();
+            cleanupOrphanedFullscreenContainer(); // 추가: orphaned container 정기적 정리
+        }, 2000); // 2초마다 체크 (더 빠른 반응을 위해 5초에서 2초로 변경)
 
         console.debug("[ivLyrics] Global shortcuts initialized");
     };
