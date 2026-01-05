@@ -2914,7 +2914,7 @@
         },
 
         getDownloadUrl() {
-            return 'https://github.com/ivLis-Studio/ivLyrics-overlay/releases/latest';
+            return 'https://ivlis.kr/ivLyrics/extensions/#overlay';
         },
 
         async sendToEndpoint(endpoint, data) {

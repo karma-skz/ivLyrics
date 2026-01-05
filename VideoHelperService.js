@@ -7,7 +7,7 @@
 
 const VideoHelperService = (() => {
   const BASE_URL = "http://localhost:15123";
-  const DOWNLOAD_URL = "https://github.com/ivLis-Studio/ivLyrics-helper/releases/latest";
+  const DOWNLOAD_URL = "https://ivlis.kr/ivLyrics/extensions/#helper";
 
   // 연결 상태
   let isConnected = false;
@@ -126,20 +126,20 @@ const VideoHelperService = (() => {
             if (done || aborted) break;
 
             buffer += decoder.decode(value, { stream: true });
-            
+
             // 줄 단위로 처리
             const lines = buffer.split("\n");
             buffer = lines.pop() || ""; // 마지막 불완전한 줄은 버퍼에 유지
 
             for (const line of lines) {
               const trimmedLine = line.trim();
-              
+
               // 빈 줄이면 이벤트 끝
               if (!trimmedLine) {
                 pendingData = null;
                 continue;
               }
-              
+
               // data: 줄 처리 (먼저 옴)
               if (trimmedLine.startsWith("data:")) {
                 const dataStr = trimmedLine.slice(5).trim();
@@ -152,11 +152,11 @@ const VideoHelperService = (() => {
                 }
                 continue;
               }
-              
+
               // event: 줄 처리 (나중에 옴)
               if (trimmedLine.startsWith("event:")) {
                 const eventType = trimmedLine.slice(6).trim();
-                
+
                 if (!pendingData) continue;
                 const data = pendingData;
                 pendingData = null;
@@ -205,7 +205,7 @@ const VideoHelperService = (() => {
               }
             }
           }
-          
+
           // 스트림이 끝났는데 완료 콜백이 호출되지 않은 경우
           // 버퍼에 남은 데이터 처리
           if (buffer.trim()) {

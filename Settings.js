@@ -123,7 +123,7 @@ const OverlaySettings = () => {
 
   // 다운로드 URL
   const handleDownload = () => {
-    const url = window.OverlaySender?.getDownloadUrl?.() || 'https://github.com/ivLis-Studio/ivLyrics-overlay/releases/latest';
+    const url = window.OverlaySender?.getDownloadUrl?.() || 'https://ivlis.kr/ivLyrics/extensions/#overlay';
     window.open(url, '_blank');
   };
 
@@ -1406,8 +1406,8 @@ const ConfigInfo = ({ message, buttonText, onButtonClick }) => {
           "div",
           {
             className: "setting-description",
-            style: { 
-              color: "var(--spice-text)", 
+            style: {
+              color: "var(--spice-text)",
               whiteSpace: "pre-line",
               lineHeight: "1.5",
             },
@@ -1442,15 +1442,15 @@ const VideoHelperToggle = ({ name, defaultValue, disabled, onChange = () => { } 
   // 초기 연결 상태 확인 및 설정창 열려있는 동안 주기적 체크
   useEffect(() => {
     let isMounted = true;
-    
+
     const checkConnection = async () => {
       if (!isMounted) return;
       if (typeof VideoHelperService === "undefined") return;
-      
+
       // 설정 탭이 보이는지 확인 (visibility check)
       const settingsTab = document.querySelector('.ivlyrics-settings');
       if (!settingsTab || settingsTab.offsetParent === null) return;
-      
+
       setChecking(true);
       const connected = await VideoHelperService.checkHealth();
       if (isMounted) {
@@ -1458,7 +1458,7 @@ const VideoHelperToggle = ({ name, defaultValue, disabled, onChange = () => { } 
         setChecking(false);
       }
     };
-    
+
     // 활성화 시 즉시 체크
     if (enabled) {
       checkConnection();
@@ -1468,7 +1468,7 @@ const VideoHelperToggle = ({ name, defaultValue, disabled, onChange = () => { } 
     const interval = setInterval(() => {
       if (enabled) checkConnection();
     }, 5000);
-    
+
     return () => {
       isMounted = false;
       clearInterval(interval);
@@ -1482,7 +1482,7 @@ const VideoHelperToggle = ({ name, defaultValue, disabled, onChange = () => { } 
     onChange(name, newValue);
     CONFIG.visual[name] = newValue;
     StorageManager.saveConfig(name, newValue);
-    
+
     // 즉시 적용을 위해 이벤트 발생
     window.dispatchEvent(new CustomEvent("ivLyrics:videoHelperChanged", { detail: { enabled: newValue } }));
   };

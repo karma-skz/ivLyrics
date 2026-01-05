@@ -1510,7 +1510,7 @@ const OverlayTipStep = ({ overlayEnabled, onOverlayChange, onNext, onBack }) => 
           {
             onClick: () => {
               const url = (typeof window !== "undefined" && window.OverlaySender?.getDownloadUrl?.()) ||
-                "https://github.com/ivLis-Studio/ivLyrics-overlay/releases/latest";
+                "https://ivlis.kr/ivLyrics/extensions/#overlay";
               window.open(url, "_blank");
             },
             style: {
