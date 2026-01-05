@@ -120,6 +120,20 @@ window.LANG_KO = {
       "label": "동영상 배경",
       "desc": "YouTube 동영상을 배경으로 사용합니다 (베타)"
     },
+    "videoHelper": {
+      "label": "헬퍼 프로그램 사용",
+      "desc": "YouTube 영상을 로컬에서 다운로드하여 재생합니다. 로그인 없이 영상을 볼 수 있습니다.",
+      "info": "💡 YouTube 영상이 로드되지 않나요?\n\n구글은 일부 유저가 로그인 없이 유튜브 영상을 재생하는 것을 제한하고 있습니다. \n헬퍼 프로그램을 사용하면, 정상적으로 로드할 수 있습니다.",
+      "download": "헬퍼 다운로드",
+      "checkConnection": "연결 확인",
+      "connected": "헬퍼 프로그램에 연결되었습니다",
+      "disconnected": "헬퍼 프로그램에 연결할 수 없습니다",
+      "status": {
+        "connected": "연결됨",
+        "disconnected": "연결 안됨",
+        "checking": "확인 중..."
+      }
+    },
     "videoBlur": {
       "label": "동영상 블러",
       "desc": "영상 배경에 적용할 흐림 강도를 조절합니다 (0-40px)"
@@ -1167,7 +1181,15 @@ window.LANG_KO = {
     "loading": "동영상 정보를 불러오는 중...",
     "notFound": "동영상을 찾을 수 없습니다.",
     "error": "오류가 발생했습니다.",
-    "loadingMessage": "영상 배경 로딩 중... 30초 정도 소요됩니다."
+    "loadingMessage": "영상 배경 로딩 중... 30초 정도 소요됩니다.",
+    "downloadingVideo": "영상 다운로드 중...",
+    "downloading": "다운로드 중: {percent}%",
+    "processing": "영상 처리 중...",
+    "checking": "영상 확인 중...",
+    "preparing": "영상 다운로드를 준비하고 있습니다...",
+    "downloadComplete": "영상 다운로드 완료!",
+    "helperNotConnected": "헬퍼 프로그램에 연결할 수 없습니다. 프로그램이 실행 중인지 확인하세요.",
+    "helperError": "헬퍼 프로그램에서 오류가 발생했습니다."
   },
   "translator": {
     "missingApiKey": "Gemini API 키가 설정되지 않았습니다. 설정에서 API 키를 입력해주세요.",
@@ -1237,7 +1259,8 @@ window.LANG_KO = {
     "delete": "삭제",
     "deleteConfirm": "이 영상을 삭제하시겠습니까?",
     "deleted": "영상이 삭제되었습니다",
-    "deleteError": "영상 삭제에 실패했습니다"
+    "deleteError": "영상 삭제에 실패했습니다",
+    "downloading": "영상 다운로드 중..."
   },
   "close": "닫기",
   "cancel": "취소",

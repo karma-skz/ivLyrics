@@ -45,6 +45,7 @@
 		"LyricsShareImage.js",
 		"CommunityVideoSelector.js",
 		"VideoBackground.js",
+		"VideoHelperService.js",
 		"FullscreenOverlay.js",
 		"SetupWizard.js",
 		"SongInfoTicker.js",

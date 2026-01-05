@@ -120,6 +120,20 @@ window.LANG_EN = {
       "label": "Video Background",
       "desc": "Use YouTube video as background (Beta)"
     },
+    "videoHelper": {
+      "label": "Use Helper Program",
+      "desc": "Download and play YouTube videos locally. Watch videos without login.",
+      "info": "💡 YouTube videos not loading?\n\nGoogle restricts some users from playing YouTube videos without logging in. \nUsing the helper program allows videos to load properly.",
+      "download": "Download Helper",
+      "checkConnection": "Check Connection",
+      "connected": "Connected to helper program",
+      "disconnected": "Cannot connect to helper program",
+      "status": {
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "checking": "Checking..."
+      }
+    },
     "videoBlur": {
       "label": "Video Blur",
       "desc": "Adjust blur intensity for video background (0-40px)"
@@ -1167,7 +1181,15 @@ window.LANG_EN = {
     "loading": "Loading video info...",
     "notFound": "Video not found.",
     "error": "An error occurred.",
-    "loadingMessage": "Loading video background... This may take about 30 seconds."
+    "loadingMessage": "Loading video background... This may take about 30 seconds.",
+    "downloadingVideo": "Downloading video...",
+    "downloading": "Downloading: {percent}%",
+    "processing": "Processing video...",
+    "checking": "Checking video...",
+    "preparing": "Preparing video download...",
+    "downloadComplete": "Video download complete!",
+    "helperNotConnected": "Cannot connect to helper program. Make sure it's running.",
+    "helperError": "An error occurred with the helper program."
   },
   "translator": {
     "missingApiKey": "Gemini API key is not set. Please enter an API key in settings.",
@@ -1237,7 +1259,8 @@ window.LANG_EN = {
     "delete": "Delete",
     "deleteConfirm": "Are you sure you want to delete this video?",
     "deleted": "Video deleted successfully",
-    "deleteError": "Failed to delete video"
+    "deleteError": "Failed to delete video",
+    "downloading": "Downloading video..."
   },
   "close": "Close",
   "cancel": "Cancel",

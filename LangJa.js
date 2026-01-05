@@ -120,6 +120,20 @@ window.LANG_JA = {
       "label": "動画背景",
       "desc": "YouTube動画を背景として使用（ベータ版）"
     },
+    "videoHelper": {
+      "label": "ヘルパープログラムを使用",
+      "desc": "YouTube動画をローカルでダウンロードして再生します。ログインなしで動画を視聴できます。",
+      "info": "💡 YouTube動画が読み込まれませんか？\n\nGoogleは一部のユーザーがログインせずにYouTube動画を再生することを制限しています。\nヘルパープログラムを使用すると、正常に読み込むことができます。",
+      "download": "ヘルパーをダウンロード",
+      "checkConnection": "接続確認",
+      "connected": "ヘルパープログラムに接続されました",
+      "disconnected": "ヘルパープログラムに接続できません",
+      "status": {
+        "connected": "接続済み",
+        "disconnected": "未接続",
+        "checking": "確認中..."
+      }
+    },
     "videoBlur": {
       "label": "動画ブラー",
       "desc": "動画背景のブラー強度を調整 (0-40px)"

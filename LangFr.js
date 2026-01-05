@@ -120,6 +120,20 @@ window.LANG_FR = {
       "label": "Arrière-plan vidéo",
       "desc": "Utilise une vidéo YouTube comme arrière-plan (Bêta)"
     },
+    "videoHelper": {
+      "label": "Utiliser le programme auxiliaire",
+      "desc": "Télécharge et lit les vidéos YouTube localement. Regardez des vidéos sans vous connecter.",
+      "info": "💡 Les vidéos YouTube ne se chargent pas ?\n\nGoogle restreint certains utilisateurs de lire des vidéos YouTube sans se connecter.\nL'utilisation du programme auxiliaire permet de charger les vidéos correctement.",
+      "download": "Télécharger l'auxiliaire",
+      "checkConnection": "Vérifier la connexion",
+      "connected": "Connecté au programme auxiliaire",
+      "disconnected": "Impossible de se connecter au programme auxiliaire",
+      "status": {
+        "connected": "Connecté",
+        "disconnected": "Déconnecté",
+        "checking": "Vérification..."
+      }
+    },
     "videoBlur": {
       "label": "Flou vidéo",
       "desc": "Ajuste l'intensité du flou appliqué à l'arrière-plan vidéo (0-40px)"

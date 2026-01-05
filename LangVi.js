@@ -120,6 +120,20 @@ window.LANG_VI = {
       "label": "Nền video",
       "desc": "Sử dụng video YouTube làm nền (Beta)"
     },
+    "videoHelper": {
+      "label": "Sử dụng chương trình hỗ trợ",
+      "desc": "Tải và phát video YouTube cục bộ. Xem video mà không cần đăng nhập.",
+      "info": "💡 Video YouTube không tải được?\n\nGoogle hạn chế một số người dùng phát video YouTube mà không cần đăng nhập.\nSử dụng chương trình hỗ trợ cho phép tải video đúng cách.",
+      "download": "Tải chương trình hỗ trợ",
+      "checkConnection": "Kiểm tra kết nối",
+      "connected": "Đã kết nối với chương trình hỗ trợ",
+      "disconnected": "Không thể kết nối với chương trình hỗ trợ",
+      "status": {
+        "connected": "Đã kết nối",
+        "disconnected": "Ngắt kết nối",
+        "checking": "Đang kiểm tra..."
+      }
+    },
     "videoBlur": {
       "label": "Làm mờ video",
       "desc": "Điều chỉnh độ mờ áp dụng cho nền video (0-40px)"

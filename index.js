@@ -959,6 +959,10 @@ const CONFIG = {
       "ivLyrics:visual:video-background",
       false
     ),
+    "video-helper-enabled": StorageManager.get(
+      "ivLyrics:visual:video-helper-enabled",
+      false
+    ),
     "video-blur":
       StorageManager.getItem("ivLyrics:visual:video-blur") || "5",
     "video-cover": StorageManager.get(

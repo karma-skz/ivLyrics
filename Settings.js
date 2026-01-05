@@ -1385,6 +1385,208 @@ const ConfigWarning = ({ message }) => {
   );
 };
 
+// 정보 표시용 컴포넌트 (헬퍼 프로그램 안내 등)
+const ConfigInfo = ({ message, buttonText, onButtonClick }) => {
+  return react.createElement(
+    "div",
+    {
+      className: "setting-row",
+      style: {
+        backgroundColor: "rgba(var(--spice-rgb-accent), 0.1)",
+        borderLeft: "3px solid var(--spice-accent)",
+      },
+    },
+    react.createElement(
+      "div",
+      { className: "setting-row-content" },
+      react.createElement(
+        "div",
+        { className: "setting-row-left" },
+        react.createElement(
+          "div",
+          {
+            className: "setting-description",
+            style: { 
+              color: "var(--spice-text)", 
+              whiteSpace: "pre-line",
+              lineHeight: "1.5",
+            },
+          },
+          message
+        )
+      ),
+      // 버튼이 있으면 표시
+      buttonText && onButtonClick && react.createElement(
+        "div",
+        { className: "setting-row-right" },
+        react.createElement(
+          "button",
+          {
+            className: "btn",
+            onClick: onButtonClick,
+            style: { fontSize: "12px" }
+          },
+          buttonText
+        )
+      )
+    )
+  );
+};
+
+// 비디오 헬퍼 토글 컴포넌트 (연결 상태 표시 포함)
+const VideoHelperToggle = ({ name, defaultValue, disabled, onChange = () => { } }) => {
+  const [enabled, setEnabled] = useState(defaultValue === "true" || defaultValue === true);
+  const [isConnected, setIsConnected] = useState(false);
+  const [checking, setChecking] = useState(false);
+
+  // 초기 연결 상태 확인 및 설정창 열려있는 동안 주기적 체크
+  useEffect(() => {
+    let isMounted = true;
+    
+    const checkConnection = async () => {
+      if (!isMounted) return;
+      if (typeof VideoHelperService === "undefined") return;
+      
+      // 설정 탭이 보이는지 확인 (visibility check)
+      const settingsTab = document.querySelector('.ivlyrics-settings');
+      if (!settingsTab || settingsTab.offsetParent === null) return;
+      
+      setChecking(true);
+      const connected = await VideoHelperService.checkHealth();
+      if (isMounted) {
+        setIsConnected(connected);
+        setChecking(false);
+      }
+    };
+    
+    // 활성화 시 즉시 체크
+    if (enabled) {
+      checkConnection();
+    }
+
+    // 설정창 열려있는 동안 주기적 연결 확인 (5초마다, 활성화 시만)
+    const interval = setInterval(() => {
+      if (enabled) checkConnection();
+    }, 5000);
+    
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [enabled]);
+
+  const handleToggle = () => {
+    if (disabled) return;
+    const newValue = !enabled;
+    setEnabled(newValue);
+    onChange(name, newValue);
+    CONFIG.visual[name] = newValue;
+    StorageManager.saveConfig(name, newValue);
+    
+    // 즉시 적용을 위해 이벤트 발생
+    window.dispatchEvent(new CustomEvent("ivLyrics:videoHelperChanged", { detail: { enabled: newValue } }));
+  };
+
+  const handleDownload = () => {
+    if (typeof VideoHelperService !== "undefined") {
+      VideoHelperService.openDownloadPage();
+    } else {
+      window.open("https://github.com/ivLis-Studio/ivLyrics-helper/releases/latest", "_blank");
+    }
+  };
+
+  const handleCheckConnection = async () => {
+    if (typeof VideoHelperService !== "undefined") {
+      setChecking(true);
+      const connected = await VideoHelperService.checkHealth();
+      setIsConnected(connected);
+      setChecking(false);
+      if (connected) {
+        Toast?.success?.(I18n.t("settings.videoHelper.connected"));
+      } else {
+        Toast?.error?.(I18n.t("settings.videoHelper.disconnected"));
+      }
+    }
+  };
+
+  const getStatusText = () => {
+    if (checking) return I18n.t("settings.videoHelper.status.checking");
+    if (isConnected) return "✓ " + I18n.t("settings.videoHelper.status.connected");
+    return I18n.t("settings.videoHelper.status.disconnected");
+  };
+
+  return react.createElement(
+    "div",
+    { className: "setting-row" },
+    react.createElement(
+      "div",
+      { className: "setting-row-content" },
+      react.createElement(
+        "div",
+        { className: "setting-row-left" },
+        react.createElement(
+          "div",
+          { className: "setting-name" },
+          I18n.t("settings.videoHelper.label"),
+          // 활성화 시 상태 태그 표시
+          enabled && react.createElement("span", {
+            style: {
+              marginLeft: "10px",
+              fontSize: "10px",
+              padding: "2px 8px",
+              borderRadius: "12px",
+              backgroundColor: isConnected ? "rgba(74, 222, 128, 0.2)" : "rgba(239, 68, 68, 0.2)",
+              color: isConnected ? "#4ade80" : "#ef4444",
+              border: `1px solid ${isConnected ? "rgba(74, 222, 128, 0.3)" : "rgba(239, 68, 68, 0.3)"}`,
+              fontWeight: "600",
+              verticalAlign: "middle"
+            }
+          }, getStatusText())
+        ),
+        react.createElement(
+          "div",
+          { className: "setting-description" },
+          I18n.t("settings.videoHelper.desc")
+        )
+      ),
+      react.createElement(
+        "div",
+        { className: "setting-row-right", style: { display: "flex", alignItems: "center", gap: "10px" } },
+        // 다운로드 버튼 (활성화 && 연결 안됨)
+        enabled && !isConnected && react.createElement(
+          "button",
+          {
+            className: "btn",
+            onClick: handleDownload,
+            style: { fontSize: "11px", padding: "4px 8px", height: "auto" }
+          },
+          I18n.t("settings.videoHelper.download")
+        ),
+        // 토글 스위치
+        react.createElement(
+          "button",
+          {
+            className: `switch-checkbox${enabled ? " active" : ""}`,
+            onClick: handleToggle,
+            "aria-checked": enabled,
+            role: "checkbox",
+            disabled,
+          },
+          react.createElement("svg", {
+            width: 12,
+            height: 12,
+            viewBox: "0 0 16 16",
+            fill: "currentColor",
+            dangerouslySetInnerHTML: {
+              __html: Spicetify.SVGIcons.check,
+            },
+          })
+        )
+      )
+    )
+  );
+};
+
 const ConfigSelection = ({
   name,
   defaultValue,
@@ -2025,21 +2227,23 @@ const OptionList = ({ type, items, onChange }) => {
       item.type === ConfigInput ||
       item.type === ConfigHotkey ||
       item.type === ConfigWarning ||
-      item.type === ConfigKeyList
+      item.type === ConfigInfo ||
+      item.type === ConfigKeyList ||
+      item.type === VideoHelperToggle
     ) {
       return react.createElement(item.type, {
         ...item,
         key: index,
-        name: item.desc,
+        name: item.key || item.desc,
         text: item.text,
         disabled: isDisabled,
         defaultValue:
           item.defaultValue !== undefined
             ? item.defaultValue
             : CONFIG.visual[item.key],
-        onChange: (value, event) => {
+        onChange: (name, value, event) => {
           if (!isDisabled) {
-            onChangeItem(item.key, value, event);
+            onChangeItem(item.key || name, value, event);
             forceUpdate({});
           }
         },
@@ -4481,6 +4685,25 @@ const ConfigModal = () => {
               key: "video-background",
               type: ConfigSlider,
               disabled: isFadActive,
+            },
+            {
+              desc: I18n.t("settings.videoHelper.label"),
+              info: I18n.t("settings.videoHelper.desc"),
+              key: "video-helper-enabled",
+              type: VideoHelperToggle,
+              disabled: isFadActive,
+              when: () => CONFIG.visual["video-background"],
+            },
+            {
+              desc: "",
+              key: "video-helper-info",
+              type: ConfigInfo,
+              message: I18n.t("settings.videoHelper.info"),
+              buttonText: I18n.t("settings.videoHelper.download"),
+              onButtonClick: () => {
+                window.open("https://github.com/ivLis-Studio/ivLyrics-helper/releases/latest", "_blank");
+              },
+              when: () => CONFIG.visual["video-background"] && !CONFIG.visual["video-helper-enabled"],
             },
             {
               desc: I18n.t("settings.videoBlur.label"),

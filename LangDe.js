@@ -120,6 +120,20 @@ window.LANG_DE = {
       "label": "Videohintergrund",
       "desc": "Verwendet ein YouTube-Video als Hintergrund (Beta)"
     },
+    "videoHelper": {
+      "label": "Hilfsprogramm verwenden",
+      "desc": "YouTube-Videos lokal herunterladen und abspielen. Videos ohne Anmeldung ansehen.",
+      "info": "💡 YouTube-Videos werden nicht geladen?\n\nGoogle beschränkt einige Benutzer daran, YouTube-Videos ohne Anmeldung abzuspielen.\nMit dem Hilfsprogramm können Videos ordnungsgemäß geladen werden.",
+      "download": "Hilfsprogramm herunterladen",
+      "checkConnection": "Verbindung prüfen",
+      "connected": "Mit Hilfsprogramm verbunden",
+      "disconnected": "Keine Verbindung zum Hilfsprogramm",
+      "status": {
+        "connected": "Verbunden",
+        "disconnected": "Nicht verbunden",
+        "checking": "Überprüfe..."
+      }
+    },
     "videoBlur": {
       "label": "Videounschärfe",
       "desc": "Stellt die Intensität der Unschärfe für den Videohintergrund ein (0-40px)"

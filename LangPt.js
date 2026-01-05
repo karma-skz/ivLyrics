@@ -120,6 +120,20 @@ window.LANG_PT = {
       "label": "Fundo de Vídeo",
       "desc": "Usar vídeo do YouTube como fundo (Beta)"
     },
+    "videoHelper": {
+      "label": "Usar programa auxiliar",
+      "desc": "Baixe e reproduza vídeos do YouTube localmente. Assista vídeos sem fazer login.",
+      "info": "💡 Os vídeos do YouTube não estão carregando?\n\nO Google restringe alguns usuários de reproduzir vídeos do YouTube sem fazer login.\nUsar o programa auxiliar permite carregar os vídeos corretamente.",
+      "download": "Baixar auxiliar",
+      "checkConnection": "Verificar conexão",
+      "connected": "Conectado ao programa auxiliar",
+      "disconnected": "Não foi possível conectar ao programa auxiliar",
+      "status": {
+        "connected": "Conectado",
+        "disconnected": "Desconectado",
+        "checking": "Verificando..."
+      }
+    },
     "videoBlur": {
       "label": "Desfoque do Vídeo",
       "desc": "Ajuste a intensidade do desfoque aplicado ao fundo de vídeo (0-40px)"

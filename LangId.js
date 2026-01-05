@@ -114,6 +114,20 @@ window.LANG_ID = {
       "label": "Latar Belakang Video",
       "desc": "Gunakan video YouTube sebagai latar belakang (Beta)"
     },
+    "videoHelper": {
+      "label": "Gunakan program pembantu",
+      "desc": "Unduh dan putar video YouTube secara lokal. Tonton video tanpa login.",
+      "info": "💡 Video YouTube tidak dapat dimuat?\n\nGoogle membatasi beberapa pengguna untuk memutar video YouTube tanpa login.\nMenggunakan program pembantu memungkinkan video dimuat dengan benar.",
+      "download": "Unduh pembantu",
+      "checkConnection": "Periksa koneksi",
+      "connected": "Terhubung ke program pembantu",
+      "disconnected": "Tidak dapat terhubung ke program pembantu",
+      "status": {
+        "connected": "Terhubung",
+        "disconnected": "Terputus",
+        "checking": "Memeriksa..."
+      }
+    },
     "videoBlur": {
       "label": "Blur Video",
       "desc": "Sesuaikan intensitas blur untuk latar belakang video (0-40px)"

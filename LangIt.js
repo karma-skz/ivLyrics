@@ -120,6 +120,20 @@ window.LANG_IT = {
       "label": "Sfondo Video",
       "desc": "Usa un video YouTube come sfondo (Beta)"
     },
+    "videoHelper": {
+      "label": "Usa programma ausiliario",
+      "desc": "Scarica e riproduci video YouTube localmente. Guarda video senza effettuare l'accesso.",
+      "info": "💡 I video di YouTube non si caricano?\n\nGoogle limita alcuni utenti dalla riproduzione di video YouTube senza accedere.\nL'uso del programma ausiliario consente di caricare i video correttamente.",
+      "download": "Scarica ausiliario",
+      "checkConnection": "Verifica connessione",
+      "connected": "Connesso al programma ausiliario",
+      "disconnected": "Impossibile connettersi al programma ausiliario",
+      "status": {
+        "connected": "Connesso",
+        "disconnected": "Disconnesso",
+        "checking": "Verifica in corso..."
+      }
+    },
     "videoBlur": {
       "label": "Sfocatura Video",
       "desc": "Regola l'intensità della sfocatura applicata allo sfondo video (0-40px)"

@@ -6,12 +6,33 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
     const [isLoading, setIsLoading] = useState(false);
     const [isPlaying, setIsPlaying] = useState(Spicetify.Player.isPlaying());
     const [trackOffsetMs, setTrackOffsetMs] = useState(0);
+    // 헬퍼 모드 관련 상태
+    const [useHelper, setUseHelper] = useState(false);
+    const [helperVideoUrl, setHelperVideoUrl] = useState(null);
     const containerRef = useRef(null);
     const playerRef = useRef(null); // Use ref to hold player instance for reliable cleanup
+    const videoRef = useRef(null); // HTML5 video element for helper mode
+    const abortDownloadRef = useRef(null); // abort function for helper download
     const brightnessValue = Math.min(Math.max(Number(brightness) || 0, 0), 100);
     const brightnessRatio = brightnessValue / 100;
     const blurValue = Math.min(Math.max(Number(blurAmount) || 0, 0), 80);
     const useCoverMode = coverMode === true;
+
+    // 헬퍼 모드 설정 확인
+    useEffect(() => {
+        const helperEnabled = CONFIG?.visual?.["video-helper-enabled"] === true || CONFIG?.visual?.["video-helper-enabled"] === "true";
+        setUseHelper(helperEnabled);
+        
+        // 설정 변경 이벤트 리스너
+        const handleHelperChange = (e) => {
+            setUseHelper(e.detail?.enabled === true);
+            // 모드 전환 시 상태 초기화
+            setHelperVideoUrl(null);
+            setIsPlayerReady(false);
+        };
+        window.addEventListener("ivLyrics:videoHelperChanged", handleHelperChange);
+        return () => window.removeEventListener("ivLyrics:videoHelperChanged", handleHelperChange);
+    }, []);
 
     // 외부에서 전달된 videoInfo가 있으면 사용
     useEffect(() => {
@@ -23,15 +44,16 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
         }
     }, [externalVideoInfo]);
 
-    // Load YouTube IFrame API
+    // Load YouTube IFrame API (헬퍼 모드가 아닐 때만)
     useEffect(() => {
+        if (useHelper) return;
         if (!window.YT) {
             const tag = document.createElement("script");
             tag.src = "https://www.youtube.com/iframe_api";
             const firstScriptTag = document.getElementsByTagName("script")[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         }
-    }, []);
+    }, [useHelper]);
 
     // Monitor Spotify Playback State
     useEffect(() => {
@@ -216,8 +238,223 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
         };
     }, [trackUri]);
 
-    // Initialize Player when videoInfo is available
+    // 헬퍼 모드: 비디오 다운로드 요청
     useEffect(() => {
+        if (!useHelper || !videoInfo || !videoInfo.youtubeVideoId) return;
+
+        // 기존 다운로드 중단
+        if (abortDownloadRef.current) {
+            abortDownloadRef.current();
+            abortDownloadRef.current = null;
+        }
+
+        // 이전 상태 초기화
+        setHelperVideoUrl(null);
+        setIsPlayerReady(false);
+
+        const videoId = videoInfo.youtubeVideoId;
+        console.log(`[VideoBackground] Helper mode: requesting video ${videoId}`);
+
+        // 1.5초 이내 응답 시 toast 숨기기 위한 변수
+        const requestStartTime = Date.now();
+        // 1.5초 후에 "준비 중" toast 표시 (progress toast가 먼저 뜨면 취소됨)
+        let preparingToastTimeout = setTimeout(() => {
+            Toast.progress(I18n.t("videoBackground.preparing"), 0);
+        }, 1500);
+
+        // 먼저 비디오 상태 확인
+        const requestVideo = async () => {
+            try {
+                // 헬퍼 서버 연결 확인
+                const isAvailable = await VideoHelperService.isHelperAvailable();
+                if (!isAvailable) {
+                    clearTimeout(preparingToastTimeout);
+                    setStatusMessage(I18n.t("videoBackground.helperNotConnected"));
+                    Toast.error(I18n.t("videoBackground.helperNotConnected"));
+                    return;
+                }
+
+                // 비디오 요청 (SSE 스트림)
+                abortDownloadRef.current = VideoHelperService.requestVideo(videoId, {
+                    onProgress: (progress) => {
+                        // progress 이벤트가 오면 preparing timeout 취소
+                        clearTimeout(preparingToastTimeout);
+                        
+                        const percent = Math.round(progress.percent || 0);
+                        
+                        if (progress.status === "downloading") {
+                            Toast.progress(I18n.t("videoBackground.downloading", { percent }), percent);
+                        } else if (progress.status === "processing") {
+                            Toast.progress(I18n.t("videoBackground.processing"), 100);
+                        } else if (progress.status === "checking") {
+                            Toast.progress(I18n.t("videoBackground.checking"), 0);
+                        }
+                    },
+                    onComplete: (url) => {
+                        clearTimeout(preparingToastTimeout);
+                        Toast.dismissProgress();
+                        console.log(`[VideoBackground] Helper: video ready, setting URL: ${url}`);
+                        
+                        // URL 유효성 확인
+                        if (!url || typeof url !== 'string' || !url.startsWith('http')) {
+                            console.error(`[VideoBackground] Invalid video URL received: ${url}`);
+                            setStatusMessage(I18n.t("videoBackground.helperError"));
+                            Toast.error(I18n.t("videoBackground.helperError"));
+                            return;
+                        }
+                        
+                        setHelperVideoUrl(url);
+                        setStatusMessage("");
+                        
+                        // 1.5초 이내로 완료되면 완료 toast도 숨김
+                        const elapsed = Date.now() - requestStartTime;
+                        if (elapsed > 1500) {
+                            Toast.success(I18n.t("videoBackground.downloadComplete"));
+                        }
+                    },
+                    onError: (message) => {
+                        clearTimeout(preparingToastTimeout);
+                        Toast.dismissProgress();
+                        console.error(`[VideoBackground] Helper error: ${message}`);
+                        setStatusMessage(I18n.t("videoBackground.helperError"));
+                        Toast.error(I18n.t("videoBackground.helperError"));
+                    },
+                });
+            } catch (e) {
+                clearTimeout(preparingToastTimeout);
+                console.error("[VideoBackground] Helper request failed:", e);
+                setStatusMessage(I18n.t("videoBackground.helperError"));
+            }
+        };
+
+        requestVideo();
+
+        return () => {
+            clearTimeout(preparingToastTimeout);
+            Toast.dismissProgress(); // 컴포넌트 언마운트 시 progress toast 닫기
+            if (abortDownloadRef.current) {
+                abortDownloadRef.current();
+                abortDownloadRef.current = null;
+            }
+        };
+    }, [useHelper, videoInfo]);
+
+    // 헬퍼 모드: HTML5 video 재생 및 동기화
+    useEffect(() => {
+        if (!useHelper || !helperVideoUrl || !videoRef.current) return;
+
+        console.log(`[VideoBackground] Loading helper video from: ${helperVideoUrl}`);
+        
+        const video = videoRef.current;
+        video.src = helperVideoUrl;
+        video.muted = true;
+        video.loop = false;
+
+        const handleCanPlay = () => {
+            // 영상이 준비되면 즉시 현재 Spotify 위치로 동기화
+            if (videoInfo) {
+                const spotifyTime = Spicetify.Player.getProgress() / 1000;
+                const lyricsStartTime = (firstLyricTime || 0) / 1000;
+                const captionStartTime = videoInfo.captionStartTime;
+                const offset = (captionStartTime !== null && captionStartTime !== undefined)
+                    ? (captionStartTime - lyricsStartTime)
+                    : 0;
+                const globalDelayMs = typeof CONFIG !== "undefined" && CONFIG.visual ? Number(CONFIG.visual.delay || 0) : 0;
+                const additionalDelaySeconds = (trackOffsetMs + globalDelayMs) / 1000;
+                let targetVideoTime = spotifyTime + offset + additionalDelaySeconds;
+                
+                if (targetVideoTime >= 0 && video.duration > 0) {
+                    if (targetVideoTime >= video.duration) {
+                        targetVideoTime = targetVideoTime % video.duration;
+                    }
+                }
+                
+                if (targetVideoTime >= 0) {
+                    video.currentTime = targetVideoTime;
+                }
+            }
+            
+            setIsPlayerReady(true);
+            if (Spicetify.Player.isPlaying()) {
+                video.play().catch(() => { });
+            }
+        };
+
+        const handleError = (e) => {
+            console.error("[VideoBackground] Helper video error:", e, "src:", video.src);
+            setStatusMessage(I18n.t("videoBackground.helperError"));
+            setIsPlayerReady(false);
+        };
+
+        video.addEventListener('canplay', handleCanPlay);
+        video.addEventListener('error', handleError);
+        video.addEventListener('loadstart', () => console.log("[VideoBackground] Video loadstart"));
+        video.addEventListener('loadedmetadata', () => console.log("[VideoBackground] Video loadedmetadata, duration:", video.duration));
+
+        video.load();
+
+        return () => {
+            video.removeEventListener('canplay', handleCanPlay);
+            video.removeEventListener('error', handleError);
+        };
+    }, [useHelper, helperVideoUrl, videoInfo, firstLyricTime, trackOffsetMs]);
+
+    // 헬퍼 모드: 동기화 로직
+    useEffect(() => {
+        if (!useHelper || !videoRef.current || !isPlayerReady || !videoInfo) return;
+
+        const video = videoRef.current;
+
+        const syncInterval = setInterval(() => {
+            const spotifyIsPlaying = Spicetify.Player.isPlaying();
+
+            if (spotifyIsPlaying !== isPlaying) {
+                setIsPlaying(spotifyIsPlaying);
+            }
+
+            if (!spotifyIsPlaying) {
+                if (!video.paused) {
+                    video.pause();
+                }
+                return;
+            } else {
+                if (video.paused) {
+                    video.play().catch(() => { });
+                }
+            }
+
+            const spotifyTime = Spicetify.Player.getProgress() / 1000;
+            const lyricsStartTime = (firstLyricTime || 0) / 1000;
+            const captionStartTime = videoInfo.captionStartTime;
+
+            const offset = (captionStartTime !== null && captionStartTime !== undefined)
+                ? (captionStartTime - lyricsStartTime)
+                : 0;
+            const globalDelayMs = typeof CONFIG !== "undefined" && CONFIG.visual ? Number(CONFIG.visual.delay || 0) : 0;
+            const additionalDelaySeconds = (trackOffsetMs + globalDelayMs) / 1000;
+            let targetVideoTime = spotifyTime + offset + additionalDelaySeconds;
+
+            // 영상 길이보다 음악이 길 경우, 영상을 처음부터 반복 재생
+            if (targetVideoTime >= 0 && video.duration > 0) {
+                if (targetVideoTime >= video.duration) {
+                    targetVideoTime = targetVideoTime % video.duration;
+                }
+            }
+
+            if (targetVideoTime >= 0) {
+                const currentVideoTime = video.currentTime;
+                if (Math.abs(currentVideoTime - targetVideoTime) > 0.5) {
+                    video.currentTime = targetVideoTime;
+                }
+            }
+        }, 500);
+
+        return () => clearInterval(syncInterval);
+    }, [useHelper, isPlayerReady, videoInfo, firstLyricTime, isPlaying, trackOffsetMs]);
+
+    // 일반 모드 (YouTube IFrame): Initialize Player when videoInfo is available
+    useEffect(() => {
+        if (useHelper) return; // 헬퍼 모드면 스킵
         if (!videoInfo || !videoInfo.youtubeVideoId || !containerRef.current) return;
 
         // Double check cleanup
@@ -279,10 +516,11 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
 
         initPlayer();
 
-    }, [videoInfo]);
+    }, [useHelper, videoInfo]);
 
-    // Sync Logic
+    // 일반 모드 (YouTube IFrame): Sync Logic
     useEffect(() => {
+        if (useHelper) return; // 헬퍼 모드면 스킵
         // We use playerRef.current here
         const syncInterval = setInterval(() => {
             const player = playerRef.current;
@@ -380,6 +618,26 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
         }, statusMessage) : null);
     };
 
+    // 헬퍼 모드용 video 태그 스타일
+    const helperVideoStyle = {
+        position: "absolute",
+        top: useCoverMode ? "50%" : 0,
+        left: useCoverMode ? "50%" : 0,
+        width: useCoverMode ? "177.78vh" : "100%",
+        height: useCoverMode ? "56.25vw" : "100%",
+        minWidth: useCoverMode ? "100%" : undefined,
+        minHeight: useCoverMode ? "100%" : undefined,
+        transform: useCoverMode
+            ? `translate(-50%, -50%)${blurValue ? " scale(1.05)" : ""}`
+            : (blurValue ? "scale(1.05)" : undefined),
+        opacity: isPlayerReady && isPlaying ? 1 : 0,
+        transition: "opacity 0.5s ease",
+        zIndex: 1,
+        pointerEvents: "none",
+        filter: blurValue ? `blur(${blurValue}px)` : "none",
+        objectFit: useCoverMode ? "cover" : "contain",
+    };
+
     return react.createElement("div", {
         style: {
             position: "absolute",
@@ -446,7 +704,16 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
             }
         }),
         renderFallback(),
-        react.createElement("div", {
+        // 헬퍼 모드: HTML5 video 태그
+        useHelper && react.createElement("video", {
+            ref: videoRef,
+            style: helperVideoStyle,
+            muted: true,
+            playsInline: true,
+            loop: false,
+        }),
+        // 일반 모드: YouTube IFrame 컨테이너
+        !useHelper && react.createElement("div", {
             ref: containerRef,
             style: {
                 position: "absolute",

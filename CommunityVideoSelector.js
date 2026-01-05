@@ -62,14 +62,170 @@ const ConfirmDialog = ({ isOpen, title, message, onConfirm, onCancel }) => {
 // 현재 음악 재생 시간에 맞춰 동기화된 YouTube 미리보기 컴포넌트
 // startTime: 영상에서 첫 가사가 시작되는 시간 (초)
 // VideoBackground와 동일한 로직: offset = captionStartTime - lyricsStartTime
+// 헬퍼 모드 지원: CONFIG.visual["video-helper-enabled"]가 true면 로컬 비디오 사용
 const SyncedVideoPreview = ({ videoId, startTime }) => {
   const { useState, useEffect, useRef } = react;
   const containerRef = useRef(null);
   const playerRef = useRef(null);
+  const videoRef = useRef(null); // HTML5 video for helper mode
   const syncIntervalRef = useRef(null);
+  const abortRef = useRef(null);
   const [isReady, setIsReady] = useState(false);
+  const [useHelper, setUseHelper] = useState(false);
+  const [helperVideoUrl, setHelperVideoUrl] = useState(null);
 
+  // 헬퍼 모드 확인
   useEffect(() => {
+    const helperEnabled = CONFIG?.visual?.["video-helper-enabled"] === true || CONFIG?.visual?.["video-helper-enabled"] === "true";
+    setUseHelper(helperEnabled);
+    
+    const handleHelperChange = (e) => {
+      setUseHelper(e.detail?.enabled === true);
+      setHelperVideoUrl(null);
+      setIsReady(false);
+    };
+    window.addEventListener("ivLyrics:videoHelperChanged", handleHelperChange);
+    return () => window.removeEventListener("ivLyrics:videoHelperChanged", handleHelperChange);
+  }, []);
+
+  // 헬퍼 모드: 비디오 다운로드
+  useEffect(() => {
+    if (!useHelper || !videoId) return;
+
+    setIsReady(false);
+    setHelperVideoUrl(null);
+
+    // 1.5초 이내 응답 시 toast 숨기기 위한 변수
+    const requestStartTime = Date.now();
+    let preparingToastTimeout = setTimeout(() => {
+      Toast.progress(I18n.t("videoBackground.preparing"), 0);
+    }, 1500);
+
+    const requestVideo = async () => {
+      if (typeof VideoHelperService === "undefined") return;
+
+      const isAvailable = await VideoHelperService.isHelperAvailable();
+      if (!isAvailable) {
+        clearTimeout(preparingToastTimeout);
+        console.warn("[SyncedVideoPreview] Helper not available");
+        Toast.error(I18n.t("videoBackground.helperNotConnected"));
+        return;
+      }
+
+      abortRef.current = VideoHelperService.requestVideo(videoId, {
+        onProgress: (progress) => {
+          clearTimeout(preparingToastTimeout);
+          const percent = Math.round(progress.percent || 0);
+          if (progress.status === "downloading") {
+            Toast.progress(I18n.t("videoBackground.downloading", { percent }), percent);
+          } else if (progress.status === "checking") {
+            Toast.progress(I18n.t("videoBackground.checking"), 0);
+          }
+        },
+        onComplete: (url) => {
+          clearTimeout(preparingToastTimeout);
+          Toast.dismissProgress();
+          setHelperVideoUrl(url);
+          // 1.5초 이내로 완료되면 완료 toast도 숨김
+          const elapsed = Date.now() - requestStartTime;
+          if (elapsed > 1500) {
+            Toast.success(I18n.t("videoBackground.downloadComplete"));
+          }
+        },
+        onError: (message) => {
+          clearTimeout(preparingToastTimeout);
+          Toast.dismissProgress();
+          console.error("[SyncedVideoPreview] Helper error:", message);
+          Toast.error(I18n.t("videoBackground.helperError"));
+        },
+      });
+    };
+
+    requestVideo();
+
+    return () => {
+      clearTimeout(preparingToastTimeout);
+      Toast.dismissProgress(); // 컴포넌트 언마운트 시 progress toast 닫기
+      if (abortRef.current) {
+        abortRef.current();
+        abortRef.current = null;
+      }
+    };
+  }, [useHelper, videoId]);
+
+  // 헬퍼 모드: video 요소 설정
+  useEffect(() => {
+    if (!useHelper || !helperVideoUrl || !videoRef.current) return;
+
+    const video = videoRef.current;
+    video.src = helperVideoUrl;
+    video.muted = true;
+
+    const handleCanPlay = () => {
+      // 영상이 준비되면 즉시 현재 Spotify 위치로 동기화
+      const spotifyPositionSec = Spicetify.Player.getProgress() / 1000;
+      const lyricsStartTimeSec = (window.ivLyrics_firstLyricTime || 0) / 1000;
+      const captionStartTime = startTime || 0;
+      const offset = captionStartTime - lyricsStartTimeSec;
+      const videoTime = Math.max(0, spotifyPositionSec + offset);
+      
+      if (videoTime >= 0 && video.duration > 0) {
+        video.currentTime = Math.min(videoTime, video.duration);
+      }
+      
+      setIsReady(true);
+      if (Spicetify.Player.isPlaying()) {
+        video.play().catch(() => { });
+      }
+    };
+
+    video.addEventListener('canplay', handleCanPlay);
+    video.load();
+
+    return () => {
+      video.removeEventListener('canplay', handleCanPlay);
+    };
+  }, [useHelper, helperVideoUrl, startTime]);
+
+  // 헬퍼 모드: 동기화
+  useEffect(() => {
+    if (!useHelper || !videoRef.current || !isReady) return;
+
+    const video = videoRef.current;
+
+    const syncToSpotify = () => {
+      const spotifyPositionSec = Spicetify.Player.getProgress() / 1000;
+      const lyricsStartTimeSec = (window.ivLyrics_firstLyricTime || 0) / 1000;
+      const captionStartTime = startTime || 0;
+      const offset = captionStartTime - lyricsStartTimeSec;
+      const videoTime = Math.max(0, spotifyPositionSec + offset);
+
+      if (Math.abs(video.currentTime - videoTime) > 0.5) {
+        video.currentTime = videoTime;
+      }
+
+      if (Spicetify.Player.isPlaying()) {
+        if (video.paused) video.play().catch(() => { });
+      } else {
+        if (!video.paused) video.pause();
+      }
+    };
+
+    syncIntervalRef.current = setInterval(syncToSpotify, 2000);
+    syncToSpotify();
+
+    const handlePlayPause = () => syncToSpotify();
+    Spicetify.Player.addEventListener("onplaypause", handlePlayPause);
+
+    return () => {
+      if (syncIntervalRef.current) clearInterval(syncIntervalRef.current);
+      Spicetify.Player.removeEventListener("onplaypause", handlePlayPause);
+    };
+  }, [useHelper, isReady, startTime]);
+
+  // 일반 모드: YouTube IFrame
+  useEffect(() => {
+    if (useHelper) return;
     if (!videoId || !containerRef.current) return;
 
     let isMounted = true;
@@ -210,14 +366,22 @@ const SyncedVideoPreview = ({ videoId, startTime }) => {
         playerRef.current = null;
       }
     };
-  }, [videoId, startTime]);
+  }, [useHelper, videoId, startTime]);
 
   return react.createElement(
     "div",
     {
       className: "community-video-embed synced-preview",
     },
-    react.createElement("div", {
+    // 헬퍼 모드: video 태그
+    useHelper && react.createElement("video", {
+      ref: videoRef,
+      style: { width: "100%", height: "200px", background: "#000", objectFit: "contain" },
+      muted: true,
+      playsInline: true,
+    }),
+    // 일반 모드: YouTube 컨테이너
+    !useHelper && react.createElement("div", {
       ref: containerRef,
       style: { width: "100%", height: "200px", background: "#000" },
     }),
@@ -233,12 +397,102 @@ const SyncedVideoPreview = ({ videoId, startTime }) => {
 };
 
 // 시간 입력 시 iframe 리로드 방지를 위한 단순 미리보기 컴포넌트
+// 헬퍼 모드 지원
 const SimpleVideoPreview = ({ videoId, startTime }) => {
-  const { useEffect, useRef } = react;
+  const { useState, useEffect, useRef } = react;
   const containerRef = useRef(null);
   const playerRef = useRef(null);
+  const videoRef = useRef(null);
+  const abortRef = useRef(null);
+  const [useHelper, setUseHelper] = useState(false);
+  const [helperVideoUrl, setHelperVideoUrl] = useState(null);
 
+  // 헬퍼 모드 확인
   useEffect(() => {
+    const helperEnabled = CONFIG?.visual?.["video-helper-enabled"] === true || CONFIG?.visual?.["video-helper-enabled"] === "true";
+    setUseHelper(helperEnabled);
+    
+    const handleHelperChange = (e) => {
+      setUseHelper(e.detail?.enabled === true);
+      setHelperVideoUrl(null);
+    };
+    window.addEventListener("ivLyrics:videoHelperChanged", handleHelperChange);
+    return () => window.removeEventListener("ivLyrics:videoHelperChanged", handleHelperChange);
+  }, []);
+
+  // 헬퍼 모드: 비디오 다운로드
+  useEffect(() => {
+    if (!useHelper || !videoId) return;
+
+    setHelperVideoUrl(null);
+
+    // 1.5초 이내 응답 시 toast 숨기기 위한 변수
+    const requestStartTime = Date.now();
+    let preparingToastTimeout = setTimeout(() => {
+      Toast.progress(I18n.t("videoBackground.preparing"), 0);
+    }, 1500);
+
+    const requestVideo = async () => {
+      if (typeof VideoHelperService === "undefined") return;
+
+      const isAvailable = await VideoHelperService.isHelperAvailable();
+      if (!isAvailable) {
+        clearTimeout(preparingToastTimeout);
+        Toast.error(I18n.t("videoBackground.helperNotConnected"));
+        return;
+      }
+
+      abortRef.current = VideoHelperService.requestVideo(videoId, {
+        onProgress: (progress) => {
+          clearTimeout(preparingToastTimeout);
+          const percent = Math.round(progress.percent || 0);
+          if (progress.status === "downloading") {
+            Toast.progress(I18n.t("videoBackground.downloading", { percent }), percent);
+          } else if (progress.status === "checking") {
+            Toast.progress(I18n.t("videoBackground.checking"), 0);
+          }
+        },
+        onComplete: (url) => {
+          clearTimeout(preparingToastTimeout);
+          Toast.dismissProgress();
+          setHelperVideoUrl(url);
+          // 1.5초 이내로 완료되면 완료 toast도 숨김
+          const elapsed = Date.now() - requestStartTime;
+          if (elapsed > 1500) {
+            Toast.success(I18n.t("videoBackground.downloadComplete"));
+          }
+        },
+        onError: () => {
+          clearTimeout(preparingToastTimeout);
+          Toast.dismissProgress();
+          Toast.error(I18n.t("videoBackground.helperError"));
+        },
+      });
+    };
+
+    requestVideo();
+
+    return () => {
+      clearTimeout(preparingToastTimeout);
+      Toast.dismissProgress(); // 컴포넌트 언마운트 시 progress toast 닫기
+      if (abortRef.current) {
+        abortRef.current();
+        abortRef.current = null;
+      }
+    };
+  }, [useHelper, videoId]);
+
+  // 헬퍼 모드: video 시간 설정
+  useEffect(() => {
+    if (!useHelper || !videoRef.current || !helperVideoUrl) return;
+    const video = videoRef.current;
+    video.currentTime = startTime;
+    video.play().catch(() => { });
+  }, [useHelper, helperVideoUrl, startTime]);
+
+  // 일반 모드: YouTube
+  useEffect(() => {
+    if (useHelper) return;
     if (!videoId || !containerRef.current) return;
 
     let isMounted = true;
@@ -298,14 +552,15 @@ const SimpleVideoPreview = ({ videoId, startTime }) => {
         playerRef.current = null;
       }
     };
-  }, [videoId]);
+  }, [useHelper, videoId]);
 
   useEffect(() => {
+    if (useHelper) return;
     if (playerRef.current && typeof playerRef.current.seekTo === "function") {
       playerRef.current.seekTo(startTime, true);
       playerRef.current.playVideo();
     }
-  }, [startTime]);
+  }, [useHelper, startTime]);
 
   return react.createElement(
     "div",
@@ -313,7 +568,17 @@ const SimpleVideoPreview = ({ videoId, startTime }) => {
       className: "community-video-embed submit-preview",
       style: { position: "relative" },
     },
-    react.createElement("div", {
+    // 헬퍼 모드: video 태그
+    useHelper && react.createElement("video", {
+      ref: videoRef,
+      src: helperVideoUrl,
+      style: { width: "100%", height: "180px", background: "#000", objectFit: "contain" },
+      muted: false,
+      playsInline: true,
+      autoPlay: true,
+    }),
+    // 일반 모드: YouTube 컨테이너
+    !useHelper && react.createElement("div", {
       ref: containerRef,
       style: { width: "100%", height: "180px", background: "#000" },
     }),

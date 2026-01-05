@@ -120,6 +120,20 @@ window.LANG_ZH_CN = {
       "label": "视频背景",
       "desc": "使用YouTube视频作为背景（测试版）"
     },
+    "videoHelper": {
+      "label": "使用辅助程序",
+      "desc": "在本地下载并播放YouTube视频。无需登录即可观看视频。",
+      "info": "💡 YouTube视频无法加载？\n\nGoogle限制部分用户在未登录的情况下播放YouTube视频。\n使用辅助程序可以正常加载视频。",
+      "download": "下载辅助程序",
+      "checkConnection": "检查连接",
+      "connected": "已连接到辅助程序",
+      "disconnected": "无法连接到辅助程序",
+      "status": {
+        "connected": "已连接",
+        "disconnected": "未连接",
+        "checking": "检查中..."
+      }
+    },
     "videoBlur": {
       "label": "视频模糊",
       "desc": "调整视频背景的模糊强度 (0-40px)"

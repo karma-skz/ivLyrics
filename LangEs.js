@@ -120,6 +120,20 @@ window.LANG_ES = {
       "label": "Fondo de video",
       "desc": "Usa un video de YouTube como fondo (Beta)"
     },
+    "videoHelper": {
+      "label": "Usar programa auxiliar",
+      "desc": "Descarga y reproduce videos de YouTube localmente. Ver videos sin iniciar sesión.",
+      "info": "💡 ¿Los videos de YouTube no cargan?\n\nGoogle restringe a algunos usuarios la reproducción de videos de YouTube sin iniciar sesión.\nUsar el programa auxiliar permite cargar los videos correctamente.",
+      "download": "Descargar auxiliar",
+      "checkConnection": "Verificar conexión",
+      "connected": "Conectado al programa auxiliar",
+      "disconnected": "No se puede conectar al programa auxiliar",
+      "status": {
+        "connected": "Conectado",
+        "disconnected": "Desconectado",
+        "checking": "Verificando..."
+      }
+    },
     "videoBlur": {
       "label": "Desenfoque de video",
       "desc": "Ajusta la intensidad del desenfoque aplicado al fondo de video (0-40px)"
