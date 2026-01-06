@@ -758,12 +758,100 @@ window.LANG_DE = {
         "desc": "Schriftgrößenskalierung für Panel-Songtexte (50%-200%)"
       }
     },
+    "nowPlayingPanel": {
+      "title": "Jetzt-Laeuft-Panel Songtexte",
+      "subtitle": "Songtext-Anzeigeeinstellungen fuer das rechte Jetzt laeuft-Panel",
+      "enabled": {
+        "label": "Panel-Songtexte aktivieren",
+        "desc": "Aktuelle Songtexte im Jetzt-laeuft-Panel anzeigen"
+      },
+      "lines": {
+        "label": "Songtext-Zeilen",
+        "desc": "Anzahl der Zeilen im Panel (Standard: 5)"
+      },
+      "fontScale": {
+        "label": "Gesamtschriftgroesse",
+        "desc": "Gesamtschriftgroesse fuer Panel-Songtexte (50%-200%)"
+      },
+      "fontFamily": {
+        "label": "Standardschriftart",
+        "desc": "Standardschriftart fuer Panel-Songtexte (wird verwendet, wenn keine individuelle Schriftart festgelegt ist)"
+      },
+      "originalFont": {
+        "label": "Originaltext-Schriftart",
+        "desc": "Schriftart fuer Originaltexte (leer = Standardschriftart, mehrere durch Komma getrennt)"
+      },
+      "phoneticFont": {
+        "label": "Aussprache-Schriftart",
+        "desc": "Schriftart fuer Aussprache (leer = Standardschriftart, mehrere durch Komma getrennt)"
+      },
+      "translationFont": {
+        "label": "Uebersetzungs-Schriftart",
+        "desc": "Schriftart fuer uebersetzte Texte (leer = Standardschriftart, mehrere durch Komma getrennt)"
+      },
+      "originalSize": {
+        "label": "Originaltext-Groesse",
+        "desc": "Schriftgroesse fuer Originaltexte (px)"
+      },
+      "phoneticSize": {
+        "label": "Aussprache-Groesse",
+        "desc": "Schriftgroesse fuer Aussprache (px)"
+      },
+      "translationSize": {
+        "label": "Uebersetzungs-Groesse",
+        "desc": "Schriftgroesse fuer uebersetzte Texte (px)"
+      },
+      "preview": "Vorschau",
+      "background": {
+        "title": "Hintergrund",
+        "subtitle": "Panel-Hintergrund-Stileinstellungen",
+        "type": {
+          "label": "Hintergrundtyp",
+          "desc": "Hintergrundstil auswaehlen",
+          "album": "Albumfarbe",
+          "custom": "Benutzerdefinierte Farbe",
+          "gradient": "Album-Farbverlauf"
+        },
+        "color": {
+          "label": "Hintergrundfarbe",
+          "desc": "Benutzerdefinierte Hintergrundfarbe"
+        },
+        "gradient1": {
+          "label": "Verlaufsfarbe 1",
+          "desc": "Erste Verlaufsfarbe"
+        },
+        "gradient2": {
+          "label": "Verlaufsfarbe 2",
+          "desc": "Zweite Verlaufsfarbe"
+        },
+        "opacity": {
+          "label": "Hintergrund-Deckkraft",
+          "desc": "Hintergrund-Deckkraft (0%=transparent, 100%=undurchsichtig)"
+        }
+      },
+      "border": {
+        "title": "Rahmen",
+        "subtitle": "Panel-Rahmen-Stileinstellungen",
+        "enabled": {
+          "label": "Rahmen aktivieren",
+          "desc": "Rahmen um das Panel anzeigen"
+        },
+        "color": {
+          "label": "Rahmenfarbe",
+          "desc": "Farbe des Rahmens"
+        },
+        "opacity": {
+          "label": "Rahmen-Deckkraft",
+          "desc": "Rahmen-Deckkraft (0%=transparent, 100%=undurchsichtig)"
+        }
+      }
+    },
     "karaokeMode": {
       "title": "Karaoke-Modus",
       "subtitle": "Anzeige im Karaoke-Stil",
       "enabled": {
         "label": "Karaoke-Modus verwenden",
-        "desc": "Verwendet den Karaoke-Tab bei Songs, die Karaoke-Texte unterstützen. Wenn deaktiviert, wird der Sync-Tab fixiert"
+        "desc": "Verwendet den Karaoke-Tab bei Songs, die Karaoke-Texte unterstuetzen. Wenn deaktiviert, wird der Sync-Tab fixiert"
       },
       "bounce": {
         "label": "Text-Bounce-Effekt",

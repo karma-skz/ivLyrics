@@ -12,6 +12,7 @@ window.LANG_EN = {
     "providers": "Providers",
     "advanced": "Advanced",
     "fullscreen": "Fullscreen",
+    "nowplaying": "Panel Lyrics",
     "debug": "Debug",
     "about": "About",
     "searchResults": "Search Results"
@@ -744,18 +745,94 @@ window.LANG_EN = {
       "fullscreenShortcut": {
         "label": "Fullscreen Shortcut",
         "desc": "Keyboard shortcut for lyrics fullscreen mode"
-      },
-      "panelLyrics": {
-        "label": "Show Lyrics in Right Panel",
+      }
+    },
+    "nowPlayingPanel": {
+      "title": "NowPlaying Panel Lyrics",
+      "subtitle": "Lyrics display settings for the Now Playing panel",
+      "enabled": {
+        "label": "Enable Panel Lyrics",
         "desc": "Display current lyrics in the Now Playing panel"
       },
-      "panelLyricsLines": {
-        "label": "Panel Lyrics Lines",
+      "lines": {
+        "label": "Lyrics Lines",
         "desc": "Number of lyrics lines to show in the panel (default: 5)"
       },
-      "panelFontScale": {
-        "label": "Panel Font Scale",
-        "desc": "Font scale for lyrics in the panel (50%-200%)"
+      "fontScale": {
+        "label": "Overall Font Scale",
+        "desc": "Overall font scale for panel lyrics (50%-200%)"
+      },
+      "fontFamily": {
+        "label": "Default Font",
+        "desc": "Default font for panel lyrics (used when individual fonts are not set)"
+      },
+      "originalFont": {
+        "label": "Original Text Font",
+        "desc": "Font for original lyrics (empty = use default, comma-separated for multiple fonts)"
+      },
+      "phoneticFont": {
+        "label": "Phonetic Text Font",
+        "desc": "Font for phonetic text (empty = use default, comma-separated for multiple fonts)"
+      },
+      "translationFont": {
+        "label": "Translation Text Font",
+        "desc": "Font for translation text (empty = use default, comma-separated for multiple fonts)"
+      },
+      "originalSize": {
+        "label": "Original Text Size",
+        "desc": "Font size for original lyrics (px)"
+      },
+      "phoneticSize": {
+        "label": "Phonetic Text Size",
+        "desc": "Font size for phonetic text (px)"
+      },
+      "translationSize": {
+        "label": "Translation Text Size",
+        "desc": "Font size for translation text (px)"
+      },
+      "preview": "Preview",
+      "background": {
+        "title": "Background",
+        "subtitle": "Customize the panel background",
+        "type": {
+          "label": "Background Type",
+          "desc": "Choose background style",
+          "album": "Album Color",
+          "custom": "Custom Color",
+          "gradient": "Album-based Gradient"
+        },
+        "color": {
+          "label": "Background Color",
+          "desc": "Custom background color"
+        },
+        "gradient1": {
+          "label": "Gradient Color 1",
+          "desc": "First gradient color"
+        },
+        "gradient2": {
+          "label": "Gradient Color 2",
+          "desc": "Second gradient color"
+        },
+        "opacity": {
+          "label": "Background Opacity",
+          "desc": "Background opacity (0%=transparent, 100%=opaque)"
+        }
+      },
+      "border": {
+        "title": "Border",
+        "subtitle": "Customize the panel border",
+        "enabled": {
+          "label": "Enable Border",
+          "desc": "Show border around the panel"
+        },
+        "color": {
+          "label": "Border Color",
+          "desc": "Border color"
+        },
+        "opacity": {
+          "label": "Border Opacity",
+          "desc": "Border opacity (0%=transparent, 100%=opaque)"
+        }
       }
     },
     "karaokeMode": {

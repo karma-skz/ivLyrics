@@ -758,6 +758,94 @@ window.LANG_ZH_CN = {
         "desc": "面板歌词的字体大小比例（50%-200%）"
       }
     },
+    "nowPlayingPanel": {
+      "title": "正在播放面板歌词",
+      "subtitle": "右侧「正在播放」面板的歌词显示设置",
+      "enabled": {
+        "label": "启用面板歌词",
+        "desc": "在正在播放面板中显示当前歌词"
+      },
+      "lines": {
+        "label": "歌词行数",
+        "desc": "面板中显示的歌词行数（默认: 5）"
+      },
+      "fontScale": {
+        "label": "整体字体大小比例",
+        "desc": "面板歌词的整体大小比例（50%-200%）"
+      },
+      "fontFamily": {
+        "label": "默认字体",
+        "desc": "面板歌词使用的默认字体（未设置单独字体时适用）"
+      },
+      "originalFont": {
+        "label": "原文字体",
+        "desc": "原文歌词使用的字体（为空则使用默认字体，可用逗号分隔多个字体）"
+      },
+      "phoneticFont": {
+        "label": "发音字体",
+        "desc": "发音（罗马字等）使用的字体（为空则使用默认字体，可用逗号分隔多个字体）"
+      },
+      "translationFont": {
+        "label": "翻译字体",
+        "desc": "翻译歌词使用的字体（为空则使用默认字体，可用逗号分隔多个字体）"
+      },
+      "originalSize": {
+        "label": "原文字体大小",
+        "desc": "原文歌词的字体大小（px）"
+      },
+      "phoneticSize": {
+        "label": "发音字体大小",
+        "desc": "发音（罗马字等）的字体大小（px）"
+      },
+      "translationSize": {
+        "label": "翻译字体大小",
+        "desc": "翻译歌词的字体大小（px）"
+      },
+      "preview": "预览",
+      "background": {
+        "title": "背景",
+        "subtitle": "面板背景样式设置",
+        "type": {
+          "label": "背景类型",
+          "desc": "选择背景样式",
+          "album": "专辑颜色",
+          "custom": "自定义颜色",
+          "gradient": "专辑渐变"
+        },
+        "color": {
+          "label": "背景颜色",
+          "desc": "自定义背景颜色"
+        },
+        "gradient1": {
+          "label": "渐变色1",
+          "desc": "第一个渐变颜色"
+        },
+        "gradient2": {
+          "label": "渐变色2",
+          "desc": "第二个渐变颜色"
+        },
+        "opacity": {
+          "label": "背景不透明度",
+          "desc": "背景不透明度（0%=透明，100%=不透明）"
+        }
+      },
+      "border": {
+        "title": "边框",
+        "subtitle": "面板边框样式设置",
+        "enabled": {
+          "label": "启用边框",
+          "desc": "在面板周围显示边框"
+        },
+        "color": {
+          "label": "边框颜色",
+          "desc": "边框的颜色"
+        },
+        "opacity": {
+          "label": "边框不透明度",
+          "desc": "边框不透明度（0%=透明，100%=不透明）"
+        }
+      }
+    },
     "karaokeMode": {
       "title": "卡拉OK模式",
       "subtitle": "卡拉OK风格歌词显示",

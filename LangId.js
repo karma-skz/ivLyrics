@@ -730,6 +730,94 @@ window.LANG_ID = {
         "desc": "Skala ukuran font untuk lirik di panel (50%-200%)"
       }
     },
+    "nowPlayingPanel": {
+      "title": "Lirik Panel Sedang Diputar",
+      "subtitle": "Pengaturan tampilan lirik untuk panel Sedang Diputar di kanan",
+      "enabled": {
+        "label": "Aktifkan lirik panel",
+        "desc": "Tampilkan lirik saat ini di panel Sedang Diputar"
+      },
+      "lines": {
+        "label": "Baris lirik",
+        "desc": "Jumlah baris yang ditampilkan di panel (default: 5)"
+      },
+      "fontScale": {
+        "label": "Skala font keseluruhan",
+        "desc": "Skala font keseluruhan untuk lirik panel (50%-200%)"
+      },
+      "fontFamily": {
+        "label": "Font default",
+        "desc": "Font default untuk lirik panel (digunakan jika font individual tidak diatur)"
+      },
+      "originalFont": {
+        "label": "Font teks asli",
+        "desc": "Font untuk teks asli (kosong = font default, pisahkan beberapa dengan koma)"
+      },
+      "phoneticFont": {
+        "label": "Font pelafalan",
+        "desc": "Font untuk pelafalan (kosong = font default, pisahkan beberapa dengan koma)"
+      },
+      "translationFont": {
+        "label": "Font terjemahan",
+        "desc": "Font untuk teks terjemahan (kosong = font default, pisahkan beberapa dengan koma)"
+      },
+      "originalSize": {
+        "label": "Ukuran teks asli",
+        "desc": "Ukuran font teks asli (px)"
+      },
+      "phoneticSize": {
+        "label": "Ukuran pelafalan",
+        "desc": "Ukuran font pelafalan (px)"
+      },
+      "translationSize": {
+        "label": "Ukuran terjemahan",
+        "desc": "Ukuran font terjemahan (px)"
+      },
+      "preview": "Pratinjau",
+      "background": {
+        "title": "Latar Belakang",
+        "subtitle": "Pengaturan gaya latar belakang panel",
+        "type": {
+          "label": "Jenis latar belakang",
+          "desc": "Pilih gaya latar belakang",
+          "album": "Warna album",
+          "custom": "Warna kustom",
+          "gradient": "Gradien album"
+        },
+        "color": {
+          "label": "Warna latar belakang",
+          "desc": "Warna latar belakang kustom"
+        },
+        "gradient1": {
+          "label": "Warna gradien 1",
+          "desc": "Warna pertama gradien"
+        },
+        "gradient2": {
+          "label": "Warna gradien 2",
+          "desc": "Warna kedua gradien"
+        },
+        "opacity": {
+          "label": "Opasitas latar belakang",
+          "desc": "Opasitas latar belakang (0%=transparan, 100%=opak)"
+        }
+      },
+      "border": {
+        "title": "Batas",
+        "subtitle": "Pengaturan gaya batas panel",
+        "enabled": {
+          "label": "Aktifkan batas",
+          "desc": "Tampilkan batas di sekitar panel"
+        },
+        "color": {
+          "label": "Warna batas",
+          "desc": "Warna batas"
+        },
+        "opacity": {
+          "label": "Opasitas batas",
+          "desc": "Opasitas batas (0%=transparan, 100%=opak)"
+        }
+      }
+    },
     "karaokeMode": {
       "title": "Mode Karaoke",
       "subtitle": "Tampilkan lirik gaya Karaoke",

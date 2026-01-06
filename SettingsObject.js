@@ -158,6 +158,19 @@ const SettingKeys = [
   "ivLyrics:visual:translate-metadata-mode",
   "ivLyrics:visual:panel-font-scale",
   "ivLyrics:visual:video-helper-enabled",
+  "ivLyrics:visual:panel-lyrics-font-family",
+  "ivLyrics:visual:panel-lyrics-width",
+  "ivLyrics:visual:panel-lyrics-original-size",
+  "ivLyrics:visual:panel-lyrics-phonetic-size",
+  "ivLyrics:visual:panel-lyrics-translation-size",
+  "ivLyrics:visual:panel-bg-type",
+  "ivLyrics:visual:panel-bg-color",
+  "ivLyrics:visual:panel-bg-gradient-1",
+  "ivLyrics:visual:panel-bg-gradient-2",
+  "ivLyrics:visual:panel-bg-opacity",
+  "ivLyrics:visual:panel-border-enabled",
+  "ivLyrics:visual:panel-border-color",
+  "ivLyrics:visual:panel-border-opacity",
 ];
 
 const BYTES_FOR_INDEX = Math.ceil(SettingKeys.length / 255);

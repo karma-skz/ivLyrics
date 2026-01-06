@@ -19,11 +19,44 @@
     const STORAGE_KEY = "ivLyrics:visual:panel-lyrics-enabled";
     const PANEL_LINES_KEY = "ivLyrics:visual:panel-lyrics-lines";
     const FONT_SCALE_KEY = "ivLyrics:visual:panel-font-scale";
+    const FONT_FAMILY_KEY = "ivLyrics:visual:panel-lyrics-font-family";
+    const ORIGINAL_FONT_KEY = "ivLyrics:visual:panel-lyrics-original-font";
+    const PHONETIC_FONT_KEY = "ivLyrics:visual:panel-lyrics-phonetic-font";
+    const TRANSLATION_FONT_KEY = "ivLyrics:visual:panel-lyrics-translation-font";
+    const PANEL_WIDTH_KEY = "ivLyrics:visual:panel-lyrics-width";
+    const ORIGINAL_SIZE_KEY = "ivLyrics:visual:panel-lyrics-original-size";
+    const PHONETIC_SIZE_KEY = "ivLyrics:visual:panel-lyrics-phonetic-size";
+    const TRANSLATION_SIZE_KEY = "ivLyrics:visual:panel-lyrics-translation-size";
+    // 배경 설정 키
+    const BG_TYPE_KEY = "ivLyrics:visual:panel-bg-type";
+    const BG_COLOR_KEY = "ivLyrics:visual:panel-bg-color";
+    const BG_GRADIENT_1_KEY = "ivLyrics:visual:panel-bg-gradient-1";
+    const BG_GRADIENT_2_KEY = "ivLyrics:visual:panel-bg-gradient-2";
+    const BG_OPACITY_KEY = "ivLyrics:visual:panel-bg-opacity";
+    // 테두리 설정 키
+    const BORDER_ENABLED_KEY = "ivLyrics:visual:panel-border-enabled";
+    const BORDER_COLOR_KEY = "ivLyrics:visual:panel-border-color";
+    const BORDER_OPACITY_KEY = "ivLyrics:visual:panel-border-opacity";
 
     // 기본 설정값
     const DEFAULT_ENABLED = true;
     const DEFAULT_LINES = 5; // 표시할 가사 줄 수 (위 2, 현재 1, 아래 2)
     const DEFAULT_FONT_SCALE = 100; // 폰트 크기 배율 (50% ~ 200%)
+    const DEFAULT_FONT_FAMILY = "Pretendard Variable";
+    const DEFAULT_PANEL_WIDTH = 280;
+    const DEFAULT_ORIGINAL_SIZE = 18;
+    const DEFAULT_PHONETIC_SIZE = 13;
+    const DEFAULT_TRANSLATION_SIZE = 13;
+    // 배경 기본값
+    const DEFAULT_BG_TYPE = "album";
+    const DEFAULT_BG_COLOR = "#6366f1";
+    const DEFAULT_BG_GRADIENT_1 = "#6366f1";
+    const DEFAULT_BG_GRADIENT_2 = "#a855f7";
+    const DEFAULT_BG_OPACITY = 30;
+    // 테두리 기본값
+    const DEFAULT_BORDER_ENABLED = false;
+    const DEFAULT_BORDER_COLOR = "#ffffff";
+    const DEFAULT_BORDER_OPACITY = 10;
 
     // 패널 가사 컨테이너 CSS 클래스
     const PANEL_CONTAINER_CLASS = "ivlyrics-panel-lyrics-container";
@@ -37,11 +70,39 @@
 
     // ============================================
     // CSS 스타일 (Apple Music Card Lyrics 스타일)
-    // 앨범 색상 배경의 카드 박스, Pretendard 폰트
+    // 앨범 색상 배경의 카드 박스, 동적 폰트 설정
     // ============================================
-    const PANEL_STYLES = `
+    const getPanelStyles = () => {
+        const fontFamily = getStorageValue(FONT_FAMILY_KEY, DEFAULT_FONT_FAMILY) || DEFAULT_FONT_FAMILY;
+        const originalFont = getStorageValue(ORIGINAL_FONT_KEY, "") || "";
+        const phoneticFont = getStorageValue(PHONETIC_FONT_KEY, "") || "";
+        const translationFont = getStorageValue(TRANSLATION_FONT_KEY, "") || "";
+        const panelWidth = getStorageValue(PANEL_WIDTH_KEY, DEFAULT_PANEL_WIDTH);
+        const originalSize = getStorageValue(ORIGINAL_SIZE_KEY, DEFAULT_ORIGINAL_SIZE);
+        const phoneticSize = getStorageValue(PHONETIC_SIZE_KEY, DEFAULT_PHONETIC_SIZE);
+        const translationSize = getStorageValue(TRANSLATION_SIZE_KEY, DEFAULT_TRANSLATION_SIZE);
+        
+        // 개별 폰트가 설정되어 있으면 사용, 아니면 기본 폰트 사용
+        const baseFontStack = `'${fontFamily}', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif`;
+        const originalFontStack = originalFont ? `${originalFont}, ${baseFontStack}` : baseFontStack;
+        const phoneticFontStack = phoneticFont ? `${phoneticFont}, ${baseFontStack}` : baseFontStack;
+        const translationFontStack = translationFont ? `${translationFont}, ${baseFontStack}` : baseFontStack;
+        
+        return `
 /* Pretendard 폰트 import */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+
+/* NowPlaying 패널 가사 CSS 변수 */
+:root {
+  --ivlyrics-panel-width: ${panelWidth}px;
+  --ivlyrics-panel-font-family: ${baseFontStack};
+  --ivlyrics-panel-original-font: ${originalFontStack};
+  --ivlyrics-panel-phonetic-font: ${phoneticFontStack};
+  --ivlyrics-panel-translation-font: ${translationFontStack};
+  --ivlyrics-panel-original-size: ${originalSize}px;
+  --ivlyrics-panel-phonetic-size: ${phoneticSize}px;
+  --ivlyrics-panel-translation-size: ${translationSize}px;
+}
 
 /* ivLyrics 페이지에서는 패널 가사 숨기기 (중복 방지) */
 /* JavaScript에서 body에 클래스를 추가하는 방식으로 동작 */
@@ -59,7 +120,7 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
 /* Now Playing Panel Lyrics - 카드 스타일 */
 .ivlyrics-panel-lyrics-container {
   width: 100% !important;
-  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif !important;
+  font-family: var(--ivlyrics-panel-font-family) !important;
   order: 2 !important; /* 곡 정보 다음, 크레딧 전에 고정 위치 */
   --ivlyrics-font-scale: 1; /* 기본 스케일 (CSS 변수로 동적 조절) */
   cursor: pointer !important;
@@ -69,7 +130,8 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
 .ivlyrics-panel-lyrics-section {
   padding: 14px 16px 18px !important;
   border-radius: 12px !important;
-  background: var(--ivlyrics-panel-bg-color, rgba(80, 80, 80, 0.6)) !important;
+  background: var(--ivlyrics-panel-bg, rgba(80, 80, 80, 0.6)) !important;
+  border: var(--ivlyrics-panel-border, none) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
 }
@@ -88,7 +150,7 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
   color: rgba(255, 255, 255, 0.85) !important;
   margin: 0 !important;
   letter-spacing: 0.02em !important;
-  font-family: 'Pretendard Variable', Pretendard, sans-serif !important;
+  font-family: var(--ivlyrics-panel-font-family) !important;
 }
 
 /* 가사 래퍼 - 슬라이드 업 애니메이션 */
@@ -148,7 +210,7 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
   background: transparent !important;
   text-align: left !important;
-  font-family: 'Pretendard Variable', Pretendard, sans-serif !important;
+  font-family: var(--ivlyrics-panel-font-family) !important;
   animation: ivlyrics-slide-up 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
 }
 
@@ -170,12 +232,12 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
 
 /* 1. 발음 (Phonetic) - 아래에 작게 */
 .ivlyrics-panel-line-phonetic {
-  font-size: calc(13px * var(--ivlyrics-font-scale, 1)) !important;
+  font-size: calc(var(--ivlyrics-panel-phonetic-size, 13px) * var(--ivlyrics-font-scale, 1)) !important;
   font-weight: 400 !important;
   color: rgba(255, 255, 255, 0.55) !important;
   line-height: 1.35 !important;
   letter-spacing: 0.01em !important;
-  font-family: 'Pretendard Variable', Pretendard, sans-serif !important;
+  font-family: var(--ivlyrics-panel-phonetic-font) !important;
 }
 
 .ivlyrics-panel-line.active .ivlyrics-panel-line-phonetic {
@@ -184,14 +246,14 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
 
 /* 2. 원어 (Original Text) - 크고 볼드 */
 .ivlyrics-panel-line-text {
-  font-size: calc(18px * var(--ivlyrics-font-scale, 1)) !important;
+  font-size: calc(var(--ivlyrics-panel-original-size, 18px) * var(--ivlyrics-font-scale, 1)) !important;
   font-weight: 700 !important;
   color: rgba(255, 255, 255, 0.7) !important;
   line-height: 1.4 !important;
   letter-spacing: -0.01em !important;
   word-break: keep-all !important;
   overflow-wrap: break-word !important;
-  font-family: 'Pretendard Variable', Pretendard, sans-serif !important;
+  font-family: var(--ivlyrics-panel-original-font) !important;
 }
 
 .ivlyrics-panel-line.active .ivlyrics-panel-line-text {
@@ -201,12 +263,12 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
 
 /* 3. 번역 (Translation) - 아래에 작게 */
 .ivlyrics-panel-line-translation {
-  font-size: calc(13px * var(--ivlyrics-font-scale, 1)) !important;
+  font-size: calc(var(--ivlyrics-panel-translation-size, 13px) * var(--ivlyrics-font-scale, 1)) !important;
   font-weight: 500 !important;
   color: rgba(255, 255, 255, 0.5) !important;
   line-height: 1.35 !important;
   margin-top: 1px !important;
-  font-family: 'Pretendard Variable', Pretendard, sans-serif !important;
+  font-family: var(--ivlyrics-panel-translation-font) !important;
 }
 
 .ivlyrics-panel-line.active .ivlyrics-panel-line-translation {
@@ -220,10 +282,10 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 0px !important;
-  font-size: calc(18px * var(--ivlyrics-font-scale, 1)) !important;
+  font-size: calc(var(--ivlyrics-panel-original-size, 18px) * var(--ivlyrics-font-scale, 1)) !important;
   font-weight: 700 !important;
   line-height: 1.4 !important;
-  font-family: 'Pretendard Variable', Pretendard, sans-serif !important;
+  font-family: var(--ivlyrics-panel-original-font) !important;
 }
 
 .ivlyrics-panel-karaoke-space {
@@ -296,21 +358,50 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
   scrollbar-width: none !important;
 }
 `;
+    };
 
     // CSS 스타일 주입 함수
     const injectStyles = () => {
-        if (stylesInjected) return;
-        if (document.getElementById(PANEL_STYLE_ID)) {
+        const existingStyle = document.getElementById(PANEL_STYLE_ID);
+        if (existingStyle) {
+            // 기존 스타일이 있으면 업데이트
+            existingStyle.textContent = getPanelStyles();
             stylesInjected = true;
             return;
         }
 
         const styleElement = document.createElement('style');
         styleElement.id = PANEL_STYLE_ID;
-        styleElement.textContent = PANEL_STYLES;
+        styleElement.textContent = getPanelStyles();
         document.head.appendChild(styleElement);
         stylesInjected = true;
         console.log("[NowPlayingPanelLyrics] Styles injected");
+    };
+
+    // 스타일 업데이트 함수 (설정 변경 시 호출)
+    const updateStyles = () => {
+        const styleElement = document.getElementById(PANEL_STYLE_ID);
+        if (styleElement) {
+            styleElement.textContent = getPanelStyles();
+            console.log("[NowPlayingPanelLyrics] Styles updated");
+        } else {
+            injectStyles();
+        }
+    };
+
+    // CSS 변수 업데이트 함수 (빠른 업데이트용)
+    const updateCSSVariables = () => {
+        const fontFamily = getStorageValue(FONT_FAMILY_KEY, DEFAULT_FONT_FAMILY) || DEFAULT_FONT_FAMILY;
+        const panelWidth = getStorageValue(PANEL_WIDTH_KEY, DEFAULT_PANEL_WIDTH);
+        const originalSize = getStorageValue(ORIGINAL_SIZE_KEY, DEFAULT_ORIGINAL_SIZE);
+        const phoneticSize = getStorageValue(PHONETIC_SIZE_KEY, DEFAULT_PHONETIC_SIZE);
+        const translationSize = getStorageValue(TRANSLATION_SIZE_KEY, DEFAULT_TRANSLATION_SIZE);
+
+        document.documentElement.style.setProperty('--ivlyrics-panel-width', panelWidth + 'px');
+        document.documentElement.style.setProperty('--ivlyrics-panel-font-family', `'${fontFamily}', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif`);
+        document.documentElement.style.setProperty('--ivlyrics-panel-original-size', originalSize + 'px');
+        document.documentElement.style.setProperty('--ivlyrics-panel-phonetic-size', phoneticSize + 'px');
+        document.documentElement.style.setProperty('--ivlyrics-panel-translation-size', translationSize + 'px');
     };
 
     // 현재 가사 상태
@@ -822,6 +913,14 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
                 if (event.detail?.name === 'panel-font-scale') {
                     setFontScale(parseInt(event.detail.value, 10) || DEFAULT_FONT_SCALE);
                 }
+                // 새로운 설정들 처리 - CSS 변수 업데이트
+                if (event.detail?.name === 'panel-lyrics-width' ||
+                    event.detail?.name === 'panel-lyrics-font-family' ||
+                    event.detail?.name === 'panel-lyrics-original-size' ||
+                    event.detail?.name === 'panel-lyrics-phonetic-size' ||
+                    event.detail?.name === 'panel-lyrics-translation-size') {
+                    updateCSSVariables();
+                }
             };
 
             // 싱크 오프셋 변경 리스너
@@ -850,13 +949,23 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
 
         // 앨범 색상을 가져와서 카드 배경에 적용
         useEffect(() => {
-            const updateBackgroundColor = async () => {
+            // Hex to RGB 변환 헬퍼
+            const hexToRgb = (hex) => {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : { r: 80, g: 80, b: 80 };
+            };
+
+            // 앨범에서 색상 추출
+            const getAlbumColor = async () => {
                 try {
                     const trackUri = Spicetify.Player.data?.item?.uri;
-                    if (!trackUri) return;
+                    if (!trackUri) return null;
 
                     // Spotify에서 앨범 색상 추출
-                    let vibrantColor = null;
                     try {
                         const { fetchExtractedColorForTrackEntity } = Spicetify.GraphQL.Definitions;
                         const { data } = await Spicetify.GraphQL.Request(
@@ -864,7 +973,7 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
                             { uri: trackUri }
                         );
                         const { hex } = data.trackUnion.albumOfTrack.coverArt.extractedColors.colorDark;
-                        vibrantColor = hex;
+                        return hexToRgb(hex);
                     } catch {
                         // GraphQL 실패 시 CosmosAsync 시도
                         try {
@@ -875,58 +984,121 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
                                 (color) => color.preset === "VIBRANT_NON_ALARMING"
                             )?.color;
                             if (colorInt) {
-                                const r = (colorInt >> 16) & 255;
-                                const g = (colorInt >> 8) & 255;
-                                const b = colorInt & 255;
-                                vibrantColor = `rgb(${r}, ${g}, ${b})`;
+                                return {
+                                    r: (colorInt >> 16) & 255,
+                                    g: (colorInt >> 8) & 255,
+                                    b: colorInt & 255
+                                };
                             }
                         } catch {
                             // 색상 추출 실패
                         }
                     }
-
-                    // CSS 변수로 색상 적용
-                    if (vibrantColor) {
-                        // 색상을 약간 어둡게 하고 투명도 추가
-                        const section = document.querySelector('.ivlyrics-panel-lyrics-section');
-                        if (section) {
-                            // hex를 rgba로 변환
-                            let r, g, b;
-                            if (vibrantColor.startsWith('#')) {
-                                r = parseInt(vibrantColor.slice(1, 3), 16);
-                                g = parseInt(vibrantColor.slice(3, 5), 16);
-                                b = parseInt(vibrantColor.slice(5, 7), 16);
-                            } else if (vibrantColor.startsWith('rgb')) {
-                                const match = vibrantColor.match(/(\d+),\s*(\d+),\s*(\d+)/);
-                                if (match) {
-                                    r = parseInt(match[1]);
-                                    g = parseInt(match[2]);
-                                    b = parseInt(match[3]);
-                                }
-                            }
-                            if (r !== undefined) {
-                                // 약간 어둡게 조정
-                                r = Math.floor(r * 0.7);
-                                g = Math.floor(g * 0.7);
-                                b = Math.floor(b * 0.7);
-                                section.style.setProperty('--ivlyrics-panel-bg-color', `rgba(${r}, ${g}, ${b}, 0.85)`);
-                                section.style.background = `rgba(${r}, ${g}, ${b}, 0.85)`;
-                            }
-                        }
-                    }
                 } catch (error) {
                     console.error('[NowPlayingPanelLyrics] Failed to get album color:', error);
                 }
+                return null;
             };
 
-            // 초기 색상 적용
-            updateBackgroundColor();
+            const updatePanelStyles = async () => {
+                const section = document.querySelector('.ivlyrics-panel-lyrics-section');
+                if (!section) return;
 
-            // 곡 변경 시 색상 업데이트
-            Spicetify.Player.addEventListener('songchange', updateBackgroundColor);
+                // 설정값 읽기
+                const bgType = getStorageValue(BG_TYPE_KEY, DEFAULT_BG_TYPE);
+                const bgColor = getStorageValue(BG_COLOR_KEY, DEFAULT_BG_COLOR);
+                const bgGradient1 = getStorageValue(BG_GRADIENT_1_KEY, DEFAULT_BG_GRADIENT_1);
+                const bgGradient2 = getStorageValue(BG_GRADIENT_2_KEY, DEFAULT_BG_GRADIENT_2);
+                const bgOpacity = getStorageValue(BG_OPACITY_KEY, DEFAULT_BG_OPACITY) / 100;
+                const borderEnabled = getStorageValue(BORDER_ENABLED_KEY, DEFAULT_BORDER_ENABLED);
+                const borderColor = getStorageValue(BORDER_COLOR_KEY, DEFAULT_BORDER_COLOR);
+                const borderOpacity = getStorageValue(BORDER_OPACITY_KEY, DEFAULT_BORDER_OPACITY) / 100;
+
+                let backgroundStyle = '';
+                
+                // 배경 유형에 따른 스타일 계산
+                if (bgType === 'album') {
+                    // 앨범 색상 기반
+                    const albumRgb = await getAlbumColor();
+                    if (albumRgb) {
+                        // 약간 어둡게 조정
+                        const r = Math.floor(albumRgb.r * 0.7);
+                        const g = Math.floor(albumRgb.g * 0.7);
+                        const b = Math.floor(albumRgb.b * 0.7);
+                        backgroundStyle = `rgba(${r}, ${g}, ${b}, ${bgOpacity})`;
+                    } else {
+                        backgroundStyle = `rgba(80, 80, 80, ${bgOpacity})`;
+                    }
+                } else if (bgType === 'custom') {
+                    // 사용자 지정 단색
+                    const rgb = hexToRgb(bgColor);
+                    backgroundStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${bgOpacity})`;
+                } else if (bgType === 'gradient') {
+                    // 그라데이션 - 앨범 색상 기반으로 자동 생성
+                    const albumRgb = await getAlbumColor();
+                    if (albumRgb) {
+                        // 앨범 색상을 기반으로 그라데이션 생성
+                        const r1 = Math.floor(albumRgb.r * 0.8);
+                        const g1 = Math.floor(albumRgb.g * 0.8);
+                        const b1 = Math.floor(albumRgb.b * 0.8);
+                        // 보색 또는 밝은 버전으로 두 번째 색상 생성
+                        const r2 = Math.min(255, Math.floor(albumRgb.r * 1.2));
+                        const g2 = Math.min(255, Math.floor(albumRgb.g * 0.6));
+                        const b2 = Math.min(255, Math.floor(albumRgb.b * 1.3));
+                        backgroundStyle = `linear-gradient(135deg, rgba(${r1}, ${g1}, ${b1}, ${bgOpacity}) 0%, rgba(${r2}, ${g2}, ${b2}, ${bgOpacity}) 100%)`;
+                    } else {
+                        // 앨범 색상 없으면 기본 그라데이션
+                        const rgb1 = hexToRgb(bgGradient1);
+                        const rgb2 = hexToRgb(bgGradient2);
+                        backgroundStyle = `linear-gradient(135deg, rgba(${rgb1.r}, ${rgb1.g}, ${rgb1.b}, ${bgOpacity}) 0%, rgba(${rgb2.r}, ${rgb2.g}, ${rgb2.b}, ${bgOpacity}) 100%)`;
+                    }
+                }
+
+                // 테두리 스타일 계산
+                let borderStyle = 'none';
+                if (borderEnabled) {
+                    const rgb = hexToRgb(borderColor);
+                    borderStyle = `1px solid rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${borderOpacity})`;
+                }
+
+                // CSS 변수 및 직접 스타일 적용
+                section.style.setProperty('--ivlyrics-panel-bg', backgroundStyle);
+                section.style.setProperty('--ivlyrics-panel-border', borderStyle);
+                section.style.background = backgroundStyle;
+                section.style.border = borderStyle;
+                
+                // 불투명도가 0이면 backdrop-filter도 제거
+                if (bgOpacity === 0) {
+                    section.style.backdropFilter = 'none';
+                    section.style.webkitBackdropFilter = 'none';
+                } else {
+                    section.style.backdropFilter = 'blur(20px) saturate(180%)';
+                    section.style.webkitBackdropFilter = 'blur(20px) saturate(180%)';
+                }
+            };
+
+            // 초기 스타일 적용
+            updatePanelStyles();
+
+            // 곡 변경 시 스타일 업데이트
+            Spicetify.Player.addEventListener('songchange', updatePanelStyles);
+
+            // 설정 변경 시 스타일 업데이트
+            const handleSettingsUpdate = (event) => {
+                const { name } = event.detail || {};
+                if (name && (name.startsWith('panel-bg') || name.startsWith('panel-border') || name.startsWith('panel-lyrics-font') || name.startsWith('panel-lyrics-original') || name.startsWith('panel-lyrics-phonetic') || name.startsWith('panel-lyrics-translation'))) {
+                    updatePanelStyles();
+                    // 폰트 관련 설정 변경 시 CSS도 재주입
+                    if (name.includes('font')) {
+                        injectStyles();
+                    }
+                }
+            };
+            window.addEventListener('ivLyrics', handleSettingsUpdate);
 
             return () => {
-                Spicetify.Player.removeEventListener('songchange', updateBackgroundColor);
+                Spicetify.Player.removeEventListener('songchange', updatePanelStyles);
+                window.removeEventListener('ivLyrics', handleSettingsUpdate);
             };
         }, []);
 
@@ -1371,6 +1543,9 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
         // 가사 리스너 설정
         setupLyricsListener();
 
+        // CSS 변수 초기화
+        updateCSSVariables();
+
         // 초기 삽입 시도
         setTimeout(insertPanelLyrics, 1000);
 
@@ -1384,6 +1559,14 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
                     if (panelObserver) panelObserver.disconnect();
                     removePanelLyrics();
                 }
+            }
+            // 새로운 패널 설정 변경 시 CSS 변수 업데이트
+            if (event.detail?.name === 'panel-lyrics-width' ||
+                event.detail?.name === 'panel-lyrics-font-family' ||
+                event.detail?.name === 'panel-lyrics-original-size' ||
+                event.detail?.name === 'panel-lyrics-phonetic-size' ||
+                event.detail?.name === 'panel-lyrics-translation-size') {
+                updateCSSVariables();
             }
         });
 
@@ -1415,7 +1598,9 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
                     currentIndex: currentLyricsState.currentIndex
                 }
             }));
-        }
+        },
+        updateStyles: updateStyles,
+        updateCSSVariables: updateCSSVariables
     };
 
 })();

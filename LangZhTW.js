@@ -758,6 +758,94 @@ window.LANG_ZH_TW = {
         "desc": "面板歌詞的字型大小比例（50%-200%）"
       }
     },
+    "nowPlayingPanel": {
+      "title": "正在播放面板歌詞",
+      "subtitle": "右側「正在播放」面板的歌詞顯示設定",
+      "enabled": {
+        "label": "啟用面板歌詞",
+        "desc": "在正在播放面板中顯示當前歌詞"
+      },
+      "lines": {
+        "label": "歌詞行數",
+        "desc": "面板中顯示的歌詞行數（預設: 5）"
+      },
+      "fontScale": {
+        "label": "整體字型比例",
+        "desc": "面板歌詞的整體大小比例（50%-200%）"
+      },
+      "fontFamily": {
+        "label": "預設字型",
+        "desc": "面板歌詞使用的預設字型（未設定個別字型時適用）"
+      },
+      "originalFont": {
+        "label": "原文字型",
+        "desc": "原文歌詞使用的字型（空白則使用預設字型，可用逗號分隔多個字型）"
+      },
+      "phoneticFont": {
+        "label": "發音字型",
+        "desc": "發音（羅馬字等）使用的字型（空白則使用預設字型，可用逗號分隔多個字型）"
+      },
+      "translationFont": {
+        "label": "翻譯字型",
+        "desc": "翻譯歌詞使用的字型（空白則使用預設字型，可用逗號分隔多個字型）"
+      },
+      "originalSize": {
+        "label": "原文字型大小",
+        "desc": "原文歌詞的字型大小（px）"
+      },
+      "phoneticSize": {
+        "label": "發音字型大小",
+        "desc": "發音（羅馬字等）的字型大小（px）"
+      },
+      "translationSize": {
+        "label": "翻譯字型大小",
+        "desc": "翻譯歌詞的字型大小（px）"
+      },
+      "preview": "預覽",
+      "background": {
+        "title": "背景",
+        "subtitle": "面板背景樣式設定",
+        "type": {
+          "label": "背景類型",
+          "desc": "選擇背景樣式",
+          "album": "專輯顏色",
+          "custom": "自訂顏色",
+          "gradient": "專輯漸層"
+        },
+        "color": {
+          "label": "背景顏色",
+          "desc": "自訂背景顏色"
+        },
+        "gradient1": {
+          "label": "漸層色1",
+          "desc": "第一個漸層顏色"
+        },
+        "gradient2": {
+          "label": "漸層色2",
+          "desc": "第二個漸層顏色"
+        },
+        "opacity": {
+          "label": "背景不透明度",
+          "desc": "背景不透明度（0%=透明，100%=不透明）"
+        }
+      },
+      "border": {
+        "title": "邊框",
+        "subtitle": "面板邊框樣式設定",
+        "enabled": {
+          "label": "啟用邊框",
+          "desc": "在面板周圍顯示邊框"
+        },
+        "color": {
+          "label": "邊框顏色",
+          "desc": "邊框的顏色"
+        },
+        "opacity": {
+          "label": "邊框不透明度",
+          "desc": "邊框不透明度（0%=透明，100%=不透明）"
+        }
+      }
+    },
     "karaokeMode": {
       "title": "卡拉OK模式",
       "subtitle": "卡拉OK風格歌詞顯示",

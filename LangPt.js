@@ -758,6 +758,94 @@ window.LANG_PT = {
         "desc": "Escala de fonte para letras no painel (50%-200%)"
       }
     },
+    "nowPlayingPanel": {
+      "title": "Letras do painel Tocando agora",
+      "subtitle": "Configuracoes de exibicao de letra para o painel Tocando agora a direita",
+      "enabled": {
+        "label": "Ativar letras do painel",
+        "desc": "Mostrar letras atuais no painel Tocando agora"
+      },
+      "lines": {
+        "label": "Linhas de letras",
+        "desc": "Numero de linhas a mostrar no painel (padrao: 5)"
+      },
+      "fontScale": {
+        "label": "Escala de fonte global",
+        "desc": "Escala de fonte global para letras do painel (50%-200%)"
+      },
+      "fontFamily": {
+        "label": "Fonte padrao",
+        "desc": "Fonte padrao para letras do painel (usada se nenhuma fonte individual for definida)"
+      },
+      "originalFont": {
+        "label": "Fonte do texto original",
+        "desc": "Fonte para o texto original (vazio = fonte padrao, varias separadas por virgula)"
+      },
+      "phoneticFont": {
+        "label": "Fonte de pronuncia",
+        "desc": "Fonte para a pronuncia (vazio = fonte padrao, varias separadas por virgula)"
+      },
+      "translationFont": {
+        "label": "Fonte de traducao",
+        "desc": "Fonte para o texto traduzido (vazio = fonte padrao, varias separadas por virgula)"
+      },
+      "originalSize": {
+        "label": "Tamanho do texto original",
+        "desc": "Tamanho da fonte do texto original (px)"
+      },
+      "phoneticSize": {
+        "label": "Tamanho da pronuncia",
+        "desc": "Tamanho da fonte da pronuncia (px)"
+      },
+      "translationSize": {
+        "label": "Tamanho da traducao",
+        "desc": "Tamanho da fonte da traducao (px)"
+      },
+      "preview": "Pre-visualizacao",
+      "background": {
+        "title": "Fundo",
+        "subtitle": "Configuracoes de estilo de fundo do painel",
+        "type": {
+          "label": "Tipo de fundo",
+          "desc": "Escolher o estilo de fundo",
+          "album": "Cor do album",
+          "custom": "Cor personalizada",
+          "gradient": "Degradado do album"
+        },
+        "color": {
+          "label": "Cor de fundo",
+          "desc": "Cor de fundo personalizada"
+        },
+        "gradient1": {
+          "label": "Cor de degradado 1",
+          "desc": "Primeira cor do degradado"
+        },
+        "gradient2": {
+          "label": "Cor de degradado 2",
+          "desc": "Segunda cor do degradado"
+        },
+        "opacity": {
+          "label": "Opacidade do fundo",
+          "desc": "Opacidade do fundo (0%=transparente, 100%=opaco)"
+        }
+      },
+      "border": {
+        "title": "Borda",
+        "subtitle": "Configuracoes de estilo de borda do painel",
+        "enabled": {
+          "label": "Ativar borda",
+          "desc": "Mostrar uma borda ao redor do painel"
+        },
+        "color": {
+          "label": "Cor da borda",
+          "desc": "Cor da borda"
+        },
+        "opacity": {
+          "label": "Opacidade da borda",
+          "desc": "Opacidade da borda (0%=transparente, 100%=opaco)"
+        }
+      }
+    },
     "karaokeMode": {
       "title": "Modo Karaokê",
       "subtitle": "Exibição de letra estilo karaokê",

@@ -754,8 +754,96 @@ window.LANG_VI = {
         "desc": "Số dòng lời bài hát hiển thị trong bảng (mặc định: 5)"
       },
       "panelFontScale": {
-        "label": "Tỷ lệ cỡ chữ",
-        "desc": "Tỷ lệ cỡ chữ cho lời bài hát trong bảng (50%-200%)"
+        "label": "Ty le co chu",
+        "desc": "Ty le co chu cho loi bai hat trong bang (50%-200%)"
+      }
+    },
+    "nowPlayingPanel": {
+      "title": "Loi bai hat bang Dang phat",
+      "subtitle": "Cai dat hien thi loi bai hat cho bang Dang phat ben phai",
+      "enabled": {
+        "label": "Bat loi bai hat bang",
+        "desc": "Hien thi loi bai hat hien tai trong bang Dang phat"
+      },
+      "lines": {
+        "label": "So dong loi bai hat",
+        "desc": "So dong hien thi trong bang (mac dinh: 5)"
+      },
+      "fontScale": {
+        "label": "Ty le co chu tong",
+        "desc": "Ty le co chu tong cho loi bai hat bang (50%-200%)"
+      },
+      "fontFamily": {
+        "label": "Phong chu mac dinh",
+        "desc": "Phong chu mac dinh cho loi bai hat bang (dung khi khong co phong rieng)"
+      },
+      "originalFont": {
+        "label": "Phong chu van ban goc",
+        "desc": "Phong chu cho van ban goc (trong = phong mac dinh, nhieu phong phan cach bang dau phay)"
+      },
+      "phoneticFont": {
+        "label": "Phong chu phat am",
+        "desc": "Phong chu cho phat am (trong = phong mac dinh, nhieu phong phan cach bang dau phay)"
+      },
+      "translationFont": {
+        "label": "Phong chu ban dich",
+        "desc": "Phong chu cho van ban dich (trong = phong mac dinh, nhieu phong phan cach bang dau phay)"
+      },
+      "originalSize": {
+        "label": "Co chu van ban goc",
+        "desc": "Co chu cua van ban goc (px)"
+      },
+      "phoneticSize": {
+        "label": "Co chu phat am",
+        "desc": "Co chu cua phat am (px)"
+      },
+      "translationSize": {
+        "label": "Co chu ban dich",
+        "desc": "Co chu cua ban dich (px)"
+      },
+      "preview": "Xem truoc",
+      "background": {
+        "title": "Nen",
+        "subtitle": "Cai dat kieu nen bang",
+        "type": {
+          "label": "Loai nen",
+          "desc": "Chon kieu nen",
+          "album": "Mau album",
+          "custom": "Mau tuy chinh",
+          "gradient": "Chuyen mau album"
+        },
+        "color": {
+          "label": "Mau nen",
+          "desc": "Mau nen tuy chinh"
+        },
+        "gradient1": {
+          "label": "Mau chuyen 1",
+          "desc": "Mau dau tien cua chuyen mau"
+        },
+        "gradient2": {
+          "label": "Mau chuyen 2",
+          "desc": "Mau thu hai cua chuyen mau"
+        },
+        "opacity": {
+          "label": "Do trong suot nen",
+          "desc": "Do trong suot cua nen (0%=trong suot, 100%=duc)"
+        }
+      },
+      "border": {
+        "title": "Vien",
+        "subtitle": "Cai dat kieu vien bang",
+        "enabled": {
+          "label": "Bat vien",
+          "desc": "Hien thi vien xung quanh bang"
+        },
+        "color": {
+          "label": "Mau vien",
+          "desc": "Mau cua vien"
+        },
+        "opacity": {
+          "label": "Do trong suot vien",
+          "desc": "Do trong suot cua vien (0%=trong suot, 100%=duc)"
+        }
       }
     },
     "karaokeMode": {

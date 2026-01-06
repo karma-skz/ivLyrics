@@ -1704,30 +1704,47 @@ const ConfigFontSelector = ({
   defaultValue,
   onChange = () => { },
 }) => {
-  const [useCustomFont, setUseCustomFont] = useState(() => {
-    // 기본값이 Google Fonts 목록에 없으면 커스텀 폰트 사용 중
-    return defaultValue && !GOOGLE_FONTS.includes(defaultValue);
-  });
+  // 커스텀 폰트 여부 판단: defaultValue가 존재하고, 문자열이며, 비어있지 않고, Google Fonts에 없는 경우만 true
+  const isCustomFontValue = (val) => {
+    if (!val || typeof val !== 'string') return false;
+    const trimmed = val.trim();
+    // "undefined" 문자열도 무효로 처리
+    if (trimmed === "" || trimmed === "undefined") return false;
+    return !GOOGLE_FONTS.includes(trimmed);
+  };
+
+  // 기본값 안전하게 처리 - "undefined" 문자열도 무효로 처리
+  const getSafeValue = (val) => {
+    if (!val || typeof val !== 'string') return "";
+    const trimmed = val.trim();
+    if (trimmed === "" || trimmed === "undefined") return "";
+    return trimmed;
+  };
+
+  const safeDefaultValue = getSafeValue(defaultValue);
+
+  const [useCustomFont, setUseCustomFont] = useState(() => isCustomFontValue(safeDefaultValue));
   const [selectedFont, setSelectedFont] = useState(() => {
-    if (defaultValue && GOOGLE_FONTS.includes(defaultValue)) {
-      return defaultValue;
+    if (!safeDefaultValue || GOOGLE_FONTS.includes(safeDefaultValue)) {
+      return GOOGLE_FONTS.includes(safeDefaultValue) ? safeDefaultValue : "Pretendard Variable";
     }
     return "Pretendard Variable";
   });
   const [customFont, setCustomFont] = useState(() => {
-    if (defaultValue && !GOOGLE_FONTS.includes(defaultValue)) {
-      return defaultValue;
+    if (isCustomFontValue(safeDefaultValue)) {
+      return safeDefaultValue;
     }
     return "";
   });
 
   useEffect(() => {
-    const isCustom = defaultValue && !GOOGLE_FONTS.includes(defaultValue);
+    const safeVal = getSafeValue(defaultValue);
+    const isCustom = isCustomFontValue(safeVal);
     setUseCustomFont(isCustom);
     if (isCustom) {
-      setCustomFont(defaultValue);
-    } else if (defaultValue) {
-      setSelectedFont(defaultValue);
+      setCustomFont(safeVal);
+    } else if (safeVal && GOOGLE_FONTS.includes(safeVal)) {
+      setSelectedFont(safeVal);
     }
   }, [defaultValue]);
 
@@ -1777,7 +1794,7 @@ const ConfigFontSelector = ({
         type: "text",
         value: customFont,
         onChange: handleCustomFontChange,
-        placeholder: I18n.t("settings.fontPlaceholder"),
+        placeholder: I18n.t("settings.fontPlaceholder") || "폰트명 입력 (예: Arial, 맑은 고딕)",
         style: commonStyle,
       })
       : react.createElement(
@@ -1828,6 +1845,229 @@ const ConfigFontSelector = ({
   }
 
   return fontSelector;
+};
+
+// NowPlaying 패널 가사 미리보기 컴포넌트
+const NowPlayingPanelPreview = () => {
+  const [fontFamily, setFontFamily] = useState(CONFIG.visual["panel-lyrics-font-family"] || "Pretendard Variable");
+  const [originalFont, setOriginalFont] = useState(CONFIG.visual["panel-lyrics-original-font"] || "");
+  const [phoneticFont, setPhoneticFont] = useState(CONFIG.visual["panel-lyrics-phonetic-font"] || "");
+  const [translationFont, setTranslationFont] = useState(CONFIG.visual["panel-lyrics-translation-font"] || "");
+  const [fontScale, setFontScale] = useState(parseInt(CONFIG.visual["panel-font-scale"], 10) || 100);
+  const [originalSize, setOriginalSize] = useState(parseInt(CONFIG.visual["panel-lyrics-original-size"], 10) || 18);
+  const [phoneticSize, setPhoneticSize] = useState(parseInt(CONFIG.visual["panel-lyrics-phonetic-size"], 10) || 13);
+  const [translationSize, setTranslationSize] = useState(parseInt(CONFIG.visual["panel-lyrics-translation-size"], 10) || 13);
+  const [linesCount, setLinesCount] = useState(parseInt(CONFIG.visual["panel-lyrics-lines"], 10) || 5);
+  
+  // 배경 설정
+  const [bgType, setBgType] = useState(CONFIG.visual["panel-bg-type"] || "album");
+  const [bgColor, setBgColor] = useState(CONFIG.visual["panel-bg-color"] || "#6366f1");
+  const [bgGradient1, setBgGradient1] = useState(CONFIG.visual["panel-bg-gradient-1"] || "#6366f1");
+  const [bgGradient2, setBgGradient2] = useState(CONFIG.visual["panel-bg-gradient-2"] || "#a855f7");
+  const [bgOpacity, setBgOpacity] = useState(parseInt(CONFIG.visual["panel-bg-opacity"], 10) || 30);
+  
+  // Border 설정
+  const [borderEnabled, setBorderEnabled] = useState(CONFIG.visual["panel-border-enabled"] ?? false);
+  const [borderColor, setBorderColor] = useState(CONFIG.visual["panel-border-color"] || "#ffffff");
+  const [borderOpacity, setBorderOpacity] = useState(parseInt(CONFIG.visual["panel-border-opacity"], 10) || 10);
+
+  // 설정 변경 리스너
+  useEffect(() => {
+    const handlePreviewUpdate = (event) => {
+      const { name, value } = event.detail || {};
+      if (name === "panel-lyrics-font-family") setFontFamily(value || "Pretendard Variable");
+      if (name === "panel-lyrics-original-font") setOriginalFont(value || "");
+      if (name === "panel-lyrics-phonetic-font") setPhoneticFont(value || "");
+      if (name === "panel-lyrics-translation-font") setTranslationFont(value || "");
+      if (name === "panel-font-scale") setFontScale(parseInt(value, 10) || 100);
+      if (name === "panel-lyrics-original-size") setOriginalSize(parseInt(value, 10) || 18);
+      if (name === "panel-lyrics-phonetic-size") setPhoneticSize(parseInt(value, 10) || 13);
+      if (name === "panel-lyrics-translation-size") setTranslationSize(parseInt(value, 10) || 13);
+      if (name === "panel-lyrics-lines") setLinesCount(parseInt(value, 10) || 5);
+      // 배경 설정
+      if (name === "panel-bg-type") setBgType(value || "album");
+      if (name === "panel-bg-color") setBgColor(value || "#6366f1");
+      if (name === "panel-bg-gradient-1") setBgGradient1(value || "#6366f1");
+      if (name === "panel-bg-gradient-2") setBgGradient2(value || "#a855f7");
+      if (name === "panel-bg-opacity") setBgOpacity(parseInt(value, 10) || 30);
+      // Border 설정
+      if (name === "panel-border-enabled") setBorderEnabled(value === true || value === "true");
+      if (name === "panel-border-color") setBorderColor(value || "#ffffff");
+      if (name === "panel-border-opacity") setBorderOpacity(parseInt(value, 10) || 10);
+    };
+
+    window.addEventListener("ivLyrics:panel-preview-update", handlePreviewUpdate);
+    return () => window.removeEventListener("ivLyrics:panel-preview-update", handlePreviewUpdate);
+  }, []);
+
+  const scale = fontScale / 100;
+  const baseFontFamily = `'${fontFamily}', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif`;
+  // 개별 폰트가 설정되어 있으면 사용, 아니면 기본 폰트 사용
+  const originalFontFamily = originalFont ? `${originalFont}, ${baseFontFamily}` : baseFontFamily;
+  const phoneticFontFamily = phoneticFont ? `${phoneticFont}, ${baseFontFamily}` : baseFontFamily;
+  const translationFontFamily = translationFont ? `${translationFont}, ${baseFontFamily}` : baseFontFamily;
+
+  // 샘플 가사 데이터 (원어 → 발음 → 번역 순서)
+  const allSampleLyrics = [
+    { original: "君を好きになって", phonetic: "kimi wo suki ni natte", translation: "너를 좋아하게 되어서" },
+    { original: "しまったみたいだ", phonetic: "shimatta mitai da", translation: "버린 것 같아" },
+    { original: "どんな言葉を", phonetic: "donna kotoba wo", translation: "어떤 말을" },
+    { original: "選んでも足りない", phonetic: "erande mo tarinai", translation: "골라도 부족해" },
+    { original: "君と過ごす時間", phonetic: "kimi to sugosu jikan", translation: "너와 보내는 시간" },
+    { original: "全てが宝物", phonetic: "subete ga takaramono", translation: "전부 소중해" },
+    { original: "もう離れたくない", phonetic: "mou hanaretakunai", translation: "이제 떨어지고 싶지 않아" },
+    { original: "ずっとそばにいて", phonetic: "zutto soba ni ite", translation: "계속 곁에 있어줘" },
+    { original: "この気持ちが", phonetic: "kono kimochi ga", translation: "이 마음이" },
+  ];
+
+  // 가사 줄 수에 맞춰 표시 (중앙이 active)
+  const activeIndex = Math.floor(linesCount / 2);
+  const sampleLyrics = allSampleLyrics.slice(0, linesCount).map((line, idx) => ({
+    ...line,
+    active: idx === activeIndex
+  }));
+
+  // 배경 스타일 계산
+  const getBackgroundStyle = () => {
+    const opacityValue = bgOpacity / 100;
+    switch (bgType) {
+      case "custom":
+        // 사용자 지정 단색
+        const customRgb = hexToRgb(bgColor);
+        return `rgba(${customRgb.r}, ${customRgb.g}, ${customRgb.b}, ${opacityValue})`;
+      case "gradient":
+        // 그라데이션
+        const grad1Rgb = hexToRgb(bgGradient1);
+        const grad2Rgb = hexToRgb(bgGradient2);
+        return `linear-gradient(135deg, rgba(${grad1Rgb.r}, ${grad1Rgb.g}, ${grad1Rgb.b}, ${opacityValue}) 0%, rgba(${grad2Rgb.r}, ${grad2Rgb.g}, ${grad2Rgb.b}, ${opacityValue}) 100%)`;
+      case "album":
+      default:
+        // 앨범 기반 (기본 보라색 그라데이션으로 시뮬레이션)
+        return `linear-gradient(135deg, rgba(99, 102, 241, ${opacityValue}) 0%, rgba(168, 85, 247, ${opacityValue}) 100%)`;
+    }
+  };
+
+  // Border 스타일 계산
+  const getBorderStyle = () => {
+    if (!borderEnabled) return "none";
+    const borderRgb = hexToRgb(borderColor);
+    const borderOpacityValue = borderOpacity / 100;
+    return `1px solid rgba(${borderRgb.r}, ${borderRgb.g}, ${borderRgb.b}, ${borderOpacityValue})`;
+  };
+
+  // Hex to RGB 변환 헬퍼
+  const hexToRgb = (hex) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : { r: 99, g: 102, b: 241 };
+  };
+
+  return react.createElement(
+    "div",
+    {
+      className: "option-list-wrapper",
+      style: { marginBottom: "16px" }
+    },
+    react.createElement(
+      "div",
+      {
+        style: {
+          padding: "16px",
+          background: getBackgroundStyle(),
+          backdropFilter: bgOpacity === 0 ? "none" : "blur(20px)",
+          border: getBorderStyle(),
+        }
+      },
+      // 미리보기 헤더
+      react.createElement(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            marginBottom: "12px",
+            fontSize: "11px",
+            fontWeight: "700",
+            color: "rgba(255, 255, 255, 0.85)",
+            letterSpacing: "0.02em",
+          }
+        },
+        "🎵 " + (I18n.t("settingsAdvanced.nowPlayingPanel.preview") || "Preview")
+      ),
+      // 가사 미리보기 (원어 → 발음 → 번역 순서)
+      react.createElement(
+        "div",
+        {
+          style: {
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+          }
+        },
+        ...sampleLyrics.map((line, idx) =>
+          react.createElement(
+            "div",
+            {
+              key: idx,
+              style: {
+                display: "flex",
+                flexDirection: "column",
+                gap: "2px",
+                padding: "4px 0",
+                opacity: line.active ? 1 : 0.5,
+                transition: "opacity 0.3s ease",
+              }
+            },
+            // 원문 (가장 먼저)
+            react.createElement(
+              "div",
+              {
+                style: {
+                  fontSize: `${originalSize * scale}px`,
+                  fontWeight: line.active ? 800 : 700,
+                  color: line.active ? "#ffffff" : "rgba(255, 255, 255, 0.7)",
+                  lineHeight: 1.4,
+                  fontFamily: originalFontFamily,
+                }
+              },
+              line.original
+            ),
+            // 발음 (두 번째)
+            react.createElement(
+              "div",
+              {
+                style: {
+                  fontSize: `${phoneticSize * scale}px`,
+                  fontWeight: 400,
+                  color: line.active ? "rgba(255, 255, 255, 0.75)" : "rgba(255, 255, 255, 0.55)",
+                  lineHeight: 1.35,
+                  fontFamily: phoneticFontFamily,
+                }
+              },
+              line.phonetic
+            ),
+            // 번역 (마지막)
+            react.createElement(
+              "div",
+              {
+                style: {
+                  fontSize: `${translationSize * scale}px`,
+                  fontWeight: 500,
+                  color: line.active ? "rgba(255, 255, 255, 0.8)" : "rgba(255, 255, 255, 0.5)",
+                  lineHeight: 1.35,
+                  fontFamily: translationFontFamily,
+                }
+              },
+              line.translation
+            )
+          )
+        )
+      )
+    )
+  );
 };
 
 const ConfigAdjust = ({
@@ -2221,7 +2461,7 @@ const OptionList = ({ type, items, onChange }) => {
       );
     }
 
-    // ConfigButton, ConfigInput, ConfigHotkey는 자체적으로 setting-row를 만들므로 wrapper 불필요
+    // ConfigButton, ConfigInput, ConfigHotkey, ConfigFontSelector는 자체적으로 setting-row를 만들므로 wrapper 불필요
     if (
       item.type === ConfigButton ||
       item.type === ConfigInput ||
@@ -2229,6 +2469,7 @@ const OptionList = ({ type, items, onChange }) => {
       item.type === ConfigWarning ||
       item.type === ConfigInfo ||
       item.type === ConfigKeyList ||
+      item.type === ConfigFontSelector ||
       item.type === VideoHelperToggle
     ) {
       // item.onChange가 있으면 그것을 우선 사용 (업데이트 확인, 내보내기 등 커스텀 핸들러)
@@ -3244,6 +3485,109 @@ const ConfigModal = () => {
     );
   };
 
+  // 스크롤 가능한 탭 바 컴포넌트
+  const ScrollableTabBar = ({ children, activeTab }) => {
+    const tabsRef = react.useRef(null);
+    const [showLeftArrow, setShowLeftArrow] = react.useState(false);
+    const [showRightArrow, setShowRightArrow] = react.useState(false);
+
+    const checkScrollButtons = react.useCallback(() => {
+      const container = tabsRef.current;
+      if (!container) return;
+      
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      setShowLeftArrow(scrollLeft > 5);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 5);
+    }, []);
+
+    react.useEffect(() => {
+      const container = tabsRef.current;
+      if (!container) return;
+
+      checkScrollButtons();
+      container.addEventListener('scroll', checkScrollButtons);
+      window.addEventListener('resize', checkScrollButtons);
+
+      // ResizeObserver로 컨테이너 크기 변화 감지
+      const resizeObserver = new ResizeObserver(checkScrollButtons);
+      resizeObserver.observe(container);
+
+      return () => {
+        container.removeEventListener('scroll', checkScrollButtons);
+        window.removeEventListener('resize', checkScrollButtons);
+        resizeObserver.disconnect();
+      };
+    }, [checkScrollButtons]);
+
+    // 활성 탭이 변경되면 해당 탭으로 스크롤
+    react.useEffect(() => {
+      const container = tabsRef.current;
+      if (!container) return;
+
+      const activeButton = container.querySelector(`[data-tab-id="${activeTab}"]`);
+      if (activeButton) {
+        const containerRect = container.getBoundingClientRect();
+        const buttonRect = activeButton.getBoundingClientRect();
+        
+        if (buttonRect.left < containerRect.left || buttonRect.right > containerRect.right) {
+          activeButton.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      }
+    }, [activeTab]);
+
+    const scroll = (direction) => {
+      const container = tabsRef.current;
+      if (!container) return;
+      
+      const scrollAmount = container.clientWidth * 0.6;
+      container.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    };
+
+    return react.createElement(
+      "div",
+      { className: "settings-tabs-wrapper" },
+      // 왼쪽 스크롤 버튼
+      react.createElement(
+        "button",
+        {
+          className: `settings-tabs-scroll-btn left ${showLeftArrow ? 'visible' : ''}`,
+          onClick: () => scroll('left'),
+          "aria-label": "Scroll left",
+        },
+        react.createElement("svg", {
+          viewBox: "0 0 16 16",
+          dangerouslySetInnerHTML: {
+            __html: '<path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>'
+          }
+        })
+      ),
+      // 탭 컨테이너
+      react.createElement(
+        "div",
+        { className: "settings-tabs", ref: tabsRef },
+        children
+      ),
+      // 오른쪽 스크롤 버튼
+      react.createElement(
+        "button",
+        {
+          className: `settings-tabs-scroll-btn right ${showRightArrow ? 'visible' : ''}`,
+          onClick: () => scroll('right'),
+          "aria-label": "Scroll right",
+        },
+        react.createElement("svg", {
+          viewBox: "0 0 16 16",
+          dangerouslySetInnerHTML: {
+            __html: '<path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>'
+          }
+        })
+      )
+    );
+  };
+
   const TabContainer = ({ children }) => {
     return react.createElement(
       "div",
@@ -3437,22 +3781,72 @@ const ConfigModal = () => {
     transform: translateY(0) scale(0.98);
 }
 
+/* 탭 영역 래퍼 (스크롤 화살표 포함) */
+#${APP_NAME}-config-container .settings-tabs-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--glass-bg);
+    border-bottom: 1px solid var(--glass-border);
+    flex-shrink: 0;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    position: relative;
+}
+
+#${APP_NAME}-config-container .settings-tabs-scroll-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 40px;
+    background: linear-gradient(90deg, var(--spice-player), transparent);
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#${APP_NAME}-config-container .settings-tabs-scroll-btn.right {
+    background: linear-gradient(-90deg, var(--spice-player), transparent);
+}
+
+#${APP_NAME}-config-container .settings-tabs-scroll-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#${APP_NAME}-config-container .settings-tabs-scroll-btn:hover {
+    color: var(--text-primary);
+    background: linear-gradient(90deg, var(--glass-bg-hover), transparent);
+}
+
+#${APP_NAME}-config-container .settings-tabs-scroll-btn.right:hover {
+    background: linear-gradient(-90deg, var(--glass-bg-hover), transparent);
+}
+
+#${APP_NAME}-config-container .settings-tabs-scroll-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
 /* 탭 영역 */
 #${APP_NAME}-config-container .settings-tabs {
     display: flex;
     gap: 6px;
-    padding: 16px 32px;
-    background: var(--glass-bg);
-    border-bottom: 1px solid var(--glass-border);
+    padding: 16px 16px;
     flex-shrink: 0;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
     flex-wrap: nowrap;
+    flex: 1;
 }
 
 #${APP_NAME}-config-container .settings-tabs::-webkit-scrollbar {
@@ -4425,8 +4819,8 @@ const ConfigModal = () => {
     }),
     react.createElement(HeaderSection),
     react.createElement(
-      "div",
-      { className: "settings-tabs" },
+      ScrollableTabBar,
+      { activeTab },
       react.createElement(TabButton, {
         id: "general",
         label: I18n.t("tabs.general"),
@@ -4467,6 +4861,13 @@ const ConfigModal = () => {
         label: I18n.t("tabs.fullscreen"),
         icon: "",
         isActive: activeTab === "fullscreen",
+        onClick: setActiveTab,
+      }),
+      react.createElement(TabButton, {
+        id: "nowplaying",
+        label: I18n.t("tabs.nowplaying"),
+        icon: "",
+        isActive: activeTab === "nowplaying",
         onClick: setActiveTab,
       }),
       react.createElement(TabButton, {
@@ -5640,39 +6041,6 @@ const ConfigModal = () => {
               key: "fullscreen-button",
               info: I18n.t("settingsAdvanced.playback.replaceFullscreenButton.info") || "Replaces Spotify's default fullscreen button with ivLyrics fullscreen",
               type: ConfigSlider,
-            },
-            {
-              desc: I18n.t("settingsAdvanced.playback.panelLyrics.label") || "Show Lyrics in Right Panel",
-              key: "panel-lyrics-enabled",
-              info: I18n.t("settingsAdvanced.playback.panelLyrics.desc") || "Display current lyrics in the Now Playing panel",
-              type: ConfigSlider,
-            },
-            {
-              desc: I18n.t("settingsAdvanced.playback.panelLyricsLines.label") || "Panel Lyrics Lines",
-              key: "panel-lyrics-lines",
-              info: I18n.t("settingsAdvanced.playback.panelLyricsLines.desc") || "Number of lyrics lines to show in the panel",
-              type: ConfigSelection,
-              options: {
-                "3": "3",
-                "5": "5",
-                "7": "7",
-                "9": "9",
-              },
-            },
-            {
-              desc: I18n.t("settingsAdvanced.playback.panelFontScale.label") || "Panel Font Scale",
-              key: "panel-font-scale",
-              info: I18n.t("settingsAdvanced.playback.panelFontScale.desc") || "Font scale for lyrics in the panel (50%-200%)",
-              type: ConfigSelection,
-              options: {
-                "50": "50%",
-                "75": "75%",
-                "100": "100%",
-                "125": "125%",
-                "150": "150%",
-                "175": "175%",
-                "200": "200%",
-              },
             },
           ],
           onChange: (name, value) => {
@@ -6858,6 +7226,219 @@ const ConfigModal = () => {
             window.dispatchEvent(
               new CustomEvent("ivLyrics", {
                 detail: { type: "config", name, value },
+              })
+            );
+          },
+        })
+      ),
+      // NowPlaying 패널 가사 탭
+      react.createElement(
+        "div",
+        {
+          className: `tab-content ${activeTab === "nowplaying" ? "active" : ""}`,
+        },
+        react.createElement(SectionTitle, {
+          title: I18n.t("settingsAdvanced.nowPlayingPanel.title") || "NowPlaying Panel Lyrics",
+          subtitle: I18n.t("settingsAdvanced.nowPlayingPanel.subtitle") || "Lyrics display settings for the Now Playing panel",
+        }),
+        // 미리보기 컴포넌트
+        react.createElement(NowPlayingPanelPreview),
+        react.createElement(OptionList, {
+          items: [
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.enabled.label") || "Enable Panel Lyrics",
+              key: "panel-lyrics-enabled",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.enabled.desc") || "Display current lyrics in the Now Playing panel",
+              type: ConfigSlider,
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.lines.label") || "Lyrics Lines",
+              key: "panel-lyrics-lines",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.lines.desc") || "Number of lyrics lines to show in the panel",
+              type: ConfigSelection,
+              options: {
+                "3": "3",
+                "5": "5",
+                "7": "7",
+                "9": "9",
+              },
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.fontFamily.label") || "Font Family",
+              key: "panel-lyrics-font-family",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.fontFamily.desc") || "Font for panel lyrics",
+              type: ConfigFontSelector,
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.originalFont.label") || "Original Text Font",
+              key: "panel-lyrics-original-font",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.originalFont.desc") || "Font for original lyrics (empty = use default, comma-separated for multiple fonts)",
+              type: ConfigFontSelector,
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.phoneticFont.label") || "Phonetic Text Font",
+              key: "panel-lyrics-phonetic-font",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.phoneticFont.desc") || "Font for phonetic text (empty = use default, comma-separated for multiple fonts)",
+              type: ConfigFontSelector,
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.translationFont.label") || "Translation Text Font",
+              key: "panel-lyrics-translation-font",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.translationFont.desc") || "Font for translation text (empty = use default, comma-separated for multiple fonts)",
+              type: ConfigFontSelector,
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.fontScale.label") || "Overall Font Scale",
+              key: "panel-font-scale",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.fontScale.desc") || "Overall font scale for panel lyrics (50%-200%)",
+              type: ConfigSliderRange,
+              min: 50,
+              max: 200,
+              step: 5,
+              unit: "%",
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.originalSize.label") || "Original Text Size",
+              key: "panel-lyrics-original-size",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.originalSize.desc") || "Font size for original lyrics (px)",
+              type: ConfigSliderRange,
+              min: 10,
+              max: 30,
+              step: 1,
+              unit: "px",
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.phoneticSize.label") || "Phonetic Text Size",
+              key: "panel-lyrics-phonetic-size",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.phoneticSize.desc") || "Font size for phonetic text (px)",
+              type: ConfigSliderRange,
+              min: 8,
+              max: 24,
+              step: 1,
+              unit: "px",
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.translationSize.label") || "Translation Text Size",
+              key: "panel-lyrics-translation-size",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.translationSize.desc") || "Font size for translation text (px)",
+              type: ConfigSliderRange,
+              min: 8,
+              max: 24,
+              step: 1,
+              unit: "px",
+            },
+          ],
+          onChange: (name, value) => {
+            CONFIG.visual[name] = value;
+            StorageManager.saveConfig(name, value);
+            // 패널 가사 업데이트 이벤트 발생
+            window.dispatchEvent(
+              new CustomEvent("ivLyrics", {
+                detail: { type: "config", name, value },
+              })
+            );
+            // 미리보기 업데이트를 위한 이벤트
+            window.dispatchEvent(
+              new CustomEvent("ivLyrics:panel-preview-update", {
+                detail: { name, value },
+              })
+            );
+          },
+        }),
+        // 배경 설정 섹션
+        react.createElement(SectionTitle, {
+          title: I18n.t("settingsAdvanced.nowPlayingPanel.background.title") || "Background",
+          subtitle: I18n.t("settingsAdvanced.nowPlayingPanel.background.subtitle") || "Customize the panel background",
+        }),
+        react.createElement(OptionList, {
+          items: [
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.background.type.label") || "Background Type",
+              key: "panel-bg-type",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.background.type.desc") || "Choose background style",
+              type: ConfigSelection,
+              options: {
+                "album": I18n.t("settingsAdvanced.nowPlayingPanel.background.type.album") || "Album Color",
+                "custom": I18n.t("settingsAdvanced.nowPlayingPanel.background.type.custom") || "Custom Color",
+                "gradient": I18n.t("settingsAdvanced.nowPlayingPanel.background.type.gradient") || "Gradient",
+              },
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.background.color.label") || "Background Color",
+              key: "panel-bg-color",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.background.color.desc") || "Custom background color",
+              type: ConfigColorPicker,
+              when: () => CONFIG.visual["panel-bg-type"] === "custom",
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.background.opacity.label") || "Background Opacity",
+              key: "panel-bg-opacity",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.background.opacity.desc") || "Background transparency (0-100%)",
+              type: ConfigSliderRange,
+              min: 0,
+              max: 100,
+              step: 5,
+              unit: "%",
+            },
+          ],
+          onChange: (name, value) => {
+            CONFIG.visual[name] = value;
+            StorageManager.saveConfig(name, value);
+            window.dispatchEvent(
+              new CustomEvent("ivLyrics", {
+                detail: { type: "config", name, value },
+              })
+            );
+            window.dispatchEvent(
+              new CustomEvent("ivLyrics:panel-preview-update", {
+                detail: { name, value },
+              })
+            );
+          },
+        }),
+        // Border 설정 섹션
+        react.createElement(SectionTitle, {
+          title: I18n.t("settingsAdvanced.nowPlayingPanel.border.title") || "Border",
+          subtitle: I18n.t("settingsAdvanced.nowPlayingPanel.border.subtitle") || "Customize the panel border",
+        }),
+        react.createElement(OptionList, {
+          items: [
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.border.enabled.label") || "Enable Border",
+              key: "panel-border-enabled",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.border.enabled.desc") || "Show border around the panel",
+              type: ConfigSlider,
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.border.color.label") || "Border Color",
+              key: "panel-border-color",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.border.color.desc") || "Border color",
+              type: ConfigColorPicker,
+              when: () => CONFIG.visual["panel-border-enabled"] === true,
+            },
+            {
+              desc: I18n.t("settingsAdvanced.nowPlayingPanel.border.opacity.label") || "Border Opacity",
+              key: "panel-border-opacity",
+              info: I18n.t("settingsAdvanced.nowPlayingPanel.border.opacity.desc") || "Border transparency (0-100%)",
+              type: ConfigSliderRange,
+              min: 0,
+              max: 100,
+              step: 5,
+              unit: "%",
+              when: () => CONFIG.visual["panel-border-enabled"] === true,
+            },
+          ],
+          onChange: (name, value) => {
+            CONFIG.visual[name] = value;
+            StorageManager.saveConfig(name, value);
+            window.dispatchEvent(
+              new CustomEvent("ivLyrics", {
+                detail: { type: "config", name, value },
+              })
+            );
+            window.dispatchEvent(
+              new CustomEvent("ivLyrics:panel-preview-update", {
+                detail: { name, value },
               })
             );
           },

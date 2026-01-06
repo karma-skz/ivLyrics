@@ -754,8 +754,96 @@ window.LANG_FR = {
         "desc": "Nombre de lignes de paroles à afficher dans le panneau (par défaut: 5)"
       },
       "panelFontScale": {
-        "label": "Échelle de police du panneau",
-        "desc": "Échelle de police pour les paroles du panneau (50%-200%)"
+        "label": "Echelle de police du panneau",
+        "desc": "Echelle de police pour les paroles du panneau (50%-200%)"
+      }
+    },
+    "nowPlayingPanel": {
+      "title": "Paroles du panneau En lecture",
+      "subtitle": "Parametres d'affichage des paroles pour le panneau En lecture a droite",
+      "enabled": {
+        "label": "Activer les paroles du panneau",
+        "desc": "Afficher les paroles actuelles dans le panneau En lecture"
+      },
+      "lines": {
+        "label": "Lignes de paroles",
+        "desc": "Nombre de lignes a afficher dans le panneau (par defaut: 5)"
+      },
+      "fontScale": {
+        "label": "Echelle de police globale",
+        "desc": "Echelle de police globale pour les paroles du panneau (50%-200%)"
+      },
+      "fontFamily": {
+        "label": "Police par defaut",
+        "desc": "Police par defaut pour les paroles du panneau (utilisee si aucune police individuelle n'est definie)"
+      },
+      "originalFont": {
+        "label": "Police du texte original",
+        "desc": "Police pour le texte original (vide = police par defaut, plusieurs separees par virgule)"
+      },
+      "phoneticFont": {
+        "label": "Police de prononciation",
+        "desc": "Police pour la prononciation (vide = police par defaut, plusieurs separees par virgule)"
+      },
+      "translationFont": {
+        "label": "Police de traduction",
+        "desc": "Police pour le texte traduit (vide = police par defaut, plusieurs separees par virgule)"
+      },
+      "originalSize": {
+        "label": "Taille du texte original",
+        "desc": "Taille de police du texte original (px)"
+      },
+      "phoneticSize": {
+        "label": "Taille de prononciation",
+        "desc": "Taille de police de la prononciation (px)"
+      },
+      "translationSize": {
+        "label": "Taille de traduction",
+        "desc": "Taille de police de la traduction (px)"
+      },
+      "preview": "Apercu",
+      "background": {
+        "title": "Arriere-plan",
+        "subtitle": "Parametres de style d'arriere-plan du panneau",
+        "type": {
+          "label": "Type d'arriere-plan",
+          "desc": "Choisir le style d'arriere-plan",
+          "album": "Couleur de l'album",
+          "custom": "Couleur personnalisee",
+          "gradient": "Degrade de l'album"
+        },
+        "color": {
+          "label": "Couleur d'arriere-plan",
+          "desc": "Couleur d'arriere-plan personnalisee"
+        },
+        "gradient1": {
+          "label": "Couleur de degrade 1",
+          "desc": "Premiere couleur du degrade"
+        },
+        "gradient2": {
+          "label": "Couleur de degrade 2",
+          "desc": "Deuxieme couleur du degrade"
+        },
+        "opacity": {
+          "label": "Opacite de l'arriere-plan",
+          "desc": "Opacite de l'arriere-plan (0%=transparent, 100%=opaque)"
+        }
+      },
+      "border": {
+        "title": "Bordure",
+        "subtitle": "Parametres de style de bordure du panneau",
+        "enabled": {
+          "label": "Activer la bordure",
+          "desc": "Afficher une bordure autour du panneau"
+        },
+        "color": {
+          "label": "Couleur de bordure",
+          "desc": "Couleur de la bordure"
+        },
+        "opacity": {
+          "label": "Opacite de la bordure",
+          "desc": "Opacite de la bordure (0%=transparent, 100%=opaque)"
+        }
       }
     },
     "karaokeMode": {

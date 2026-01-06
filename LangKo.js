@@ -12,6 +12,7 @@ window.LANG_KO = {
     "providers": "제공자",
     "advanced": "고급",
     "fullscreen": "전체화면",
+    "nowplaying": "패널 가사",
     "debug": "디버그",
     "about": "정보",
     "searchResults": "검색 결과"
@@ -744,18 +745,94 @@ window.LANG_KO = {
       "fullscreenShortcut": {
         "label": "전체화면 단축키",
         "desc": "가사 전체화면 모드를 위한 키보드 단축키"
-      },
-      "panelLyrics": {
-        "label": "우측 패널에 가사 표시",
+      }
+    },
+    "nowPlayingPanel": {
+      "title": "NowPlaying 패널 가사",
+      "subtitle": "우측 '지금 재생 중' 패널의 가사 표시 설정",
+      "enabled": {
+        "label": "패널 가사 활성화",
         "desc": "지금 재생 중 패널에 현재 가사를 표시합니다"
       },
-      "panelLyricsLines": {
-        "label": "패널 가사 줄 수",
+      "lines": {
+        "label": "가사 줄 수",
         "desc": "패널에 표시할 가사 줄 수 (기본: 5)"
       },
-      "panelFontScale": {
-        "label": "패널 글꼴 크기",
-        "desc": "패널 가사의 글꼴 크기 비율 (50%-200%)"
+      "fontScale": {
+        "label": "전체 글꼴 크기 배율",
+        "desc": "패널 가사의 전체 크기 비율 (50%-200%)"
+      },
+      "fontFamily": {
+        "label": "기본 글꼴",
+        "desc": "패널 가사에 사용할 기본 글꼴 (개별 폰트 미설정 시 적용)"
+      },
+      "originalFont": {
+        "label": "원문 글꼴",
+        "desc": "원문 가사에 사용할 글꼴 (비어있으면 기본 글꼴 사용, 쉼표로 여러 폰트 지정 가능)"
+      },
+      "phoneticFont": {
+        "label": "발음 글꼴",
+        "desc": "발음(로마자 등)에 사용할 글꼴 (비어있으면 기본 글꼴 사용, 쉼표로 여러 폰트 지정 가능)"
+      },
+      "translationFont": {
+        "label": "번역 글꼴",
+        "desc": "번역 가사에 사용할 글꼴 (비어있으면 기본 글꼴 사용, 쉼표로 여러 폰트 지정 가능)"
+      },
+      "originalSize": {
+        "label": "원문 글꼴 크기",
+        "desc": "원문 가사의 기본 폰트 크기 (px)"
+      },
+      "phoneticSize": {
+        "label": "발음 글꼴 크기",
+        "desc": "발음(로마자 등)의 기본 폰트 크기 (px)"
+      },
+      "translationSize": {
+        "label": "번역 글꼴 크기",
+        "desc": "번역 가사의 기본 폰트 크기 (px)"
+      },
+      "preview": "미리보기",
+      "background": {
+        "title": "배경",
+        "subtitle": "패널 배경 스타일 설정",
+        "type": {
+          "label": "배경 유형",
+          "desc": "배경 스타일을 선택합니다",
+          "album": "앨범 색상",
+          "custom": "사용자 지정 색상",
+          "gradient": "앨범 기반 그라데이션"
+        },
+        "color": {
+          "label": "배경 색상",
+          "desc": "사용자 지정 배경 색상"
+        },
+        "gradient1": {
+          "label": "그라데이션 색상 1",
+          "desc": "첫 번째 그라데이션 색상"
+        },
+        "gradient2": {
+          "label": "그라데이션 색상 2",
+          "desc": "두 번째 그라데이션 색상"
+        },
+        "opacity": {
+          "label": "배경 불투명도",
+          "desc": "배경 불투명도 (0%=투명, 100%=불투명)"
+        }
+      },
+      "border": {
+        "title": "테두리",
+        "subtitle": "패널 테두리 스타일 설정",
+        "enabled": {
+          "label": "테두리 활성화",
+          "desc": "패널 주위에 테두리를 표시합니다"
+        },
+        "color": {
+          "label": "테두리 색상",
+          "desc": "테두리 색상"
+        },
+        "opacity": {
+          "label": "테두리 불투명도",
+          "desc": "테두리 불투명도 (0%=투명, 100%=불투명)"
+        }
       }
     },
     "karaokeMode": {

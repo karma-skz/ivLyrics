@@ -758,6 +758,94 @@ window.LANG_IT = {
         "desc": "Scala del font per i testi nel pannello (50%-200%)"
       }
     },
+    "nowPlayingPanel": {
+      "title": "Testi del pannello In riproduzione",
+      "subtitle": "Impostazioni di visualizzazione testi per il pannello In riproduzione a destra",
+      "enabled": {
+        "label": "Attiva testi del pannello",
+        "desc": "Mostra i testi attuali nel pannello In riproduzione"
+      },
+      "lines": {
+        "label": "Righe di testo",
+        "desc": "Numero di righe da mostrare nel pannello (predefinito: 5)"
+      },
+      "fontScale": {
+        "label": "Scala font globale",
+        "desc": "Scala font globale per i testi del pannello (50%-200%)"
+      },
+      "fontFamily": {
+        "label": "Font predefinito",
+        "desc": "Font predefinito per i testi del pannello (usato se non e impostato un font individuale)"
+      },
+      "originalFont": {
+        "label": "Font del testo originale",
+        "desc": "Font per il testo originale (vuoto = font predefinito, piu font separati da virgola)"
+      },
+      "phoneticFont": {
+        "label": "Font di pronuncia",
+        "desc": "Font per la pronuncia (vuoto = font predefinito, piu font separati da virgola)"
+      },
+      "translationFont": {
+        "label": "Font di traduzione",
+        "desc": "Font per il testo tradotto (vuoto = font predefinito, piu font separati da virgola)"
+      },
+      "originalSize": {
+        "label": "Dimensione testo originale",
+        "desc": "Dimensione font del testo originale (px)"
+      },
+      "phoneticSize": {
+        "label": "Dimensione pronuncia",
+        "desc": "Dimensione font della pronuncia (px)"
+      },
+      "translationSize": {
+        "label": "Dimensione traduzione",
+        "desc": "Dimensione font della traduzione (px)"
+      },
+      "preview": "Anteprima",
+      "background": {
+        "title": "Sfondo",
+        "subtitle": "Impostazioni stile sfondo del pannello",
+        "type": {
+          "label": "Tipo di sfondo",
+          "desc": "Scegli lo stile di sfondo",
+          "album": "Colore dell'album",
+          "custom": "Colore personalizzato",
+          "gradient": "Sfumatura dell'album"
+        },
+        "color": {
+          "label": "Colore di sfondo",
+          "desc": "Colore di sfondo personalizzato"
+        },
+        "gradient1": {
+          "label": "Colore sfumatura 1",
+          "desc": "Primo colore della sfumatura"
+        },
+        "gradient2": {
+          "label": "Colore sfumatura 2",
+          "desc": "Secondo colore della sfumatura"
+        },
+        "opacity": {
+          "label": "Opacita dello sfondo",
+          "desc": "Opacita dello sfondo (0%=trasparente, 100%=opaco)"
+        }
+      },
+      "border": {
+        "title": "Bordo",
+        "subtitle": "Impostazioni stile bordo del pannello",
+        "enabled": {
+          "label": "Attiva bordo",
+          "desc": "Mostra un bordo attorno al pannello"
+        },
+        "color": {
+          "label": "Colore del bordo",
+          "desc": "Colore del bordo"
+        },
+        "opacity": {
+          "label": "Opacita del bordo",
+          "desc": "Opacita del bordo (0%=trasparente, 100%=opaco)"
+        }
+      }
+    },
     "karaokeMode": {
       "title": "Modalità Karaoke",
       "subtitle": "Visualizzazione testo stile karaoke",

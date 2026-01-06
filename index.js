@@ -1068,6 +1068,39 @@ const CONFIG = {
       StorageManager.getItem("ivLyrics:visual:panel-lyrics-lines") || "5",
     "panel-font-scale":
       StorageManager.getItem("ivLyrics:visual:panel-font-scale") || "100",
+    "panel-lyrics-font-family":
+      StorageManager.getItem("ivLyrics:visual:panel-lyrics-font-family") ||
+      "Pretendard Variable",
+    "panel-lyrics-original-font":
+      StorageManager.getItem("ivLyrics:visual:panel-lyrics-original-font") || "",
+    "panel-lyrics-phonetic-font":
+      StorageManager.getItem("ivLyrics:visual:panel-lyrics-phonetic-font") || "",
+    "panel-lyrics-translation-font":
+      StorageManager.getItem("ivLyrics:visual:panel-lyrics-translation-font") || "",
+    "panel-lyrics-original-size":
+      StorageManager.getItem("ivLyrics:visual:panel-lyrics-original-size") || "18",
+    "panel-lyrics-phonetic-size":
+      StorageManager.getItem("ivLyrics:visual:panel-lyrics-phonetic-size") || "13",
+    "panel-lyrics-translation-size":
+      StorageManager.getItem("ivLyrics:visual:panel-lyrics-translation-size") || "13",
+    "panel-bg-type":
+      StorageManager.getItem("ivLyrics:visual:panel-bg-type") || "album",
+    "panel-bg-color":
+      StorageManager.getItem("ivLyrics:visual:panel-bg-color") || "#6366f1",
+    "panel-bg-gradient-1":
+      StorageManager.getItem("ivLyrics:visual:panel-bg-gradient-1") || "#6366f1",
+    "panel-bg-gradient-2":
+      StorageManager.getItem("ivLyrics:visual:panel-bg-gradient-2") || "#a855f7",
+    "panel-bg-opacity":
+      StorageManager.getItem("ivLyrics:visual:panel-bg-opacity") || "30",
+    "panel-border-enabled": StorageManager.get(
+      "ivLyrics:visual:panel-border-enabled",
+      false
+    ),
+    "panel-border-color":
+      StorageManager.getItem("ivLyrics:visual:panel-border-color") || "#ffffff",
+    "panel-border-opacity":
+      StorageManager.getItem("ivLyrics:visual:panel-border-opacity") || "10",
     colorful: StorageManager.get("ivLyrics:visual:colorful", false),
     "gradient-background": StorageManager.get(
       "ivLyrics:visual:gradient-background"

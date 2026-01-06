@@ -758,6 +758,94 @@ window.LANG_ES = {
         "desc": "Escala de fuente para las letras del panel (50%-200%)"
       }
     },
+    "nowPlayingPanel": {
+      "title": "Letras del panel Reproduciendo ahora",
+      "subtitle": "Configuracion de visualizacion de letras para el panel Reproduciendo ahora a la derecha",
+      "enabled": {
+        "label": "Activar letras del panel",
+        "desc": "Mostrar letras actuales en el panel Reproduciendo ahora"
+      },
+      "lines": {
+        "label": "Lineas de letras",
+        "desc": "Numero de lineas a mostrar en el panel (por defecto: 5)"
+      },
+      "fontScale": {
+        "label": "Escala de fuente global",
+        "desc": "Escala de fuente global para las letras del panel (50%-200%)"
+      },
+      "fontFamily": {
+        "label": "Fuente predeterminada",
+        "desc": "Fuente predeterminada para las letras del panel (se usa si no hay fuente individual)"
+      },
+      "originalFont": {
+        "label": "Fuente del texto original",
+        "desc": "Fuente para el texto original (vacio = fuente predeterminada, varias separadas por coma)"
+      },
+      "phoneticFont": {
+        "label": "Fuente de pronunciacion",
+        "desc": "Fuente para la pronunciacion (vacio = fuente predeterminada, varias separadas por coma)"
+      },
+      "translationFont": {
+        "label": "Fuente de traduccion",
+        "desc": "Fuente para el texto traducido (vacio = fuente predeterminada, varias separadas por coma)"
+      },
+      "originalSize": {
+        "label": "Tamano del texto original",
+        "desc": "Tamano de fuente del texto original (px)"
+      },
+      "phoneticSize": {
+        "label": "Tamano de pronunciacion",
+        "desc": "Tamano de fuente de la pronunciacion (px)"
+      },
+      "translationSize": {
+        "label": "Tamano de traduccion",
+        "desc": "Tamano de fuente de la traduccion (px)"
+      },
+      "preview": "Vista previa",
+      "background": {
+        "title": "Fondo",
+        "subtitle": "Configuracion de estilo de fondo del panel",
+        "type": {
+          "label": "Tipo de fondo",
+          "desc": "Elegir el estilo de fondo",
+          "album": "Color del album",
+          "custom": "Color personalizado",
+          "gradient": "Degradado del album"
+        },
+        "color": {
+          "label": "Color de fondo",
+          "desc": "Color de fondo personalizado"
+        },
+        "gradient1": {
+          "label": "Color de degradado 1",
+          "desc": "Primer color del degradado"
+        },
+        "gradient2": {
+          "label": "Color de degradado 2",
+          "desc": "Segundo color del degradado"
+        },
+        "opacity": {
+          "label": "Opacidad del fondo",
+          "desc": "Opacidad del fondo (0%=transparente, 100%=opaco)"
+        }
+      },
+      "border": {
+        "title": "Borde",
+        "subtitle": "Configuracion de estilo de borde del panel",
+        "enabled": {
+          "label": "Activar borde",
+          "desc": "Mostrar un borde alrededor del panel"
+        },
+        "color": {
+          "label": "Color del borde",
+          "desc": "Color del borde"
+        },
+        "opacity": {
+          "label": "Opacidad del borde",
+          "desc": "Opacidad del borde (0%=transparente, 100%=opaco)"
+        }
+      }
+    },
     "karaokeMode": {
       "title": "Modo karaoke",
       "subtitle": "Visualización de letras estilo karaoke",
