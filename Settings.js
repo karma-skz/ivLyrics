@@ -968,7 +968,7 @@ const DebugInfoPanel = () => {
   );
 };
 
-const ConfigButton = ({ name, info, text, onChange = () => { } }) => {
+const ConfigButton = ({ name, settingKey, info, text, onChange = () => { } }) => {
   return react.createElement(
     "div",
     {
@@ -996,7 +996,7 @@ const ConfigButton = ({ name, info, text, onChange = () => { } }) => {
           "button",
           {
             className: "btn",
-            onClick: onChange,
+            onClick: (event) => onChange(settingKey || name, event),
           },
           text
         )
@@ -1635,16 +1635,16 @@ const ConfigSelection = ({
   );
 };
 
-const ConfigInput = ({ name, defaultValue, onChange = () => { }, inputType = "text" }) => {
+const ConfigInput = ({ name, settingKey, defaultValue, onChange = () => { }, inputType = "text" }) => {
   const [value, setValue] = useState(defaultValue);
 
   const setValueCallback = useCallback(
     (event) => {
       const value = event.target.value;
       setValue(value);
-      onChange(value);
+      onChange(settingKey || name, value);
     },
-    [value]
+    [value, name, settingKey]
   );
 
   return react.createElement(
@@ -1881,7 +1881,7 @@ const ConfigAdjust = ({
   );
 };
 
-const ConfigHotkey = ({ name, defaultValue, onChange = () => { } }) => {
+const ConfigHotkey = ({ name, settingKey, defaultValue, onChange = () => { } }) => {
   const [value, setValue] = useState(defaultValue);
   const [trap] = useState(new Spicetify.Mousetrap());
 
@@ -1890,7 +1890,7 @@ const ConfigHotkey = ({ name, defaultValue, onChange = () => { } }) => {
       if (e.type === "keydown") {
         const sequence = [...new Set([...modifiers, character])];
         if (sequence.length === 1 && sequence[0] === "esc") {
-          onChange("");
+          onChange(settingKey || name, "");
           setValue("");
           return;
         }
@@ -1901,7 +1901,7 @@ const ConfigHotkey = ({ name, defaultValue, onChange = () => { } }) => {
 
   function finishRecord() {
     trap.handleKey = () => { };
-    onChange(value);
+    onChange(settingKey || name, value);
   }
 
   return react.createElement(
@@ -1931,7 +1931,7 @@ const ConfigHotkey = ({ name, defaultValue, onChange = () => { } }) => {
   );
 };
 
-const ConfigKeyList = ({ name, defaultValue, onChange = () => { } }) => {
+const ConfigKeyList = ({ name, settingKey, defaultValue, onChange = () => { } }) => {
   const [keys, setKeys] = useState(() => {
     try {
       if (!defaultValue) return [""];
@@ -1950,7 +1950,7 @@ const ConfigKeyList = ({ name, defaultValue, onChange = () => { } }) => {
   const updateKeys = (newKeys) => {
     setKeys(newKeys);
     // Save as JSON string
-    onChange(JSON.stringify(newKeys.filter(k => k.trim() !== "")));
+    onChange(settingKey || name, JSON.stringify(newKeys.filter(k => k.trim() !== "")));
   };
 
   const addKey = () => {
@@ -2231,22 +2231,26 @@ const OptionList = ({ type, items, onChange }) => {
       item.type === ConfigKeyList ||
       item.type === VideoHelperToggle
     ) {
+      // item.onChange가 있으면 그것을 우선 사용 (업데이트 확인, 내보내기 등 커스텀 핸들러)
+      const itemOnChange = item.onChange || ((name, value, event) => {
+        if (!isDisabled) {
+          onChangeItem(item.key || name, value, event);
+          forceUpdate({});
+        }
+      });
+
       return react.createElement(item.type, {
         ...item,
         key: index,
-        name: item.key || item.desc,
+        name: item.desc || item.key,
+        settingKey: item.key,
         text: item.text,
         disabled: isDisabled,
         defaultValue:
           item.defaultValue !== undefined
             ? item.defaultValue
             : CONFIG.visual[item.key],
-        onChange: (name, value, event) => {
-          if (!isDisabled) {
-            onChangeItem(item.key || name, value, event);
-            forceUpdate({});
-          }
-        },
+        onChange: itemOnChange,
       });
     }
 
@@ -5636,13 +5640,6 @@ const ConfigModal = () => {
               key: "fullscreen-button",
               info: I18n.t("settingsAdvanced.playback.replaceFullscreenButton.info") || "Replaces Spotify's default fullscreen button with ivLyrics fullscreen",
               type: ConfigSlider,
-            },
-
-            {
-              desc: I18n.t("settingsAdvanced.playback.fullscreenShortcut.label"),
-              key: "fullscreen-key",
-              info: I18n.t("settingsAdvanced.playback.fullscreenShortcut.desc"),
-              type: ConfigHotkey,
             },
             {
               desc: I18n.t("settingsAdvanced.playback.panelLyrics.label") || "Show Lyrics in Right Panel",
