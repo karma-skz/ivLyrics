@@ -1701,6 +1701,7 @@ const GOOGLE_FONTS = [
 const ConfigFontSelector = ({
   name,
   info,
+  settingKey,
   defaultValue,
   onChange = () => { },
 }) => {
@@ -1752,7 +1753,7 @@ const ConfigFontSelector = ({
     const font = event.target.value;
     setSelectedFont(font);
     if (!useCustomFont) {
-      onChange(font);
+      onChange(settingKey || name, font);
     }
   };
 
@@ -1760,7 +1761,7 @@ const ConfigFontSelector = ({
     const font = event.target.value;
     setCustomFont(font);
     if (useCustomFont) {
-      onChange(font);
+      onChange(settingKey || name, font);
     }
   };
 
@@ -1768,9 +1769,9 @@ const ConfigFontSelector = ({
     const newUseCustom = !useCustomFont;
     setUseCustomFont(newUseCustom);
     if (newUseCustom) {
-      onChange(customFont || "");
+      onChange(settingKey || name, customFont || "");
     } else {
-      onChange(selectedFont);
+      onChange(settingKey || name, selectedFont);
     }
   };
 
@@ -1858,14 +1859,14 @@ const NowPlayingPanelPreview = () => {
   const [phoneticSize, setPhoneticSize] = useState(parseInt(CONFIG.visual["panel-lyrics-phonetic-size"], 10) || 13);
   const [translationSize, setTranslationSize] = useState(parseInt(CONFIG.visual["panel-lyrics-translation-size"], 10) || 13);
   const [linesCount, setLinesCount] = useState(parseInt(CONFIG.visual["panel-lyrics-lines"], 10) || 5);
-  
+
   // 배경 설정
   const [bgType, setBgType] = useState(CONFIG.visual["panel-bg-type"] || "album");
   const [bgColor, setBgColor] = useState(CONFIG.visual["panel-bg-color"] || "#6366f1");
   const [bgGradient1, setBgGradient1] = useState(CONFIG.visual["panel-bg-gradient-1"] || "#6366f1");
   const [bgGradient2, setBgGradient2] = useState(CONFIG.visual["panel-bg-gradient-2"] || "#a855f7");
   const [bgOpacity, setBgOpacity] = useState(parseInt(CONFIG.visual["panel-bg-opacity"], 10) || 30);
-  
+
   // Border 설정
   const [borderEnabled, setBorderEnabled] = useState(CONFIG.visual["panel-border-enabled"] ?? false);
   const [borderColor, setBorderColor] = useState(CONFIG.visual["panel-border-color"] || "#ffffff");
@@ -3494,7 +3495,7 @@ const ConfigModal = () => {
     const checkScrollButtons = react.useCallback(() => {
       const container = tabsRef.current;
       if (!container) return;
-      
+
       const { scrollLeft, scrollWidth, clientWidth } = container;
       setShowLeftArrow(scrollLeft > 5);
       setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 5);
@@ -3528,7 +3529,7 @@ const ConfigModal = () => {
       if (activeButton) {
         const containerRect = container.getBoundingClientRect();
         const buttonRect = activeButton.getBoundingClientRect();
-        
+
         if (buttonRect.left < containerRect.left || buttonRect.right > containerRect.right) {
           activeButton.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         }
@@ -3538,7 +3539,7 @@ const ConfigModal = () => {
     const scroll = (direction) => {
       const container = tabsRef.current;
       if (!container) return;
-      
+
       const scrollAmount = container.clientWidth * 0.6;
       container.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,

@@ -403,8 +403,79 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
 `;
     };
 
+    // ============================================
+    // Google Fonts 목록 (Settings.js와 동기화)
+    // ============================================
+    const GOOGLE_FONTS = [
+        "Pretendard Variable",
+        "Noto Sans KR",
+        "Nanum Gothic",
+        "Nanum Myeongjo",
+        "Black Han Sans",
+        "Do Hyeon",
+        "Jua",
+        "Nanum Gothic Coding",
+        "Gowun Batang",
+        "Gowun Dodum",
+        "IBM Plex Sans KR",
+        "Roboto",
+        "Open Sans",
+        "Lato",
+        "Montserrat",
+        "Poppins",
+        "Inter",
+        "Raleway",
+        "Oswald",
+        "Merriweather",
+        "Playfair Display",
+    ];
+
+    // Google Fonts 로드 함수
+    const loadGoogleFont = (fontFamily) => {
+        if (!fontFamily) return;
+
+        // 콤마로 구분된 여러 폰트 처리
+        const fonts = fontFamily.split(",").map(f => f.trim().replace(/['"]/g, ""));
+
+        fonts.forEach(font => {
+            if (font && GOOGLE_FONTS.includes(font)) {
+                const fontId = font.replace(/ /g, "-").toLowerCase();
+                const linkId = `ivlyrics-panel-font-${fontId}`;
+
+                let link = document.getElementById(linkId);
+                if (!link) {
+                    link = document.createElement("link");
+                    link.id = linkId;
+                    link.rel = "stylesheet";
+                    document.head.appendChild(link);
+
+                    if (font === "Pretendard Variable") {
+                        link.href = "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css";
+                    } else {
+                        link.href = `https://fonts.googleapis.com/css2?family=${font.replace(/ /g, "+")}:wght@100;200;300;400;500;600;700;800;900&display=swap`;
+                    }
+                    console.log(`[NowPlayingPanelLyrics] Loaded font: ${font}`);
+                }
+            }
+        });
+    };
+
+    // 모든 패널 폰트 로드 (개별 폰트만)
+    const loadAllPanelFonts = () => {
+        const originalFont = getStorageValue(ORIGINAL_FONT_KEY, "") || "";
+        const phoneticFont = getStorageValue(PHONETIC_FONT_KEY, "") || "";
+        const translationFont = getStorageValue(TRANSLATION_FONT_KEY, "") || "";
+
+        loadGoogleFont(originalFont);
+        loadGoogleFont(phoneticFont);
+        loadGoogleFont(translationFont);
+    };
+
     // CSS 스타일 주입 함수
     const injectStyles = () => {
+        // 폰트 먼저 로드
+        loadAllPanelFonts();
+
         const existingStyle = document.getElementById(PANEL_STYLE_ID);
         if (existingStyle) {
             // 기존 스타일이 있으면 업데이트
@@ -423,6 +494,9 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
 
     // 스타일 업데이트 함수 (설정 변경 시 호출)
     const updateStyles = () => {
+        // 폰트 로드
+        loadAllPanelFonts();
+
         const styleElement = document.getElementById(PANEL_STYLE_ID);
         if (styleElement) {
             styleElement.textContent = getPanelStyles();
