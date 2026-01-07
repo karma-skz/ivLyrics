@@ -62,14 +62,17 @@
     const PANEL_CONTAINER_CLASS = "ivlyrics-panel-lyrics-container";
     const PANEL_SECTION_CLASS = "ivlyrics-panel-lyrics-section";
     const PANEL_STYLE_ID = "ivlyrics-panel-lyrics-styles";
+    // Starry Night 테마용 Now Playing Bar 컨테이너
+    const NOWPLAYING_BAR_CONTAINER_CLASS = "ivlyrics-nowplaying-bar-lyrics";
 
     // Observer 참조
     let panelObserver = null;
     let lyricsRoot = null;
+    let starryNightBarRoot = null; // Starry Night 테마용 렌더링 루트
     let stylesInjected = false;
 
     // ============================================
-    // CSS 스타일 (Apple Music Card Lyrics 스타일)
+    // CSS 스타일 
     // 앨범 색상 배경의 카드 박스, 동적 폰트 설정
     // ============================================
     const getPanelStyles = () => {
@@ -81,13 +84,13 @@
         const originalSize = getStorageValue(ORIGINAL_SIZE_KEY, DEFAULT_ORIGINAL_SIZE);
         const phoneticSize = getStorageValue(PHONETIC_SIZE_KEY, DEFAULT_PHONETIC_SIZE);
         const translationSize = getStorageValue(TRANSLATION_SIZE_KEY, DEFAULT_TRANSLATION_SIZE);
-        
+
         // 개별 폰트가 설정되어 있으면 사용, 아니면 기본 폰트 사용
         const baseFontStack = `'${fontFamily}', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif`;
         const originalFontStack = originalFont ? `${originalFont}, ${baseFontStack}` : baseFontStack;
         const phoneticFontStack = phoneticFont ? `${phoneticFont}, ${baseFontStack}` : baseFontStack;
         const translationFontStack = translationFont ? `${translationFont}, ${baseFontStack}` : baseFontStack;
-        
+
         return `
 /* Pretendard 폰트 import */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
@@ -357,6 +360,46 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
 }
+
+/* ==========================================
+   Starry Night 테마용 - Now Playing Bar 가사
+   Root__now-playing-bar 하단에 표시
+   ========================================== */
+.ivlyrics-nowplaying-bar-lyrics {
+  width: 100%;
+  z-index: 10;
+  pointer-events: auto;
+  padding: 8px 16px;
+  margin-top: 10px;
+}
+
+.ivlyrics-nowplaying-bar-lyrics .ivlyrics-panel-lyrics-section {
+  background: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-radius: 8px !important;
+  padding: 8px 12px 10px !important;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.ivlyrics-nowplaying-bar-lyrics .ivlyrics-panel-header {
+  margin-bottom: 4px !important;
+}
+
+.ivlyrics-nowplaying-bar-lyrics .ivlyrics-panel-lyrics-wrapper {
+  gap: 2px !important;
+}
+
+.ivlyrics-nowplaying-bar-lyrics .ivlyrics-panel-line {
+  padding: 2px 0 !important;
+}
+
+/* Starry Night 테마에서 Now Playing Bar에 flex-direction: column 적용 */
+body:has(.starrynight-bg-container) .Root__now-playing-bar {
+  display: flex !important;
+  flex-direction: column !important;
+}
 `;
     };
 
@@ -553,10 +596,10 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
     }, (prevProps, nextProps) => {
         // 라인 상태가 바뀔 때만 리렌더링
         return prevProps.isActive === nextProps.isActive &&
-               prevProps.isPast === nextProps.isPast &&
-               prevProps.lineClass === nextProps.lineClass &&
-               prevProps.phonetic === nextProps.phonetic &&
-               prevProps.translation === nextProps.translation;
+            prevProps.isPast === nextProps.isPast &&
+            prevProps.lineClass === nextProps.lineClass &&
+            prevProps.phonetic === nextProps.phonetic &&
+            prevProps.translation === nextProps.translation;
     });
 
     // ============================================
@@ -577,9 +620,9 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
         );
     }, (prevProps, nextProps) => {
         return prevProps.lineClass === nextProps.lineClass &&
-               prevProps.displayText === nextProps.displayText &&
-               prevProps.phonetic === nextProps.phonetic &&
-               prevProps.translation === nextProps.translation;
+            prevProps.displayText === nextProps.displayText &&
+            prevProps.phonetic === nextProps.phonetic &&
+            prevProps.translation === nextProps.translation;
     });
 
     // ============================================
@@ -616,12 +659,12 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
     }, (prevProps, nextProps) => {
         // currentTime 제거됨 - 라인 상태 변경 시에만 리렌더링
         return prevProps.isActive === nextProps.isActive &&
-               prevProps.isPast === nextProps.isPast &&
-               prevProps.isFuture === nextProps.isFuture &&
-               prevProps.isPlaceholder === nextProps.isPlaceholder &&
-               prevProps.translation === nextProps.translation &&
-               prevProps.phonetic === nextProps.phonetic &&
-               prevProps.line === nextProps.line;
+            prevProps.isPast === nextProps.isPast &&
+            prevProps.isFuture === nextProps.isFuture &&
+            prevProps.isPlaceholder === nextProps.isPlaceholder &&
+            prevProps.translation === nextProps.translation &&
+            prevProps.phonetic === nextProps.phonetic &&
+            prevProps.line === nextProps.line;
     });
 
     // ============================================
@@ -1015,7 +1058,7 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
                 const borderOpacity = getStorageValue(BORDER_OPACITY_KEY, DEFAULT_BORDER_OPACITY) / 100;
 
                 let backgroundStyle = '';
-                
+
                 // 배경 유형에 따른 스타일 계산
                 if (bgType === 'album') {
                     // 앨범 색상 기반
@@ -1066,7 +1109,7 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
                 section.style.setProperty('--ivlyrics-panel-border', borderStyle);
                 section.style.background = backgroundStyle;
                 section.style.border = borderStyle;
-                
+
                 // 불투명도가 0이면 backdrop-filter도 제거
                 if (bgOpacity === 0) {
                     section.style.backdropFilter = 'none';
@@ -1310,9 +1353,77 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
         return null;
     };
 
+    // ============================================
+    // Starry Night 테마 감지
+    // ============================================
+    const isStarryNightTheme = () => {
+        return document.querySelector('.starrynight-bg-container') !== null;
+    };
+
+    // ============================================
+    // Starry Night 테마용 - Root__now-playing-bar 하단에 가사 삽입
+    // ============================================
+    const insertNowPlayingBarLyrics = () => {
+        // 이미 존재하면 스킵
+        if (document.querySelector(`.${NOWPLAYING_BAR_CONTAINER_CLASS}`)) {
+            return true;
+        }
+
+        const nowPlayingBar = document.querySelector('.Root__now-playing-bar');
+        if (!nowPlayingBar) {
+            console.log("[NowPlayingPanelLyrics] Root__now-playing-bar not found");
+            return false;
+        }
+
+        // CSS 스타일 주입
+        injectStyles();
+
+        // 컨테이너 생성
+        const container = document.createElement('div');
+        container.className = NOWPLAYING_BAR_CONTAINER_CLASS;
+
+        // Now Playing Bar에 삽입 (position: relative가 CSS로 적용됨)
+        nowPlayingBar.appendChild(container);
+
+        // React 렌더링
+        try {
+            const ReactDOM = Spicetify.ReactDOM;
+            if (ReactDOM.createRoot) {
+                starryNightBarRoot = ReactDOM.createRoot(container);
+                starryNightBarRoot.render(react.createElement(PanelLyrics));
+            } else {
+                ReactDOM.render(react.createElement(PanelLyrics), container);
+                starryNightBarRoot = container;
+            }
+            console.log("[NowPlayingPanelLyrics] Starry Night bar lyrics inserted successfully");
+            return true;
+        } catch (error) {
+            console.error("[NowPlayingPanelLyrics] Failed to render Starry Night bar lyrics:", error);
+            return false;
+        }
+    };
+
+    const removeNowPlayingBarLyrics = () => {
+        const container = document.querySelector(`.${NOWPLAYING_BAR_CONTAINER_CLASS}`);
+        if (container) {
+            try {
+                if (starryNightBarRoot && typeof starryNightBarRoot.unmount === 'function') {
+                    starryNightBarRoot.unmount();
+                } else {
+                    Spicetify.ReactDOM.unmountComponentAtNode(container);
+                }
+            } catch (e) {
+                // Ignore unmount errors
+            }
+            container.remove();
+            starryNightBarRoot = null;
+        }
+    };
+
     const insertPanelLyrics = () => {
         // 이미 존재하면 스킵
-        if (document.querySelector(`.${PANEL_CONTAINER_CLASS}`)) {
+        if (document.querySelector(`.${PANEL_CONTAINER_CLASS}`) ||
+            document.querySelector(`.${NOWPLAYING_BAR_CONTAINER_CLASS}`)) {
             return;
         }
 
@@ -1322,6 +1433,20 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
             return;
         }
 
+        // ========================================
+        // Starry Night 테마 감지 - Root__now-playing-bar에 삽입
+        // ========================================
+        if (isStarryNightTheme()) {
+            console.log("[NowPlayingPanelLyrics] Starry Night theme detected - inserting to now-playing-bar");
+            if (insertNowPlayingBarLyrics()) {
+                return; // 성공적으로 삽입됨
+            }
+            // 실패 시 기본 패널 삽입 시도
+        }
+
+        // ========================================
+        // 기본: Now Playing Panel에 삽입
+        // ========================================
         const panel = findNowPlayingPanel();
         if (!panel) {
             return;
@@ -1389,6 +1514,7 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
     };
 
     const removePanelLyrics = () => {
+        // 기존 패널 가사 제거
         const container = document.querySelector(`.${PANEL_CONTAINER_CLASS}`);
         if (container) {
             try {
@@ -1403,6 +1529,8 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
             container.remove();
             lyricsRoot = null;
         }
+        // Starry Night bar 가사도 제거
+        removeNowPlayingBarLyrics();
     };
 
     // ============================================
