@@ -5391,7 +5391,7 @@ const ConfigModal = () => {
                 defaultValue:
                   CONFIG.visual["original-font-family"] ||
                   "Pretendard Variable",
-                onChange: (value) => {
+                onChange: (_, value) => {
                   CONFIG.visual["original-font-family"] = value;
                   StorageManager.setItem(
                     `${APP_NAME}:visual:original-font-family`,
@@ -5550,7 +5550,7 @@ const ConfigModal = () => {
                 defaultValue:
                   CONFIG.visual["phonetic-font-family"] ||
                   "Pretendard Variable",
-                onChange: (value) => {
+                onChange: (_, value) => {
                   CONFIG.visual["phonetic-font-family"] = value;
                   StorageManager.setItem(
                     `${APP_NAME}:visual:phonetic-font-family`,
@@ -5737,7 +5737,7 @@ const ConfigModal = () => {
                 defaultValue:
                   CONFIG.visual["translation-font-family"] ||
                   "Pretendard Variable",
-                onChange: (value) => {
+                onChange: (_, value) => {
                   CONFIG.visual["translation-font-family"] = value;
                   StorageManager.setItem(
                     `${APP_NAME}:visual:translation-font-family`,

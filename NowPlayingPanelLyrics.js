@@ -760,7 +760,7 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
 
         // LyricsService Extension을 사용해서 가사 직접 불러오기
         // 1단계: 가사 먼저 로드 → 2단계: 발음/번역 따로 요청
-        const loadLyricsFromExtension = useCallback(async (forceReload = false) => {
+        const loadLyricsFromExtension = useCallback(async (forceReload = false, requestedTrackUri = null) => {
             // 이미 로딩 중이면 스킵
             if (loadingRef.current && !forceReload) return;
 
@@ -782,6 +782,13 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
 
             const trackUri = item.uri;
 
+            // requestedTrackUri가 제공된 경우, 현재 재생 중인 트랙과 일치하는지 확인
+            // (곡이 빠르게 변경될 때 이전 요청을 무시하기 위함)
+            if (requestedTrackUri && requestedTrackUri !== trackUri) {
+                console.log("[PanelLyrics] Track changed during delay, skipping load for:", requestedTrackUri);
+                return;
+            }
+
             // 같은 트랙이면 스킵 (forceReload가 아닌 경우)
             if (!forceReload && trackUri === lastTrackUri.current) {
                 return;
@@ -789,6 +796,9 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
 
             loadingRef.current = true;
             lastTrackUri.current = trackUri;
+
+            // 로딩 시작 시점의 트랙 URI를 캡처 (비동기 작업 완료 후 검증용)
+            const loadingForTrackUri = trackUri;
 
             const trackInfo = {
                 uri: trackUri,
@@ -815,6 +825,14 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
                 const result = await window.LyricsService.getLyricsFromProviders(trackInfo, providerOrder, 0); // mode 0 = karaoke 우선
 
                 if (result && !result.error) {
+                    // 비동기 작업 완료 후 현재 재생 중인 트랙이 로딩을 시작한 트랙과 일치하는지 검증
+                    const currentPlayingUri = Spicetify.Player.data?.item?.uri;
+                    if (currentPlayingUri !== loadingForTrackUri) {
+                        console.log("[PanelLyrics] Track changed during lyrics fetch, discarding result for:", loadingForTrackUri);
+                        loadingRef.current = false;
+                        return;
+                    }
+
                     // karaoke (노래방) → synced → unsynced 순서로 선택
                     let lyricsData = result.karaoke || result.synced || result.unsynced || [];
                     const isKaraoke = !!result.karaoke;
@@ -835,7 +853,7 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
 
                         setLyrics(lyricsData);
                         currentLyricsState.lyrics = lyricsData;
-                        currentLyricsState.trackUri = trackUri;
+                        currentLyricsState.trackUri = loadingForTrackUri;
                         setCurrentIndex(0);
 
                         // 곡별 싱크 오프셋 가져오기
@@ -990,6 +1008,13 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
                     translationLines = translationResponse?.vi || [];
                 }
 
+                // 결과 병합 전에 현재 재생 중인 트랙이 변경되었는지 확인
+                const currentPlayingUri = Spicetify.Player.data?.item?.uri;
+                if (currentPlayingUri !== trackInfo.uri) {
+                    console.log("[PanelLyrics] Track changed during translation, discarding result for:", trackInfo.title);
+                    return;
+                }
+
                 // 결과 병합
                 if (phoneticLines.length > 0 || translationLines.length > 0) {
                     const updatedLyrics = lyricsData.map((line, idx) => ({
@@ -1013,9 +1038,18 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
         useEffect(() => {
             // 곡 변경 시 가사 로드
             const handleSongChange = () => {
+                // 곡 변경 이벤트 발생 시점에 트랙 URI 캡처
+                const capturedUri = Spicetify.Player.data?.item?.uri;
+
+                // 이전 가사 상태 초기화 (새 곡 전환 중임을 표시)
+                setLyrics([]);
+                currentLyricsState.lyrics = [];
+                currentLyricsState.currentIndex = 0;
+
                 // 약간의 딜레이 후 로드 (트랙 정보가 완전히 업데이트될 때까지 대기)
+                // 캡처한 URI를 전달하여 딜레이 중 곡이 변경되면 무시
                 setTimeout(() => {
-                    loadLyricsFromExtension(true);
+                    loadLyricsFromExtension(true, capturedUri);
                 }, 300);
             };
 
@@ -1233,9 +1267,23 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
                 }
 
                 const position = Spicetify.Player.getProgress();
-                const globalDelay = parseInt(getStorageValue('ivLyrics:visual:delay', '0'), 10) || 0;
-                // 글로벌 딜레이 + 곡별 싱크 오프셋 적용
-                const adjustedPosition = position + globalDelay + trackOffset;
+
+                // 곡별 딜레이: lyrics-delay:${uri} 에서 읽어옴 (ivLyrics 페이지와 동일)
+                const currentTrackUri = Spicetify.Player.data?.item?.uri;
+                let lyricsDelay = 0;
+                if (currentTrackUri) {
+                    try {
+                        const delayValue = Spicetify.LocalStorage.get(`lyrics-delay:${currentTrackUri}`);
+                        if (delayValue) {
+                            lyricsDelay = parseInt(delayValue, 10) || 0;
+                        }
+                    } catch (e) {
+                        // 무시
+                    }
+                }
+
+                // 곡별 딜레이 + 곡별 싱크 오프셋 적용
+                const adjustedPosition = position + lyricsDelay + trackOffset;
 
                 // 전역 변수에 현재 시간 저장 (KaraokeWord에서 읽음)
                 window._ivLyricsPanelCurrentTime = adjustedPosition;
