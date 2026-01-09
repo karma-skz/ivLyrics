@@ -1269,7 +1269,17 @@ window.LANG_KO = {
     "preparing": "영상 다운로드를 준비하고 있습니다...",
     "downloadComplete": "영상 다운로드 완료!",
     "helperNotConnected": "헬퍼 프로그램에 연결할 수 없습니다. 프로그램이 실행 중인지 확인하세요.",
-    "helperError": "헬퍼 프로그램에서 오류가 발생했습니다."
+    "helperError": "헬퍼 프로그램에서 오류가 발생했습니다.",
+    "tryingCookiesFile": "cookies.txt 파일로 시도 중...",
+    "tryingBrowserCookies": "{browser} 쿠키로 시도 중...",
+    "checkingWithCookiesFile": "cookies.txt로 영상 확인 중...",
+    "checkingWithBrowserCookies": "{browser} 쿠키로 영상 확인 중...",
+    "checkingAvailability": "영상 가용성 확인 중...",
+    "ageRestrictedNoCookies": "연령 제한 영상입니다. cookies.txt 파일이나 지원되는 브라우저가 없습니다. 설정에서 cookies.txt 파일을 설정해주세요.",
+    "ageRestrictedFailed": "연령 제한 영상입니다. 설정에서 유효한 cookies.txt 파일을 설정해주세요.",
+    "videoAlreadyDownloaded": "영상이 이미 다운로드되어 있습니다",
+    "videoAvailable": "영상 사용 가능",
+    "videoNotDownloaded": "영상이 다운로드되지 않았습니다"
   },
   "translator": {
     "missingApiKey": "Gemini API 키가 설정되지 않았습니다. 설정에서 API 키를 입력해주세요.",

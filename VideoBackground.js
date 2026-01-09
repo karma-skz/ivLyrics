@@ -274,27 +274,80 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
                     return;
                 }
 
+                // Helper 메시지를 번역된 텍스트로 변환하는 함수
+                const translateHelperMessage = (message) => {
+                    if (!message) return null;
+
+                    // cookies.txt 파일 관련 메시지
+                    if (message.includes("Trying with cookies.txt")) {
+                        return I18n.t("videoBackground.tryingCookiesFile");
+                    }
+                    if (message.includes("Checking video with cookies.txt")) {
+                        return I18n.t("videoBackground.checkingWithCookiesFile");
+                    }
+
+                    // 브라우저 쿠키 관련 메시지
+                    const tryingBrowserMatch = message.match(/Trying with (\w+) cookies/);
+                    if (tryingBrowserMatch) {
+                        return I18n.t("videoBackground.tryingBrowserCookies", { browser: tryingBrowserMatch[1] });
+                    }
+                    const checkingBrowserMatch = message.match(/Checking video with (\w+) cookies/);
+                    if (checkingBrowserMatch) {
+                        return I18n.t("videoBackground.checkingWithBrowserCookies", { browser: checkingBrowserMatch[1] });
+                    }
+
+                    // 일반 확인 메시지
+                    if (message.includes("Checking video availability")) {
+                        return I18n.t("videoBackground.checkingAvailability");
+                    }
+
+                    // 연령 제한 관련 에러 메시지
+                    if (message.includes("Age-restricted") || message.includes("age-restricted")) {
+                        if (message.includes("No cookies.txt or supported browsers")) {
+                            return I18n.t("videoBackground.ageRestrictedNoCookies");
+                        }
+                        return I18n.t("videoBackground.ageRestrictedFailed");
+                    }
+
+                    // 이미 다운로드된 영상
+                    if (message.includes("Video already downloaded") || message.includes("Video already available")) {
+                        return I18n.t("videoBackground.videoAlreadyDownloaded");
+                    }
+
+                    // 다운로드 중 메시지 (퍼센트 추출)
+                    const downloadingMatch = message.match(/Downloading:\s*([\d.]+)%/);
+                    if (downloadingMatch) {
+                        return I18n.t("videoBackground.downloading", { percent: Math.round(parseFloat(downloadingMatch[1])) });
+                    }
+
+                    // 기본값: 원본 메시지 반환
+                    return message;
+                };
+
                 // 비디오 요청 (SSE 스트림)
                 abortDownloadRef.current = VideoHelperService.requestVideo(videoId, {
                     onProgress: (progress) => {
                         // progress 이벤트가 오면 preparing timeout 취소
                         clearTimeout(preparingToastTimeout);
-                        
+
                         const percent = Math.round(progress.percent || 0);
-                        
+                        const translatedMsg = translateHelperMessage(progress.message);
+
                         if (progress.status === "downloading") {
                             Toast.progress(I18n.t("videoBackground.downloading", { percent }), percent);
                         } else if (progress.status === "processing") {
                             Toast.progress(I18n.t("videoBackground.processing"), 100);
                         } else if (progress.status === "checking") {
-                            Toast.progress(I18n.t("videoBackground.checking"), 0);
+                            // checking 상태일 때 메시지가 있으면 번역된 메시지 사용
+                            const checkingMsg = translatedMsg || I18n.t("videoBackground.checking");
+                            Toast.progress(checkingMsg, 0);
                         }
                     },
                     onComplete: (url) => {
                         clearTimeout(preparingToastTimeout);
                         Toast.dismissProgress();
                         console.log(`[VideoBackground] Helper: video ready, setting URL: ${url}`);
-                        
+
                         // URL 유효성 확인
                         if (!url || typeof url !== 'string' || !url.startsWith('http')) {
                             console.error(`[VideoBackground] Invalid video URL received: ${url}`);
@@ -302,10 +355,10 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
                             Toast.error(I18n.t("videoBackground.helperError"));
                             return;
                         }
-                        
+
                         setHelperVideoUrl(url);
                         setStatusMessage("");
-                        
+
                         // 1.5초 이내로 완료되면 완료 toast도 숨김
                         const elapsed = Date.now() - requestStartTime;
                         if (elapsed > 1500) {
@@ -316,8 +369,11 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
                         clearTimeout(preparingToastTimeout);
                         Toast.dismissProgress();
                         console.error(`[VideoBackground] Helper error: ${message}`);
-                        setStatusMessage(I18n.t("videoBackground.helperError"));
-                        Toast.error(I18n.t("videoBackground.helperError"));
+
+                        // 에러 메시지 번역
+                        const translatedError = translateHelperMessage(message) || I18n.t("videoBackground.helperError");
+                        setStatusMessage(translatedError);
+                        Toast.error(translatedError);
                     },
                 });
             } catch (e) {

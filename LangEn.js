@@ -1269,7 +1269,17 @@ window.LANG_EN = {
     "preparing": "Preparing video download...",
     "downloadComplete": "Video download complete!",
     "helperNotConnected": "Cannot connect to helper program. Make sure it's running.",
-    "helperError": "An error occurred with the helper program."
+    "helperError": "An error occurred with the helper program.",
+    "tryingCookiesFile": "Trying with cookies.txt file...",
+    "tryingBrowserCookies": "Trying with {browser} cookies...",
+    "checkingWithCookiesFile": "Checking video with cookies.txt...",
+    "checkingWithBrowserCookies": "Checking video with {browser} cookies...",
+    "checkingAvailability": "Checking video availability...",
+    "ageRestrictedNoCookies": "Age-restricted video. No cookies.txt or supported browsers found. Please set a cookies.txt file in Settings.",
+    "ageRestrictedFailed": "Age-restricted video. Please set a valid cookies.txt file in Settings.",
+    "videoAlreadyDownloaded": "Video already downloaded",
+    "videoAvailable": "Video available",
+    "videoNotDownloaded": "Video not downloaded"
   },
   "translator": {
     "missingApiKey": "Gemini API key is not set. Please enter an API key in settings.",
