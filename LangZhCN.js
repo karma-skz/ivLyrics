@@ -134,6 +134,10 @@ window.LANG_ZH_CN = {
         "checking": "检查中..."
       }
     },
+    "lyricsHelper": {
+      "label": "使用歌词助手",
+      "desc": "发送曲目和歌词信息到助手。外部程序可通过 API 访问。"
+    },
     "videoBlur": {
       "label": "视频模糊",
       "desc": "调整视频背景的模糊强度 (0-40px)"

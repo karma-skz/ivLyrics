@@ -1781,6 +1781,14 @@
                             true
                         );
                     }
+                    if (window.lyricsHelperSender?.sendLyrics) {
+                        await window.lyricsHelperSender.sendLyrics(
+                            { uri: info.uri, title: info.title, artist: info.artist },
+                            [],
+                            true
+                        );
+                    }
+
                     return { lyrics: [], provider: null, error: lyricsResult.error };
                 }
 
@@ -1791,6 +1799,13 @@
                 if (lyrics.length === 0) {
                     if (sendToOverlay && window.OverlaySender?.sendLyrics) {
                         await window.OverlaySender.sendLyrics(
+                            { uri: info.uri, title: info.title, artist: info.artist },
+                            [],
+                            true
+                        );
+                    }
+                    if (window.lyricsHelperSender?.sendLyrics) {
+                        await window.lyricsHelperSender.sendLyrics(
                             { uri: info.uri, title: info.title, artist: info.artist },
                             [],
                             true
@@ -1910,6 +1925,14 @@
                 // 6. 오버레이 전송
                 if (sendToOverlay && window.OverlaySender?.sendLyrics) {
                     await window.OverlaySender.sendLyrics(
+                        { uri: info.uri, title: info.title, artist: info.artist },
+                        lyrics,
+                        true
+                    );
+                }
+                // 헬퍼 전송
+                if (window.lyricsHelperSender?.sendLyrics) {
+                    await window.lyricsHelperSender.sendLyrics(
                         { uri: info.uri, title: info.title, artist: info.artist },
                         lyrics,
                         true
@@ -3323,11 +3346,317 @@
         }
     };
 
+    const lyricsHelperSender = Object.create(OverlaySender, {
+        DEFAULT_PORT: {
+            value: 15123
+        },
+        port: {
+            get() {
+                return this.DEFAULT_PORT;
+            }
+        },
+        enabled: {
+            get() {
+                return Spicetify.LocalStorage.get('ivLyrics:visual:lyrics-helper-enabled') !== 'false';
+            },
+            set(value) {
+                Spicetify.LocalStorage.set('ivLyrics:visual:lyrics-helper-enabled', value ? 'true' : 'false');
+                if (value) {
+                    this.startProgressSync();
+                    this.checkConnection();
+                } else {
+                    this.stopProgressSync();
+                }
+            }
+        },
+        setSettingsOpen: {
+            value: function (isOpen) {
+                this._isSettingsOpen = isOpen;
+                if (this._settingsTimer) {
+                    clearInterval(this._settingsTimer);
+                    this._settingsTimer = null;
+                }
+
+                if (isOpen) {
+                    console.log('[lyricsHelperSender] 설정창 열림 - 연결 확인 폴링 시작');
+                    this.checkConnection();
+                    this._settingsTimer = setInterval(() => {
+                        if (!this.isConnected) {
+                            this.checkConnection();
+                        }
+                    }, 2000);
+                } else {
+                    console.log('[lyricsHelperSender] 설정창 닫힘 - 연결 확인 폴링 종료');
+                }
+            }
+        },
+        isConnected: {
+            get() {
+                return this._isConnected;
+            },
+            set(value) {
+                const wasConnected = this._isConnected;
+                this._isConnected = value;
+
+                window.dispatchEvent(new CustomEvent('ivLyrics:lyrics-helper-connection', {
+                    detail: { connected: value }
+                }));
+
+                if (value && !wasConnected) {
+                    console.log('[lyricsHelperSender] 헬퍼 연결됨 ✓');
+                    setTimeout(() => this.resendWithNewOffset(), 100);
+                }
+                else if (!value && wasConnected) {
+                    console.log('[lyricsHelperSender] 헬퍼 연결 끊김');
+                }
+            }
+        },
+        sendLyrics: {
+            value: async function (trackInfo, lyrics, forceResend = false) {
+                if (!trackInfo || !lyrics || !Array.isArray(lyrics)) return;
+                if (!this.enabled) return;
+
+                const currentReqId = ++this._reqId;
+
+                this._lastTrackInfo = trackInfo;
+                this._lastLyrics = lyrics;
+
+                const offset = await this.getSyncOffset(trackInfo.uri);
+
+                if (currentReqId < this._lastReqId) {
+                    console.log(`[lyricsHelperSender] 오래된 요청 무시됨 (#${currentReqId} < #${this._lastReqId})`);
+                    return;
+                }
+                this._lastReqId = currentReqId;
+
+                const lyricsHash = JSON.stringify(lyrics);
+
+                if (!forceResend &&
+                    this.lastSentUri === trackInfo.uri &&
+                    this.lastSentLyrics === lyricsHash &&
+                    this.lastSentOffset === offset) {
+                    return;
+                }
+
+                this.lastSentUri = trackInfo.uri;
+                this.lastSentLyrics = lyricsHash;
+                this.lastSentOffset = offset;
+
+                // 앨범 이미지 URL 처리 개선
+                let albumArt = null;
+                try {
+                    const imageUrl = Spicetify.Player.data?.item?.metadata?.image_xlarge_url
+                        || Spicetify.Player.data?.item?.metadata?.image_url
+                        || Spicetify.Player.data?.item?.metadata?.image_large_url;
+                    if (imageUrl && imageUrl.indexOf('localfile') === -1) {
+                        if (imageUrl.startsWith('spotify:image:')) {
+                            albumArt = `https://i.scdn.co/image/${imageUrl.substring(imageUrl.lastIndexOf(':') + 1)}`;
+                        } else if (imageUrl.startsWith('http')) {
+                            albumArt = imageUrl;
+                        }
+                    }
+                } catch (e) { }
+
+                const mappedLines = lyrics.map(l => {
+                    const originalText = l.originalText || l.text || '';
+                    const pronText = (l.text && l.text !== l.originalText && l.text !== originalText) ? l.text : null;
+                    let transText = l.text2 || l.translation || l.translationText || null;
+                    if (transText && typeof transText === 'string' && transText.trim() === '') {
+                        transText = null;
+                    }
+                    if (transText && transText === originalText) {
+                        transText = null;
+                    }
+
+                    // startTime과 endTime을 숫자로 안전하게 변환
+                    const startTimeNum = typeof l.startTime === 'number' ? l.startTime : (parseInt(l.startTime, 10) || 0);
+                    const endTimeNum = l.endTime != null ? (typeof l.endTime === 'number' ? l.endTime : (parseInt(l.endTime, 10) || null)) : null;
+
+                    return {
+                        startTime: startTimeNum + offset,
+                        endTime: endTimeNum !== null ? endTimeNum + offset : null,
+                        text: originalText,
+                        pronText: pronText,
+                        transText: transText
+                    };
+                });
+
+                // 현재 트랙 정보 가져오기 (Spicetify.Player.data에서 최신 정보 사용)
+                const currentTitle = trackInfo.title || Spicetify.Player.data?.item?.metadata?.title || '';
+                const currentArtist = trackInfo.artist || Spicetify.Player.data?.item?.metadata?.artist_name || '';
+                const currentAlbum = Spicetify.Player.data?.item?.metadata?.album_title || '';
+
+                console.log('[lyricsHelperSender] 가사 전송:', {
+                    lines: mappedLines.length,
+                    offset,
+                    title: currentTitle,
+                    artist: currentArtist
+                });
+
+                await this.sendToEndpoint('/lyrics', {
+                    track: {
+                        title: currentTitle,
+                        artist: currentArtist,
+                        album: currentAlbum,
+                        albumArt: albumArt,
+                        duration: Spicetify.Player.getDuration() || 0
+                    },
+                    lyrics: mappedLines,
+                    isSynced: lyrics.some(l => l.startTime !== undefined && l.startTime !== null)
+                });
+            }
+        },
+        resendWithNewOffset: {
+            value: async function () {
+                this._offsetCache = {};
+                if (this._lastTrackInfo && this._lastLyrics) {
+                    console.log('[lyricsHelperSender] 가사 재전송 (싱크 반영)');
+                    await this.sendLyrics(this._lastTrackInfo, this._lastLyrics, true);
+                }
+            }
+        },
+        setupOffsetListener: {
+            value: function () {
+                // localStorage 변경 감지
+                window.addEventListener('storage', (e) => {
+                    if (e.key && e.key.startsWith('lyrics-delay:')) {
+                        this.resendWithNewOffset();
+                    }
+                });
+
+                // 커스텀 이벤트 리스너
+                window.addEventListener('ivLyrics:delay-changed', () => {
+                    this.resendWithNewOffset();
+                });
+
+                window.addEventListener('ivLyrics:offset-changed', () => {
+                    this.resendWithNewOffset();
+                });
+
+                // ivLyrics 페이지에서 가사가 준비되면 오버레이로 전송
+                window.addEventListener('ivLyrics:lyrics-ready', (e) => {
+                    if (!this.enabled) return;
+                    const { trackInfo, lyrics } = e.detail || {};
+                    if (trackInfo) {
+                        console.log('[lyricsHelperSender] 가사 준비 이벤트 수신:', {
+                            uri: trackInfo.uri,
+                            title: trackInfo.title,
+                            lines: lyrics?.length || 0
+                        });
+                        this.sendLyrics(trackInfo, lyrics || []);
+                    }
+                });
+
+                // 페이지 가시성 변경 감지
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'visible' && this.enabled) {
+                        console.log('[lyricsHelperSender] 페이지 활성화 - 가사 재전송');
+                        setTimeout(() => this.resendWithNewOffset(), 200);
+                    }
+                });
+
+                // 창 포커스 시
+                window.addEventListener('focus', () => {
+                    if (this.enabled && this._lastTrackInfo) {
+                        console.log('[lyricsHelperSender] 창 포커스 - 가사 재전송');
+                        setTimeout(() => this.resendWithNewOffset(), 300);
+                    }
+                });
+
+                // 트랙 변경 감지
+                Spicetify.Player.addEventListener('songchange', async () => {
+                    // 캐시 초기화
+                    this.lastSentUri = null;
+                    this.lastSentLyrics = null;
+                    this.lastSentOffset = null;
+                    this._offsetCache = {};
+                    this._lastProgressUri = null;
+
+                    // 오버레이 활성화 상태가 아니면 스킵
+                    if (!this.enabled) return;
+
+                    // ivLyrics 페이지에 있으면 index.js가 처리하므로 스킵
+                    // (lyrics-ready 이벤트를 통해 가사가 전송됨)
+                    const pathname = Spicetify.Platform?.History?.location?.pathname || "";
+                    if (pathname.includes("/ivLyrics")) {
+                        console.log('[lyricsHelperSender] ivLyrics 페이지 - index.js가 처리');
+                        return;
+                    }
+
+                    // 다른 페이지에서 곡 변경됨 - 직접 가사 가져와서 전송
+                    console.log('[lyricsHelperSender] 다른 페이지에서 곡 변경 감지');
+
+                    // 트랙 정보가 완전히 로드될 때까지 대기
+                    const waitForTrackData = () => {
+                        return new Promise((resolve) => {
+                            const check = () => {
+                                const data = Spicetify.Player.data;
+                                if (data?.item?.uri && data?.item?.metadata?.title) {
+                                    resolve(data);
+                                } else {
+                                    setTimeout(check, 100);
+                                }
+                            };
+                            check();
+                            // 3초 타임아웃
+                            setTimeout(() => resolve(null), 3000);
+                        });
+                    };
+
+                    try {
+                        const playerData = await waitForTrackData();
+                        if (!playerData?.item) {
+                            console.log('[lyricsHelperSender] 트랙 데이터 로드 실패');
+                            return;
+                        }
+
+                        const uri = playerData.item.uri;
+                        const title = playerData.item.metadata?.title || '';
+                        const artist = playerData.item.metadata?.artist_name || '';
+                        const duration = Spicetify.Player.getDuration() || 0;
+
+                        console.log('[lyricsHelperSender] 트랙 정보:', { title, artist });
+
+                        // 사용자 설정의 provider 순서 사용 (활성화된 것만 필터)
+                        const defaultOrder = ['ivlyrics', 'spotify', 'lrclib', 'local'];
+                        const configOrder = window.CONFIG?.providersOrder;
+                        const providers = window.CONFIG?.providers || {};
+                        const providerOrder = Array.isArray(configOrder) && configOrder.length > 0
+                            ? configOrder.filter(id => providers[id]?.on !== false)
+                            : defaultOrder;
+
+                        // LyricsService.getFullLyrics 통합 API 사용
+                        // (가사 로드 + endTime 계산 + 발음/번역 + 오버레이 전송까지 한 번에 처리)
+                        await LyricsService.getFullLyrics(
+                            { uri, title, artist, duration },
+                            { sendToOverlay: true, providerOrder }
+                        );
+                    } catch (e) {
+                        console.error('[lyricsHelperSender] 가사 가져오기 실패:', e);
+                    }
+                });
+            }
+        },
+        init: {
+            value: function () {
+                if (this.enabled) {
+                    this.startProgressSync();
+                    this.setupOffsetListener();
+                    setTimeout(() => this.checkConnection(), 1000);
+                }
+                console.log('[lyricsHelperSender] Initialized in Extension');
+            }
+        }
+    });
+
     // OverlaySender 초기화 및 전역 등록
     OverlaySender.init();
     window.OverlaySender = OverlaySender;
 
+    lyricsHelperSender.init();
+    window.lyricsHelperSender = lyricsHelperSender;
+
     console.log("[LyricsService] LyricsService Extension initialized successfully!");
-    console.log("[LyricsService] Available APIs: window.LyricsService, window.LyricsCache, window.ApiTracker, window.Providers, window.Translator, window.OverlaySender");
+    console.log("[LyricsService] Available APIs: window.LyricsService, window.LyricsCache, window.ApiTracker, window.Providers, window.Translator, window.OverlaySender, window.lyricsHelperSender");
 })();
 

@@ -134,6 +134,10 @@ window.LANG_FR = {
         "checking": "Vérification..."
       }
     },
+    "lyricsHelper": {
+      "label": "Utiliser l'assistant de paroles",
+      "desc": "Envoie les informations de piste et de paroles à l'assistant. Les programmes externes peuvent y accéder via API."
+    },
     "videoBlur": {
       "label": "Flou vidéo",
       "desc": "Ajuste l'intensité du flou appliqué à l'arrière-plan vidéo (0-40px)"

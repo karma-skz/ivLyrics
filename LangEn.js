@@ -135,6 +135,10 @@ window.LANG_EN = {
         "checking": "Checking..."
       }
     },
+    "lyricsHelper": {
+      "label": "Use Lyrics Helper",
+      "desc": "Sends track and lyrics information to the helper. External programs can access it via API."
+    },
     "videoBlur": {
       "label": "Video Blur",
       "desc": "Adjust blur intensity for video background (0-40px)"

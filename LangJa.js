@@ -134,6 +134,10 @@ window.LANG_JA = {
         "checking": "確認中..."
       }
     },
+    "lyricsHelper": {
+      "label": "歌詞ヘルパーを使用",
+      "desc": "トラックと歌詞の情報をヘルパーに送信します。外部プログラムからAPI経由でアクセスできます。"
+    },
     "videoBlur": {
       "label": "動画ブラー",
       "desc": "動画背景のブラー強度を調整 (0-40px)"
