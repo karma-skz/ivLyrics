@@ -283,12 +283,27 @@ const LocalCacheManager = () => {
   const handleClearAll = async () => {
     try {
       // 메모리 캐시도 함께 초기화
-      window.Translator.clearAllMemoryCache();
-      window.Translator.clearAllInflightRequests();
+      window.Translator?.clearAllMemoryCache?.();
+      window.Translator?.clearAllInflightRequests?.();
 
-      // CacheManager (Gemini 번역 메모리 캐시)도 함께 초기화
-      if (typeof CacheManager !== 'undefined' && CacheManager.clear) {
-        CacheManager.clear();
+      // CacheManager (Gemini 번역 메모리 캐시)도 함께 초기화 (window에서 접근)
+      if (window.CacheManager?.clear) {
+        window.CacheManager.clear();
+      }
+
+      // CACHE 객체(가사 캐시)도 함께 초기화
+      if (window.CACHE) {
+        Object.keys(window.CACHE).forEach(key => delete window.CACHE[key]);
+      }
+
+      // _dmResults (번역/발음 결과 캐시)도 초기화
+      if (window.lyricContainer?._dmResults) {
+        window.lyricContainer._dmResults = {};
+      }
+
+      // 진행 중인 Gemini 요청도 취소
+      if (window.lyricContainer?._inflightGemini) {
+        window.lyricContainer._inflightGemini.clear();
       }
 
       await LyricsCache.clearAll();
@@ -313,12 +328,31 @@ const LocalCacheManager = () => {
 
     try {
       // 번역 메모리 캐시도 함께 초기화
-      window.Translator.clearMemoryCache(trackId);
-      window.Translator.clearInflightRequests(trackId);
+      window.Translator?.clearMemoryCache?.(trackId);
+      window.Translator?.clearInflightRequests?.(trackId);
 
-      // CacheManager (Gemini 번역 메모리 캐시)도 함께 초기화
-      if (typeof CacheManager !== 'undefined' && CacheManager.clearByUri) {
-        CacheManager.clearByUri(trackUri);
+      // CacheManager (Gemini 번역 메모리 캐시)도 함께 초기화 (window에서 접근)
+      if (window.CacheManager?.clearByUri) {
+        window.CacheManager.clearByUri(trackUri);
+      }
+
+      // CACHE 객체(가사 캐시)에서 해당 트랙 삭제
+      if (window.CACHE && window.CACHE[trackUri]) {
+        delete window.CACHE[trackUri];
+      }
+
+      // _dmResults (번역/발음 결과 캐시)에서 해당 트랙 삭제
+      if (window.lyricContainer?._dmResults && window.lyricContainer._dmResults[trackUri]) {
+        delete window.lyricContainer._dmResults[trackUri];
+      }
+
+      // 진행 중인 Gemini 요청에서 해당 트랙 취소
+      if (window.lyricContainer?._inflightGemini) {
+        for (const [key] of window.lyricContainer._inflightGemini) {
+          if (key.includes(trackUri)) {
+            window.lyricContainer._inflightGemini.delete(key);
+          }
+        }
       }
 
       await LyricsCache.clearTrack(trackId);

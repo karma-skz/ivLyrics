@@ -2442,7 +2442,7 @@
                                         retryCount++;
 
                                         try {
-                                            const statusUrl = `https://lyrics.api.ivl.is/lyrics/translate?action=status&trackId=${finalTrackId}&lang=${userLang}&isPhonetic=${wantSmartPhonetic}`;
+                                            const statusUrl = `https://lyrics.api.ivl.is/lyrics/translate?action=status&trackId=${finalTrackId}&lang=${userLang}&isPhonetic=${wantSmartPhonetic}&provider=${encodeURIComponent(provider || 'ivLyrics')}`;
                                             const statusRes = await fetch(statusUrl);
                                             const statusData = await statusRes.json();
 

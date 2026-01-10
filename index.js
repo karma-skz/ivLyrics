@@ -1833,6 +1833,10 @@ const CacheManager = {
   },
 };
 
+// window에 등록하여 Settings.js에서 접근 가능하도록 함
+window.CacheManager = CacheManager;
+window.CACHE = CACHE;
+
 // Rate limiting utility
 const RateLimiter = {
   _calls: new Map(),
@@ -2691,6 +2695,7 @@ class LyricsContainer extends react.Component {
 
       // CacheManager에도 새 결과 저장 (getGeminiTranslation에서 캐시 히트하도록)
       const currentProvider = lyricsState.provider || '';
+      this._dmResults[currentUri].lastProvider = currentProvider;
       if (translatedLyrics1 && mode1) {
         CacheManager.set(`${currentUri}:${currentProvider}:${mode1}`, translatedLyrics1);
       }
@@ -3123,9 +3128,16 @@ class LyricsContainer extends react.Component {
     }
 
     // Progressive loading: keep results per track so Mode 1 does not disappear when Mode 2 finishes
-    // Check if display modes changed - if so, clear cached results
+    // Check if display modes or provider changed - if so, clear cached results
+    const currentProvider = lyricsState.provider || '';
     if (this._dmResults[currentUri]) {
       const cached = this._dmResults[currentUri];
+      // If provider changed, invalidate all cache for this track
+      if (cached.lastProvider !== currentProvider) {
+        console.log(`[processLyricsWithDisplayModes] Provider changed from ${cached.lastProvider} to ${currentProvider}, invalidating cache`);
+        cached.mode1 = null;
+        cached.mode2 = null;
+      }
       // If mode settings changed, invalidate cache for that mode
       if (cached.lastMode1 !== displayMode1) {
         cached.mode1 = null;
@@ -3141,6 +3153,7 @@ class LyricsContainer extends react.Component {
     };
     this._dmResults[currentUri].lastMode1 = displayMode1;
     this._dmResults[currentUri].lastMode2 = displayMode2;
+    this._dmResults[currentUri].lastProvider = currentProvider;
 
     let lyricsMode1 = this._dmResults[currentUri].mode1;
     let lyricsMode2 = this._dmResults[currentUri].mode2;
@@ -4239,8 +4252,8 @@ class LyricsContainer extends react.Component {
     };
 
     reloadLyrics = async (clearCache = true) => {
-      // 메모리 캐시는 항상 초기화
-      CACHE = {};
+      // 메모리 캐시는 항상 초기화 (window.CACHE와의 참조를 유지하기 위해 객체의 키만 삭제)
+      Object.keys(CACHE).forEach(key => delete CACHE[key]);
 
       // 현재 트랙 정보
       const item = Spicetify.Player.data?.item;
@@ -4252,11 +4265,29 @@ class LyricsContainer extends react.Component {
         CacheManager.clearByUri(trackUri);
       }
 
+      // _dmResults (번역/발음 결과 메모리 캐시)도 초기화
+      if (this._dmResults) {
+        if (trackUri) {
+          delete this._dmResults[trackUri];
+        } else {
+          this._dmResults = {};
+        }
+      }
+
+      // 진행 중인 Gemini 요청도 취소
+      if (this._inflightGemini && trackUri) {
+        for (const [key] of this._inflightGemini) {
+          if (key.includes(trackUri)) {
+            this._inflightGemini.delete(key);
+          }
+        }
+      }
+
       // clearCache가 true이고 트랙 정보가 있으면 로컬 캐시도 삭제
       if (clearCache && trackId) {
         await LyricsCache.clearTrack(trackId);
-        window.Translator.clearMemoryCache(trackId);
-        window.Translator.clearInflightRequests(trackId);
+        window.Translator?.clearMemoryCache?.(trackId);
+        window.Translator?.clearInflightRequests?.(trackId);
       }
 
       this.updateVisualOnConfigChange();
