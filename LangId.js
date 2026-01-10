@@ -130,7 +130,18 @@ window.LANG_ID = {
     },
     "lyricsHelper": {
       "label": "Gunakan Pembantu Lirik",
-      "desc": "Kirim informasi lagu dan lirik ke pembantu. Program eksternal dapat mengaksesnya melalui API."
+      "desc": "Kirim informasi lagu dan lirik ke pembantu. Program eksternal dapat mengaksesnya melalui API.",
+      "sectionTitle": "Integrasi Pembantu",
+      "sectionSubtitle": "Kirim lirik ke aplikasi pembantu eksternal",
+      "info": "Aplikasi pembantu memungkinkan program eksternal menampilkan lirik yang tersinkronisasi",
+      "download": "Unduh Pembantu",
+      "connected": "Pembantu terhubung",
+      "disconnected": "Pembantu tidak terhubung",
+      "status": {
+        "checking": "Memeriksa...",
+        "connected": "Terhubung",
+        "disconnected": "Tidak terhubung"
+      }
     },
     "videoBlur": {
       "label": "Blur Video",
@@ -1298,7 +1309,7 @@ window.LANG_ID = {
   },
   "providerDescriptions": {
     "lrclib": "Lirik dari lrclib.net. Mendukung lirik tersinkronisasi dan tidak tersinkronisasi. LRCLIB adalah database lirik sumber terbuka gratis.",
-    "ivLyrics": "Lirik dari IvLyrics API. Mendukung lirik tersinkronisasi, tidak tersinkronisasi, dan Karaoke per kata.",
+    "ivLyrics": "Secara algoritmik meningkatkan data sinkronisasi untuk lirik yang disediakan oleh API resmi Spotify.",
     "spotify": "Lirik resmi dari Spotify API.",
     "cache": "Lirik dari cache/file lokal yang dimuat dari sesi Spotify sebelumnya."
   },

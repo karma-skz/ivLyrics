@@ -1587,6 +1587,169 @@ const VideoHelperToggle = ({ name, defaultValue, disabled, onChange = () => { } 
   );
 };
 
+// Lyrics Helper Toggle - 가사 헬퍼 연결 토글
+const LyricsHelperToggle = ({ name, defaultValue, disabled, onChange = () => { } }) => {
+  const [enabled, setEnabled] = useState(defaultValue === "true" || defaultValue === true);
+  const [isConnected, setIsConnected] = useState(false);
+  const [checking, setChecking] = useState(false);
+
+  // 초기 연결 상태 확인 및 설정창 열려있는 동안 주기적 체크
+  useEffect(() => {
+    let isMounted = true;
+
+    const checkConnection = async () => {
+      if (!isMounted) return;
+      if (typeof window.lyricsHelperSender === "undefined") return;
+
+      // 설정 탭이 보이는지 확인
+      const settingsTab = document.querySelector('#ivLyrics-config-container') || document.querySelector('#ivLyrics-settings-overlay');
+      if (!settingsTab) return;
+
+      setChecking(true);
+      const connected = await window.lyricsHelperSender.checkConnection();
+      if (isMounted) {
+        setIsConnected(connected);
+        setChecking(false);
+      }
+    };
+
+    // 활성화 시 즉시 체크
+    if (enabled) {
+      checkConnection();
+    }
+
+    // lyricsHelperSender 연결 이벤트 리스너
+    const handleConnectionChange = (e) => {
+      if (isMounted) {
+        setIsConnected(e.detail?.connected || false);
+      }
+    };
+    window.addEventListener('ivLyrics:lyrics-helper-connection', handleConnectionChange);
+
+    // 설정창 열려있는 동안 주기적 연결 확인 (5초마다, 활성화 시만)
+    const interval = setInterval(() => {
+      if (enabled) checkConnection();
+    }, 5000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+      window.removeEventListener('ivLyrics:lyrics-helper-connection', handleConnectionChange);
+    };
+  }, [enabled]);
+
+  const handleToggle = () => {
+    if (disabled) return;
+    const newValue = !enabled;
+    setEnabled(newValue);
+    onChange(name, newValue);
+    CONFIG.visual[name] = newValue;
+    StorageManager.saveConfig(name, newValue);
+
+    // lyricsHelperSender 활성화/비활성화
+    if (window.lyricsHelperSender) {
+      window.lyricsHelperSender.enabled = newValue;
+    }
+
+    window.dispatchEvent(new CustomEvent("ivLyrics:lyricsHelperChanged", { detail: { enabled: newValue } }));
+  };
+
+  const handleDownload = () => {
+    window.open("https://ivlis.kr/ivLyrics/extensions/#helper", "_blank");
+  };
+
+  const handleCheckConnection = async () => {
+    if (window.lyricsHelperSender) {
+      setChecking(true);
+      const connected = await window.lyricsHelperSender.checkConnection();
+      setIsConnected(connected);
+      setChecking(false);
+      if (connected) {
+        Toast?.success?.(I18n.t("settings.lyricsHelper.connected") || "Helper connected");
+      } else {
+        Toast?.error?.(I18n.t("settings.lyricsHelper.disconnected") || "Helper not connected");
+      }
+    }
+  };
+
+  const getStatusText = () => {
+    if (checking) return I18n.t("settings.lyricsHelper.status.checking") || "Checking...";
+    if (isConnected) return "✓ " + (I18n.t("settings.lyricsHelper.status.connected") || "Connected");
+    return I18n.t("settings.lyricsHelper.status.disconnected") || "Not connected";
+  };
+
+  return react.createElement(
+    "div",
+    { className: "setting-row" },
+    react.createElement(
+      "div",
+      { className: "setting-row-content" },
+      react.createElement(
+        "div",
+        { className: "setting-row-left" },
+        react.createElement(
+          "div",
+          { className: "setting-name" },
+          I18n.t("settings.lyricsHelper.label"),
+          // 활성화 시 상태 태그 표시
+          enabled && react.createElement("span", {
+            style: {
+              marginLeft: "10px",
+              fontSize: "10px",
+              padding: "2px 8px",
+              borderRadius: "12px",
+              backgroundColor: isConnected ? "rgba(74, 222, 128, 0.2)" : "rgba(239, 68, 68, 0.2)",
+              color: isConnected ? "#4ade80" : "#ef4444",
+              border: `1px solid ${isConnected ? "rgba(74, 222, 128, 0.3)" : "rgba(239, 68, 68, 0.3)"}`,
+              fontWeight: "600",
+              verticalAlign: "middle"
+            }
+          }, getStatusText())
+        ),
+        react.createElement(
+          "div",
+          { className: "setting-description" },
+          I18n.t("settings.lyricsHelper.desc")
+        )
+      ),
+      react.createElement(
+        "div",
+        { className: "setting-row-right", style: { display: "flex", alignItems: "center", gap: "10px" } },
+        // 다운로드 버튼 (활성화 && 연결 안됨)
+        enabled && !isConnected && react.createElement(
+          "button",
+          {
+            className: "btn",
+            onClick: handleDownload,
+            style: { fontSize: "11px", padding: "4px 8px", height: "auto" }
+          },
+          I18n.t("settings.lyricsHelper.download") || "Download"
+        ),
+        // 토글 스위치
+        react.createElement(
+          "button",
+          {
+            className: `switch-checkbox${enabled ? " active" : ""}`,
+            onClick: handleToggle,
+            "aria-checked": enabled,
+            role: "checkbox",
+            disabled,
+          },
+          react.createElement("svg", {
+            width: 12,
+            height: 12,
+            viewBox: "0 0 16 16",
+            fill: "currentColor",
+            dangerouslySetInnerHTML: {
+              __html: Spicetify.SVGIcons.check,
+            },
+          })
+        )
+      )
+    )
+  );
+};
+
 const ConfigSelection = ({
   name,
   defaultValue,
@@ -2471,7 +2634,8 @@ const OptionList = ({ type, items, onChange }) => {
       item.type === ConfigInfo ||
       item.type === ConfigKeyList ||
       item.type === ConfigFontSelector ||
-      item.type === VideoHelperToggle
+      item.type === VideoHelperToggle ||
+      item.type === LyricsHelperToggle
     ) {
       // item.onChange가 있으면 그것을 우선 사용 (업데이트 확인, 내보내기 등 커스텀 핸들러)
       const itemOnChange = item.onChange || ((name, value, event) => {
@@ -5112,14 +5276,6 @@ const ConfigModal = () => {
               when: () => CONFIG.visual["video-background"] && !CONFIG.visual["video-helper-enabled"],
             },
             {
-              desc: I18n.t("settings.lyricsHelper.label"),
-              info: I18n.t("settings.lyricsHelper.desc"),
-              key: "lyrics-helper-enabled",
-              type: ConfigSlider,
-              disabled: isFadActive,
-              when: () => CONFIG.visual["video-helper-enabled"],
-            },
-            {
               desc: I18n.t("settings.videoBlur.label"),
               info: I18n.t("settings.videoBlur.desc"),
               key: "video-blur",
@@ -5188,12 +5344,6 @@ const ConfigModal = () => {
               StorageManager.saveConfig("colorful", false);
               StorageManager.saveConfig("gradient-background", false);
               StorageManager.saveConfig("solid-background", false);
-            }
-
-            // 메인(비디오) 헬퍼가 꺼지면 다른 헬퍼도 꺼져야 한다.
-            if (name === "video-helper-enabled" && !value) {
-              CONFIG.visual["lyrics-helper-enabled"] = false;
-              StorageManager.saveConfig("lyrics-helper-enabled", false);
             }
 
             CONFIG.visual[name] = value;
@@ -6172,7 +6322,44 @@ const ConfigModal = () => {
           subtitle: I18n.t("settingsAdvanced.cacheManagement.subtitle"),
         }),
         // 로컬 캐시 관리 (IndexedDB) - 메모리 캐시와 통합됨
-        react.createElement(LocalCacheManager)
+        react.createElement(LocalCacheManager),
+        // 헬퍼 연동 섹션
+        react.createElement(SectionTitle, {
+          title: I18n.t("settings.lyricsHelper.sectionTitle") || "Helper Integration",
+          subtitle: I18n.t("settings.lyricsHelper.sectionSubtitle") || "Send lyrics to external helper applications",
+        }),
+        react.createElement(OptionList, {
+          items: [
+            {
+              desc: I18n.t("settings.lyricsHelper.label"),
+              info: I18n.t("settings.lyricsHelper.desc"),
+              key: "lyrics-helper-enabled",
+              type: LyricsHelperToggle,
+              disabled: isFadActive,
+            },
+            {
+              desc: "",
+              key: "lyrics-helper-info",
+              type: ConfigInfo,
+              message: I18n.t("settings.lyricsHelper.info") || "Helper app allows external applications to display synced lyrics",
+              buttonText: I18n.t("settings.lyricsHelper.download") || "Download Helper",
+              onButtonClick: () => {
+                window.open("https://ivlis.kr/ivLyrics/extensions/#helper", "_blank");
+              },
+              when: () => !CONFIG.visual["lyrics-helper-enabled"],
+            },
+          ],
+          onChange: (name, value) => {
+            CONFIG.visual[name] = value;
+            StorageManager.saveConfig(name, value);
+            // lyricsHelperSender 활성/비활성
+            if (name === "lyrics-helper-enabled") {
+              if (window.lyricsHelperSender) {
+                window.lyricsHelperSender.enabled = value;
+              }
+            }
+          },
+        })
       ),
       // 번역 탭 (가사 제공자 포함)
       react.createElement(

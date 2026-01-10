@@ -136,7 +136,18 @@ window.LANG_JA = {
     },
     "lyricsHelper": {
       "label": "歌詞ヘルパーを使用",
-      "desc": "トラックと歌詞の情報をヘルパーに送信します。外部プログラムからAPI経由でアクセスできます。"
+      "desc": "トラックと歌詞の情報をヘルパーに送信します。外部プログラムからAPI経由でアクセスできます。",
+      "sectionTitle": "ヘルパー連携",
+      "sectionSubtitle": "外部ヘルパーアプリに歌詞を送信",
+      "info": "ヘルパーアプリを使用すると、外部プログラムで同期された歌詞を表示できます",
+      "download": "ヘルパーをダウンロード",
+      "connected": "ヘルパー接続済み",
+      "disconnected": "ヘルパー未接続",
+      "status": {
+        "checking": "確認中...",
+        "connected": "接続済み",
+        "disconnected": "未接続"
+      }
     },
     "videoBlur": {
       "label": "動画ブラー",
@@ -1322,7 +1333,7 @@ window.LANG_JA = {
   },
   "providerDescriptions": {
     "lrclib": "lrclib.netからの歌詞。同期・非同期歌詞をサポート。LRCLIBは無料のオープンソース歌詞プロバイダーです。",
-    "ivLyrics": "ivLyrics APIからの歌詞。同期歌詞、非同期歌詞、逐語カラオケ歌詞をサポート。",
+    "ivLyrics": "公式Spotify APIから提供される歌詞の同期データをアルゴリズムで改善します。",
     "spotify": "公式Spotify APIからの歌詞。",
     "cache": "以前のSpotifyセッションからロードされたキャッシュ/ローカルファイルからの歌詞。"
   },

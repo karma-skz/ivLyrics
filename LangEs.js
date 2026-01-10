@@ -136,7 +136,18 @@ window.LANG_ES = {
     },
     "lyricsHelper": {
       "label": "Usar asistente de letras",
-      "desc": "Envía información de la pista y letras al asistente. Programas externos pueden acceder vía API."
+      "desc": "Envía información de la pista y letras al asistente. Programas externos pueden acceder vía API.",
+      "sectionTitle": "Integración del asistente",
+      "sectionSubtitle": "Enviar letras a aplicaciones de asistente externas",
+      "info": "La app de asistente permite que aplicaciones externas muestren letras sincronizadas",
+      "download": "Descargar asistente",
+      "connected": "Asistente conectado",
+      "disconnected": "Asistente no conectado",
+      "status": {
+        "checking": "Verificando...",
+        "connected": "Conectado",
+        "disconnected": "No conectado"
+      }
     },
     "videoBlur": {
       "label": "Desenfoque de video",
@@ -1322,7 +1333,7 @@ window.LANG_ES = {
   },
   "providerDescriptions": {
     "lrclib": "Letras proporcionadas por lrclib.net. Admite letras sincronizadas y no sincronizadas. LRCLIB es un proveedor de letras gratuito mantenido por la comunidad.",
-    "ivLyrics": "Letras proporcionadas por la API de ivLyrics. Admite letras sincronizadas, no sincronizadas y letras de karaoke palabra por palabra.",
+    "ivLyrics": "Mejora algorítmicamente los datos de sincronización de las letras proporcionadas por la API oficial de Spotify.",
     "spotify": "Letras proporcionadas por la API oficial de Spotify.",
     "cache": "Proporciona letras de caché/archivos locales cargados de sesiones anteriores de Spotify."
   },

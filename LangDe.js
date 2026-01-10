@@ -136,7 +136,18 @@ window.LANG_DE = {
     },
     "lyricsHelper": {
       "label": "Lyrics-Helfer verwenden",
-      "desc": "Sendet Titel- und Liedtextinformationen an den Helfer. Externe Programme können über die API darauf zugreifen."
+      "desc": "Sendet Titel- und Liedtextinformationen an den Helfer. Externe Programme können über die API darauf zugreifen.",
+      "sectionTitle": "Helfer-Integration",
+      "sectionSubtitle": "Liedtexte an externe Helfer-Apps senden",
+      "info": "Die Helfer-App ermöglicht externen Programmen die Anzeige synchronisierter Liedtexte",
+      "download": "Helfer herunterladen",
+      "connected": "Helfer verbunden",
+      "disconnected": "Helfer nicht verbunden",
+      "status": {
+        "checking": "Überprüfen...",
+        "connected": "Verbunden",
+        "disconnected": "Nicht verbunden"
+      }
     },
     "videoBlur": {
       "label": "Videounschärfe",
@@ -1322,7 +1333,7 @@ window.LANG_DE = {
   },
   "providerDescriptions": {
     "lrclib": "Songtexte bereitgestellt von lrclib.net. Unterstützt synchronisierte und unsynchronisierte Texte. LRCLIB ist ein kostenloser, von der Community gepflegter Songtext-Anbieter.",
-    "ivLyrics": "Songtexte bereitgestellt von der IvLyrics API. Unterstützt synchronisierte, unsynchronisierte und Karaoke-Texte.",
+    "ivLyrics": "Verbessert algorithmisch die Sync-Daten für Liedtexte, die von der offiziellen Spotify API bereitgestellt werden.",
     "spotify": "Songtexte bereitgestellt von der offiziellen Spotify API.",
     "cache": "Liefert zwischengespeicherte/lokale Songtexte, die aus früheren Spotify-Sitzungen geladen wurden."
   },

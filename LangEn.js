@@ -137,7 +137,18 @@ window.LANG_EN = {
     },
     "lyricsHelper": {
       "label": "Use Lyrics Helper",
-      "desc": "Sends track and lyrics information to the helper. External programs can access it via API."
+      "desc": "Sends track and lyrics information to the helper. External programs can access it via API.",
+      "sectionTitle": "Helper Integration",
+      "sectionSubtitle": "Send lyrics to external helper applications",
+      "info": "Helper app allows external applications to display synced lyrics",
+      "download": "Download Helper",
+      "connected": "Helper connected",
+      "disconnected": "Helper not connected",
+      "status": {
+        "checking": "Checking...",
+        "connected": "Connected",
+        "disconnected": "Not connected"
+      }
     },
     "videoBlur": {
       "label": "Video Blur",
@@ -1311,7 +1322,7 @@ window.LANG_EN = {
   },
   "providerDescriptions": {
     "lrclib": "Lyrics from lrclib.net. Supports both synced and unsynced lyrics. LRCLIB is a free open-source lyrics provider.",
-    "ivLyrics": "Lyrics from ivLyrics API. Supports synced lyrics, unsynced lyrics, and word-by-word karaoke lyrics.",
+    "ivLyrics": "Algorithmically enhances sync data for lyrics provided by the official Spotify API.",
     "spotify": "Lyrics from official Spotify API.",
     "cache": "Lyrics from cached/local files loaded from previous Spotify sessions."
   },

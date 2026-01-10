@@ -136,7 +136,18 @@ window.LANG_IT = {
     },
     "lyricsHelper": {
       "label": "Usa assistente testi",
-      "desc": "Invia informazioni sulla traccia e sul testo all'assistente. Programmi esterni possono accedervi tramite API."
+      "desc": "Invia informazioni sulla traccia e sul testo all'assistente. Programmi esterni possono accedervi tramite API.",
+      "sectionTitle": "Integrazione assistente",
+      "sectionSubtitle": "Invia testi alle app assistente esterne",
+      "info": "L'app assistente consente ai programmi esterni di visualizzare testi sincronizzati",
+      "download": "Scarica assistente",
+      "connected": "Assistente connesso",
+      "disconnected": "Assistente non connesso",
+      "status": {
+        "checking": "Verifica...",
+        "connected": "Connesso",
+        "disconnected": "Non connesso"
+      }
     },
     "videoBlur": {
       "label": "Sfocatura Video",
@@ -1322,7 +1333,7 @@ window.LANG_IT = {
   },
   "providerDescriptions": {
     "lrclib": "Testi forniti da lrclib.net. Supporta testi sincronizzati e non sincronizzati. LRCLIB è un provider di testi gratuito gestito dalla comunità.",
-    "ivLyrics": "Testi forniti dall'API IvLyrics. Supporta testi sincronizzati, non sincronizzati e testi karaoke.",
+    "ivLyrics": "Migliora algoritmicamente i dati di sincronizzazione per i testi forniti dall'API ufficiale di Spotify.",
     "spotify": "Testi forniti dall'API ufficiale di Spotify.",
     "cache": "Fornisce testi in cache/file locali caricati da sessioni Spotify precedenti."
   },

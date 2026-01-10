@@ -136,7 +136,18 @@ window.LANG_ZH_TW = {
     },
     "lyricsHelper": {
       "label": "使用歌詞助手",
-      "desc": "傳送曲目和歌詞資訊到助手。外部程式可透過 API 存取。"
+      "desc": "傳送曲目和歌詞資訊到助手。外部程式可透過 API 存取。",
+      "sectionTitle": "助手整合",
+      "sectionSubtitle": "將歌詞傳送到外部助手應用程式",
+      "info": "助手應用程式允許外部程式顯示同步歌詞",
+      "download": "下載助手",
+      "connected": "助手已連線",
+      "disconnected": "助手未連線",
+      "status": {
+        "checking": "檢查中...",
+        "connected": "已連線",
+        "disconnected": "未連線"
+      }
     },
     "videoBlur": {
       "label": "影片模糊",
@@ -1322,7 +1333,7 @@ window.LANG_ZH_TW = {
   },
   "providerDescriptions": {
     "lrclib": "來自lrclib.net的歌詞。支援同步和非同步歌詞。LRCLIB是免費的開源歌詞提供者。",
-    "ivLyrics": "來自ivLyrics API的歌詞。支援同步歌詞、非同步歌詞和逐字卡拉OK歌詞。",
+    "ivLyrics": "透過演算法改進官方Spotify API提供的歌詞同步資料。",
     "spotify": "來自官方Spotify API的歌詞。",
     "cache": "來自先前Spotify工作階段載入的快取/本機檔案的歌詞。"
   },

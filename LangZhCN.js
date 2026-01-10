@@ -136,7 +136,18 @@ window.LANG_ZH_CN = {
     },
     "lyricsHelper": {
       "label": "使用歌词助手",
-      "desc": "发送曲目和歌词信息到助手。外部程序可通过 API 访问。"
+      "desc": "发送曲目和歌词信息到助手。外部程序可通过 API 访问。",
+      "sectionTitle": "助手集成",
+      "sectionSubtitle": "将歌词发送到外部助手应用",
+      "info": "助手应用允许外部程序显示同步歌词",
+      "download": "下载助手",
+      "connected": "助手已连接",
+      "disconnected": "助手未连接",
+      "status": {
+        "checking": "检查中...",
+        "connected": "已连接",
+        "disconnected": "未连接"
+      }
     },
     "videoBlur": {
       "label": "视频模糊",
@@ -1322,7 +1333,7 @@ window.LANG_ZH_CN = {
   },
   "providerDescriptions": {
     "lrclib": "来自lrclib.net的歌词。支持同步和非同步歌词。LRCLIB是免费的开源歌词提供者。",
-    "ivLyrics": "来自ivLyrics API的歌词。支持同步歌词、非同步歌词和逐字卡拉OK歌词。",
+    "ivLyrics": "通过算法改进官方Spotify API提供的歌词同步数据。",
     "spotify": "来自官方Spotify API的歌词。",
     "cache": "来自之前Spotify会话加载的缓存/本地文件的歌词。"
   },

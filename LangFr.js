@@ -136,7 +136,18 @@ window.LANG_FR = {
     },
     "lyricsHelper": {
       "label": "Utiliser l'assistant de paroles",
-      "desc": "Envoie les informations de piste et de paroles à l'assistant. Les programmes externes peuvent y accéder via API."
+      "desc": "Envoie les informations de piste et de paroles à l'assistant. Les programmes externes peuvent y accéder via API.",
+      "sectionTitle": "Intégration de l'assistant",
+      "sectionSubtitle": "Envoyer les paroles aux applications d'assistant externes",
+      "info": "L'application assistant permet aux programmes externes d'afficher les paroles synchronisées",
+      "download": "Télécharger l'assistant",
+      "connected": "Assistant connecté",
+      "disconnected": "Assistant non connecté",
+      "status": {
+        "checking": "Vérification...",
+        "connected": "Connecté",
+        "disconnected": "Non connecté"
+      }
     },
     "videoBlur": {
       "label": "Flou vidéo",
@@ -1322,7 +1333,7 @@ window.LANG_FR = {
   },
   "providerDescriptions": {
     "lrclib": "Paroles fournies par lrclib.net. Prend en charge les paroles synchronisées et non synchronisées. LRCLIB est un fournisseur de paroles gratuit maintenu par la communauté.",
-    "ivLyrics": "Paroles fournies par l'API ivLyrics. Prend en charge les paroles synchronisées, non synchronisées et les paroles de karaoké mot à mot.",
+    "ivLyrics": "Améliore algorithmiquement les données de synchronisation des paroles fournies par l'API officielle de Spotify.",
     "spotify": "Paroles fournies par l'API officielle de Spotify.",
     "cache": "Fournit des paroles en cache/fichiers locaux chargés lors des sessions Spotify précédentes."
   },

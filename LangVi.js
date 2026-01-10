@@ -136,7 +136,18 @@ window.LANG_VI = {
     },
     "lyricsHelper": {
       "label": "Sử dụng Trình hỗ trợ lời bài hát",
-      "desc": "Gửi thông tin bài hát và lời bài hát đến trình hỗ trợ. Các chương trình bên ngoài có thể truy cập qua API."
+      "desc": "Gửi thông tin bài hát và lời bài hát đến trình hỗ trợ. Các chương trình bên ngoài có thể truy cập qua API.",
+      "sectionTitle": "Tích hợp trình hỗ trợ",
+      "sectionSubtitle": "Gửi lời bài hát đến ứng dụng hỗ trợ bên ngoài",
+      "info": "Ứng dụng hỗ trợ cho phép các chương trình bên ngoài hiển thị lời bài hát đã đồng bộ",
+      "download": "Tải trình hỗ trợ",
+      "connected": "Trình hỗ trợ đã kết nối",
+      "disconnected": "Trình hỗ trợ chưa kết nối",
+      "status": {
+        "checking": "Đang kiểm tra...",
+        "connected": "Đã kết nối",
+        "disconnected": "Chưa kết nối"
+      }
     },
     "videoBlur": {
       "label": "Làm mờ video",
@@ -1326,7 +1337,7 @@ window.LANG_VI = {
   },
   "providerDescriptions": {
     "lrclib": "Lời bài hát từ lrclib.net. Hỗ trợ cả lời đồng bộ và không đồng bộ. LRCLIB là cơ sở dữ liệu lời bài hát nguồn mở miễn phí.",
-    "ivLyrics": "Lời bài hát từ IvLyrics API. Hỗ trợ lời đồng bộ, không đồng bộ và Karaoke theo từng từ.",
+    "ivLyrics": "Cải thiện thuật toán dữ liệu đồng bộ cho lời bài hát được cung cấp bởi API chính thức của Spotify.",
     "spotify": "Lời bài hát chính thức từ Spotify API.",
     "cache": "Lời bài hát từ bộ nhớ đệm/tệp cục bộ được tải từ phiên Spotify trước đó."
   },

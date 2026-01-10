@@ -137,7 +137,18 @@ window.LANG_KO = {
     },
     "lyricsHelper": {
       "label": "가사 헬퍼 사용",
-      "desc": "트랙 및 가사 정보를 헬퍼로 전송합니다. 외부 프로그램에서 API로 접근하여 사용할 수 있습니다."
+      "desc": "트랙 및 가사 정보를 헬퍼로 전송합니다. 외부 프로그램에서 API로 접근하여 사용할 수 있습니다.",
+      "sectionTitle": "헬퍼 연동",
+      "sectionSubtitle": "외부 헬퍼 앱에 가사 전송",
+      "info": "헬퍼 앱을 통해 외부 프로그램에서 동기화된 가사를 표시할 수 있습니다",
+      "download": "헬퍼 다운로드",
+      "connected": "헬퍼 연결됨",
+      "disconnected": "헬퍼 연결 안됨",
+      "status": {
+        "checking": "확인 중...",
+        "connected": "연결됨",
+        "disconnected": "연결 안됨"
+      }
     },
     "videoBlur": {
       "label": "동영상 블러",
@@ -1311,7 +1322,7 @@ window.LANG_KO = {
   },
   "providerDescriptions": {
     "lrclib": "lrclib.net에서 제공되는 가사입니다. 동기화된 가사와 동기화되지 않은 가사를 모두 지원합니다. LRCLIB은 무료 오픈소스 가사 제공자입니다.",
-    "ivLyrics": "ivLyrics API에서 제공되는 가사입니다. 동기화된 가사, 동기화되지 않은 가사, 단어별 카라오케 가사를 지원합니다.",
+    "ivLyrics": "공식 Spotify API에서 제공되는 가사에 싱크 데이터를 알고리즘으로 개선합니다.",
     "spotify": "공식 Spotify API에서 제공되는 가사입니다.",
     "cache": "이전 Spotify 세션에서 로드된 캐시/로컬 파일의 가사를 제공합니다."
   },

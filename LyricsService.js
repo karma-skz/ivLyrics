@@ -3348,7 +3348,7 @@
 
     const lyricsHelperSender = Object.create(OverlaySender, {
         DEFAULT_PORT: {
-            value: 15123
+            value: 15123  // Helper 서버 포트 (video_server와 lyrics_server 통합)
         },
         port: {
             get() {
@@ -3493,7 +3493,8 @@
                     artist: currentArtist
                 });
 
-                await this.sendToEndpoint('/lyrics', {
+                // 새로운 엔드포인트 사용: /lyrics/sender
+                await this.sendToEndpoint('/lyrics/sender', {
                     track: {
                         title: currentTitle,
                         artist: currentArtist,
@@ -3512,6 +3513,28 @@
                 if (this._lastTrackInfo && this._lastLyrics) {
                     console.log('[lyricsHelperSender] 가사 재전송 (싱크 반영)');
                     await this.sendLyrics(this._lastTrackInfo, this._lastLyrics, true);
+                }
+            }
+        },
+        // progress 전송용 엔드포인트 오버라이드
+        sendProgressToEndpoint: {
+            value: async function (data) {
+                if (!this.enabled) return;
+                try {
+                    const response = await fetch(`http://localhost:${this.port}/lyrics/progress`, {
+                        method: 'POST',
+                        mode: 'cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                        signal: AbortSignal.timeout(2000)
+                    });
+                    if (!this._isConnected && response.ok) {
+                        this.isConnected = true;
+                    }
+                } catch (e) {
+                    if (this._isConnected) {
+                        this.isConnected = false;
+                    }
                 }
             }
         },
@@ -3635,6 +3658,137 @@
                         console.error('[lyricsHelperSender] 가사 가져오기 실패:', e);
                     }
                 });
+            }
+        },
+        startProgressSync: {
+            value: function () {
+                if (this._worker) return;
+                if (!this.enabled) return;
+
+                const blob = new Blob([`
+                  let interval = null;
+                  self.onmessage = function(e) {
+                    if (e.data === 'start') {
+                      if (interval) clearInterval(interval);
+                      interval = setInterval(() => {
+                        self.postMessage('tick');
+                      }, 250);
+                    } else if (e.data === 'stop') {
+                      if (interval) clearInterval(interval);
+                      interval = null;
+                    }
+                  };
+                `], { type: 'application/javascript' });
+
+                this._worker = new Worker(URL.createObjectURL(blob));
+
+                this._worker.onmessage = async () => {
+                    if (!this.enabled) return;
+                    if (this._isSendingProgress) return;
+                    if (!this.isConnected && !this._isSettingsOpen) return;
+
+                    // 전역 딜레이 변경 체크
+                    if (typeof window.CONFIG !== 'undefined' && window.CONFIG.visual) {
+                        if (this.lastConfigDelay === undefined) {
+                            this.lastConfigDelay = window.CONFIG.visual.delay;
+                        }
+                        if (this.lastConfigDelay !== window.CONFIG.visual.delay) {
+                            this.lastConfigDelay = window.CONFIG.visual.delay;
+                            this.resendWithNewOffset();
+                        }
+                    }
+
+                    this._isSendingProgress = true;
+                    try {
+                        const position = Spicetify.Player.getProgress() || 0;
+                        const duration = Spicetify.Player.getDuration() || 0;
+                        const remaining = (duration - position) / 1000;
+
+                        let currentTrack = null;
+                        const currentUri = Spicetify.Player.data?.item?.uri;
+                        if (currentUri && this._lastProgressUri !== currentUri) {
+                            this._lastProgressUri = currentUri;
+                            try {
+                                const imageUrl = Spicetify.Player.data?.item?.metadata?.image_xlarge_url
+                                    || Spicetify.Player.data?.item?.metadata?.image_url
+                                    || Spicetify.Player.data?.item?.metadata?.image_large_url;
+                                let albumArt = null;
+                                if (imageUrl && imageUrl.indexOf('localfile') === -1) {
+                                    if (imageUrl.startsWith('spotify:image:')) {
+                                        albumArt = `https://i.scdn.co/image/${imageUrl.substring(imageUrl.lastIndexOf(':') + 1)}`;
+                                    } else if (imageUrl.startsWith('http')) {
+                                        albumArt = imageUrl;
+                                    }
+                                }
+                                currentTrack = {
+                                    title: Spicetify.Player.data?.item?.metadata?.title || '',
+                                    artist: Spicetify.Player.data?.item?.metadata?.artist_name || '',
+                                    album: Spicetify.Player.data?.item?.metadata?.album_title || '',
+                                    albumArt: albumArt
+                                };
+                            } catch (e) { }
+                        }
+
+                        let nextTrack = null;
+                        try {
+                            const queue = Spicetify.Queue;
+                            if (queue?.nextTracks?.length > 0) {
+                                const next = queue.nextTracks[0];
+                                if (next?.contextTrack?.metadata) {
+                                    const imageUrl = next.contextTrack.metadata.image_url || next.contextTrack.metadata.image_xlarge_url;
+                                    let albumArt = null;
+                                    if (imageUrl && imageUrl.indexOf('localfile') === -1) {
+                                        if (imageUrl.startsWith('spotify:image:')) {
+                                            albumArt = `https://i.scdn.co/image/${imageUrl.substring(imageUrl.lastIndexOf(':') + 1)}`;
+                                        } else if (imageUrl.startsWith('http')) {
+                                            albumArt = imageUrl;
+                                        }
+                                    }
+                                    nextTrack = {
+                                        title: next.contextTrack.metadata.title || '',
+                                        artist: next.contextTrack.metadata.artist_name || '',
+                                        albumArt: albumArt
+                                    };
+                                }
+                            }
+                        } catch (e) { }
+
+                        // 새로운 엔드포인트 사용: /lyrics/progress
+                        await this.sendToEndpoint('/lyrics/progress', {
+                            position: position,
+                            isPlaying: Spicetify.Player.isPlaying() || false,
+                            duration: duration,
+                            remaining: remaining,
+                            currentTrack: currentTrack,
+                            nextTrack: nextTrack
+                        });
+                    } finally {
+                        this._isSendingProgress = false;
+                    }
+                };
+
+                this._worker.postMessage('start');
+            }
+        },
+        checkConnection: {
+            value: async function () {
+                if (!this.enabled) return false;
+
+                try {
+                    // /lyrics/progress 엔드포인트로 연결 확인
+                    const response = await fetch(`http://localhost:${this.port}/lyrics/progress`, {
+                        method: 'POST',
+                        mode: 'cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ position: 0, isPlaying: false }),
+                        signal: AbortSignal.timeout(1000)
+                    });
+                    this.isConnected = response.ok;
+                    return this.isConnected;
+                } catch (e) {
+                    this.isConnected = false;
+                    return false;
+                }
             }
         },
         init: {
