@@ -5112,6 +5112,14 @@ const ConfigModal = () => {
               when: () => CONFIG.visual["video-background"] && !CONFIG.visual["video-helper-enabled"],
             },
             {
+              desc: I18n.t("settings.lyricsHelper.label"),
+              info: I18n.t("settings.lyricsHelper.desc"),
+              key: "lyrics-helper-enabled",
+              type: ConfigSlider,
+              disabled: isFadActive,
+              when: () => CONFIG.visual["video-helper-enabled"],
+            },
+            {
               desc: I18n.t("settings.videoBlur.label"),
               info: I18n.t("settings.videoBlur.desc"),
               key: "video-blur",
@@ -5180,6 +5188,12 @@ const ConfigModal = () => {
               StorageManager.saveConfig("colorful", false);
               StorageManager.saveConfig("gradient-background", false);
               StorageManager.saveConfig("solid-background", false);
+            }
+
+            // 메인(비디오) 헬퍼가 꺼지면 다른 헬퍼도 꺼져야 한다.
+            if (name === "video-helper-enabled" && !value) {
+              CONFIG.visual["lyrics-helper-enabled"] = false;
+              StorageManager.saveConfig("lyrics-helper-enabled", false);
             }
 
             CONFIG.visual[name] = value;

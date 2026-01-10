@@ -134,6 +134,10 @@ window.LANG_IT = {
         "checking": "Verifica in corso..."
       }
     },
+    "lyricsHelper": {
+      "label": "Usa assistente testi",
+      "desc": "Invia informazioni sulla traccia e sul testo all'assistente. Programmi esterni possono accedervi tramite API."
+    },
     "videoBlur": {
       "label": "Sfocatura Video",
       "desc": "Regola l'intensità della sfocatura applicata allo sfondo video (0-40px)"

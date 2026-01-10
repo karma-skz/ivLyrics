@@ -1781,6 +1781,14 @@
                             true
                         );
                     }
+                    if (window.lyricsHelperSender?.sendLyrics) {
+                        await window.lyricsHelperSender.sendLyrics(
+                            { uri: info.uri, title: info.title, artist: info.artist },
+                            [],
+                            true
+                        );
+                    }
+
                     return { lyrics: [], provider: null, error: lyricsResult.error };
                 }
 
@@ -1791,6 +1799,13 @@
                 if (lyrics.length === 0) {
                     if (sendToOverlay && window.OverlaySender?.sendLyrics) {
                         await window.OverlaySender.sendLyrics(
+                            { uri: info.uri, title: info.title, artist: info.artist },
+                            [],
+                            true
+                        );
+                    }
+                    if (window.lyricsHelperSender?.sendLyrics) {
+                        await window.lyricsHelperSender.sendLyrics(
                             { uri: info.uri, title: info.title, artist: info.artist },
                             [],
                             true
@@ -1910,6 +1925,14 @@
                 // 6. 오버레이 전송
                 if (sendToOverlay && window.OverlaySender?.sendLyrics) {
                     await window.OverlaySender.sendLyrics(
+                        { uri: info.uri, title: info.title, artist: info.artist },
+                        lyrics,
+                        true
+                    );
+                }
+                // 헬퍼 전송
+                if (window.lyricsHelperSender?.sendLyrics) {
+                    await window.lyricsHelperSender.sendLyrics(
                         { uri: info.uri, title: info.title, artist: info.artist },
                         lyrics,
                         true
@@ -3323,9 +3346,37 @@
         }
     };
 
+    const lyricsHelperSender = Object.create(OverlaySender, {
+        DEFAULT_PORT: {
+            value: 15123
+        },
+        port: {
+            get() {
+                return this.DEFAULT_PORT;
+            }
+        },
+        enabled: {
+            get() {
+                return Spicetify.LocalStorage.get('ivLyrics:visual:lyrics-helper-enabled') !== 'false';
+            },
+            set(value) {
+                Spicetify.LocalStorage.set('ivLyrics:visual:lyrics-helper-enabled', value ? 'true' : 'false');
+                if (value) {
+                    this.startProgressSync();
+                    this.checkConnection();
+                } else {
+                    this.stopProgressSync();
+                }
+            }
+        }
+    });
+
     // OverlaySender 초기화 및 전역 등록
     OverlaySender.init();
     window.OverlaySender = OverlaySender;
+
+    lyricsHelperSender.init();
+    window.lyricsHelperSender = lyricsHelperSender;
 
     console.log("[LyricsService] LyricsService Extension initialized successfully!");
     console.log("[LyricsService] Available APIs: window.LyricsService, window.LyricsCache, window.ApiTracker, window.Providers, window.Translator, window.OverlaySender");

@@ -171,6 +171,7 @@ const SettingKeys = [
   "ivLyrics:visual:panel-border-enabled",
   "ivLyrics:visual:panel-border-color",
   "ivLyrics:visual:panel-border-opacity",
+  "ivLyrics:helper:lyrics-helper-enabled",
 ];
 
 const BYTES_FOR_INDEX = Math.ceil(SettingKeys.length / 255);

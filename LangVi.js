@@ -134,6 +134,10 @@ window.LANG_VI = {
         "checking": "Đang kiểm tra..."
       }
     },
+    "lyricsHelper": {
+      "label": "Sử dụng Trình hỗ trợ lời bài hát",
+      "desc": "Gửi thông tin bài hát và lời bài hát đến trình hỗ trợ. Các chương trình bên ngoài có thể truy cập qua API."
+    },
     "videoBlur": {
       "label": "Làm mờ video",
       "desc": "Điều chỉnh độ mờ áp dụng cho nền video (0-40px)"

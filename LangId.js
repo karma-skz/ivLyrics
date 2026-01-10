@@ -128,6 +128,10 @@ window.LANG_ID = {
         "checking": "Memeriksa..."
       }
     },
+    "lyricsHelper": {
+      "label": "Gunakan Pembantu Lirik",
+      "desc": "Kirim informasi lagu dan lirik ke pembantu. Program eksternal dapat mengaksesnya melalui API."
+    },
     "videoBlur": {
       "label": "Blur Video",
       "desc": "Sesuaikan intensitas blur untuk latar belakang video (0-40px)"

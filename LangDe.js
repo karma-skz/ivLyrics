@@ -134,6 +134,10 @@ window.LANG_DE = {
         "checking": "Überprüfe..."
       }
     },
+    "lyricsHelper": {
+      "label": "Lyrics-Helfer verwenden",
+      "desc": "Sendet Titel- und Liedtextinformationen an den Helfer. Externe Programme können über die API darauf zugreifen."
+    },
     "videoBlur": {
       "label": "Videounschärfe",
       "desc": "Stellt die Intensität der Unschärfe für den Videohintergrund ein (0-40px)"

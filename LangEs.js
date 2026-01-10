@@ -134,6 +134,10 @@ window.LANG_ES = {
         "checking": "Verificando..."
       }
     },
+    "lyricsHelper": {
+      "label": "Usar asistente de letras",
+      "desc": "Envía información de la pista y letras al asistente. Programas externos pueden acceder vía API."
+    },
     "videoBlur": {
       "label": "Desenfoque de video",
       "desc": "Ajusta la intensidad del desenfoque aplicado al fondo de video (0-40px)"

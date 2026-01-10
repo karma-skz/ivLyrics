@@ -135,6 +135,10 @@ window.LANG_KO = {
         "checking": "확인 중..."
       }
     },
+    "lyricsHelper": {
+      "label": "가사 헬퍼 사용",
+      "desc": "트랙 및 가사 정보를 헬퍼로 전송합니다. 외부 프로그램에서 API로 접근하여 사용할 수 있습니다."
+    },
     "videoBlur": {
       "label": "동영상 블러",
       "desc": "영상 배경에 적용할 흐림 강도를 조절합니다 (0-40px)"
