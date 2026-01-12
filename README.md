@@ -102,6 +102,18 @@ curl -fsSL https://ivlis.kr/ivLyrics/install.sh | sh
 
 업데이트도 동일한 명령어로 가능합니다.
 
+#### 삭제 방법
+
+##### Windows
+```powershell
+iwr -useb https://ivlis.kr/ivLyrics/uninstall.ps1 | iex
+```
+
+##### macOS / Linux
+```bash
+curl -fsSL https://ivlis.kr/ivLyrics/uninstall.sh | sh
+```
+
 #### 수동 설치
 
 1. [GitHub Releases](https://github.com/ivLis-Studio/ivLyrics/releases)에서 최신 버전을 다운로드합니다.

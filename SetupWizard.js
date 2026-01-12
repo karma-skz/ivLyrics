@@ -13,6 +13,7 @@ const WizardIcons = {
   alignRight: '<path d="M3 21h18v-2H3v2zm6-4h12v-2H9v2zm-6-4h18v-2H3v2zm6-4h12V7H9v2zM3 3v2h18V3H3z"/>',
   colorful: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>',
   gradient: '<path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zm-9-4.39c1.39 0 2.78-.7 2.78-1.56S13.39 11.5 12 11.5s-2.78.7-2.78 1.55 1.39 1.56 2.78 1.56z"/>',
+  blurGradient: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><circle cx="12" cy="12" r="5" opacity="0.5"/>',
   solid: '<path d="M18 4H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/>',
   video: '<path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>',
   check: '<polyline points="20 6 9 17 4 12"/>',
@@ -700,6 +701,7 @@ const ThemeStep = ({ settings, onSettingChange, onNext, onBack }) => {
   const backgroundOptions = [
     { value: "colorful", label: I18n.t("setupWizard.theme.backgrounds.colorful"), icon: WizardIcons.colorful },
     { value: "gradient", label: I18n.t("setupWizard.theme.backgrounds.gradient"), icon: WizardIcons.gradient },
+    { value: "blurGradient", label: I18n.t("setupWizard.theme.backgrounds.blurGradient"), icon: WizardIcons.blurGradient },
     { value: "solid", label: I18n.t("setupWizard.theme.backgrounds.solid"), icon: WizardIcons.solid },
     { value: "video", label: I18n.t("setupWizard.theme.backgrounds.video"), icon: WizardIcons.video },
   ];
@@ -791,16 +793,36 @@ const ThemeStep = ({ settings, onSettingChange, onNext, onBack }) => {
         },
         I18n.t("setupWizard.theme.background")
       ),
+      // First row - 2 items
       react.createElement(
         "div",
         {
           style: {
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
+            display: "flex",
+            gap: "10px",
+            marginBottom: "10px",
+          },
+        },
+        backgroundOptions.slice(0, 2).map((opt) =>
+          react.createElement(OptionButton, {
+            key: opt.value,
+            icon: opt.icon,
+            label: opt.label,
+            selected: settings.background === opt.value,
+            onClick: () => onSettingChange("background", opt.value),
+          })
+        )
+      ),
+      // Second row - 3 items
+      react.createElement(
+        "div",
+        {
+          style: {
+            display: "flex",
             gap: "10px",
           },
         },
-        backgroundOptions.map((opt) =>
+        backgroundOptions.slice(2).map((opt) =>
           react.createElement(OptionButton, {
             key: opt.value,
             icon: opt.icon,
@@ -2851,7 +2873,7 @@ const SetupWizard = ({ onComplete }) => {
       CONFIG.visual["alignment"] = themeSettings.alignment;
 
       // Background - reset all first
-      const bgKeys = ["colorful", "gradient-background", "solid-background", "video-background"];
+      const bgKeys = ["colorful", "gradient-background", "blur-gradient-background", "solid-background", "video-background"];
       bgKeys.forEach((key) => {
         StorageManager.saveConfig(key, false);
         CONFIG.visual[key] = false;
@@ -2864,6 +2886,9 @@ const SetupWizard = ({ onComplete }) => {
       } else if (themeSettings.background === "gradient") {
         StorageManager.saveConfig("gradient-background", true);
         CONFIG.visual["gradient-background"] = true;
+      } else if (themeSettings.background === "blurGradient") {
+        StorageManager.saveConfig("blur-gradient-background", true);
+        CONFIG.visual["blur-gradient-background"] = true;
       } else if (themeSettings.background === "solid") {
         StorageManager.saveConfig("solid-background", true);
         CONFIG.visual["solid-background"] = true;
@@ -3068,16 +3093,34 @@ function openSetupWizard() {
 
   const modalContainer = document.createElement("div");
   modalContainer.style.cssText = `
-    background: rgba(24, 24, 24, 0.95);
+    background: linear-gradient(145deg, rgba(30, 30, 30, 0.98) 0%, rgba(18, 18, 18, 0.98) 50%, rgba(24, 40, 28, 0.95) 100%);
     backdrop-filter: blur(40px) saturate(180%);
     -webkit-backdrop-filter: blur(40px) saturate(180%);
     border-radius: 16px;
     max-width: 90vw;
     max-height: 90vh;
     width: 600px;
-    overflow: hidden;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(29, 185, 84, 0.15);
+    position: relative;
+  `;
+
+  // Add animated gradient glow effect
+  const glowEffect = document.createElement("div");
+  glowEffect.style.cssText = `
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, rgba(29, 185, 84, 0.3), rgba(30, 215, 96, 0.1), rgba(29, 185, 84, 0.2));
+    border-radius: 18px;
+    z-index: -1;
+    opacity: 0.5;
+    filter: blur(20px);
+    pointer-events: none;
   `;
 
   const closeWizard = (openSettings = false) => {
@@ -3090,7 +3133,18 @@ function openSetupWizard() {
     }
   };
 
-  overlay.appendChild(modalContainer);
+  // Create a wrapper for positioning the glow effect
+  const modalWrapper = document.createElement("div");
+  modalWrapper.style.cssText = `
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `;
+
+  modalWrapper.appendChild(glowEffect);
+  modalWrapper.appendChild(modalContainer);
+  overlay.appendChild(modalWrapper);
   document.body.appendChild(overlay);
 
   // Render React component

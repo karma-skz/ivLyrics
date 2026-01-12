@@ -736,7 +736,7 @@ const Utils = {
   /**
    * Current version of the ivLyrics app
    */
-  currentVersion: "3.2.6",
+  currentVersion: "3.2.7",
 
   /**
    * Check for updates from remote repository
@@ -1792,18 +1792,27 @@ const Toast = {
     if (index === -1) return;
 
     const toastData = this._toasts[index];
+
+    // 중복 dismiss 방지: 이미 dismissing 중이면 무시
+    if (toastData.dismissing) return;
+    toastData.dismissing = true;
+
     if (toastData.timeout) {
       clearTimeout(toastData.timeout);
+      toastData.timeout = null;
     }
 
     toastData.element.classList.remove('ivlyrics-toast-show');
     toastData.element.classList.add('ivlyrics-toast-hide');
 
+    // 즉시 배열에서 제거 (index 불일치 문제 해결)
+    this._toasts.splice(index, 1);
+
+    // DOM 제거는 애니메이션 후 처리
     setTimeout(() => {
       if (toastData.element.parentNode) {
         toastData.element.parentNode.removeChild(toastData.element);
       }
-      this._toasts.splice(index, 1);
     }, 300);
   },
 
@@ -1812,6 +1821,43 @@ const Toast = {
    */
   dismissAll() {
     [...this._toasts].forEach(t => this.dismiss(t.id));
+  },
+
+  /**
+   * Clean up orphaned toast elements in DOM that are not tracked in _toasts array
+   * This handles edge cases where DOM elements persist but tracking was lost
+   */
+  _cleanupOrphanedToasts() {
+    if (!this._container) return;
+
+    const trackedIds = new Set(this._toasts.map(t => t.id));
+    const domToasts = this._container.querySelectorAll('.ivlyrics-toast');
+
+    domToasts.forEach(toast => {
+      const id = parseInt(toast.dataset.toastId, 10);
+      // progress toast는 별도 관리되므로 제외
+      if (this._progressToast && this._progressToast.id === id) return;
+
+      if (!trackedIds.has(id)) {
+        // 추적되지 않는 toast 발견 - 제거
+        console.debug(`[Toast] Cleaning up orphaned toast id=${id}`);
+        toast.classList.add('ivlyrics-toast-hide');
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+          }
+        }, 300);
+      }
+    });
+  },
+
+  /**
+   * Start periodic cleanup (call once during initialization)
+   */
+  startPeriodicCleanup() {
+    if (this._cleanupInterval) return;
+    // 30초마다 고아 toast 정리
+    this._cleanupInterval = setInterval(() => this._cleanupOrphanedToasts(), 30000);
   },
 
   /**

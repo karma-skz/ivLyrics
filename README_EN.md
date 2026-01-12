@@ -101,6 +101,18 @@ curl -fsSL https://ivlis.kr/ivLyrics/install.sh | sh
 
 Updates can also be done with the same command.
 
+#### Uninstallation
+
+##### Windows
+```powershell
+iwr -useb https://ivlis.kr/ivLyrics/uninstall.ps1 | iex
+```
+
+##### macOS / Linux
+```bash
+curl -fsSL https://ivlis.kr/ivLyrics/uninstall.sh | sh
+```
+
 #### Manual Installation
 
 1. Download the latest version from [GitHub Releases](https://github.com/ivLis-Studio/ivLyrics/releases).

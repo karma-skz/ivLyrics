@@ -1223,13 +1223,10 @@ const TranslationMenu = react.memo(({ friendlyLanguage, hasTranslation }) => {
       { className: "lyrics-config-button", onClick: open },
       react.createElement(
         "svg",
-        { width: 16, height: 16, viewBox: "0 0 16 16", fill: "currentColor" },
-        react.createElement("path", {
-          d: "M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM5.78 8.5a.5.5 0 0 1-.5.5H3.5a.5.5 0 0 1 0-1h1.78a.5.5 0 0 1 .5.5zm6.72 0a.5.5 0 0 1-.5.5h-1.78a.5.5 0 0 1 0-1H12a.5.5 0 0 1 .5.5zM8 12a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 1 0v7a.5.5 0 0 1-.5.5z",
-        }),
-        react.createElement("path", {
-          d: "M6.854 5.854a.5.5 0 1 0-.708-.708l-2 2a.5.5 0 0 0 0 .708l2 2a.5.5 0 0 0 .708-.708L5.207 7.5l1.647-1.646zm2.292 0a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L10.793 7.5 9.146 5.854z",
-        })
+        { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" },
+        react.createElement("circle", { cx: 12, cy: 12, r: 10 }),
+        react.createElement("line", { x1: 2, y1: 12, x2: 22, y2: 12 }),
+        react.createElement("path", { d: "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" })
       )
     )
   );
@@ -1243,23 +1240,15 @@ const RegenerateTranslationButton = react.memo(
       react.createElement(
         "button",
         {
-          className: "lyrics-config-button",
+          className: "lyrics-config-button" + (isLoading ? " loading-spin" : ""),
           onClick: onRegenerate,
           disabled: !isEnabled || isLoading,
-          style: {
-            opacity: !isEnabled || isLoading ? 0.4 : 1,
-            cursor: !isEnabled || isLoading ? "not-allowed" : "pointer",
-          },
         },
         react.createElement(
           "svg",
-          { width: 16, height: 16, viewBox: "0 0 16 16", fill: "currentColor" },
-          react.createElement("path", {
-            d: "M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z",
-          }),
-          react.createElement("path", {
-            d: "M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z",
-          })
+          { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" },
+          react.createElement("path", { d: "M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" }),
+          react.createElement("path", { d: "M21 3v5h-5" })
         )
       )
     );
@@ -1444,20 +1433,29 @@ const SyncAdjustButton = react.memo(
       // 전체화면 모드인지 확인
       const isFullscreen = document.querySelector('.lyrics-lyricsContainer-LyricsContainer.fullscreen-active');
 
-      if (isFullscreen && buttonRef.current) {
-        // 전체화면: 버튼 기준으로 위치 계산
+      if (buttonRef.current) {
+        // 버튼 기준으로 위치 계산
         const rect = buttonRef.current.getBoundingClientRect();
+        const containerRect = buttonRef.current.closest('.lyrics-config-button-container')?.getBoundingClientRect();
+        
+        if (containerRect) {
+          return {
+            bottom: `${window.innerHeight - containerRect.top + 12}px`,
+            right: `${window.innerWidth - containerRect.left + 12}px`
+          };
+        }
+        
         return {
-          bottom: `${window.innerHeight - rect.top + 8}px`,
-          right: `${window.innerWidth - rect.right}px`
-        };
-      } else {
-        // 일반 모드: 버튼 컨테이너가 우측 하단에 고정되어 있으므로 고정 위치 사용
-        return {
-          bottom: "80px",
-          right: "32px"
+          bottom: `${window.innerHeight - rect.top + 12}px`,
+          right: `${window.innerWidth - rect.right + 60}px`
         };
       }
+      
+      // fallback
+      return {
+        bottom: isFullscreen ? "50px" : "110px",
+        right: "90px"
+      };
     };
 
     const isCommunityEnabled = CONFIG.visual["community-sync-enabled"];
@@ -1478,17 +1476,17 @@ const SyncAdjustButton = react.memo(
           react.createElement(
             "svg",
             {
-              width: 16,
-              height: 16,
-              viewBox: "0 0 16 16",
-              fill: "currentColor",
+              width: 20,
+              height: 20,
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: 2,
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
             },
-            react.createElement("path", {
-              d: "M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z",
-            }),
-            react.createElement("path", {
-              d: "M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z",
-            })
+            react.createElement("circle", { cx: 12, cy: 12, r: 10 }),
+            react.createElement("polyline", { points: "12,6 12,12 16,14" })
           )
         )
       ),
@@ -2225,13 +2223,9 @@ const CommunityVideoButton = react.memo(({ trackUri, videoInfo, onVideoSelect })
       },
       react.createElement(
         "svg",
-        { width: 16, height: 16, viewBox: "0 0 16 16", fill: "currentColor" },
-        react.createElement("path", {
-          d: "M2 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2zm0-1h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"
-        }),
-        react.createElement("path", {
-          d: "M6 5.5a.5.5 0 0 1 .79-.407l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5z"
-        })
+        { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" },
+        react.createElement("rect", { x: 2, y: 4, width: 20, height: 16, rx: 2 }),
+        react.createElement("polygon", { points: "10,8 16,12 10,16", fill: "currentColor", stroke: "none" })
       )
     )
   );
@@ -2250,10 +2244,11 @@ const SettingsMenu = react.memo(() => {
       { className: "lyrics-config-button", onClick: openSettings },
       react.createElement(
         "svg",
-        { width: 16, height: 16, viewBox: "0 0 16 16", fill: "currentColor" },
+        { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.75, strokeLinecap: "round", strokeLinejoin: "round" },
         react.createElement("path", {
-          d: "M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zM8 10.93a2.93 2.93 0 1 1 0-5.86 2.93 2.93 0 0 1 0 5.86z",
-        })
+          d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+        }),
+        react.createElement("circle", { cx: 12, cy: 12, r: 3 })
       )
     )
   );
@@ -3456,13 +3451,10 @@ const ShareImageButton = react.memo(({ lyrics, trackInfo }) => {
       },
       react.createElement(
         "svg",
-        { width: 16, height: 16, viewBox: "0 0 16 16", fill: "currentColor" },
-        react.createElement("path", {
-          d: "M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"
-        }),
-        react.createElement("path", {
-          d: "M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"
-        })
+        { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" },
+        react.createElement("rect", { x: 3, y: 3, width: 18, height: 18, rx: 2 }),
+        react.createElement("circle", { cx: 8.5, cy: 8.5, r: 1.5, fill: "currentColor", stroke: "none" }),
+        react.createElement("path", { d: "M21 15l-5-5L5 21" })
       )
     )
   );

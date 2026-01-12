@@ -5269,6 +5269,25 @@ const ConfigModal = () => {
               disabled: isFadActive,
             },
             {
+              desc: I18n.t("settings.albumBgBlur.label"),
+              info: I18n.t("settings.albumBgBlur.desc"),
+              key: "album-bg-blur",
+              type: ConfigSliderRange,
+              disabled: isFadActive,
+              when: () => CONFIG.visual["gradient-background"] || CONFIG.visual["blur-gradient-background"],
+              min: 0,
+              max: 100,
+              step: 5,
+              unit: "px",
+            },
+            {
+              desc: I18n.t("settings.blurGradientBackground.label"),
+              info: I18n.t("settings.blurGradientBackground.desc"),
+              key: "blur-gradient-background",
+              type: ConfigSlider,
+              disabled: isFadActive,
+            },
+            {
               desc: I18n.t("settings.solidBackground.label"),
               info: I18n.t("settings.solidBackground.desc"),
               key: "solid-background",
@@ -5349,35 +5368,15 @@ const ConfigModal = () => {
             },
           ],
           onChange: (name, value) => {
-            // 컬러풀 배경, 앨범 커버 배경, 단색 배경, 동영상 배경은 상호 배타적으로 동작
-            if (name === "colorful" && value) {
-              CONFIG.visual["gradient-background"] = false;
-              CONFIG.visual["solid-background"] = false;
-              CONFIG.visual["video-background"] = false;
-              StorageManager.saveConfig("gradient-background", false);
-              StorageManager.saveConfig("solid-background", false);
-              StorageManager.saveConfig("video-background", false);
-            } else if (name === "gradient-background" && value) {
-              CONFIG.visual["colorful"] = false;
-              CONFIG.visual["solid-background"] = false;
-              CONFIG.visual["video-background"] = false;
-              StorageManager.saveConfig("colorful", false);
-              StorageManager.saveConfig("solid-background", false);
-              StorageManager.saveConfig("video-background", false);
-            } else if (name === "solid-background" && value) {
-              CONFIG.visual["colorful"] = false;
-              CONFIG.visual["gradient-background"] = false;
-              CONFIG.visual["video-background"] = false;
-              StorageManager.saveConfig("colorful", false);
-              StorageManager.saveConfig("gradient-background", false);
-              StorageManager.saveConfig("video-background", false);
-            } else if (name === "video-background" && value) {
-              CONFIG.visual["colorful"] = false;
-              CONFIG.visual["gradient-background"] = false;
-              CONFIG.visual["solid-background"] = false;
-              StorageManager.saveConfig("colorful", false);
-              StorageManager.saveConfig("gradient-background", false);
-              StorageManager.saveConfig("solid-background", false);
+            // 컬러풀 배경, 앨범 커버 배경, 단색 배경, 동영상 배경, 블러 그라데이션 배경은 상호 배타적으로 동작
+            const bgOptions = ["colorful", "gradient-background", "solid-background", "video-background", "blur-gradient-background"];
+            if (bgOptions.includes(name) && value) {
+              bgOptions.forEach(opt => {
+                if (opt !== name) {
+                  CONFIG.visual[opt] = false;
+                  StorageManager.saveConfig(opt, false);
+                }
+              });
             }
 
             CONFIG.visual[name] = value;

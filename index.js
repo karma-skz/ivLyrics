@@ -1105,6 +1105,13 @@ const CONFIG = {
     "gradient-background": StorageManager.get(
       "ivLyrics:visual:gradient-background"
     ),
+    "album-bg-blur":
+      StorageManager.getItem("ivLyrics:visual:album-bg-blur") || "20",
+
+    "blur-gradient-background": StorageManager.get(
+      "ivLyrics:visual:blur-gradient-background",
+      false
+    ),
     "background-brightness":
       StorageManager.getItem("ivLyrics:visual:background-brightness") ||
       "30",
@@ -1578,7 +1585,7 @@ const CONFIG = {
   },
   providersOrder: StorageManager.getItem("ivLyrics:services-order"),
   get modes() { return window.I18n ? [I18n.t("modes.karaoke"), I18n.t("modes.synced"), I18n.t("modes.unsynced")] : ["Karaoke", "Synced", "Unsynced"]; },
-  locked: StorageManager.getItem("ivLyrics:lock-mode") || "-1",
+  locked: -1, // Lock mode deprecated - always auto-detect
 };
 
 try {
@@ -2277,9 +2284,10 @@ class LyricsContainer extends react.Component {
         background: "",
         inactive: "",
       },
+      dynamicColors: null,
       tempo: "0.25s",
       explicitMode: -1,
-      lockMode: CONFIG.locked,
+      lockMode: -1, // Lock mode deprecated - always auto-detect
       mode: -1,
       isLoading: false,
       versionIndex: 0,
@@ -2731,6 +2739,8 @@ class LyricsContainer extends react.Component {
 
   async fetchColors(uri) {
     let vibrant = 0;
+    let dynamicColors = null;
+
     try {
       try {
         const { fetchExtractedColorForTrackEntity } =
@@ -2754,11 +2764,66 @@ class LyricsContainer extends react.Component {
       vibrant = 8747370;
     }
 
+    if (CONFIG.visual["blur-gradient-background"]) {
+      try {
+        const coverUrl =
+          Spicetify.Player.data?.item?.metadata?.image_xlarge_url ||
+          Spicetify.Player.data?.item?.metadata?.image_large_url ||
+          Spicetify.Player.data?.item?.metadata?.image_url;
+
+        if (coverUrl && Spicetify.GraphQL?.Definitions?.getDynamicColorsByUris) {
+          const colorQuery = await Spicetify.GraphQL.Request(
+            Spicetify.GraphQL.Definitions.getDynamicColorsByUris,
+            { imageUris: [coverUrl] }
+          );
+
+          const colorData = colorQuery?.data?.getDynamicColorsByUris?.[0];
+          if (colorData) {
+            const rgbaToHex = (rgba) => {
+              if (!rgba) return null;
+              const r = Math.round(rgba.red * 255);
+              const g = Math.round(rgba.green * 255);
+              const b = Math.round(rgba.blue * 255);
+              return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+            };
+
+            // 다양한 색상 레벨 추출
+            const minContrast = colorData.minContrast?.backgroundBase
+              ? rgbaToHex(colorData.minContrast.backgroundBase)
+              : Utils.convertIntToRGB(vibrant);
+            const highContrast = colorData.highContrast?.backgroundBase
+              ? rgbaToHex(colorData.highContrast.backgroundBase)
+              : Utils.convertIntToRGB(vibrant, 0.7);
+            const overlayColor = colorData.higherContrast?.backgroundBase
+              ? rgbaToHex(colorData.higherContrast.backgroundBase)
+              : Utils.convertIntToRGB(vibrant, 0.5);
+
+            dynamicColors = { minContrast, highContrast, overlayColor };
+          }
+        }
+      } catch (e) {
+        console.warn("[ivLyrics] Failed to fetch dynamic colors:", e);
+      }
+
+      // GraphQL 실패 시 vibrant 색상 기반 폴백 그라데이션
+      if (!dynamicColors) {
+        const baseColor = Utils.convertIntToRGB(vibrant);
+        const darkerColor = Utils.convertIntToRGB(vibrant, 0.6);
+        const darkestColor = Utils.convertIntToRGB(vibrant, 0.3);
+        dynamicColors = {
+          minContrast: baseColor,
+          highContrast: darkerColor,
+          overlayColor: darkestColor,
+        };
+      }
+    }
+
     this.setState({
       colors: {
         background: Utils.convertIntToRGB(vibrant),
         inactive: Utils.convertIntToRGB(vibrant, 3),
       },
+      dynamicColors,
     });
   }
 
@@ -2826,7 +2891,7 @@ class LyricsContainer extends react.Component {
 
       let isCached = this.lyricsSaved(info.uri);
 
-      if (CONFIG.visual.colorful || CONFIG.visual["gradient-background"]) {
+      if (CONFIG.visual.colorful || CONFIG.visual["gradient-background"] || CONFIG.visual["blur-gradient-background"]) {
         this.fetchColors(info.uri);
       }
 
@@ -2915,8 +2980,6 @@ class LyricsContainer extends react.Component {
       if (mode === -1) {
         if (this.state.explicitMode !== -1) {
           finalMode = this.state.explicitMode;
-        } else if (this.state.lockMode !== -1) {
-          finalMode = this.state.lockMode;
         } else {
           // Auto switch: prefer karaoke, then synced, then unsynced
           if (tempState.karaoke) {
@@ -4209,7 +4272,7 @@ class LyricsContainer extends react.Component {
         window.Translator.clearInflightRequests(previousTrackId);
       }
 
-      this.state.explicitMode = this.state.lockMode;
+      this.state.explicitMode = -1; // Auto-detect mode
       this.currentTrackUri = queue.current.uri;
       this.fetchLyrics(queue.current, this.state.explicitMode);
       this.viewPort.scrollTo(0, 0);
@@ -4235,7 +4298,7 @@ class LyricsContainer extends react.Component {
     };
 
     if (Spicetify.Player?.data?.item) {
-      this.state.explicitMode = this.state.lockMode;
+      this.state.explicitMode = -1; // Auto-detect mode
       this.currentTrackUri = Spicetify.Player.data.item.uri;
       this.fetchLyrics(Spicetify.Player.data.item, this.state.explicitMode);
       // 초기 로드 시 저장된 영상 확인
@@ -4580,8 +4643,6 @@ class LyricsContainer extends react.Component {
     let mode = -1;
     if (this.state.explicitMode !== -1) {
       mode = this.state.explicitMode;
-    } else if (this.state.lockMode !== -1) {
-      mode = this.state.lockMode;
     } else {
       // Auto switch: prefer karaoke, then synced, then unsynced
       // 노래방 모드가 비활성화되어 있으면 karaoke를 건너뛰고 synced부터 시작
@@ -4672,6 +4733,7 @@ class LyricsContainer extends react.Component {
       // Video background is handled by the component
     } else if (!this.state.isFADMode && CONFIG.visual["gradient-background"]) {
       const brightness = CONFIG.visual["background-brightness"] / 100;
+      const blurAmount = CONFIG.visual["album-bg-blur"] ?? 20;
       // 앨범 커버 이미지 가져오기
       const albumArtUrl =
         Spicetify.Player.data?.item?.metadata?.image_xlarge_url ||
@@ -4680,12 +4742,45 @@ class LyricsContainer extends react.Component {
 
       if (albumArtUrl) {
         backgroundStyle.backgroundImage = `url(${albumArtUrl})`;
+        backgroundStyle.backgroundRepeat = "no-repeat";
+        backgroundStyle.filter = `brightness(${brightness}) blur(${blurAmount}px)`;
         backgroundStyle.backgroundSize = "cover";
         backgroundStyle.backgroundPosition = "center";
-        backgroundStyle.backgroundRepeat = "no-repeat";
-        backgroundStyle.filter = `brightness(${brightness}) blur(20px)`;
-        backgroundStyle.transform = "scale(1)"; // 블러 경계선 숨기기
+        backgroundStyle.transform = "scale(1.1)"; // 블러 경계선 숨기기
       }
+    } else if (!this.state.isFADMode && CONFIG.visual["blur-gradient-background"]) {
+      const brightness = CONFIG.visual["background-brightness"] / 100;
+
+      // hex/rgb 문자열에서 RGB 값 추출
+      const parseColor = (color) => {
+        if (!color) return { r: 30, g: 30, b: 40 };
+        // hex 형식
+        const hexMatch = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
+        if (hexMatch) {
+          return { r: parseInt(hexMatch[1], 16), g: parseInt(hexMatch[2], 16), b: parseInt(hexMatch[3], 16) };
+        }
+        // rgb() 형식
+        const rgbMatch = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/.exec(color);
+        if (rgbMatch) {
+          return { r: parseInt(rgbMatch[1]), g: parseInt(rgbMatch[2]), b: parseInt(rgbMatch[3]) };
+        }
+        return { r: 30, g: 30, b: 40 };
+      };
+
+      let c1 = { r: 30, g: 30, b: 40 };
+      let c2 = { r: 60, g: 40, b: 70 };
+      let c3 = { r: 20, g: 50, b: 60 };
+
+      if (this.state.dynamicColors) {
+        c1 = parseColor(this.state.dynamicColors.minContrast);
+        c2 = parseColor(this.state.dynamicColors.highContrast);
+        c3 = parseColor(this.state.dynamicColors.overlayColor);
+      }
+
+      backgroundStyle["--ivLyrics-c1"] = `${c1.r}, ${c1.g}, ${c1.b}`;
+      backgroundStyle["--ivLyrics-c2"] = `${c2.r}, ${c2.g}, ${c2.b}`;
+      backgroundStyle["--ivLyrics-c3"] = `${c3.r}, ${c3.g}, ${c3.b}`;
+      backgroundStyle.filter = `brightness(${brightness}) saturate(2.5)`;
     } else if (
       !this.state.isFADMode &&
       CONFIG.visual.colorful &&
@@ -4809,11 +4904,9 @@ class LyricsContainer extends react.Component {
     const potentialMode =
       this.state.explicitMode !== -1
         ? this.state.explicitMode
-        : this.state.lockMode !== -1
-          ? this.state.lockMode
-          : this.state.isLoading
-            ? this.lastModeBeforeLoading || SYNCED
-            : mode;
+        : this.state.isLoading
+          ? this.lastModeBeforeLoading || SYNCED
+          : mode;
 
     showTranslationButton =
       potentialMode === KARAOKE ||
@@ -4903,28 +4996,8 @@ class LyricsContainer extends react.Component {
 
     this.state.mode = mode;
 
-    const topBarProps = {
-      links: CONFIG.modes,
-      activeLink: CONFIG.modes[mode] || CONFIG.modes[0],
-      lockLink: CONFIG.locked !== -1 ? CONFIG.modes[CONFIG.locked] : null,
-      switchCallback: (selectedMode) => {
-        const modeIndex = CONFIG.modes.indexOf(selectedMode);
-        if (modeIndex !== -1) {
-          this.switchTo(modeIndex);
-        }
-      },
-      lockCallback: (selectedMode) => {
-        const modeIndex = CONFIG.modes.indexOf(selectedMode);
-        if (modeIndex !== -1) {
-          this.lockIn(modeIndex);
-        }
-      },
-    };
-
-    const topBarContent =
-      typeof TopBarContent === "function"
-        ? react.createElement(TopBarContent, topBarProps)
-        : null;
+    // Tab bar removed - modes are now auto-detected
+    const topBarContent = null;
 
     // Update banner component
     const updateBanner = window.ivLyrics_updateInfo?.available
@@ -5002,8 +5075,19 @@ class LyricsContainer extends react.Component {
       updateBanner,
       (!CONFIG.visual["video-background"] || this.state.isFADMode) && react.createElement("div", {
         id: "ivLyrics-gradient-background",
+        className: CONFIG.visual["blur-gradient-background"] ? "color-gradient-bg" : "",
         style: backgroundStyle,
-      }),
+      },
+        // 블러 그라데이션일 때 여러 블롭 생성
+        CONFIG.visual["blur-gradient-background"] && [
+          react.createElement("div", { key: "blob1", className: "gradient-blob blob-1" }),
+          react.createElement("div", { key: "blob2", className: "gradient-blob blob-2" }),
+          react.createElement("div", { key: "blob3", className: "gradient-blob blob-3" }),
+          react.createElement("div", { key: "blob4", className: "gradient-blob blob-4" }),
+          react.createElement("div", { key: "blob5", className: "gradient-blob blob-5" }),
+          react.createElement("div", { key: "blob6", className: "gradient-blob blob-6" }),
+        ]
+      ),
       !this.state.isFADMode && CONFIG.visual["video-background"] && window.VideoBackground && react.createElement(window.VideoBackground, {
         trackUri: this.state.uri,
         firstLyricTime: this.state.currentLyrics && this.state.currentLyrics.length > 0 ? this.state.currentLyrics[0].startTime : 0,
@@ -5119,15 +5203,95 @@ class LyricsContainer extends react.Component {
               },
             },
             react.createElement("svg", {
-              width: 16,
-              height: 16,
-              viewBox: "0 0 16 16",
-              fill: "currentColor",
+              width: 20,
+              height: 20,
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: 2,
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
               dangerouslySetInnerHTML: {
                 __html:
-                  Spicetify.SVGIcons["fullscreen"] ||
-                  // Fullscreen icon fallback
-                  '<path d="M6.064 10.229l-2.418 2.418L2 11v4h4l-1.647-1.646 2.418-2.418-.707-.707zM11 2l1.647 1.647-2.418 2.418.707.707 2.418-2.418L15 6V2h-4z"/>',
+                  '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>',
+              },
+            })
+          )
+        ),
+        // Separator between tools and mode buttons
+        react.createElement("div", { className: "lyrics-config-separator" }),
+        // Mode switching buttons
+        // Karaoke mode button
+        this.state.karaoke && CONFIG.visual["karaoke-mode-enabled"] && react.createElement(
+          Spicetify.ReactComponent.TooltipWrapper,
+          { label: I18n.t("modes.karaoke") },
+          react.createElement(
+            "button",
+            {
+              className: `lyrics-config-button lyrics-mode-button ${mode === KARAOKE ? "active" : ""}`,
+              onClick: () => this.switchTo(KARAOKE),
+            },
+            react.createElement("svg", {
+              width: 18,
+              height: 18,
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: 2,
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+              dangerouslySetInnerHTML: {
+                __html: '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',
+              },
+            })
+          )
+        ),
+        // Synced mode button
+        this.state.synced && react.createElement(
+          Spicetify.ReactComponent.TooltipWrapper,
+          { label: I18n.t("modes.synced") },
+          react.createElement(
+            "button",
+            {
+              className: `lyrics-config-button lyrics-mode-button ${mode === SYNCED ? "active" : ""}`,
+              onClick: () => this.switchTo(SYNCED),
+            },
+            react.createElement("svg", {
+              width: 18,
+              height: 18,
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: 2,
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+              dangerouslySetInnerHTML: {
+                __html: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+              },
+            })
+          )
+        ),
+        // Unsynced mode button
+        this.state.unsynced && react.createElement(
+          Spicetify.ReactComponent.TooltipWrapper,
+          { label: I18n.t("modes.unsynced") },
+          react.createElement(
+            "button",
+            {
+              className: `lyrics-config-button lyrics-mode-button ${mode === UNSYNCED ? "active" : ""}`,
+              onClick: () => this.switchTo(UNSYNCED),
+            },
+            react.createElement("svg", {
+              width: 18,
+              height: 18,
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: 2,
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+              dangerouslySetInnerHTML: {
+                __html: '<path d="M17 6.1H3"/><path d="M21 12.1H3"/><path d="M15.1 18H3"/>',
               },
             })
           )
@@ -5156,18 +5320,9 @@ class LyricsContainer extends react.Component {
   }
 
   lockIn(mode) {
-    // 토글: 이미 같은 모드로 고정되어 있으면 해제
-    if (this.state.lockMode === mode) {
-      CONFIG.locked = -1;
-      StorageManager.setItem("ivLyrics:lock-mode");
-      this.setState({ lockMode: -1 });
-    } else {
-      // 새로운 모드로 고정
-      CONFIG.locked = mode;
-      StorageManager.setItem("ivLyrics:lock-mode", mode.toString());
-      this.setState({ lockMode: mode });
-    }
-    this.fetchLyrics();
+    // Lock mode feature removed - auto-detect is now always used
+    // This function is kept for backward compatibility but does nothing
+    console.log('[ivLyrics] lockIn is deprecated, modes are now auto-detected');
   }
 }
 
@@ -5293,4 +5448,11 @@ class LyricsContainer extends react.Component {
     }
   }, 3000); // 3초 후 실행 (앱 로드 완료 대기)
 })();
+
+// Toast 주기적 정리 시작 (Utils.js 로드 후 실행되도록 지연)
+setTimeout(() => {
+  if (window.Toast && window.Toast.startPeriodicCleanup) {
+    window.Toast.startPeriodicCleanup();
+  }
+}, 100);
 

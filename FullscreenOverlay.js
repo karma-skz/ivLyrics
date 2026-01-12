@@ -1075,20 +1075,81 @@ const FullscreenOverlay = (() => {
         const hideLeftPanelForTvMode = tvModeEnabled;
 
         return react.createElement(react.Fragment, null,
+            // TMI Overlay for TV Mode (rendered above everything when active)
+            tvModeEnabled && tmiMode && react.createElement("div", {
+                className: "fullscreen-tv-tmi-overlay"
+            },
+                tmiLoading ?
+                    react.createElement(window.SongInfoTMI?.TMILoadingView || 'div', {
+                        onClose: closeTmiMode,
+                        tmiScale: tmiScale
+                    }) :
+                    react.createElement(window.SongInfoTMI?.TMIFullView || 'div', {
+                        info: tmiData,
+                        onClose: closeTmiMode,
+                        tmiScale: tmiScale,
+                        trackName: (() => {
+                            const mode = CONFIG?.visual?.["translate-metadata-mode"] || "translated";
+                            const original = title || Spicetify.Player.data?.item?.metadata?.title;
+                            const trans = translatedMetadata?.translated?.title;
+                            const rom = translatedMetadata?.romanized?.title;
+                            if (mode === "translated") return trans || original;
+                            if (mode === "romanized") return rom || original;
+                            return original;
+                        })(),
+                        artistName: (() => {
+                            const mode = CONFIG?.visual?.["translate-metadata-mode"] || "translated";
+                            const original = artist || Spicetify.Player.data?.item?.metadata?.artist_name;
+                            const trans = translatedMetadata?.translated?.artist;
+                            const rom = translatedMetadata?.romanized?.artist;
+                            if (mode === "translated") return trans || original;
+                            if (mode === "romanized") return rom || original;
+                            return original;
+                        })(),
+                        coverUrl: coverUrl || Spicetify.Player.data?.item?.metadata?.image_url,
+                        onRegenerate: handleRegenerate
+                    })
+            ),
             // Bottom-left: TV Mode Song Info OR Context info
             tvModeEnabled ? react.createElement("div", {
                 className: "fullscreen-tv-song-info"
             },
-                // Album art
-                react.createElement("img", {
-                    src: coverUrl || Spicetify.Player.data?.item?.metadata?.image_url,
-                    className: "fullscreen-tv-album",
+                // Album art (clickable for TMI)
+                react.createElement("div", {
+                    className: "fullscreen-tv-album-wrapper clickable-album-container",
                     style: {
                         width: `${tvAlbumSize}px`,
                         height: `${tvAlbumSize}px`,
-                        borderRadius: `${albumRadius}px`
-                    }
-                }),
+                        position: 'relative',
+                        cursor: 'pointer',
+                        borderRadius: `${albumRadius}px`,
+                        flexShrink: 0
+                    },
+                    onClick: handleAlbumClick
+                },
+                    react.createElement("img", {
+                        src: coverUrl || Spicetify.Player.data?.item?.metadata?.image_url,
+                        className: "fullscreen-tv-album",
+                        style: {
+                            width: '100%',
+                            height: '100%',
+                            borderRadius: `${albumRadius}px`
+                        }
+                    }),
+                    // TMI Hint Overlay
+                    react.createElement("div", {
+                        className: "album-tmi-hint",
+                        style: { borderRadius: `${albumRadius}px` }
+                    },
+                        react.createElement("div", { className: "album-tmi-hint-content" },
+                            react.createElement("span", { className: "album-tmi-text" },
+                                CONFIG.visual?.["gemini-api-key"]
+                                    ? I18n.t("tmi.viewInfo")
+                                    : I18n.t("tmi.requireKey")
+                            )
+                        )
+                    )
+                ),
                 // Track info (Title, Artist, Album)
                 react.createElement("div", { className: "fullscreen-tv-track-info" },
                     // Title (based on display mode - TV mode shows single line with best available)
