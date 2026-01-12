@@ -18,6 +18,20 @@ Run the following command in Terminal.
 curl -fsSL https://ivlis.kr/ivLyrics/install.sh | sh
 ```
 
+# How to uninstall?
+
+##### Windows
+Run the following command in PowerShell.
+```powershell
+iwr -useb https://ivlis.kr/ivLyrics/uninstall.ps1 | iex
+```
+
+##### macOS / Linux
+Run the following command in Terminal.
+```bash
+curl -fsSL https://ivlis.kr/ivLyrics/uninstall.sh | sh
+```
+
 ---
 
 
