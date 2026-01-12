@@ -100,6 +100,14 @@ window.LANG_ZH_CN = {
       "label": "噪点覆盖",
       "desc": "在背景上添加胶片颗粒效果"
     },
+    "albumBgBlur": {
+      "label": "专辑背景模糊",
+      "desc": "调整专辑背景的模糊强度"
+    },
+    "blurGradientBackground": {
+      "label": "模糊渐变背景",
+      "desc": "应用从专辑封面颜色提取的模糊渐变背景"
+    },
     "colorful": {
       "label": "彩色背景",
       "desc": "启用基于专辑颜色的动态背景"
@@ -760,18 +768,6 @@ window.LANG_ZH_CN = {
         "label": "全屏快捷键",
         "desc": "歌词全屏模式的键盘快捷键"
       },
-      "panelLyrics": {
-        "label": "在右侧面板显示歌词",
-        "desc": "在正在播放面板中显示当前歌词"
-      },
-      "panelLyricsLines": {
-        "label": "面板歌词行数",
-        "desc": "面板中显示的歌词行数（默认: 5）"
-      },
-      "panelFontScale": {
-        "label": "面板字体大小",
-        "desc": "面板歌词的字体大小比例（50%-200%）"
-      }
     },
     "nowPlayingPanel": {
       "title": "正在播放面板歌词",
@@ -1484,6 +1480,7 @@ window.LANG_ZH_CN = {
       "backgrounds": {
         "colorful": "多彩",
         "gradient": "专辑封面",
+        "blurGradient": "模糊渐变",
         "solid": "纯色",
         "video": "视频"
       }

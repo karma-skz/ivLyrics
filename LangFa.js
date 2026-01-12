@@ -732,18 +732,6 @@ window.LANG_FA = {
         "label": "میانبر تمام صفحه",
         "desc": "کلید میانبر کیبورد برای حالت تمام صفحه"
       },
-      "panelLyrics": {
-        "label": "نمایش متن در پنل راست",
-        "desc": "نمایش متن فعلی در پنل در حال پخش"
-      },
-      "panelLyricsLines": {
-        "label": "خطوط متن پنل",
-        "desc": "تعداد خطوط متن نمایش داده شده در پنل (پیش‌فرض: 5)"
-      },
-      "panelFontScale": {
-        "label": "اندازه فونت پنل",
-        "desc": "نسبت اندازه فونت برای متن در پنل (50%-200%)"
-      }
     },
     "nowPlayingPanel": {
       "title": "متن پنل در حال پخش",
@@ -1460,6 +1448,7 @@ window.LANG_FA = {
       "backgrounds": {
         "colorful": "رنگارنگ",
         "gradient": "جلد آلبوم",
+        "blurGradient": "گرادیان محو",
         "solid": "تک‌رنگ",
         "video": "ویدیو"
       }
@@ -1549,6 +1538,11 @@ window.LANG_FA = {
     confidenceMedium: "اعتماد متوسط",
     confidenceLow: "اعتماد پایین",
     confidenceNone: "بدون منبع"
+  },
+  notice: {
+    confirm: "تایید",
+    next: "بعدی",
+    dismissAll: "بستن همه"
   }
 };
 

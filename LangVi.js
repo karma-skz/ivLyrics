@@ -760,18 +760,6 @@ window.LANG_VI = {
         "label": "Phím tắt toàn màn hình",
         "desc": "Phím tắt để vào chế độ lời bài hát toàn màn hình"
       },
-      "panelLyrics": {
-        "label": "Hiện lời bài hát ở bảng bên phải",
-        "desc": "Hiển thị lời bài hát hiện tại trong bảng Đang phát"
-      },
-      "panelLyricsLines": {
-        "label": "Số dòng lời bài hát",
-        "desc": "Số dòng lời bài hát hiển thị trong bảng (mặc định: 5)"
-      },
-      "panelFontScale": {
-        "label": "Ty le co chu",
-        "desc": "Ty le co chu cho loi bai hat trong bang (50%-200%)"
-      }
     },
     "nowPlayingPanel": {
       "title": "Loi bai hat bang Dang phat",
@@ -1488,6 +1476,7 @@ window.LANG_VI = {
       "backgrounds": {
         "colorful": "Đầy màu sắc",
         "gradient": "Bìa album",
+        "blurGradient": "Chuyển Đổi Mờ",
         "solid": "Màu đơn",
         "video": "Video"
       }
@@ -1577,6 +1566,11 @@ window.LANG_VI = {
     confidenceMedium: "Độ tin cậy trung bình",
     confidenceLow: "Độ tin cậy thấp",
     confidenceNone: "Không có nguồn"
+  },
+  notice: {
+    confirm: "OK",
+    next: "Tiếp theo",
+    dismissAll: "Đóng tất cả"
   }
 };
 

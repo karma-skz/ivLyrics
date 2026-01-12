@@ -100,6 +100,14 @@ window.LANG_FR = {
       "label": "Superposition de bruit",
       "desc": "Ajoute un effet de grain de film à l'arrière-plan"
     },
+    "albumBgBlur": {
+      "label": "Flou de l'arrière-plan de l'album",
+      "desc": "Règle l'intensité du flou de l'arrière-plan de l'album"
+    },
+    "blurGradientBackground": {
+      "label": "Arrière-plan dégradé flou",
+      "desc": "Applique un arrière-plan dégradé flou extrait des couleurs de la pochette de l'album"
+    },
     "colorful": {
       "label": "Arrière-plan coloré",
       "desc": "Active un arrière-plan dynamique basé sur les couleurs de l'album"
@@ -760,18 +768,6 @@ window.LANG_FR = {
         "label": "Raccourci plein écran",
         "desc": "Raccourci clavier pour le mode plein écran des paroles"
       },
-      "panelLyrics": {
-        "label": "Afficher les paroles dans le panneau droit",
-        "desc": "Afficher les paroles actuelles dans le panneau En cours de lecture"
-      },
-      "panelLyricsLines": {
-        "label": "Lignes de paroles du panneau",
-        "desc": "Nombre de lignes de paroles à afficher dans le panneau (par défaut: 5)"
-      },
-      "panelFontScale": {
-        "label": "Echelle de police du panneau",
-        "desc": "Echelle de police pour les paroles du panneau (50%-200%)"
-      }
     },
     "nowPlayingPanel": {
       "title": "Paroles du panneau En lecture",
@@ -1484,6 +1480,7 @@ window.LANG_FR = {
       "backgrounds": {
         "colorful": "Coloré",
         "gradient": "Pochette d'album",
+        "blurGradient": "Dégradé flou",
         "solid": "Couleur unie",
         "video": "Vidéo"
       }
@@ -1576,6 +1573,11 @@ window.LANG_FR = {
     confidenceMedium: "Fiabilité moyenne",
     confidenceLow: "Faible fiabilité",
     confidenceNone: "Aucune source"
+  },
+  notice: {
+    confirm: "OK",
+    next: "Suivant",
+    dismissAll: "Tout ignorer"
   }
 };
 

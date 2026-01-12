@@ -731,18 +731,6 @@ window.LANG_HI = {
       "fullscreenShortcut": {
         "label": "फुल स्क्रीन शॉर्टकट",
         "desc": "लिरिक्स फुल स्क्रीन मोड के लिए कीबोर्ड शॉर्टकट"
-      },
-      "panelLyrics": {
-        "label": "दाएं पैनल में लिरिक्स दिखाएं",
-        "desc": "अभी चल रहा है पैनल में वर्तमान लिरिक्स दिखाएं"
-      },
-      "panelLyricsLines": {
-        "label": "पैनल लिरिक्स लाइनें",
-        "desc": "पैनल में दिखाने के लिए लिरिक्स लाइनों की संख्या (डिफ़ॉल्ट: 5)"
-      },
-      "panelFontScale": {
-        "label": "पैनल फ़ॉन्ट आकार",
-        "desc": "पैनल में लिरिक्स के लिए फ़ॉन्ट आकार अनुपात (50%-200%)"
       }
     },
     "nowPlayingPanel": {
@@ -1453,6 +1441,7 @@ window.LANG_HI = {
       "backgrounds": {
         "colorful": "रंगीन",
         "gradient": "एल्बम कवर",
+        "blurGradient": "ब्लर ग्रेडिएंट",
         "solid": "ठोस रंग",
         "video": "वीडियो"
       }
@@ -1542,6 +1531,11 @@ window.LANG_HI = {
     confidenceMedium: "मध्यम विश्वसनीयता",
     confidenceLow: "निम्न विश्वसनीयता",
     confidenceNone: "कोई स्रोत नहीं"
+  },
+  notice: {
+    confirm: "ठीक है",
+    next: "अगला",
+    dismissAll: "सभी बंद करें"
   }
 };
 

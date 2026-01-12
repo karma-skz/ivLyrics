@@ -100,6 +100,14 @@ window.LANG_DE = {
       "label": "Rauschüberlagerung",
       "desc": "Fügt dem Hintergrund einen Filmkörnungseffekt hinzu"
     },
+    "albumBgBlur": {
+      "label": "Album-Hintergrundunschärfe",
+      "desc": "Passt die Unschärfeintensität des Albumhintergrunds an"
+    },
+    "blurGradientBackground": {
+      "label": "Verschwommener Verlaufshintergrund",
+      "desc": "Wendet einen verschwommenen Verlaufshintergrund an, der aus den Albumcover-Farben extrahiert wurde"
+    },
     "colorful": {
       "label": "Bunter Hintergrund",
       "desc": "Aktiviert einen dynamischen Hintergrund basierend auf den Albumfarben"
@@ -760,18 +768,6 @@ window.LANG_DE = {
         "label": "Vollbild-Tastenkürzel",
         "desc": "Tastenkürzel für den Songtext-Vollbildmodus"
       },
-      "panelLyrics": {
-        "label": "Songtexte im rechten Panel anzeigen",
-        "desc": "Aktuelle Songtexte im Jetzt-läuft-Panel anzeigen"
-      },
-      "panelLyricsLines": {
-        "label": "Panel-Songtext-Zeilen",
-        "desc": "Anzahl der Songtextzeilen im Panel (Standard: 5)"
-      },
-      "panelFontScale": {
-        "label": "Panel-Schriftgröße",
-        "desc": "Schriftgrößenskalierung für Panel-Songtexte (50%-200%)"
-      }
     },
     "nowPlayingPanel": {
       "title": "Jetzt-Laeuft-Panel Songtexte",
@@ -1484,6 +1480,7 @@ window.LANG_DE = {
       "backgrounds": {
         "colorful": "Bunt",
         "gradient": "Albumcover",
+        "blurGradient": "Unschärfe-Verlauf",
         "solid": "Einfarbig",
         "video": "Video"
       }
@@ -1576,6 +1573,11 @@ window.LANG_DE = {
     confidenceMedium: "Mittlere Zuverlässigkeit",
     confidenceLow: "Niedrige Zuverlässigkeit",
     confidenceNone: "Keine Quellen"
+  },
+  notice: {
+    confirm: "OK",
+    next: "Weiter",
+    dismissAll: "Alle schließen"
   }
 };
 

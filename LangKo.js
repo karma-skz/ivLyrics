@@ -101,6 +101,14 @@ window.LANG_KO = {
       "label": "노이즈 오버레이",
       "desc": "배경에 필름 그레인 효과를 추가합니다"
     },
+    "albumBgBlur": {
+      "label": "앨범 배경 블러",
+      "desc": "앨범 배경의 블러 강도를 조절합니다"
+    },
+    "blurGradientBackground": {
+      "label": "블러 그라데이션 배경",
+      "desc": "앨범 아트 색상을 추출하여 블러 그라데이션 배경을 적용합니다"
+    },
     "colorful": {
       "label": "컬러풀 배경",
       "desc": "앨범 색상 기반의 동적 배경을 활성화합니다"
@@ -1474,6 +1482,7 @@ window.LANG_KO = {
       "backgrounds": {
         "colorful": "컬러풀",
         "gradient": "앨범 커버",
+        "blurGradient": "블러 그라데이션",
         "solid": "단색",
         "video": "동영상"
       }

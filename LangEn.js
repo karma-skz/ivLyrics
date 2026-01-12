@@ -101,6 +101,14 @@ window.LANG_EN = {
       "label": "Noise Overlay",
       "desc": "Add film grain effect to the background"
     },
+    "albumBgBlur": {
+      "label": "Album Background Blur",
+      "desc": "Adjusts the blur intensity of the album background"
+    },
+    "blurGradientBackground": {
+      "label": "Blur Gradient Background",
+      "desc": "Applies a blurred gradient background extracted from album art colors"
+    },
     "colorful": {
       "label": "Colorful Background",
       "desc": "Enable dynamic background based on album colors"
@@ -1474,6 +1482,7 @@ window.LANG_EN = {
       "backgrounds": {
         "colorful": "Colorful",
         "gradient": "Album Cover",
+        "blurGradient": "Blur Gradient",
         "solid": "Solid Color",
         "video": "Video"
       }

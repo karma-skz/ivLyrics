@@ -760,18 +760,6 @@ window.LANG_AR = {
         "label": "اختصار ملء الشاشة",
         "desc": "اختصار لوحة المفاتيح لوضع ملء الشاشة للكلمات"
       },
-      "panelLyrics": {
-        "label": "عرض الكلمات في اللوحة اليمنى",
-        "desc": "عرض الكلمات الحالية في لوحة التشغيل الآن"
-      },
-      "panelLyricsLines": {
-        "label": "سطور الكلمات في اللوحة",
-        "desc": "عدد سطور الكلمات للعرض في اللوحة (افتراضي: 5)"
-      },
-      "panelFontScale": {
-        "label": "حجم خط اللوحة",
-        "desc": "مقياس الخط للكلمات في اللوحة (50%-200%)"
-      }
     },
     "nowPlayingPanel": {
       "title": "كلمات لوحة التشغيل الآن",
@@ -1482,6 +1470,7 @@ window.LANG_AR = {
       "backgrounds": {
         "colorful": "ملون",
         "gradient": "غلاف الألبوم",
+        "blurGradient": "تدرج ضبابي",
         "solid": "لون ثابت",
         "video": "فيديو"
       }
@@ -1571,6 +1560,11 @@ window.LANG_AR = {
     confidenceMedium: "موثوقية متوسطة",
     confidenceLow: "موثوقية منخفضة",
     confidenceNone: "بدون مصادر"
+  },
+  notice: {
+    confirm: "موافق",
+    next: "التالي",
+    dismissAll: "إغلاق الكل"
   }
 };
 

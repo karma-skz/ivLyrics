@@ -732,18 +732,6 @@ window.LANG_ID = {
         "label": "Pintasan Layar Penuh",
         "desc": "Pintasan keyboard untuk masuk ke mode lirik layar penuh"
       },
-      "panelLyrics": {
-        "label": "Tampilkan lirik di panel kanan",
-        "desc": "Tampilkan lirik saat ini di panel Sedang Diputar"
-      },
-      "panelLyricsLines": {
-        "label": "Baris lirik panel",
-        "desc": "Jumlah baris lirik yang ditampilkan di panel (default: 5)"
-      },
-      "panelFontScale": {
-        "label": "Skala font panel",
-        "desc": "Skala ukuran font untuk lirik di panel (50%-200%)"
-      }
     },
     "nowPlayingPanel": {
       "title": "Lirik Panel Sedang Diputar",
@@ -1460,6 +1448,7 @@ window.LANG_ID = {
       "backgrounds": {
         "colorful": "Berwarna",
         "gradient": "Sampul Album",
+        "blurGradient": "Gradien Blur",
         "solid": "Warna Solid",
         "video": "Video"
       }
@@ -1549,6 +1538,11 @@ window.LANG_ID = {
     confidenceMedium: "Kepercayaan Sedang",
     confidenceLow: "Kepercayaan Rendah",
     confidenceNone: "Tanpa Sumber"
+  },
+  notice: {
+    confirm: "OK",
+    next: "Berikutnya",
+    dismissAll: "Tutup Semua"
   }
 };
 

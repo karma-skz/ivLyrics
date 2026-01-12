@@ -98,7 +98,15 @@ window.LANG_JA = {
     },
     "noise": {
       "label": "ノイズオーバーレイ",
-      "desc": "背景にフィルムグレイン効果を追加"
+      "desc": "背景にフィルムグレイン効果を追加します"
+    },
+    "albumBgBlur": {
+      "label": "アルバム背景のぼかし",
+      "desc": "アルバム背景のぼかし強度を調整します"
+    },
+    "blurGradientBackground": {
+      "label": "ぼかしグラデーション背景",
+      "desc": "アルバムアートの色から抽出したぼかしグラデーション背景を適用します"
     },
     "colorful": {
       "label": "カラフル背景",
@@ -760,18 +768,6 @@ window.LANG_JA = {
         "label": "フルスクリーンショートカット",
         "desc": "歌詞フルスクリーンモードのキーボードショートカット"
       },
-      "panelLyrics": {
-        "label": "右パネルに歌詞を表示",
-        "desc": "再生中パネルに現在の歌詞を表示"
-      },
-      "panelLyricsLines": {
-        "label": "パネル歌詞行数",
-        "desc": "パネルに表示する歌詞の行数（デフォルト: 5）"
-      },
-      "panelFontScale": {
-        "label": "パネルフォントサイズ",
-        "desc": "パネル歌詞のフォントサイズ比率（50%-200%）"
-      }
     },
     "nowPlayingPanel": {
       "title": "再生中パネル歌詞",
@@ -1484,6 +1480,7 @@ window.LANG_JA = {
       "backgrounds": {
         "colorful": "カラフル",
         "gradient": "アルバムカバー",
+        "blurGradient": "ブラーグラデーション",
         "solid": "単色",
         "video": "動画"
       }

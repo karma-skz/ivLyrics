@@ -97,8 +97,16 @@ window.LANG_ZH_TW = {
       }
     },
     "noise": {
-      "label": "雜訊覆蓋",
-      "desc": "在背景上增加膠卷顆粒效果"
+      "label": "噪點覆蓋",
+      "desc": "在背景中添加膠片顆粒效果"
+    },
+    "albumBgBlur": {
+      "label": "專輯背景模糊",
+      "desc": "調整專輯背景的模糊強度"
+    },
+    "blurGradientBackground": {
+      "label": "模糊漸層背景",
+      "desc": "應用從專輯封面顏色提取的模糊漸層背景"
     },
     "colorful": {
       "label": "彩色背景",
@@ -760,18 +768,6 @@ window.LANG_ZH_TW = {
         "label": "全螢幕快速鍵",
         "desc": "歌詞全螢幕模式的鍵盤快速鍵"
       },
-      "panelLyrics": {
-        "label": "在右側面板顯示歌詞",
-        "desc": "在正在播放面板中顯示目前歌詞"
-      },
-      "panelLyricsLines": {
-        "label": "面板歌詞行數",
-        "desc": "面板中顯示的歌詞行數（預設: 5）"
-      },
-      "panelFontScale": {
-        "label": "面板字型大小",
-        "desc": "面板歌詞的字型大小比例（50%-200%）"
-      }
     },
     "nowPlayingPanel": {
       "title": "正在播放面板歌詞",
@@ -1484,6 +1480,7 @@ window.LANG_ZH_TW = {
       "backgrounds": {
         "colorful": "多彩",
         "gradient": "專輯封面",
+        "blurGradient": "模糊漸層",
         "solid": "純色",
         "video": "影片"
       }
@@ -1576,5 +1573,10 @@ window.LANG_ZH_TW = {
     confidenceMedium: "中可信度",
     confidenceLow: "低可信度",
     confidenceNone: "無來源"
+  },
+  notice: {
+    confirm: "確認",
+    next: "下一個",
+    dismissAll: "全部關閉"
   }
 };

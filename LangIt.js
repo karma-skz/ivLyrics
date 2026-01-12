@@ -100,6 +100,14 @@ window.LANG_IT = {
       "label": "Sovrapposizione Rumore",
       "desc": "Aggiunge un effetto grana pellicola allo sfondo"
     },
+    "albumBgBlur": {
+      "label": "Sfocatura sfondo album",
+      "desc": "Regola l'intensità della sfocatura dello sfondo dell'album"
+    },
+    "blurGradientBackground": {
+      "label": "Sfondo sfumato sfocato",
+      "desc": "Applica uno sfondo sfumato sfocato estratto dai colori della copertina dell'album"
+    },
     "colorful": {
       "label": "Sfondo Colorato",
       "desc": "Attiva uno sfondo dinamico basato sui colori dell'album"
@@ -760,18 +768,6 @@ window.LANG_IT = {
         "label": "Scorciatoia Schermo Intero",
         "desc": "Scorciatoia da tastiera per la modalità schermo intero testi"
       },
-      "panelLyrics": {
-        "label": "Mostra testi nel pannello destro",
-        "desc": "Mostra i testi attuali nel pannello In riproduzione"
-      },
-      "panelLyricsLines": {
-        "label": "Righe testo del pannello",
-        "desc": "Numero di righe di testo da mostrare nel pannello (predefinito: 5)"
-      },
-      "panelFontScale": {
-        "label": "Scala font del pannello",
-        "desc": "Scala del font per i testi nel pannello (50%-200%)"
-      }
     },
     "nowPlayingPanel": {
       "title": "Testi del pannello In riproduzione",
@@ -1484,6 +1480,7 @@ window.LANG_IT = {
       "backgrounds": {
         "colorful": "Colorato",
         "gradient": "Copertina Album",
+        "blurGradient": "Sfumatura Sfocata",
         "solid": "Tinta Unita",
         "video": "Video"
       }
@@ -1576,6 +1573,11 @@ window.LANG_IT = {
     confidenceMedium: "Affidabilità media",
     confidenceLow: "Bassa affidabilità",
     confidenceNone: "Nessuna fonte"
+  },
+  notice: {
+    confirm: "OK",
+    next: "Avanti",
+    dismissAll: "Chiudi tutto"
   }
 };
 

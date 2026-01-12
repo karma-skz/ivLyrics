@@ -731,18 +731,6 @@ window.LANG_BN = {
       "fullscreenShortcut": {
         "label": "পূর্ণ পর্দা শর্টকাট",
         "desc": "লিরিক্স পূর্ণ পর্দা মোডের জন্য কিবোর্ড শর্টকাট"
-      },
-      "panelLyrics": {
-        "label": "ডান প্যানেলে লিরিক্স দেখান",
-        "desc": "বর্তমানে চলছে প্যানেলে বর্তমান লিরিক্স দেখান"
-      },
-      "panelLyricsLines": {
-        "label": "প্যানেল লিরিক্স লাইন",
-        "desc": "প্যানেলে দেখানোর জন্য লিরিক্স লাইনের সংখ্যা (ডিফল্ট: 5)"
-      },
-      "panelFontScale": {
-        "label": "প্যানেল ফন্ট আকার",
-        "desc": "প্যানেলে লিরিক্সের জন্য ফন্ট আকার অনুপাত (50%-200%)"
       }
     },
     "nowPlayingPanel": {
@@ -1460,6 +1448,7 @@ window.LANG_BN = {
       "backgrounds": {
         "colorful": "রঙিন",
         "gradient": "অ্যালবাম কভার",
+        "blurGradient": "ব্লার গ্রেডিয়েন্ট",
         "solid": "সলিড রং",
         "video": "ভিডিও"
       }
@@ -1549,6 +1538,11 @@ window.LANG_BN = {
     confidenceMedium: "মাঝারি বিশ্বাসযোগ্যতা",
     confidenceLow: "নিম্ন বিশ্বাসযোগ্যতা",
     confidenceNone: "কোনো সূত্র নেই"
+  },
+  notice: {
+    confirm: "ঠিক আছে",
+    next: "পরবর্তী",
+    dismissAll: "সব বন্ধ করুন"
   }
 };
 

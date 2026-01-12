@@ -100,6 +100,14 @@ window.LANG_PT = {
       "label": "Sobreposição de Ruído",
       "desc": "Adiciona um efeito de granulação de filme ao fundo"
     },
+    "albumBgBlur": {
+      "label": "Desfoque do fundo do álbum",
+      "desc": "Ajusta a intensidade do desfoque do fundo do álbum"
+    },
+    "blurGradientBackground": {
+      "label": "Fundo gradiente desfocado",
+      "desc": "Aplica um fundo gradiente desfocado extraído das cores da capa do álbum"
+    },
     "colorful": {
       "label": "Fundo Colorido",
       "desc": "Ativar fundo dinâmico baseado nas cores do álbum"
@@ -759,18 +767,6 @@ window.LANG_PT = {
       "fullscreenShortcut": {
         "label": "Atalho de Tela Cheia",
         "desc": "Atalho de teclado para o modo de tela cheia de letras"
-      },
-      "panelLyrics": {
-        "label": "Mostrar letras no painel direito",
-        "desc": "Exibir letras atuais no painel Tocando agora"
-      },
-      "panelLyricsLines": {
-        "label": "Linhas de letras do painel",
-        "desc": "Número de linhas de letras a mostrar no painel (padrão: 5)"
-      },
-      "panelFontScale": {
-        "label": "Escala de fonte do painel",
-        "desc": "Escala de fonte para letras no painel (50%-200%)"
       }
     },
     "nowPlayingPanel": {
@@ -1484,6 +1480,7 @@ window.LANG_PT = {
       "backgrounds": {
         "colorful": "Colorido",
         "gradient": "Capa do Álbum",
+        "blurGradient": "Gradiente Desfocado",
         "solid": "Cor Sólida",
         "video": "Vídeo"
       }
@@ -1575,7 +1572,11 @@ window.LANG_PT = {
     confidenceHigh: "Alta confiabilidade",
     confidenceMedium: "Confiabilidade média",
     confidenceLow: "Baixa confiabilidade",
-    confidenceNone: "Sem fontes"
+    "confidenceNone": "Sem fontes"
+  },
+  "notice": {
+    "confirm": "OK",
+    "next": "Próximo",
+    "dismissAll": "Dispensar Tudo"
   }
 };
-
