@@ -615,7 +615,7 @@ function openOptionsModal(title, items, onChange, eventType = null) {
 }
 
 #ivLyrics-translation-modal {
-	background: rgba(24, 24, 24, 0.95);
+	background: rgba(24, 24, 24, 0);
 	backdrop-filter: blur(40px) saturate(180%);
 	-webkit-backdrop-filter: blur(40px) saturate(180%);
 	border-radius: 16px;
@@ -1437,20 +1437,20 @@ const SyncAdjustButton = react.memo(
         // 버튼 기준으로 위치 계산
         const rect = buttonRef.current.getBoundingClientRect();
         const containerRect = buttonRef.current.closest('.lyrics-config-button-container')?.getBoundingClientRect();
-        
+
         if (containerRect) {
           return {
             bottom: `${window.innerHeight - containerRect.top + 12}px`,
             right: `${window.innerWidth - containerRect.left + 12}px`
           };
         }
-        
+
         return {
           bottom: `${window.innerHeight - rect.top + 12}px`,
           right: `${window.innerWidth - rect.right + 60}px`
         };
       }
-      
+
       // fallback
       return {
         bottom: isFullscreen ? "50px" : "110px",
@@ -1499,9 +1499,9 @@ const SyncAdjustButton = react.memo(
             className: "lyrics-sync-adjust-modal",
             style: {
               position: "fixed",
-              bottom: modalStyle.bottom,
-              right: modalStyle.right,
-              background: "rgba(24, 24, 24, 0.95)",
+              bottom: "100px",
+              right: "100px",
+              background: "rgba(24, 24, 24, 0.6)",
               backdropFilter: "blur(40px) saturate(180%)",
               WebkitBackdropFilter: "blur(40px) saturate(180%)",
               border: "1px solid rgba(255, 255, 255, 0.1)",
