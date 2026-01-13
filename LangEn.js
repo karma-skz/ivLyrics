@@ -1568,6 +1568,7 @@ window.LANG_EN = {
   syncCreator: {
     title: "Karaoke Sync Creator",
     buttonTooltip: "Create Karaoke Sync",
+    clickHereHint: "Click here to sync lyrics!",
     loading: "Loading...",
     loadLyrics: "Load Lyrics",
     loadingLyrics: "Loading lyrics...",
@@ -1588,7 +1589,7 @@ window.LANG_EN = {
     previewMode: "Preview Mode",
     stopPreview: "Stop Preview",
     idleMode: "Idle",
-    recordLine: "Quick Record Line",
+
     submit: "Submit",
     submitting: "Submitting...",
     noSyncData: "No sync data recorded",
@@ -1610,12 +1611,16 @@ window.LANG_EN = {
       useWithoutPublish: "Use Without Publishing",
       publishToLrcLib: "Publish to LRCLIB",
       publishing: "Publishing...",
+      cancelPublish: "Cancel Publishing",
+      publishCancelled: "Publishing cancelled",
+      timeWarning: "⚠️ LRCLIB requires a cryptographic challenge to prevent spam. This process may take about 5 minutes depending on your computer's performance.",
       requestingChallenge: "Requesting authentication...",
       solvingChallenge: "Processing authentication...",
       solving: "Processing authentication... ({nonce} attempts)",
       publishSuccess: "Lyrics successfully registered to LRCLIB!",
       publishError: "Failed to register lyrics",
-      noLyricsInput: "Please enter lyrics"
+      noLyricsInput: "Please enter lyrics",
+      loadingAfterPublish: "Loading published lyrics..."
     }
   }
 };

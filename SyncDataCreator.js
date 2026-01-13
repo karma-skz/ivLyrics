@@ -351,16 +351,18 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		e.preventDefault();
 		const currentTime = Spicetify.Player.getProgress() / 1000;
 
+		// 마우스를 너무 위/아래로 움직였거나 영역을 벗어났을 때도 처리가 필요할 수 있음
+		// 현재는 index 기반으로만 처리
+
 		if (charIndex < 0) {
-			setRecordingCharIndex(-1);
-			setDragStartTime(null);
-			setDragStartCharIndex(-1);
-			setIsDragging(false);
-			charTimesRef.current = [];
+			// 영역 왼쪽 밖으로 나감 - 전체 취소 아님, 그냥 인덱스 0 처리?
+			// 아니면 드래그 시작점보다 왼쪽으로 가면 그만큼 취소
+			// 여기서는 -1이면 아무것도 안함
 			return;
 		}
 
 		if (charIndex >= recordingCharIndex) {
+			// 정방향 진행
 			for (let i = recordingCharIndex + 1; i <= charIndex; i++) {
 				if (charTimesRef.current[i] === null) {
 					charTimesRef.current[i] = currentTime;
@@ -368,6 +370,13 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 			}
 			setRecordingCharIndex(charIndex);
 			autoScroll(charIndex);
+		} else {
+			// 역방향 진행 (취소)
+			// 현재 recordingCharIndex에서 charIndex+1 까지의 기록을 지움
+			for (let i = charIndex + 1; i <= recordingCharIndex; i++) {
+				charTimesRef.current[i] = null;
+			}
+			setRecordingCharIndex(charIndex);
 		}
 	}, [mode, isDragging, dragStartTime, recordingCharIndex, autoScroll]);
 
@@ -378,11 +387,23 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		}
 
 		e.preventDefault();
+
+		// 드래그가 시작점보다 왼쪽에서 끝났으면 취소로 간주할 수도 있으나,
+		// 여기서는 recordingCharIndex가 유효한 마지막 지점이므로 거기까지만 저장
+
 		const endTime = Spicetify.Player.getProgress() / 1000;
 		const endCharIndex = recordingCharIndex;
 		const lineStart = lineCharOffsets[currentLineIndex];
 		const lineEnd = lineStart + currentLineChars.length - 1;
 		const charCount = currentLineChars.length;
+
+		// 유효성 체크: 만약 드래그 시작하자마자 바로 끝나거나 이상한 경우
+		if (endCharIndex < dragStartCharIndex) {
+			// 시작점보다 뒤로 가서 끝났으면 해당 부분은 싱크 안함 (혹은 이전 싱크 유지)
+			// 여기서는 그냥 저장 진행 (지워진 상태로)
+			// 만약 전체를 취소하고 싶다면 별도 처리가 필요하지만, 
+			// UX상 왼쪽으로 가서 놓으면 그 부분은 싱크가 안 된 상태가 됨.
+		}
 
 		const chars = [];
 		for (let i = 0; i < charCount; i++) {
@@ -390,9 +411,11 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 			if (charTimesRef.current[i] !== null) {
 				time = charTimesRef.current[i];
 			} else if (i <= endCharIndex) {
+				// 중간에 빈 곳이 있으면 채움 (보간)
 				const prevTime = chars[chars.length - 1] || dragStartTime;
 				time = prevTime + 0.02;
 			} else {
+				// 끝부분 이후는 자동 채움 (보간)
 				const remainingCount = charCount - endCharIndex - 1;
 				const perCharDuration = 0.5 / Math.max(1, remainingCount);
 				time = endTime + ((i - endCharIndex) * perCharDuration);
@@ -437,7 +460,7 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		setRecordingCharIndex(-1);
 		setIsDragging(false);
 		charTimesRef.current = [];
-	}, [mode, isDragging, dragStartTime, recordingCharIndex, currentLineIndex, currentLineChars, lineCharOffsets, lyricsLines.length]);
+	}, [mode, isDragging, dragStartTime, recordingCharIndex, currentLineIndex, currentLineChars, lineCharOffsets, lyricsLines.length, dragStartCharIndex]);
 
 	const handleContainerMouseDown = useCallback((e) => {
 		if (mode !== 'record' || currentLineIndex >= lyricsLines.length) return;
@@ -472,50 +495,6 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 			document.removeEventListener('touchend', handleGlobalEnd);
 		};
 	}, [isDragging, getCharIndexFromPoint, handleDragMove, handleDragEnd]);
-
-	const handleLineRecord = useCallback(() => {
-		if (mode !== 'record' || currentLineIndex >= lyricsLines.length) return;
-
-		const currentTime = Spicetify.Player.getProgress() / 1000;
-		const lineStart = lineCharOffsets[currentLineIndex];
-		const lineEnd = lineStart + currentLineChars.length - 1;
-		const charCount = currentLineChars.length;
-
-		const chars = [];
-		for (let i = 0; i < charCount; i++) {
-			// 소수점 3자리로 반올림
-			chars.push(Math.round((currentTime + (i * 0.08)) * 1000) / 1000);
-		}
-
-		const lastCharTime = chars[chars.length - 1];
-
-		setSyncData(prev => {
-			let newLines = prev?.lines ? [...prev.lines] : [];
-			const existingIndex = newLines.findIndex(l => l.start === lineStart);
-			const lineData = { start: lineStart, end: lineEnd, chars: chars };
-
-			if (existingIndex >= 0) {
-				newLines[existingIndex] = lineData;
-			} else {
-				newLines.push(lineData);
-				newLines.sort((a, b) => a.start - b.start);
-			}
-
-			const validLines = newLines.filter(line => {
-				if (line.start > lineStart && line.chars && line.chars[0] < lastCharTime) {
-					return false;
-				}
-				return true;
-			});
-
-			return { lines: validLines };
-		});
-
-		if (currentLineIndex < lyricsLines.length - 1) {
-			setCurrentLineIndex(prev => prev + 1);
-			if (lyricsScrollRef.current) lyricsScrollRef.current.scrollLeft = 0;
-		}
-	}, [mode, currentLineIndex, lyricsLines.length, lineCharOffsets, currentLineChars]);
 
 	// 현재 줄 싱크 삭제
 	const deleteCurrentLineSync = useCallback(() => {
@@ -608,12 +587,15 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 				const result = await SyncDataService.submitSyncData(trackId, provider, syncData);
 				if (result) {
 					Toast.success(I18n.t('syncCreator.submitSuccess'));
-					// 가사 페이지 새로고침
-					if (typeof LyricsService !== 'undefined' && LyricsService.reloadLyrics) {
-						setTimeout(() => LyricsService.reloadLyrics(), 500);
-					} else if (typeof window.reloadLyrics === 'function') {
-						setTimeout(() => window.reloadLyrics(), 500);
-					}
+					// 가사 페이지 새로고침 - SyncDataService 캐시 명시적 클리어 후 리로드
+					window.SyncDataService?.clearCache(trackId);
+					setTimeout(() => {
+						if (typeof window.lyricContainer?.reloadLyrics === 'function') {
+							window.lyricContainer.reloadLyrics(true);
+						} else if (typeof window.reloadLyrics === 'function') {
+							window.reloadLyrics(true);
+						}
+					}, 500);
 					if (onClose) onClose();
 				} else {
 					Toast.error(I18n.t('syncCreator.submitError'));
@@ -628,12 +610,15 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 
 				if (response.ok) {
 					Toast.success(I18n.t('syncCreator.submitSuccess'));
-					// 가사 페이지 새로고침
-					if (typeof LyricsService !== 'undefined' && LyricsService.reloadLyrics) {
-						setTimeout(() => LyricsService.reloadLyrics(), 500);
-					} else if (typeof window.reloadLyrics === 'function') {
-						setTimeout(() => window.reloadLyrics(), 500);
-					}
+					// 가사 페이지 새로고침 - SyncDataService 캐시 명시적 클리어 후 리로드
+					window.SyncDataService?.clearCache(trackId);
+					setTimeout(() => {
+						if (typeof window.lyricContainer?.reloadLyrics === 'function') {
+							window.lyricContainer.reloadLyrics(true);
+						} else if (typeof window.reloadLyrics === 'function') {
+							window.reloadLyrics(true);
+						}
+					}, 500);
 					if (onClose) onClose();
 				} else {
 					Toast.error((await response.json()).error || I18n.t('syncCreator.submitError'));
@@ -835,12 +820,14 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					setIsPublishingToLrcLib(false);
 				}, 2000);
 
-				// 가사 페이지 새로고침 (LyricsService가 있으면)
-				if (typeof LyricsService !== 'undefined' && LyricsService.reloadLyrics) {
-					setTimeout(() => LyricsService.reloadLyrics(), 3000);
-				} else if (typeof window.reloadLyrics === 'function') {
-					setTimeout(() => window.reloadLyrics(), 3000);
-				}
+				// 가사 페이지 새로고침
+				setTimeout(() => {
+					if (typeof window.lyricContainer?.reloadLyrics === 'function') {
+						window.lyricContainer.reloadLyrics(true);
+					} else if (typeof window.reloadLyrics === 'function') {
+						window.reloadLyrics(true);
+					}
+				}, 3000);
 				return; // isPublishingToLrcLib는 위에서 처리
 			} else {
 				const errData = await publishRes.json().catch(() => ({}));
@@ -1111,10 +1098,7 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 				disabled: !syncData || syncData.lines.length === 0
 			}, mode === 'preview' ? I18n.t('syncCreator.stopPreview') : I18n.t('syncCreator.previewMode')),
 
-			// 빠른 등록
-			mode === 'record' && react.createElement('button', { style: { ...s.ctrlBtn, background: '#4caf50', color: '#fff', borderColor: '#4caf50' }, onClick: handleLineRecord },
-				I18n.t('syncCreator.recordLine')
-			),
+
 
 			// 현재 줄 삭제
 			isCurrentLineSynced && react.createElement('button', { style: s.deleteBtn, onClick: deleteCurrentLineSync },

@@ -1531,6 +1531,7 @@ window.LANG_RU = {
   syncCreator: {
     title: "Создать синхронизацию Караоке",
     buttonTooltip: "Создать синхронизацию Караоке",
+    clickHereHint: "Нажмите здесь, чтобы синхронизировать текст!",
     loading: "Загрузка...",
     loadLyrics: "Загрузить текст",
     loadingLyrics: "Загрузка текста...",

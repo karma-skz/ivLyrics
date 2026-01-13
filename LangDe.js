@@ -1539,6 +1539,7 @@ window.LANG_DE = {
   syncCreator: {
     title: "Karaoke-Sync erstellen",
     buttonTooltip: "Karaoke-Sync erstellen",
+    clickHereHint: "Hier klicken, um Text zu synchronisieren!",
     loading: "Laden...",
     loadLyrics: "Liedtext laden",
     loadingLyrics: "Liedtext wird geladen...",

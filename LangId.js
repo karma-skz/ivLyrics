@@ -1504,6 +1504,7 @@ window.LANG_ID = {
   syncCreator: {
     title: "Buat Sinkronisasi Karaoke",
     buttonTooltip: "Buat Sinkronisasi Karaoke",
+    clickHereHint: "Klik di sini untuk menyinkronkan lirik!",
     loading: "Memuat...",
     loadLyrics: "Muat Lirik",
     loadingLyrics: "Memuat lirik...",

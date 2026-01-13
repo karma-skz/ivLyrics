@@ -1497,6 +1497,7 @@ window.LANG_HI = {
   syncCreator: {
     title: "कराओके सिंक बनाएं",
     buttonTooltip: "कराओके सिंक बनाएं",
+    clickHereHint: "बोल सिंक करने के लिए यहाँ क्लिक करें!",
     loading: "लोड हो रहा है...",
     loadLyrics: "लिरिक्स लोड करें",
     loadingLyrics: "लिरिक्स लोड हो रहे हैं...",

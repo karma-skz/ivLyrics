@@ -1532,6 +1532,7 @@ window.LANG_VI = {
   syncCreator: {
     title: "Tạo đồng bộ Karaoke",
     buttonTooltip: "Tạo đồng bộ Karaoke",
+    clickHereHint: "Nhấn vào đây để đồng bộ lời bài hát!",
     loading: "Đang tải...",
     loadLyrics: "Tải lời bài hát",
     loadingLyrics: "Đang tải lời bài hát...",

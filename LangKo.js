@@ -1568,6 +1568,7 @@ window.LANG_KO = {
   syncCreator: {
     title: "노래방 싱크 생성",
     buttonTooltip: "노래방 싱크 생성",
+    clickHereHint: "여기를 눌러 가사의 싱크를 맞춰주세요!",
     loading: "로딩 중...",
     loadLyrics: "가사 불러오기",
     reload: "다시 로드",
@@ -1589,7 +1590,7 @@ window.LANG_KO = {
     previewMode: "미리보기 모드",
     stopPreview: "미리보기 중지",
     idleMode: "대기 중",
-    recordLine: "줄 빠른등록",
+
     submit: "제출",
     submitting: "제출 중...",
     noSyncData: "등록된 싱크 데이터가 없습니다",

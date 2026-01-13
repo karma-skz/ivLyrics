@@ -1511,6 +1511,7 @@ window.LANG_TH = {
   syncCreator: {
     title: "สร้างซิงค์คาราโอเกะ",
     buttonTooltip: "สร้างซิงค์คาราโอเกะ",
+    clickHereHint: "คลิกที่นี่เพื่อซิงค์เนื้อเพลง!",
     loading: "กำลังโหลด...",
     loadLyrics: "โหลดเนื้อเพลง",
     loadingLyrics: "กำลังโหลดเนื้อเพลง...",

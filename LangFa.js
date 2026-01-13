@@ -1504,6 +1504,7 @@ window.LANG_FA = {
   syncCreator: {
     title: "ایجاد همگام‌سازی کارائوکه",
     buttonTooltip: "ایجاد همگام‌سازی کارائوکه",
+    clickHereHint: "برای همگام‌سازی متن ترانه اینجا کلیک کنید!",
     loading: "در حال بارگذاری...",
     loadLyrics: "بارگذاری متن",
     loadingLyrics: "در حال بارگذاری متن...",

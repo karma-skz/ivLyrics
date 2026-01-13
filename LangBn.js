@@ -1504,6 +1504,7 @@ window.LANG_BN = {
   syncCreator: {
     title: "কারাওকে সিঙ্ক তৈরি করুন",
     buttonTooltip: "কারাওকে সিঙ্ক তৈরি করুন",
+    clickHereHint: "লিরিক্স সিঙ্ক করতে এখানে ক্লিক করুন!",
     loading: "লোড হচ্ছে...",
     loadLyrics: "লিরিক্স লোড করুন",
     loadingLyrics: "লিরিক্স লোড হচ্ছে...",

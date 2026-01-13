@@ -1539,6 +1539,7 @@ window.LANG_ZH_CN = {
   syncCreator: {
     title: "创建卡拉OK同步",
     buttonTooltip: "创建卡拉OK同步",
+    clickHereHint: "点击此处同步歌词！",
     loading: "加载中...",
     loadLyrics: "加载歌词",
     loadingLyrics: "正在加载歌词...",

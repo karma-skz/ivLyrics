@@ -1539,6 +1539,7 @@ window.LANG_FR = {
   syncCreator: {
     title: "Créer Sync Karaoké",
     buttonTooltip: "Créer Sync Karaoké",
+    clickHereHint: "Cliquez ici pour synchroniser les paroles !",
     loading: "Chargement...",
     loadLyrics: "Charger les Paroles",
     loadingLyrics: "Chargement des paroles...",

@@ -1526,6 +1526,7 @@ window.LANG_AR = {
   syncCreator: {
     title: "إنشاء مزامنة كاريوكي",
     buttonTooltip: "إنشاء مزامنة كاريوكي",
+    clickHereHint: "انقر هنا لمزامنة الكلمات!",
     loading: "جاري التحميل...",
     loadLyrics: "تحميل الكلمات",
     loadingLyrics: "جاري تحميل الكلمات...",

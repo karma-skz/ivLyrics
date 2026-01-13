@@ -1539,6 +1539,7 @@ window.LANG_JA = {
   syncCreator: {
     title: "カラオケシンク作成",
     buttonTooltip: "カラオケシンクを作成",
+    clickHereHint: "ここをクリックして歌詞を同期してください！",
     loading: "読み込み中...",
     loadLyrics: "歌詞を読み込む",
     loadingLyrics: "歌詞を読み込んでいます...",

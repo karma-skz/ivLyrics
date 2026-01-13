@@ -1539,6 +1539,7 @@ window.LANG_IT = {
   syncCreator: {
     title: "Crea Sincronizzazione Karaoke",
     buttonTooltip: "Crea Sincronizzazione Karaoke",
+    clickHereHint: "Clicca qui per sincronizzare il testo!",
     loading: "Caricamento...",
     loadLyrics: "Carica Testi",
     loadingLyrics: "Caricamento testi...",
