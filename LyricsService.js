@@ -1278,28 +1278,22 @@
 
             const syncLines = syncData.syncData.lines;
 
-            // 줄 번호 기준 매칭 방식:
-            // sync-data의 i번째 줄 = lyrics의 i번째 줄
-            // 텍스트는 lyrics 원본을 사용하여 유니코드 인덱싱 문제를 근본적으로 방지
-            // 글자 수가 다른 경우 타이밍을 보간하여 처리
+            // 전체 가사 텍스트를 하나로 합침 (줄바꿈 없이 - SyncDataCreator와 동일하게)
+            // SyncDataCreator에서는 각 줄의 글자 수만 계산하고 줄바꿈은 포함하지 않음
+            // 중요: SyncDataCreator는 Array.from()으로 유니코드 코드 포인트 기준 인덱스를 사용하므로
+            // 여기서도 동일하게 Array.from()을 사용해야 특수문자(서로게이트 페어, 결합 문자 등)가 포함된 경우에도 정확한 인덱싱이 가능함
+            const fullTextChars = lyrics.map(line => Array.from(line.text || '')).flat();
 
             const result = [];
 
-            for (let i = 0; i < syncLines.length && i < lyrics.length; i++) {
+            for (let i = 0; i < syncLines.length; i++) {
                 const lineData = syncLines[i];
                 const nextLineData = syncLines[i + 1];
 
-                // 가사 제공자의 원본 텍스트 사용 (글자 밀림 방지)
-                const lineText = lyrics[i].text || '';
-                const chars = Array.from(lineText); // 유니코드 문자 배열
-                const syncCharCount = lineData.chars?.length || 0;
-                const actualCharCount = chars.length;
+                // 해당 범위의 텍스트 추출 (유니코드 문자 배열에서 slice 사용)
+                const lineText = fullTextChars.slice(lineData.start, lineData.end + 1).join('');
 
-                if (actualCharCount === 0 || syncCharCount === 0) {
-                    continue; // 빈 줄 스킵
-                }
-
-                // 라인 시작/종료 시간 계산
+                // 라인 시작/종료 시간 계산 (일단 다음 줄 시작 전까지로 잡지만, 아래에서 조정함)
                 const lineStartTime = Math.round(lineData.chars[0] * 1000);
                 let lineEndTime = nextLineData
                     ? Math.round(nextLineData.chars[0] * 1000)
@@ -1309,38 +1303,29 @@
                 const lineDuration = (nextLineData
                     ? nextLineData.chars[0]
                     : lineData.chars[lineData.chars.length - 1] + 1) - lineData.chars[0];
-                const avgCharDuration = Math.max(0.2, lineDuration / Math.max(1, syncCharCount));
+                const avgCharDuration = Math.max(0.2, lineDuration / Math.max(1, lineData.chars.length));
 
-                // 마지막 글자의 자연스러운 최대 지속 시간
+                // 마지막 글자의 자연스러운 최대 지속 시간 (평균의 2.5배 또는 최대 1.5초)
+                // 너무 짧게 끊기지 않도록 최소 0.5초는 보장
                 const lastCharMaxDuration = Math.max(0.5, Math.min(1.5, avgCharDuration * 2.5));
 
                 // 각 글자별 syllable 생성
                 const syllables = [];
+                const chars = Array.from(lineText); // 유니코드 문자 지원
 
-                for (let j = 0; j < actualCharCount; j++) {
-                    let charStartTime, charEndTime;
+                for (let j = 0; j < lineData.chars.length && j < chars.length; j++) {
+                    const charStartTime = Math.round(lineData.chars[j] * 1000);
+                    let charEndTime;
 
-                    if (j < syncCharCount) {
-                        // sync-data에 타이밍이 있는 경우: 그대로 사용
-                        charStartTime = Math.round(lineData.chars[j] * 1000);
-
-                        if (j < syncCharCount - 1) {
-                            charEndTime = Math.round(lineData.chars[j + 1] * 1000);
-                        } else {
-                            // sync-data의 마지막 글자
-                            const naturalEndTime = Math.round((lineData.chars[j] + lastCharMaxDuration) * 1000);
-                            charEndTime = Math.min(lineEndTime, naturalEndTime);
-                        }
+                    if (j < lineData.chars.length - 1) {
+                        charEndTime = Math.round(lineData.chars[j + 1] * 1000);
                     } else {
-                        // 가사 제공자의 글자가 더 많은 경우: 마지막 타이밍 이후 보간
-                        const lastSyncTime = lineData.chars[syncCharCount - 1];
-                        const extraChars = actualCharCount - syncCharCount;
-                        const extraIndex = j - syncCharCount;
-                        const extraDuration = Math.min(avgCharDuration, lastCharMaxDuration / extraChars);
+                        // 마지막 글자: 다음 줄 시작 시간과 자연스러운 종료 시간 중 더 빠른 것 선택
+                        const naturalEndTime = Math.round((lineData.chars[j] + lastCharMaxDuration) * 1000);
+                        charEndTime = Math.min(lineEndTime, naturalEndTime);
 
-                        charStartTime = Math.round((lastSyncTime + extraIndex * extraDuration) * 1000);
-                        charEndTime = Math.round((lastSyncTime + (extraIndex + 1) * extraDuration) * 1000);
-                        charEndTime = Math.min(charEndTime, lineEndTime);
+                        // 라인 전체 종료 시간도 이에 맞춰 조정 (너무 길게 늘어지는 것 방지)
+                        lineEndTime = charEndTime;
                     }
 
                     syllables.push({
@@ -1348,12 +1333,6 @@
                         startTime: charStartTime,
                         endTime: charEndTime
                     });
-                }
-
-                // 라인 전체 종료 시간 조정
-                if (syllables.length > 0) {
-                    const lastSyllable = syllables[syllables.length - 1];
-                    lineEndTime = lastSyllable.endTime;
                 }
 
                 result.push({
