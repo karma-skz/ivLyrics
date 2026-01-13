@@ -282,9 +282,14 @@ const KaraokeLine = react.memo(({ line, position, isActive, globalCharOffset = 0
 		});
 	});
 
+	// 라인의 마지막 글자 종료 시간
+	const lastCharEndTime = allChars.length > 0 ? allChars[allChars.length - 1].charEnd : 0;
+	// 라인이 완료되었는지 (마지막 글자의 endTime이 지났는지)
+	const isLineComplete = isActive && position > lastCharEndTime;
+
 	// 현재 활성 글자 찾기 (이 줄에서만)
 	let activeLocalIndex = -1;
-	if (isActive) {
+	if (isActive && !isLineComplete) {
 		for (let i = 0; i < allChars.length; i++) {
 			if (position >= allChars[i].charStart && position < allChars[i].charEnd) {
 				activeLocalIndex = i;
@@ -297,7 +302,8 @@ const KaraokeLine = react.memo(({ line, position, isActive, globalCharOffset = 0
 
 	const charRenderData = allChars.map((charInfo, index) => {
 		const isCharActive = activeLocalIndex === index;
-		const isCharSung = isActive && position > charInfo.charEnd;
+		// 라인이 완료되면 모든 글자가 sung 상태
+		const isCharSung = isLineComplete || (isActive && position > charInfo.charEnd);
 
 		const currentGlobalIndex = charInfo.globalIndex;
 		let waveOffset = 0;
@@ -325,6 +331,10 @@ const KaraokeLine = react.memo(({ line, position, isActive, globalCharOffset = 0
 			className += " active";
 		} else if (isCharSung) {
 			className += " sung";
+			// 라인이 완료되면 fade 효과를 위한 클래스 추가
+			if (isLineComplete) {
+				className += " line-complete";
+			}
 		}
 
 		const style = shouldAnimate ? {
@@ -332,7 +342,7 @@ const KaraokeLine = react.memo(({ line, position, isActive, globalCharOffset = 0
 			transition: `transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${transitionDelay}s, color 0.2s ease-out`,
 			transitionDelay: `${transitionDelay}s`
 		} : {
-			transition: "transform 0.3s ease-out, color 0.2s ease-out"
+			transition: "transform 0.1s ease-out, color 0.2s ease-out"
 		};
 
 		return {
@@ -679,12 +689,18 @@ const SyncedLyricsPage = react.memo(({ lyrics = [], provider, copyright, isKara 
 		let totalChars = 0;
 		let activeCharIndex = -1;
 
+		// 가상 인덱스 계산을 위한 변수
+		let lastPassedCharIndex = -1;
+		let lastPassedCharEndTime = 0;
+		let lastPassedCharDuration = 100; // ms
+
 		for (let i = 0; i < lyrics.length; i++) {
 			const line = lyrics[i];
 			offsets.push(totalChars);
 
+			// 라인의 활성 여부와 상관없이 모든 글자를 순회하며 인덱스 계산
 			if (line?.syllables && Array.isArray(line.syllables)) {
-				// 이 줄이 활성 상태인지 확인
+				// 이 줄이 활성 상태인지 확인 (시간 범위 체크)
 				const isLineActive = position >= (line.startTime || 0) &&
 					(i === lyrics.length - 1 || position < (lyrics[i + 1]?.startTime || Infinity));
 
@@ -701,14 +717,38 @@ const SyncedLyricsPage = react.memo(({ lyrics = [], provider, copyright, isKara 
 						const charStart = syllableStart + (charIdx * charDuration);
 						const charEnd = charStart + charDuration;
 
-						// 현재 재생 중인 글자 찾기
-						if (isLineActive && position >= charStart && position < charEnd) {
+						// 현재 활성 글자 찾기
+						if (position >= charStart && position < charEnd) {
 							activeCharIndex = totalChars;
+						}
+
+						// 지나간 글자 중 가장 최근 것 추적
+						if (position >= charEnd) {
+							if (charEnd > lastPassedCharEndTime) {
+								lastPassedCharEndTime = charEnd;
+								lastPassedCharIndex = totalChars;
+								lastPassedCharDuration = charDuration || 100;
+							}
 						}
 
 						totalChars++;
 					}
 				}
+			}
+		}
+
+		// 활성 글자가 없으면(간주/공백) 가상의 인덱스 계산
+		if (activeCharIndex === -1 && lastPassedCharIndex !== -1) {
+			// 마지막 글자 이후 흐른 시간
+			const timeDiff = position - lastPassedCharEndTime;
+			// 시간이 흐름에 따라 인덱스가 증가하는 것으로 시뮬레이션
+			const simulateDuration = Math.max(40, lastPassedCharDuration * 0.01);
+			const virtualProgress = Math.floor(timeDiff / simulateDuration);
+
+			// 너무 오래된 과거는 무시 (예: 2초 이상 지남)
+			if (timeDiff < 2000) {
+				// 마지막 인덱스 다음부터 가상의 글자가 있다고 가정
+				activeCharIndex = lastPassedCharIndex + 1 + virtualProgress;
 			}
 		}
 

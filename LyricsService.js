@@ -1416,6 +1416,231 @@
     window.ProviderIvLyrics = ProviderIvLyrics;
 
     // ============================================
+    // SyncDataService - 커뮤니티 싱크 데이터 서비스
+    // 가사 없이 타이밍 정보만 저장/적용하는 시스템
+    // ============================================
+    const SyncDataService = (() => {
+        const API_BASE = 'https://lyrics.api.ivl.is';
+
+        /**
+         * 승인된 싱크 데이터 조회
+         * @param {string} trackId - Spotify Track ID
+         * @returns {Promise<Object|null>} - 싱크 데이터 또는 null
+         */
+        async function getSyncData(trackId) {
+            try {
+                const response = await fetch(`${API_BASE}/lyrics/sync-data?trackId=${trackId}`, {
+                    headers: {
+                        "User-Agent": `spicetify v${Spicetify.Config.version}`,
+                    },
+                    cache: "no-cache",
+                });
+
+                if (response.status === 404) {
+                    return null;
+                }
+
+                if (!response.ok) {
+                    console.warn('[SyncDataService] API error:', response.status);
+                    return null;
+                }
+
+                const result = await response.json();
+                if (result.success && result.data) {
+                    return result.data;
+                }
+                return null;
+            } catch (e) {
+                console.warn('[SyncDataService] Failed to get sync data:', e);
+                return null;
+            }
+        }
+
+        /**
+         * 싱크 데이터 제출
+         * @param {string} trackId - Spotify Track ID
+         * @param {string} provider - 가사 출처 ('spotify', 'lrclib')
+         * @param {Object} syncData - 싱크 데이터 { lines: [...] }
+         * @returns {Promise<Object>} - 제출 결과
+         */
+        async function submitSyncData(trackId, provider, syncData) {
+            const userHash = Spicetify.LocalStorage.get("ivLyrics:userHash") || 'anonymous';
+
+            const response = await fetch(`${API_BASE}/lyrics/sync-data`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "User-Agent": `spicetify v${Spicetify.Config.version}`,
+                },
+                body: JSON.stringify({
+                    trackId,
+                    provider,
+                    syncData,
+                    userHash
+                })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to submit sync data');
+            }
+
+            return result;
+        }
+
+        /**
+         * 싱크 데이터를 가사에 적용하여 karaoke 형식으로 변환
+         * @param {Array} lyrics - 원본 가사 라인 배열 [{text: "..."}, ...]
+         * @param {Object} syncData - 싱크 데이터 { provider, syncData: { lines: [...] } }
+         * @returns {Array} - karaoke 형식의 가사
+         */
+        function applySyncDataToLyrics(lyrics, syncData) {
+            if (!lyrics || !syncData || !syncData.syncData || !syncData.syncData.lines) {
+                return null;
+            }
+
+            const syncLines = syncData.syncData.lines;
+
+            // 전체 가사 텍스트를 하나로 합침 (줄바꿈 없이 - SyncDataCreator와 동일하게)
+            // SyncDataCreator에서는 각 줄의 글자 수만 계산하고 줄바꿈은 포함하지 않음
+            const fullText = lyrics.map(line => line.text || '').join('');
+
+            const result = [];
+
+            for (let i = 0; i < syncLines.length; i++) {
+                const lineData = syncLines[i];
+                const nextLineData = syncLines[i + 1];
+
+                // 해당 범위의 텍스트 추출
+                const lineText = fullText.substring(lineData.start, lineData.end + 1);
+
+                // 라인 시작/종료 시간 계산 (일단 다음 줄 시작 전까지로 잡지만, 아래에서 조정함)
+                const lineStartTime = Math.round(lineData.chars[0] * 1000);
+                let lineEndTime = nextLineData
+                    ? Math.round(nextLineData.chars[0] * 1000)
+                    : Math.round(lineData.chars[lineData.chars.length - 1] * 1000) + 2000;
+
+                // 평균 글자 지속 시간 계산 (초 단위)
+                const lineDuration = (nextLineData
+                    ? nextLineData.chars[0]
+                    : lineData.chars[lineData.chars.length - 1] + 1) - lineData.chars[0];
+                const avgCharDuration = Math.max(0.2, lineDuration / Math.max(1, lineData.chars.length));
+
+                // 마지막 글자의 자연스러운 최대 지속 시간 (평균의 2.5배 또는 최대 1.5초)
+                // 너무 짧게 끊기지 않도록 최소 0.5초는 보장
+                const lastCharMaxDuration = Math.max(0.5, Math.min(1.5, avgCharDuration * 2.5));
+
+                // 각 글자별 syllable 생성
+                const syllables = [];
+                const chars = Array.from(lineText); // 유니코드 문자 지원
+
+                for (let j = 0; j < lineData.chars.length && j < chars.length; j++) {
+                    const charStartTime = Math.round(lineData.chars[j] * 1000);
+                    let charEndTime;
+
+                    if (j < lineData.chars.length - 1) {
+                        charEndTime = Math.round(lineData.chars[j + 1] * 1000);
+                    } else {
+                        // 마지막 글자: 다음 줄 시작 시간과 자연스러운 종료 시간 중 더 빠른 것 선택
+                        const naturalEndTime = Math.round((lineData.chars[j] + lastCharMaxDuration) * 1000);
+                        charEndTime = Math.min(lineEndTime, naturalEndTime);
+
+                        // 라인 전체 종료 시간도 이에 맞춰 조정 (너무 길게 늘어지는 것 방지)
+                        lineEndTime = charEndTime;
+                    }
+
+                    syllables.push({
+                        text: chars[j],
+                        startTime: charStartTime,
+                        endTime: charEndTime
+                    });
+                }
+
+                result.push({
+                    startTime: lineStartTime,
+                    endTime: lineEndTime,
+                    text: lineText,
+                    syllables
+                });
+            }
+
+            return result;
+        }
+
+        /**
+         * Provider에서 가사를 가져와 sync_data 적용
+         * @param {Object} info - 트랙 정보
+         * @param {string} provider - 가사 Provider ('spotify', 'lrclib')
+         * @returns {Promise<Object|null>} - karaoke 가사 또는 null
+         */
+        async function getLyricsWithSyncData(info, provider) {
+            const trackId = info.uri.split(":")[2];
+
+            // 1. 싱크 데이터 조회
+            const syncData = await getSyncData(trackId);
+            if (!syncData) {
+                return null;
+            }
+
+            // Provider가 다르면 사용 불가
+            if (syncData.provider !== provider) {
+                console.warn(`[SyncDataService] Sync data provider mismatch: expected ${provider}, got ${syncData.provider}`);
+                // Provider 불일치시에도 syncData의 provider로 시도
+                provider = syncData.provider;
+            }
+
+            // 2. Provider에서 가사 가져오기
+            let lyricsResult;
+            if (provider === 'spotify') {
+                lyricsResult = await window.Providers.spotify(info);
+            } else if (provider === 'lrclib') {
+                lyricsResult = await window.Providers.lrclib(info);
+            } else {
+                console.warn('[SyncDataService] Unknown provider:', provider);
+                return null;
+            }
+
+            if (lyricsResult.error) {
+                console.warn('[SyncDataService] Failed to get lyrics from provider:', provider);
+                return null;
+            }
+
+            // 3. 가사 텍스트 추출 (synced 또는 unsynced)
+            const baseLyrics = lyricsResult.synced || lyricsResult.unsynced;
+            if (!baseLyrics) {
+                return null;
+            }
+
+            // 4. 싱크 데이터 적용
+            const karaoke = applySyncDataToLyrics(baseLyrics, syncData);
+
+            if (karaoke) {
+                return {
+                    uri: info.uri,
+                    karaoke,
+                    synced: lyricsResult.synced,
+                    unsynced: lyricsResult.unsynced,
+                    provider: `${lyricsResult.provider} + SyncData`,
+                    copyright: lyricsResult.copyright,
+                    syncDataApplied: true
+                };
+            }
+
+            return null;
+        }
+
+        return {
+            getSyncData,
+            submitSyncData,
+            applySyncDataToLyrics,
+            getLyricsWithSyncData
+        };
+    })();
+
+    window.SyncDataService = SyncDataService;
+
+    // ============================================
     // Providers - 가사 제공자 통합
     // ============================================
     const Providers = {
@@ -1458,6 +1683,23 @@
                 }));
             }
 
+            // 커뮤니티 싱크 데이터 확인 및 적용
+            if (window.SyncDataService) {
+                try {
+                    const syncData = await window.SyncDataService.getSyncData(id);
+                    if (syncData && syncData.provider === 'spotify') {
+                        const baseLyrics = result.synced || result.unsynced;
+                        const karaoke = window.SyncDataService.applySyncDataToLyrics(baseLyrics, syncData);
+                        if (karaoke) {
+                            result.karaoke = karaoke;
+                            result.syncDataApplied = true;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('[Providers.spotify] SyncData check failed:', e);
+                }
+            }
+
             return result;
         },
 
@@ -1470,6 +1712,8 @@
                 provider: "lrclib",
                 copyright: null,
             };
+
+            const id = info.uri.split(":")[2];
 
             let list;
             try {
@@ -1488,6 +1732,23 @@
 
             if (unsynced) {
                 result.unsynced = unsynced;
+            }
+
+            // 커뮤니티 싱크 데이터 확인 및 적용
+            if (window.SyncDataService) {
+                try {
+                    const syncData = await window.SyncDataService.getSyncData(id);
+                    if (syncData && syncData.provider === 'lrclib') {
+                        const baseLyrics = result.synced || result.unsynced;
+                        const karaoke = window.SyncDataService.applySyncDataToLyrics(baseLyrics, syncData);
+                        if (karaoke) {
+                            result.karaoke = karaoke;
+                            result.syncDataApplied = true;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('[Providers.lrclib] SyncData check failed:', e);
+                }
             }
 
             return result;
@@ -1607,6 +1868,19 @@
          * @returns {Promise<Object>} - 가사 결과
          */
         async getLyricsFromProviders(info, providerOrder = ['ivlyrics', 'spotify', 'lrclib', 'local'], mode = 1) {
+            // karaoke 모드일 때 커뮤니티 싱크 데이터 우선 확인
+            if (mode === 0 && window.SyncDataService) {
+                try {
+                    const syncDataResult = await window.SyncDataService.getLyricsWithSyncData(info, 'spotify');
+                    if (syncDataResult && syncDataResult.karaoke) {
+                        console.log('[LyricsService] Using community sync data');
+                        return syncDataResult;
+                    }
+                } catch (e) {
+                    console.warn('[LyricsService] SyncDataService failed:', e);
+                }
+            }
+
             for (const providerName of providerOrder) {
                 if (!Providers[providerName]) continue;
 
@@ -1630,6 +1904,11 @@
 
             return { error: "No lyrics found", uri: info.uri };
         },
+
+        /**
+         * 싱크 데이터 서비스 접근
+         */
+        syncData: SyncDataService,
 
         /**
          * 캐시된 가사 가져오기

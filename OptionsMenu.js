@@ -3459,3 +3459,84 @@ const ShareImageButton = react.memo(({ lyrics, trackInfo }) => {
     )
   );
 });
+
+// Sync Data Creator - 노래방 싱크 데이터 생성 (전체화면)
+function openSyncDataCreator(trackInfo) {
+  // 이미 열려있으면 무시
+  if (document.getElementById("ivLyrics-sync-creator-overlay")) {
+    return;
+  }
+
+  const overlay = document.createElement("div");
+  overlay.id = "ivLyrics-sync-creator-overlay";
+
+  const closeModal = () => {
+    if (overlay.parentNode) {
+      document.body.removeChild(overlay);
+    }
+    document.removeEventListener("keydown", handleEscape);
+  };
+
+  // Close on escape key
+  const handleEscape = (e) => {
+    if (e.key === "Escape") {
+      closeModal();
+    }
+  };
+  document.addEventListener("keydown", handleEscape);
+
+  document.body.appendChild(overlay);
+
+  // Render React component
+  const dom = window.Spicetify?.ReactDOM ?? window.ReactDOM ?? null;
+  if (!dom?.render) {
+    return;
+  }
+
+  // SyncDataCreator 컴포넌트가 없으면 경고
+  if (typeof SyncDataCreator === "undefined") {
+    console.error("[OptionsMenu] SyncDataCreator component not found");
+    Toast.error("SyncDataCreator not available");
+    closeModal();
+    return;
+  }
+
+  const creatorComponent = react.createElement(SyncDataCreator, {
+    trackInfo: trackInfo,
+    onClose: closeModal
+  });
+
+  dom.render(creatorComponent, overlay);
+}
+
+// Sync Data Creator Button
+const SyncDataCreatorButton = react.memo(({ trackInfo }) => {
+  const handleClick = () => {
+    openSyncDataCreator(trackInfo);
+  };
+
+  return react.createElement(
+    Spicetify.ReactComponent.TooltipWrapper,
+    { label: I18n.t("syncCreator.buttonTooltip") || "Create Karaoke Sync" },
+    react.createElement(
+      "button",
+      {
+        className: "lyrics-config-button",
+        onClick: handleClick,
+      },
+      react.createElement(
+        "svg",
+        { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" },
+        // 마이크 아이콘
+        react.createElement("path", { d: "M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" }),
+        react.createElement("path", { d: "M19 10v2a7 7 0 0 1-14 0v-2" }),
+        react.createElement("line", { x1: 12, y1: 19, x2: 12, y2: 23 }),
+        react.createElement("line", { x1: 8, y1: 23, x2: 16, y2: 23 })
+      )
+    )
+  );
+});
+
+// 전역으로 노출
+window.openSyncDataCreator = openSyncDataCreator;
+window.SyncDataCreatorButton = SyncDataCreatorButton;

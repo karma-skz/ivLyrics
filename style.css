@@ -747,6 +747,12 @@ div.lyrics-tabBar-headerItemLink {
   color: var(--lyrics-color-active);
 }
 
+/* 라인 완료 시 색상은 유지하고 위치만 복귀 (transform은 Pages.js에서 style로 제어됨) */
+.lyrics-karaoke-char.sung.line-complete {
+  color: var(--lyrics-color-active);
+  opacity: 1;
+}
+
 .lyrics-lyricsContainer-LyricsLine a {
   background-color: transparent;
   transition: background-color 0.25s cubic-bezier(0, 0, 0, 1);
@@ -1074,22 +1080,22 @@ div.lyrics-tabBar-headerItemLink {
   z-index: 100;
   padding: 12px 8px;
   border-radius: 24px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
   /* Auto-hide functionality */
   opacity: 1;
   transform: translateX(0) scale(1);
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.3s ease;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s ease;
 }
 
 .lyrics-config-button-container:hover {
-  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* Hide controls when mouse is idle */
@@ -1133,11 +1139,11 @@ div.lyrics-tabBar-headerItemLink {
 
 .lyrics-config-button {
   align-items: center;
-  background: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   margin: 0;
   border-radius: 50%;
-  color: rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
   display: flex;
   gap: 0;
@@ -1147,7 +1153,7 @@ div.lyrics-tabBar-headerItemLink {
   width: 44px;
   position: relative;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .lyrics-config-button::before {
@@ -1155,17 +1161,17 @@ div.lyrics-tabBar-headerItemLink {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15) 0%, transparent 60%);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.25s ease;
 }
 
 .lyrics-config-button:hover {
-  background: linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 100%);
-  border-color: rgba(255,255,255,0.2);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%);
+  border-color: rgba(255, 255, 255, 0.2);
   color: #fff;
   transform: scale(1.1);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25), 0 0 20px rgba(var(--spice-rgb-accent, 30, 215, 96), 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 20px rgba(var(--spice-rgb-accent, 30, 215, 96), 0.15);
 }
 
 .lyrics-config-button:hover::before {
@@ -1174,7 +1180,7 @@ div.lyrics-tabBar-headerItemLink {
 
 .lyrics-config-button:active {
   transform: scale(0.95);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .lyrics-config-button:disabled {
@@ -1184,13 +1190,13 @@ div.lyrics-tabBar-headerItemLink {
 }
 
 .lyrics-config-button:disabled:hover {
-  background: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
   transform: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .lyrics-config-button svg {
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
   transition: transform 0.25s ease;
 }
 
@@ -1211,14 +1217,14 @@ div.lyrics-tabBar-headerItemLink {
 
 .lyrics-config-button[data-active="true"]:hover {
   background: linear-gradient(145deg, rgba(var(--spice-rgb-accent, 30, 215, 96), 0.4) 0%, rgba(var(--spice-rgb-accent, 30, 215, 96), 0.2) 100%);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25), 0 0 24px rgba(var(--spice-rgb-accent, 30, 215, 96), 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 24px rgba(var(--spice-rgb-accent, 30, 215, 96), 0.25);
 }
 
 /* Separator between tools and mode buttons */
 .lyrics-config-separator {
   width: 28px;
   height: 2px;
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
   border-radius: 1px;
   margin: 4px 0;
   pointer-events: none;
@@ -1240,11 +1246,11 @@ div.lyrics-tabBar-headerItemLink {
   opacity: 1;
   background: linear-gradient(145deg, rgba(var(--spice-rgb-accent, 30, 215, 96), 0.35) 0%, rgba(var(--spice-rgb-accent, 30, 215, 96), 0.15) 100%) !important;
   border-color: rgba(var(--spice-rgb-accent, 30, 215, 96), 0.5) !important;
-  box-shadow: 0 2px 12px rgba(var(--spice-rgb-accent, 30, 215, 96), 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+  box-shadow: 0 2px 12px rgba(var(--spice-rgb-accent, 30, 215, 96), 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .lyrics-mode-button.active:hover {
-  box-shadow: 0 4px 16px rgba(var(--spice-rgb-accent, 30, 215, 96), 0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+  box-shadow: 0 4px 16px rgba(var(--spice-rgb-accent, 30, 215, 96), 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .lyrics-mode-button.active svg {
@@ -2291,9 +2297,9 @@ ruby .lyrics-karaoke-char.sung {
 .lyrics-lyricsContainer-LyricsContainer.fullscreen-active .lyrics-config-button-container {
   opacity: 1;
   transform: translateX(0) scale(1);
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.3s ease;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s ease;
   pointer-events: auto;
   position: fixed;
   bottom: 40px;
@@ -5338,6 +5344,7 @@ ruby .lyrics-karaoke-char.sung {
     opacity: 0;
     backdrop-filter: blur(0px);
   }
+
   to {
     opacity: 1;
     backdrop-filter: blur(20px);
