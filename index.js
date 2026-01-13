@@ -4196,6 +4196,9 @@ class LyricsContainer extends react.Component {
 
     // Register instance for external access
     window.lyricContainer = this;
+    // Expose reloadLyrics for external calls (e.g. SyncDataCreator)
+    window.reloadLyrics = this.reloadLyrics;
+    reloadLyrics = this.reloadLyrics;
 
     // Prefetcher에 LyricsContainer 참조 설정
     Prefetcher.setLyricsContainer(this);
@@ -4279,6 +4282,8 @@ class LyricsContainer extends react.Component {
     };
 
     reloadLyrics = async (clearCache = true) => {
+      console.log("[ivLyrics] Reloading lyrics...", { trackId: Spicetify.Player.data?.item?.uri, clearCache });
+
       // 메모리 캐시는 항상 초기화 (window.CACHE와의 참조를 유지하기 위해 객체의 키만 삭제)
       Object.keys(CACHE).forEach(key => delete CACHE[key]);
 
@@ -4312,13 +4317,16 @@ class LyricsContainer extends react.Component {
 
       // clearCache가 true이고 트랙 정보가 있으면 로컬 캐시도 삭제
       if (clearCache && trackId) {
+        console.log("[ivLyrics] Clearing track cache for:", trackId);
         await LyricsCache.clearTrack(trackId);
         window.Translator?.clearMemoryCache?.(trackId);
         window.Translator?.clearInflightRequests?.(trackId);
+        window.SyncDataService?.clearCache(trackId);
       }
 
       this.updateVisualOnConfigChange();
       this.forceUpdate();
+      console.log("[ivLyrics] Fetching new lyrics...");
       this.fetchLyrics(
         Spicetify.Player.data.item,
         this.state.explicitMode,

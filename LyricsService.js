@@ -1162,6 +1162,7 @@
     // ============================================
     const SyncDataService = (() => {
         const API_BASE = 'https://lyrics.api.ivl.is';
+        const _syncDataCache = new Map();
 
         /**
          * 승인된 싱크 데이터 조회
@@ -1169,6 +1170,10 @@
          * @returns {Promise<Object|null>} - 싱크 데이터 또는 null
          */
         async function getSyncData(trackId) {
+            if (_syncDataCache.has(trackId)) {
+                return _syncDataCache.get(trackId);
+            }
+
             try {
                 const response = await fetch(`${API_BASE}/lyrics/sync-data?trackId=${trackId}`, {
                     headers: {
@@ -1178,6 +1183,7 @@
                 });
 
                 if (response.status === 404) {
+                    _syncDataCache.set(trackId, null);
                     return null;
                 }
 
@@ -1188,12 +1194,23 @@
 
                 const result = await response.json();
                 if (result.success && result.data) {
+                    _syncDataCache.set(trackId, result.data);
                     return result.data;
                 }
+
+                _syncDataCache.set(trackId, null);
                 return null;
             } catch (e) {
                 console.warn('[SyncDataService] Failed to get sync data:', e);
                 return null;
+            }
+        }
+
+        function clearCache(trackId) {
+            if (trackId) {
+                _syncDataCache.delete(trackId);
+            } else {
+                _syncDataCache.clear();
             }
         }
 
@@ -1227,6 +1244,7 @@
                 throw new Error(result.error || 'Failed to submit sync data');
             }
 
+            clearCache(trackId);
             return result;
         }
 
@@ -1391,7 +1409,8 @@
             submitSyncData,
             applySyncDataToLyrics,
             getLyricsWithSyncData,
-            convertKaraokeToSynced
+            convertKaraokeToSynced,
+            clearCache
         };
     })();
 
