@@ -181,13 +181,19 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					duration: Spicetify.Player?.data?.item?.duration?.milliseconds || 0
 				};
 
-				console.log('[SyncDataCreator] Trying provider:', tryProvider);
+				// provider 이름 파싱 (예: spotify-syncpower -> realProvider: spotify)
+				let realProvider = tryProvider;
+				if (tryProvider.startsWith('spotify-')) {
+					realProvider = 'spotify';
+				}
+
+				console.log('[SyncDataCreator] Trying provider:', tryProvider, '(Real:', realProvider, ')');
 
 				try {
-					if (typeof Providers !== 'undefined' && Providers[tryProvider]) {
-						result = await Providers[tryProvider](info);
+					if (typeof Providers !== 'undefined' && Providers[realProvider]) {
+						result = await Providers[realProvider](info);
 					} else if (typeof LyricsService !== 'undefined' && LyricsService.getLyrics) {
-						result = await LyricsService.getLyrics(info, tryProvider);
+						result = await LyricsService.getLyrics(info, realProvider);
 					}
 
 					if (result && (result.synced || result.unsynced)) {

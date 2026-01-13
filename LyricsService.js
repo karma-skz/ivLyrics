@@ -1167,38 +1167,31 @@
         const _fullyLoadedTracks = new Set(); // 전체 목록이 로드된 트랙 ID
 
         /**
-         * 승인된 싱크 데이터 조회
+         * 사용 가능한 sync-data provider 목록 조회
          * @param {string} trackId - Spotify Track ID
-         * @param {string} provider - 가사 provider (예: spotify-musixmatch, lrclib). 없으면 모든 provider 조회
-         * @returns {Promise<Object|null>} - 싱크 데이터 또는 null
+         * @returns {Promise<Array>} - provider 목록 [{ provider, createdAt, updatedAt }]
          */
-        async function getSyncData(trackId, provider = null) {
-            // 캐시 키: provider가 있으면 trackId:provider, 없으면 trackId
-            const cacheKey = provider ? `${trackId}:${provider}` : trackId;
+        async function getAvailableProviders(trackId) {
+            const cacheKey = `${trackId}:providers`;
 
-            // 1. 캐시 확인
+            // 캐시 확인
             if (_syncDataCache.has(cacheKey)) {
                 return _syncDataCache.get(cacheKey);
             }
 
-            // 1-1. 특정 provider 요청인데, 이미 전체 목록이 로드된 경우 (그리고 캐시에는 없음)
-            // 목록에 없는 provider이므로 데이터 없음 처리
-            if (provider && _fullyLoadedTracks.has(trackId)) {
-                return null;
-            }
-
-            // 2. 진행 중인 요청이 있으면 그 Promise를 재사용
+            // 진행 중인 요청이 있으면 대기
             if (_inflightRequests.has(cacheKey)) {
-                return _inflightRequests.get(cacheKey);
+                try {
+                    return await _inflightRequests.get(cacheKey);
+                } catch (e) {
+                    return [];
+                }
             }
 
-            // 3. 새 요청 시작
+            // 새 요청 시작
             const requestPromise = (async () => {
                 try {
-                    let url = `${API_BASE}/lyrics/sync-data?trackId=${trackId}`;
-                    if (provider) {
-                        url += `&provider=${encodeURIComponent(provider)}`;
-                    }
+                    const url = `${API_BASE}/lyrics/sync-data?trackId=${trackId}`;
 
                     const response = await fetch(url, {
                         headers: {
@@ -1207,59 +1200,103 @@
                         cache: "no-cache",
                     });
 
-                    if (response.status === 404) {
-                        _syncDataCache.set(cacheKey, null);
-                        return null;
-                    }
-
-                    if (!response.ok) {
-                        console.warn('[SyncDataService] API error:', response.status);
-                        return null;
+                    if (response.status === 404 || !response.ok) {
+                        _syncDataCache.set(cacheKey, []);
+                        return [];
                     }
 
                     const result = await response.json();
 
-                    // 단일 데이터 응답 (provider 지정 시)
-                    if (result.success && result.data) {
-                        _syncDataCache.set(cacheKey, result.data);
-                        return result.data;
+                    if (result.success && result.providers && result.providers.length > 0) {
+                        _syncDataCache.set(cacheKey, result.providers);
+                        _fullyLoadedTracks.add(trackId);
+                        return result.providers;
                     }
 
-                    // 전체 목록 응답 (provider 미지정 시)
-                    if (!provider && result.success && result.providers) {
-                        _fullyLoadedTracks.add(trackId); // 전체 로드 완료 표시
+                    _syncDataCache.set(cacheKey, []);
+                    return [];
 
-                        if (result.providers.length > 0) {
-                            // 각 provider별로 캐시 저장
-                            result.providers.forEach(p => {
-                                const pCacheKey = `${trackId}:${p.provider}`;
-                                _syncDataCache.set(pCacheKey, {
-                                    trackId,
-                                    provider: p.provider,
-                                    syncData: p.syncData,
-                                    createdAt: p.createdAt,
-                                    updatedAt: p.updatedAt
-                                });
-                            });
-                            // 첫 번째 데이터 반환 (하위 호환성), 또는 null
-                            return result.data || null;
-                        }
-                    }
-
-                    _syncDataCache.set(cacheKey, null);
-                    return null;
                 } catch (e) {
-                    console.warn('[SyncDataService] Failed to get sync data:', e);
-                    return null;
+                    console.warn('[SyncDataService] Failed to get providers:', e);
+                    return [];
                 } finally {
-                    // 요청 완료 후 inflight에서 제거
                     _inflightRequests.delete(cacheKey);
                 }
             })();
 
-            // inflight에 등록
             _inflightRequests.set(cacheKey, requestPromise);
             return requestPromise;
+        }
+
+        /**
+         * 특정 provider의 싱크 데이터 조회
+         * @param {string} trackId - Spotify Track ID
+         * @param {string} provider - 가사 provider (예: spotify-musixmatch, lrclib)
+         * @returns {Promise<Object|null>} - 싱크 데이터 또는 null
+         */
+        async function getSyncData(trackId, provider = null) {
+            if (!provider) {
+                // provider 미지정 시 - 하위 호환성: 사용 가능한 첫 번째 provider의 데이터 반환
+                const providers = await getAvailableProviders(trackId);
+                if (providers.length === 0) return null;
+                provider = providers[0].provider;
+            }
+
+            const specificKey = `${trackId}:${provider}`;
+
+            // 캐시 확인
+            if (_syncDataCache.has(specificKey)) {
+                return _syncDataCache.get(specificKey);
+            }
+
+            // 이미 provider 목록이 로드되어 있으면 해당 provider가 있는지 먼저 확인 (추가 요청 없이)
+            const providersKey = `${trackId}:providers`;
+            if (_syncDataCache.has(providersKey)) {
+                const providers = _syncDataCache.get(providersKey);
+                if (!providers.some(p => p.provider === provider)) {
+                    return null; // 목록에 없으면 요청하지 않음
+                }
+            }
+
+            // 특정 provider의 sync-data 조회 (서버에서 직접)
+            try {
+                const url = `${API_BASE}/lyrics/sync-data?trackId=${trackId}&provider=${encodeURIComponent(provider)}`;
+
+                const response = await fetch(url, {
+                    headers: {
+                        "User-Agent": `spicetify v${Spicetify.Config.version}`,
+                    },
+                    cache: "no-cache",
+                });
+
+                if (response.status === 404 || !response.ok) {
+                    return null;
+                }
+
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    _syncDataCache.set(specificKey, result.data);
+                    return result.data;
+                }
+
+                return null;
+
+            } catch (e) {
+                console.warn('[SyncDataService] Failed to get sync data:', e);
+                return null;
+            }
+        }
+
+        /**
+         * 해당 provider에 sync-data가 있는지 확인
+         * @param {string} trackId - Spotify Track ID
+         * @param {string} provider - 가사 provider (예: spotify-musixmatch, lrclib)
+         * @returns {Promise<boolean>}
+         */
+        async function hasSyncData(trackId, provider) {
+            const providers = await getAvailableProviders(trackId);
+            return providers.some(p => p.provider === provider);
         }
 
         function clearCache(trackId) {
@@ -1480,6 +1517,8 @@
 
         return {
             getSyncData,
+            getAvailableProviders,
+            hasSyncData,
             submitSyncData,
             applySyncDataToLyrics,
             getLyricsWithSyncData,
@@ -1704,14 +1743,13 @@
         async getLyricsFromProviders(info, providerOrder = ['spotify', 'lrclib', 'local'], mode = 1) {
             const trackId = info.uri?.split(":")[2];
 
-            // 커뮤니티 싱크 데이터 확인 - provider 순서 조정을 위해
-            let syncDataProvider = null;
+            // 커뮤니티 싱크 데이터 확인 - provider 순서 조정을 위해 (목록만 확인)
+            let syncDataProviders = [];
             if (window.SyncDataService && trackId) {
                 try {
-                    const syncData = await window.SyncDataService.getSyncData(trackId);
-                    if (syncData && syncData.provider) {
-                        syncDataProvider = syncData.provider;
-                        console.log('[LyricsService] Found sync data with provider:', syncDataProvider);
+                    syncDataProviders = await window.SyncDataService.getAvailableProviders(trackId);
+                    if (syncDataProviders.length > 0) {
+                        console.log('[LyricsService] Found sync data providers:', syncDataProviders.map(p => p.provider));
                     }
                 } catch (e) {
                     console.warn('[LyricsService] SyncDataService check failed:', e);
@@ -1719,15 +1757,9 @@
             }
 
             // sync-data의 provider를 우선으로 하도록 순서 조정
+            // syncDataProviders에 있는 provider 중 현재 사용자가 사용 가능한 provider를 찾음
+            // (실제 가사 로드 시 Providers.spotify/lrclib에서 자동으로 해당 provider의 sync-data 적용)
             let adjustedProviderOrder = [...providerOrder];
-            if (syncDataProvider && providerOrder.includes(syncDataProvider)) {
-                // sync-data provider를 맨 앞으로 이동
-                adjustedProviderOrder = [
-                    syncDataProvider,
-                    ...providerOrder.filter(p => p !== syncDataProvider)
-                ];
-                console.log('[LyricsService] Adjusted provider order for sync data:', adjustedProviderOrder);
-            }
 
             for (const providerName of adjustedProviderOrder) {
                 if (!Providers[providerName]) continue;
