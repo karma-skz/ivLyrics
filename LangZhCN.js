@@ -1574,6 +1574,7 @@ window.LANG_ZH_CN = {
     "synced": "已注册",
     "notSynced": "未注册",
     "deleteLine": "删除此行",
+    "loadedExistingSyncData": "已加载现有同步数据",
     "back": "关闭",
     "lrclib": {
       "registerLyrics": "在 LRCLIB 上注册歌词",

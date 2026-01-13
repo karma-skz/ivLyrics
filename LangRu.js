@@ -1574,6 +1574,7 @@ window.LANG_RU = {
     "synced": "Готово",
     "notSynced": "Не готово",
     "deleteLine": "Удалить строку",
+    "loadedExistingSyncData": "Загружены данные синхронизации",
     "back": "Закрыть",
     "lrclib": {
       "registerLyrics": "Добавить текст в LRCLIB",

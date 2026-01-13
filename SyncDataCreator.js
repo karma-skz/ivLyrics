@@ -232,9 +232,36 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		setIsLoading(false);
 	}, [trackInfo, trackName, artistName]);
 
-	// 컴포넌트 마운트 시 자동 가사 로드
+	// 컴포넌트 마운트 시 자동 가사 로드 + 기존 싱크 데이터 불러오기
 	useEffect(() => {
-		loadLyrics();
+		const initWithExistingSyncData = async () => {
+			// 먼저 기존 싱크 데이터가 있는지 확인
+			if (window.SyncDataService && trackId) {
+				try {
+					const existingSyncData = await window.SyncDataService.getSyncData(trackId);
+					if (existingSyncData && existingSyncData.syncData && existingSyncData.syncData.lines) {
+						console.log('[SyncDataCreator] Found existing sync data, provider:', existingSyncData.provider);
+
+						// 기존 싱크 데이터의 provider로 가사 로드
+						await loadLyrics(existingSyncData.provider);
+
+						// 싱크 데이터 적용
+						setSyncData(existingSyncData.syncData);
+						setProvider(existingSyncData.provider);
+
+						Toast.success(I18n.t('syncCreator.loadedExistingSyncData') || '기존 싱크 데이터를 불러왔습니다');
+						return;
+					}
+				} catch (e) {
+					console.warn('[SyncDataCreator] Failed to load existing sync data:', e);
+				}
+			}
+
+			// 기존 싱크 데이터가 없으면 일반 가사 로드
+			loadLyrics();
+		};
+
+		initWithExistingSyncData();
 	}, []);
 
 	// 재생 위치 업데이트 + 미리보기 자동 줄 이동
@@ -467,6 +494,190 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		charTimesRef.current = [];
 	}, [mode, isDragging, dragStartTime, recordingCharIndex, currentLineIndex, currentLineChars, lineCharOffsets, lyricsLines.length, dragStartCharIndex]);
 
+	// 키보드 싱크 상태 ref (isDragging과 별개로 키보드용)
+	const isKeyboardSyncingRef = useRef(false);
+	const keyboardCharIndexRef = useRef(-1);
+
+	// 키보드 이벤트 리스너 등록
+	useEffect(() => {
+		if (mode !== 'record') {
+			// record 모드가 아니면 키보드 싱크 상태 초기화
+			if (isKeyboardSyncingRef.current) {
+				isKeyboardSyncingRef.current = false;
+				keyboardCharIndexRef.current = -1;
+				charTimesRef.current = [];
+				setDragStartTime(null);
+				setRecordingCharIndex(-1);
+			}
+			return;
+		}
+
+		const finishKeyboardSync = () => {
+			if (!isKeyboardSyncingRef.current) return;
+
+			const endTime = Spicetify.Player.getProgress() / 1000;
+			const endCharIndex = keyboardCharIndexRef.current;
+			const lineStart = lineCharOffsets[currentLineIndex];
+			const lineEnd = lineStart + currentLineChars.length - 1;
+			const charCount = currentLineChars.length;
+
+			const chars = [];
+			const startTime = charTimesRef.current[0] || endTime;
+			for (let i = 0; i < charCount; i++) {
+				let time;
+				if (charTimesRef.current[i] !== null) {
+					time = charTimesRef.current[i];
+				} else if (i <= endCharIndex) {
+					const prevTime = chars[chars.length - 1] || startTime;
+					time = prevTime + 0.02;
+				} else {
+					const remainingCount = charCount - endCharIndex - 1;
+					const perCharDuration = 0.5 / Math.max(1, remainingCount);
+					time = endTime + ((i - endCharIndex) * perCharDuration);
+				}
+				chars.push(Math.round(time * 1000) / 1000);
+			}
+
+			const lastCharTime = chars[chars.length - 1];
+
+			setSyncData(prev => {
+				let newLines = prev?.lines ? [...prev.lines] : [];
+				const existingIndex = newLines.findIndex(l => l.start === lineStart);
+				const lineData = { start: lineStart, end: lineEnd, chars: chars };
+
+				if (existingIndex >= 0) {
+					newLines[existingIndex] = lineData;
+				} else {
+					newLines.push(lineData);
+					newLines.sort((a, b) => a.start - b.start);
+				}
+
+				const validLines = newLines.filter(line => {
+					if (line.start > lineStart && line.chars && line.chars[0] < lastCharTime) {
+						return false;
+					}
+					return true;
+				});
+
+				return { lines: validLines };
+			});
+
+			// 다음 라인으로 이동
+			if (currentLineIndex < lyricsLines.length - 1) {
+				setCurrentLineIndex(prev => prev + 1);
+				if (lyricsScrollRef.current) lyricsScrollRef.current.scrollLeft = 0;
+			}
+
+			// 키보드 싱크 상태 초기화
+			isKeyboardSyncingRef.current = false;
+			keyboardCharIndexRef.current = -1;
+			charTimesRef.current = [];
+			setDragStartTime(null);
+			setRecordingCharIndex(-1);
+		};
+
+		const handleKeyDown = (e) => {
+			// 방향키, Enter, Escape만 처리
+			const targetKeys = ['ArrowRight', 'ArrowLeft', 'Enter', 'Escape'];
+			if (!targetKeys.includes(e.key)) return;
+
+			console.log('[SyncDataCreator] KeyDown:', e.key, 'mode:', mode, 'lineIndex:', currentLineIndex);
+
+			if (currentLineIndex >= lyricsLines.length) return;
+
+			// 오른쪽 방향키: 한 글자 싱크
+			if (e.key === 'ArrowRight') {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				const currentTime = Spicetify.Player.getProgress() / 1000;
+				console.log('[SyncDataCreator] ArrowRight - syncing:', isKeyboardSyncingRef.current, 'charIndex:', keyboardCharIndexRef.current);
+
+				if (!isKeyboardSyncingRef.current) {
+					// 키보드 싱크 시작
+					isKeyboardSyncingRef.current = true;
+					let startIndex = 0;
+					charTimesRef.current = new Array(currentLineChars.length).fill(null);
+					charTimesRef.current[0] = currentTime;
+
+					// 첫 글자 다음이 공백이면 공백도 함께 처리
+					while (startIndex + 1 < currentLineChars.length && currentLineChars[startIndex + 1] === ' ') {
+						startIndex++;
+						charTimesRef.current[startIndex] = currentTime;
+					}
+
+					keyboardCharIndexRef.current = startIndex;
+					setDragStartTime(currentTime);
+					setRecordingCharIndex(startIndex);
+					console.log('[SyncDataCreator] Started keyboard sync, chars:', currentLineChars.length, 'startIndex:', startIndex);
+				} else {
+					// 다음 글자로 진행
+					let nextIndex = keyboardCharIndexRef.current + 1;
+					if (nextIndex < currentLineChars.length) {
+						charTimesRef.current[nextIndex] = currentTime;
+
+						// 이 글자 바로 다음이 공백이면 공백도 함께 처리
+						while (nextIndex + 1 < currentLineChars.length && currentLineChars[nextIndex + 1] === ' ') {
+							nextIndex++;
+							charTimesRef.current[nextIndex] = currentTime;
+						}
+
+						keyboardCharIndexRef.current = nextIndex;
+						setRecordingCharIndex(nextIndex);
+						autoScroll(nextIndex);
+						console.log('[SyncDataCreator] Advanced to char:', nextIndex);
+					}
+
+					// 마지막 글자면 라인 완료
+					if (keyboardCharIndexRef.current >= currentLineChars.length - 1) {
+						finishKeyboardSync();
+						console.log('[SyncDataCreator] Line completed');
+					}
+				}
+			}
+
+			// 왼쪽 방향키: 한 글자 취소
+			if (e.key === 'ArrowLeft') {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				if (isKeyboardSyncingRef.current && keyboardCharIndexRef.current > 0) {
+					charTimesRef.current[keyboardCharIndexRef.current] = null;
+					keyboardCharIndexRef.current--;
+					setRecordingCharIndex(keyboardCharIndexRef.current);
+					console.log('[SyncDataCreator] Reverted to char:', keyboardCharIndexRef.current);
+				}
+			}
+
+			// Enter: 현재 라인 완료 (중간에서도 완료 가능)
+			if (e.key === 'Enter' && isKeyboardSyncingRef.current) {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				finishKeyboardSync();
+			}
+
+			// Escape: 현재 라인 싱크 취소
+			if (e.key === 'Escape' && isKeyboardSyncingRef.current) {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				isKeyboardSyncingRef.current = false;
+				keyboardCharIndexRef.current = -1;
+				charTimesRef.current = [];
+				setDragStartTime(null);
+				setRecordingCharIndex(-1);
+			}
+		};
+
+		console.log('[SyncDataCreator] Registering keydown listener, mode:', mode);
+		document.addEventListener('keydown', handleKeyDown, true); // capture phase
+		return () => {
+			console.log('[SyncDataCreator] Removing keydown listener');
+			document.removeEventListener('keydown', handleKeyDown, true);
+		};
+	}, [mode, currentLineIndex, lyricsLines.length, currentLineChars, lineCharOffsets, autoScroll]);
+
 	const handleContainerMouseDown = useCallback((e) => {
 		if (mode !== 'record' || currentLineIndex >= lyricsLines.length) return;
 		const touch = e.touches ? e.touches[0] : e;
@@ -631,7 +842,7 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 			}
 		} catch (e) {
 			console.error('[SyncDataCreator] Submit error:', e);
-			Toast.error(I18n.t('syncCreator.submitError'));
+			Toast.error(`${I18n.t('syncCreator.submitError')}: ${e.message}`);
 		}
 
 		setIsSubmitting(false);
@@ -1069,7 +1280,7 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					react.createElement('div', { style: s.lyricsLine },
 						currentLineChars.map((char, i) => {
 							const isSynced = isCharSynced(currentLineIndex, i);
-							const isRec = mode === 'record' && isDragging && i <= recordingCharIndex;
+							const isRec = mode === 'record' && recordingCharIndex >= 0 && i <= recordingCharIndex;
 							const previewIdx = getPreviewCharIndex(currentLineIndex);
 							const isPlayed = isSynced && previewIdx >= i;
 							const charTime = getCharSyncTime(currentLineIndex, i);

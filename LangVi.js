@@ -1574,6 +1574,7 @@ window.LANG_VI = {
     "synced": "Đã ghi",
     "notSynced": "Chưa ghi",
     "deleteLine": "Xóa dòng này",
+    "loadedExistingSyncData": "Đã tải dữ liệu đồng bộ có sẵn",
     "back": "Đóng",
     "lrclib": {
       "registerLyrics": "Đăng ký lời bài hát lên LRCLIB",

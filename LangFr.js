@@ -1574,6 +1574,7 @@ window.LANG_FR = {
     "synced": "Synchro",
     "notSynced": "Non synchro",
     "deleteLine": "Supprimer ligne",
+    "loadedExistingSyncData": "Données de sync existantes chargées",
     "back": "Fermer",
     "lrclib": {
       "registerLyrics": "Enregistrer sur LRCLIB",

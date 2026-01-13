@@ -1574,6 +1574,7 @@ window.LANG_TH = {
     "synced": "ลงทะเบียนแล้ว",
     "notSynced": "ยังไม่ลงทะเบียน",
     "deleteLine": "ลบบรรทัดนี้",
+    "loadedExistingSyncData": "โหลดข้อมูลซิงค์ที่มีอยู่แล้ว",
     "back": "ปิด",
     "lrclib": {
       "registerLyrics": "ลงทะเบียนเนื้อเพลงที่ LRCLIB",

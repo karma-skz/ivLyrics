@@ -1574,6 +1574,7 @@ window.LANG_EN = {
     "synced": "Registered",
     "notSynced": "Unregistered",
     "deleteLine": "Delete This Line",
+    "loadedExistingSyncData": "Loaded existing sync data",
     "back": "Close",
     "lrclib": {
       "registerLyrics": "Register Lyrics to LRCLIB",

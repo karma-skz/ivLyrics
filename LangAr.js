@@ -1573,6 +1573,7 @@ window.LANG_AR = {
     "synced": "مسجل",
     "notSynced": "غير مسجل",
     "deleteLine": "حذف هذا السطر",
+    "loadedExistingSyncData": "تم تحميل بيانات المزامنة الموجودة",
     "back": "إغلاق",
     "lrclib": {
       "registerLyrics": "تسجيل الكلمات في LRCLIB",

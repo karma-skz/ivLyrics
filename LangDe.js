@@ -1573,6 +1573,7 @@ window.LANG_DE = {
     "synced": "Registriert",
     "notSynced": "Nicht registriert",
     "deleteLine": "Zeile löschen",
+    "loadedExistingSyncData": "Vorhandene Sync-Daten geladen",
     "back": "Schließen",
     "lrclib": {
       "registerLyrics": "Songtext bei LRCLIB registrieren",

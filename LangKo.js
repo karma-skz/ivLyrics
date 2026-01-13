@@ -1574,6 +1574,7 @@ window.LANG_KO = {
     "synced": "등록됨",
     "notSynced": "미등록",
     "deleteLine": "이 줄 삭제",
+    "loadedExistingSyncData": "기존 싱크 데이터를 불러왔습니다",
     "back": "닫기",
     "lrclib": {
       "registerLyrics": "LRCLIB에 가사 등록하기",

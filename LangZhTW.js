@@ -1574,6 +1574,7 @@ window.LANG_ZH_TW = {
     "synced": "已登錄",
     "notSynced": "未登錄",
     "deleteLine": "刪除此行",
+    "loadedExistingSyncData": "已載入現有同步資料",
     "back": "關閉",
     "lrclib": {
       "registerLyrics": "在 LRCLIB 登錄歌詞",
