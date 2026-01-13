@@ -1573,6 +1573,7 @@ window.LANG_HI = {
     "synced": "सिंक किया गया",
     "notSynced": "सिंक नहीं",
     "deleteLine": "यह लाइन हटाएं",
+    "loadedExistingSyncData": "मौजूदा सिंक डेटा लोड किया गया",
     "back": "बंद करें",
     "lrclib": {
       "registerLyrics": "LRCLIB पर लिरिक्स पंजीकृत करें",

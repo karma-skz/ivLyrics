@@ -1574,6 +1574,7 @@ window.LANG_BN = {
     "synced": "নিবন্ধিত",
     "notSynced": "অনিবন্ধিত",
     "deleteLine": "এই লাইন মুছুন",
+    "loadedExistingSyncData": "বিদ্যমান সিঙ্ক ডেটা লোড হয়েছে",
     "back": "বন্ধ করুন",
     "lrclib": {
       "registerLyrics": "LRCLIB-এ লিরিক্স নিবন্ধন করুন",

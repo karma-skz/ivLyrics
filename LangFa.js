@@ -1573,6 +1573,7 @@ window.LANG_FA = {
     "synced": "سینک شده",
     "notSynced": "سینک نشده",
     "deleteLine": "حذف این خط",
+    "loadedExistingSyncData": "داده‌های سینک موجود بارگذاری شد",
     "back": "بستن",
     "lrclib": {
       "registerLyrics": "ثبت متن در LRCLIB",

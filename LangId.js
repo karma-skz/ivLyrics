@@ -1573,6 +1573,7 @@ window.LANG_ID = {
     "synced": "Tersinkron",
     "notSynced": "Belum Sinkron",
     "deleteLine": "Hapus baris ini",
+    "loadedExistingSyncData": "Data sinkronisasi yang ada dimuat",
     "back": "Tutup",
     "lrclib": {
       "registerLyrics": "Daftarkan Lirik ke LRCLIB",
