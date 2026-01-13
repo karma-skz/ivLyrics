@@ -1591,7 +1591,8 @@ window.LANG_DE = {
       "publishSuccess": "Songtext erfolgreich bei LRCLIB registriert!",
       "publishError": "Registrierung fehlgeschlagen",
       "noLyricsInput": "Bitte geben Sie einen Songtext ein",
-      "loadingAfterPublish": "Lade registrierten Songtext..."
+      "loadingAfterPublish": "Lade registrierten Songtext...",
+      "wrongLyricsWarning": "Wenn der Liedtext falsch ist, senden Sie ihn manuell."
     }
   }
 };

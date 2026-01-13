@@ -146,7 +146,8 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 	}, [trackUri]);
 
 	// 가사 로드 (Spotify -> LRCLIB 순서로 자동 시도)
-	const loadLyrics = useCallback(async () => {
+	// 가사 로드 (Spotify -> LRCLIB 순서로 자동 시도)
+	const loadLyrics = useCallback(async (preferredProvider = null) => {
 		setIsLoading(true);
 		setError(null);
 		setLyrics(null);
@@ -160,8 +161,8 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 				Spicetify.Player?.data?.item?.artists?.[0]?.name ||
 				artistName.split(',')[0].trim();
 
-			// Spotify로 먼저 시도
-			const providersToTry = ['spotify', 'lrclib'];
+			// 만약 preferredProvider가 지정되어 있다면 그것만 시도, 아니면 기본 순서대로
+			const providersToTry = preferredProvider ? [preferredProvider] : ['spotify', 'lrclib'];
 			let result = null;
 			let usedProvider = null;
 
@@ -195,7 +196,8 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 			}
 
 			if (result && (result.synced || result.unsynced)) {
-				setProvider(usedProvider);
+				// 수동 선택일 경우 해당 provider로 설정, 자동일 경우 찾은 provider로 설정
+				setProvider(usedProvider || preferredProvider);
 				setLyrics(result);
 				const lyricsSource = result.synced || result.unsynced;
 				let text = '';
@@ -217,6 +219,9 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					setError(I18n.t('syncCreator.noLyrics'));
 				}
 			} else {
+				// 만약 수동 선택했는데 실패했으면 provider는 그 선택한걸로 유지해서 UI에 보여줌? 
+				// 아니면 실패 메시지 띄우고 provider는 유지
+				if (preferredProvider) setProvider(preferredProvider);
 				setError(I18n.t('syncCreator.noLyrics'));
 			}
 		} catch (e) {
@@ -590,10 +595,10 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					// 가사 페이지 새로고침 - SyncDataService 캐시 명시적 클리어 후 리로드
 					window.SyncDataService?.clearCache(trackId);
 					setTimeout(() => {
-						if (typeof window.lyricContainer?.reloadLyrics === 'function') {
-							window.lyricContainer.reloadLyrics(true);
-						} else if (typeof window.reloadLyrics === 'function') {
+						if (typeof window.reloadLyrics === 'function') {
 							window.reloadLyrics(true);
+						} else if (typeof window.lyricContainer?.reloadLyrics === 'function') {
+							window.lyricContainer.reloadLyrics(true);
 						}
 					}, 500);
 					if (onClose) onClose();
@@ -613,10 +618,10 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					// 가사 페이지 새로고침 - SyncDataService 캐시 명시적 클리어 후 리로드
 					window.SyncDataService?.clearCache(trackId);
 					setTimeout(() => {
-						if (typeof window.lyricContainer?.reloadLyrics === 'function') {
-							window.lyricContainer.reloadLyrics(true);
-						} else if (typeof window.reloadLyrics === 'function') {
+						if (typeof window.reloadLyrics === 'function') {
 							window.reloadLyrics(true);
+						} else if (typeof window.lyricContainer?.reloadLyrics === 'function') {
+							window.lyricContainer.reloadLyrics(true);
 						}
 					}, 500);
 					if (onClose) onClose();
@@ -822,10 +827,10 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 
 				// 가사 페이지 새로고침
 				setTimeout(() => {
-					if (typeof window.lyricContainer?.reloadLyrics === 'function') {
-						window.lyricContainer.reloadLyrics(true);
-					} else if (typeof window.reloadLyrics === 'function') {
+					if (typeof window.reloadLyrics === 'function') {
 						window.reloadLyrics(true);
+					} else if (typeof window.lyricContainer?.reloadLyrics === 'function') {
+						window.lyricContainer.reloadLyrics(true);
 					}
 				}, 3000);
 				return; // isPublishingToLrcLib는 위에서 처리
@@ -953,6 +958,8 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		lrcLibBtnCancel: { background: 'transparent', color: 'var(--spice-subtext)', border: '1px solid var(--spice-misc)', padding: '10px 20px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '13px' },
 		lrcLibProgress: { fontSize: '12px', color: 'var(--spice-subtext)', textAlign: 'center', padding: '8px' },
 		publishBtn: { background: '#4caf50', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '13px', marginTop: '12px' },
+		wrongWarning: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 15px', background: 'rgba(255, 152, 0, 0.1)', border: '1px solid rgba(255, 152, 0, 0.3)', borderRadius: '8px', marginBottom: '15px', marginTop: '-5px', fontSize: '13px', gap: '10px' },
+		publishBtnSmall: { background: 'var(--spice-button)', color: 'var(--spice-button-text, #000)', border: 'none', padding: '6px 12px', borderRadius: '6px', fontWeight: '600', cursor: 'pointer', fontSize: '12px', flexShrink: 0 },
 	};
 
 	return react.createElement('div', { style: s.overlay, ref: containerRef },
@@ -986,10 +993,26 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 				react.createElement('div', { style: s.artistName }, artistName)
 			),
 			react.createElement('div', { style: s.providerRow },
-				react.createElement('span', { style: { fontSize: '12px', color: 'var(--spice-subtext)', marginRight: '8px' } },
-					provider ? `Provider: ${provider.toUpperCase()}` : ''
+				// LRCLIB Upload Button
+				react.createElement('button', {
+					style: { ...s.publishBtnSmall, marginRight: '10px', background: 'rgba(255, 152, 0, 0.8)', color: '#fff', fontSize: '11px', padding: '4px 8px' },
+					onClick: () => setShowLrcLibPublish(true),
+					title: I18n.t('syncCreator.lrclib.wrongLyricsWarning')
+				}, I18n.t('syncCreator.lrclib.registerLyrics')),
+
+				react.createElement('span', { style: { fontSize: '12px', color: 'var(--spice-subtext)' } }, 'Provider:'),
+				react.createElement('select', {
+					style: s.select,
+					value: provider || '',
+					onChange: (e) => {
+						const newProvider = e.target.value;
+						if (newProvider) loadLyrics(newProvider);
+					}
+				},
+					react.createElement('option', { value: 'spotify' }, 'Spotify'),
+					react.createElement('option', { value: 'lrclib' }, 'LRCLIB')
 				),
-				react.createElement('button', { style: { ...s.loadBtn, opacity: isLoading ? 0.5 : 1 }, onClick: loadLyrics, disabled: isLoading },
+				react.createElement('button', { style: { ...s.loadBtn, opacity: isLoading ? 0.5 : 1 }, onClick: () => loadLyrics(provider), disabled: isLoading },
 					isLoading ? I18n.t('syncCreator.loading') : I18n.t('syncCreator.reload') || '다시 로드'
 				)
 			)

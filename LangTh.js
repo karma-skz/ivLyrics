@@ -1592,7 +1592,8 @@ window.LANG_TH = {
       "publishSuccess": "ลงทะเบียนเนื้อเพลงกับ LRCLIB สำเร็จ!",
       "publishError": "ลงทะเบียนเนื้อเพลงล้มเหลว",
       "noLyricsInput": "โปรดป้อนเนื้อเพลง",
-      "loadingAfterPublish": "กำลังโหลดเนื้อเพลงที่ลงทะเบียน..."
+      "loadingAfterPublish": "กำลังโหลดเนื้อเพลงที่ลงทะเบียน...",
+      "wrongLyricsWarning": "หากเนื้อเพลงไม่ถูกต้อง ให้ส่งด้วยตนเอง"
     }
   }
 };

@@ -1592,7 +1592,8 @@ window.LANG_BN = {
       "publishSuccess": "লিরিক্স সফলভাবে LRCLIB-এ নিবন্ধন করা হয়েছে!",
       "publishError": "লিরিক্স নিবন্ধন ব্যর্থ হয়েছে",
       "noLyricsInput": "অনুগ্রহ করে লিরিক্স লিখুন",
-      "loadingAfterPublish": "নিবন্ধিত লিরিক্স লোড হচ্ছে..."
+      "loadingAfterPublish": "নিবন্ধিত লিরিক্স লোড হচ্ছে...",
+      "wrongLyricsWarning": "গানের কথা ভুল হলে, ম্যানুয়ালি জমা দিন।"
     }
   }
 };

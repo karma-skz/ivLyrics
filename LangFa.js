@@ -1591,7 +1591,8 @@ window.LANG_FA = {
       "publishSuccess": "متن با موفقیت در LRCLIB ثبت شد!",
       "publishError": "ثبت متن ناموفق بود",
       "noLyricsInput": "لطفاً متن آهنگ را وارد کنید",
-      "loadingAfterPublish": "در حال بارگذاری متن ثبت شده..."
+      "loadingAfterPublish": "در حال بارگذاری متن ثبت شده...",
+      "wrongLyricsWarning": "اگر متن آهنگ نادرست است، آن را به صورت دستی ارسال کنید."
     }
   }
 };

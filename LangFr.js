@@ -1592,7 +1592,8 @@ window.LANG_FR = {
       "publishSuccess": "Paroles publiées sur LRCLIB avec succès !",
       "publishError": "Échec publication",
       "noLyricsInput": "Veuillez entrer des paroles",
-      "loadingAfterPublish": "Chargement des paroles publiées..."
+      "loadingAfterPublish": "Chargement des paroles publiées...",
+      "wrongLyricsWarning": "Si les paroles sont incorrectes, soumettez-les manuellement."
     }
   }
 };

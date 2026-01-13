@@ -1592,7 +1592,8 @@ window.LANG_EN = {
       "publishSuccess": "Lyrics successfully registered to LRCLIB!",
       "publishError": "Failed to register lyrics",
       "noLyricsInput": "Please enter lyrics",
-      "loadingAfterPublish": "Loading registered lyrics..."
+      "loadingAfterPublish": "Loading registered lyrics...",
+      "wrongLyricsWarning": "If the lyrics are incorrect, submit them manually."
     }
   }
 };

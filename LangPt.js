@@ -1592,7 +1592,8 @@ window.LANG_PT = {
       "publishSuccess": "Letra registrada com sucesso no LRCLIB!",
       "publishError": "Falha ao registrar letra",
       "noLyricsInput": "Por favor, insira a letra",
-      "loadingAfterPublish": "Carregando a letra registrada..."
+      "loadingAfterPublish": "Carregando a letra registrada...",
+      "wrongLyricsWarning": "Se a letra estiver incorreta, envie-a manualmente."
     }
   }
 };

@@ -1592,7 +1592,8 @@ window.LANG_ES = {
       "publishSuccess": "¡Letras registradas exitosamente en LRCLIB!",
       "publishError": "Error al registrar letras",
       "noLyricsInput": "Por favor ingresa las letras",
-      "loadingAfterPublish": "Cargando letras registradas..."
+      "loadingAfterPublish": "Cargando letras registradas...",
+      "wrongLyricsWarning": "Si la letra es incorrecta, envíela manualmente."
     }
   }
 };

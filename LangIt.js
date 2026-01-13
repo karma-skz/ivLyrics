@@ -1592,7 +1592,8 @@ window.LANG_IT = {
       "publishSuccess": "Testo registrato su LRCLIB con successo!",
       "publishError": "Registrazione testo fallita",
       "noLyricsInput": "Inserisci il testo",
-      "loadingAfterPublish": "Caricamento testo registrato..."
+      "loadingAfterPublish": "Caricamento testo registrato...",
+      "wrongLyricsWarning": "Se il testo non è corretto, invialo manualmente."
     }
   }
 };

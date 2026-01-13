@@ -1592,7 +1592,8 @@ window.LANG_ZH_TW = {
       "publishSuccess": "歌詞已成功登錄至 LRCLIB！",
       "publishError": "歌詞登錄失敗",
       "noLyricsInput": "請輸入歌詞",
-      "loadingAfterPublish": "正在載入已登錄的歌詞..."
+      "loadingAfterPublish": "正在載入已登錄的歌詞...",
+      "wrongLyricsWarning": "如果歌詞不正確，請手動提交。"
     }
   }
 };

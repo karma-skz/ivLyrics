@@ -1591,7 +1591,8 @@ window.LANG_AR = {
       "publishSuccess": "تم تسجيل الكلمات في LRCLIB بنجاح!",
       "publishError": "فشل تسجيل الكلمات",
       "noLyricsInput": "يرجى إدخال الكلمات",
-      "loadingAfterPublish": "جارٍ تحميل الكلمات المسجلة..."
+      "loadingAfterPublish": "جارٍ تحميل الكلمات المسجلة...",
+      "wrongLyricsWarning": "إذا كانت الكلمات غير صحيحة، أرسلها يدوياً."
     }
   }
 };

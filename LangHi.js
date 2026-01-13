@@ -1591,7 +1591,8 @@ window.LANG_HI = {
       "publishSuccess": "LRCLIB पर सफलतापूर्वक पंजीकृत!",
       "publishError": "पंजीकरण विफल",
       "noLyricsInput": "कृपया लिरिक्स दर्ज करें",
-      "loadingAfterPublish": "पंजीकृत लिरिक्स लोड हो रहे हैं..."
+      "loadingAfterPublish": "पंजीकृत लिरिक्स लोड हो रहे हैं...",
+      "wrongLyricsWarning": "यदि बोल गलत हैं, तो उन्हें मैन्युअल रूप से सबमिट करें।"
     }
   }
 };

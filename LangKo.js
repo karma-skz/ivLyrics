@@ -1592,7 +1592,8 @@ window.LANG_KO = {
       "publishSuccess": "가사가 LRCLIB에 성공적으로 등록되었습니다!",
       "publishError": "가사 등록에 실패했습니다",
       "noLyricsInput": "가사를 입력해주세요",
-      "loadingAfterPublish": "등록된 가사를 불러오는 중..."
+      "loadingAfterPublish": "등록된 가사를 불러오는 중...",
+      "wrongLyricsWarning": "가사가 올바르지 않은 경우, 직접 등록하세요."
     }
   }
 };

@@ -1163,6 +1163,7 @@
     const SyncDataService = (() => {
         const API_BASE = 'https://lyrics.api.ivl.is';
         const _syncDataCache = new Map();
+        const _inflightRequests = new Map(); // 진행 중인 요청 추적
 
         /**
          * 승인된 싱크 데이터 조회
@@ -1170,40 +1171,56 @@
          * @returns {Promise<Object|null>} - 싱크 데이터 또는 null
          */
         async function getSyncData(trackId) {
+            // 1. 캐시 확인
             if (_syncDataCache.has(trackId)) {
                 return _syncDataCache.get(trackId);
             }
 
-            try {
-                const response = await fetch(`${API_BASE}/lyrics/sync-data?trackId=${trackId}`, {
-                    headers: {
-                        "User-Agent": `spicetify v${Spicetify.Config.version}`,
-                    },
-                    cache: "no-cache",
-                });
+            // 2. 진행 중인 요청이 있으면 그 Promise를 재사용
+            if (_inflightRequests.has(trackId)) {
+                return _inflightRequests.get(trackId);
+            }
 
-                if (response.status === 404) {
+            // 3. 새 요청 시작
+            const requestPromise = (async () => {
+                try {
+                    const response = await fetch(`${API_BASE}/lyrics/sync-data?trackId=${trackId}`, {
+                        headers: {
+                            "User-Agent": `spicetify v${Spicetify.Config.version}`,
+                        },
+                        cache: "no-cache",
+                    });
+
+                    if (response.status === 404) {
+                        _syncDataCache.set(trackId, null);
+                        return null;
+                    }
+
+                    if (!response.ok) {
+                        console.warn('[SyncDataService] API error:', response.status);
+                        return null;
+                    }
+
+                    const result = await response.json();
+                    if (result.success && result.data) {
+                        _syncDataCache.set(trackId, result.data);
+                        return result.data;
+                    }
+
                     _syncDataCache.set(trackId, null);
                     return null;
-                }
-
-                if (!response.ok) {
-                    console.warn('[SyncDataService] API error:', response.status);
+                } catch (e) {
+                    console.warn('[SyncDataService] Failed to get sync data:', e);
                     return null;
+                } finally {
+                    // 요청 완료 후 inflight에서 제거
+                    _inflightRequests.delete(trackId);
                 }
+            })();
 
-                const result = await response.json();
-                if (result.success && result.data) {
-                    _syncDataCache.set(trackId, result.data);
-                    return result.data;
-                }
-
-                _syncDataCache.set(trackId, null);
-                return null;
-            } catch (e) {
-                console.warn('[SyncDataService] Failed to get sync data:', e);
-                return null;
-            }
+            // inflight에 등록
+            _inflightRequests.set(trackId, requestPromise);
+            return requestPromise;
         }
 
         function clearCache(trackId) {
@@ -1615,20 +1632,34 @@
          * @returns {Promise<Object>} - 가사 결과
          */
         async getLyricsFromProviders(info, providerOrder = ['spotify', 'lrclib', 'local'], mode = 1) {
-            // karaoke 모드일 때 커뮤니티 싱크 데이터 우선 확인
-            if (mode === 0 && window.SyncDataService) {
+            const trackId = info.uri?.split(":")[2];
+
+            // 커뮤니티 싱크 데이터 확인 - provider 순서 조정을 위해
+            let syncDataProvider = null;
+            if (window.SyncDataService && trackId) {
                 try {
-                    const syncDataResult = await window.SyncDataService.getLyricsWithSyncData(info, 'spotify');
-                    if (syncDataResult && syncDataResult.karaoke) {
-                        console.log('[LyricsService] Using community sync data');
-                        return syncDataResult;
+                    const syncData = await window.SyncDataService.getSyncData(trackId);
+                    if (syncData && syncData.provider) {
+                        syncDataProvider = syncData.provider;
+                        console.log('[LyricsService] Found sync data with provider:', syncDataProvider);
                     }
                 } catch (e) {
-                    console.warn('[LyricsService] SyncDataService failed:', e);
+                    console.warn('[LyricsService] SyncDataService check failed:', e);
                 }
             }
 
-            for (const providerName of providerOrder) {
+            // sync-data의 provider를 우선으로 하도록 순서 조정
+            let adjustedProviderOrder = [...providerOrder];
+            if (syncDataProvider && providerOrder.includes(syncDataProvider)) {
+                // sync-data provider를 맨 앞으로 이동
+                adjustedProviderOrder = [
+                    syncDataProvider,
+                    ...providerOrder.filter(p => p !== syncDataProvider)
+                ];
+                console.log('[LyricsService] Adjusted provider order for sync data:', adjustedProviderOrder);
+            }
+
+            for (const providerName of adjustedProviderOrder) {
                 if (!Providers[providerName]) continue;
 
                 try {

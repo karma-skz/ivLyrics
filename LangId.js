@@ -1591,7 +1591,8 @@ window.LANG_ID = {
       "publishSuccess": "Lirik berhasil didaftarkan ke LRCLIB!",
       "publishError": "Gagal mendaftarkan lirik",
       "noLyricsInput": "Silakan masukkan lirik",
-      "loadingAfterPublish": "Memuat lirik yang terdaftar..."
+      "loadingAfterPublish": "Memuat lirik yang terdaftar...",
+      "wrongLyricsWarning": "Jika liriknya salah, kirimkan secara manual."
     }
   }
 };

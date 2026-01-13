@@ -1592,7 +1592,8 @@ window.LANG_VI = {
       "publishSuccess": "Lời bài hát đã được đăng ký thành công lên LRCLIB!",
       "publishError": "Đăng ký lời bài hát thất bại",
       "noLyricsInput": "Vui lòng nhập lời bài hát",
-      "loadingAfterPublish": "Đang tải lời bài hát đã đăng ký..."
+      "loadingAfterPublish": "Đang tải lời bài hát đã đăng ký...",
+      "wrongLyricsWarning": "Nếu lời bài hát không chính xác, vui lòng gửi thủ công."
     }
   }
 };

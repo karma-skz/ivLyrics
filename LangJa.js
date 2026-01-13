@@ -1592,7 +1592,8 @@ window.LANG_JA = {
       "publishSuccess": "歌詞がLRCLIBに正常に登録されました！",
       "publishError": "歌詞の登録に失敗しました",
       "noLyricsInput": "歌詞を入力してください",
-      "loadingAfterPublish": "登録された歌詞を読み込み中..."
+      "loadingAfterPublish": "登録された歌詞を読み込み中...",
+      "wrongLyricsWarning": "歌詞が間違っている場合は、手動で送信してください。"
     }
   }
 };

@@ -1592,7 +1592,8 @@ window.LANG_RU = {
       "publishSuccess": "Текст успешно добавлен в LRCLIB!",
       "publishError": "Ошибка публикации текста",
       "noLyricsInput": "Введите текст песни",
-      "loadingAfterPublish": "Загрузка добавленного текста..."
+      "loadingAfterPublish": "Загрузка добавленного текста...",
+      "wrongLyricsWarning": "Если текст песни неверен, отправьте его вручную."
     }
   }
 };

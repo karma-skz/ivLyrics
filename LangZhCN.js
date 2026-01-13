@@ -1592,7 +1592,8 @@ window.LANG_ZH_CN = {
       "publishSuccess": "歌词已成功注册到 LRCLIB！",
       "publishError": "歌词注册失败",
       "noLyricsInput": "请输入歌词",
-      "loadingAfterPublish": "正在加载注册的歌词..."
+      "loadingAfterPublish": "正在加载注册的歌词...",
+      "wrongLyricsWarning": "如果歌词不正确，请手动提交。"
     }
   }
 };
