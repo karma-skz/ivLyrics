@@ -9,7 +9,6 @@ window.LANG_FA = {
     "general": "عمومی",
     "appearance": "ظاهر",
     "behavior": "رفتار",
-    "providers": "ارائه‌دهندگان",
     "advanced": "پیشرفته",
     "fullscreen": "تمام صفحه",
     "debug": "دیباگ",
@@ -48,8 +47,6 @@ window.LANG_FA = {
     "syncedLyricsContent": "محتوای متن همگام‌سازی شده",
     "unsyncedLyricsContent": "محتوای متن غیر همگام",
     "customPreview": "پیش‌نمایش سفارشی",
-    "providerUsage": "وضعیت ارائه‌دهندگان",
-    "providerUsageSubtitle": "ارائه‌دهندگان متن آهنگ را تنظیم کنید",
     "trackSyncInfo": "اطلاعات همگام‌سازی ترک",
     "customDatabase": "پایگاه داده سفارشی",
     "debug": "دیباگ",
@@ -305,32 +302,6 @@ window.LANG_FA = {
     },
     "solidBackgroundInUse": "ℹ️ پس‌زمینه تک‌رنگ در حال استفاده است",
     "fontPlaceholder": "نام فونت را وارد کنید (مثال: Arial, Tahoma)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch بزرگترین کاتالوگ متن آهنگ در جهان را ارائه می‌دهد."
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB متن‌های همگام‌سازی شده را ارائه می‌دهد و یک پایگاه داده متن آهنگ رایگان است که توسط جامعه مدیریت می‌شود."
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify برای برخی کاربران پرمیوم متن‌های همگام‌سازی شده ارائه می‌دهد."
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) متن‌های چینی را ارائه می‌دهد."
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius متن آهنگ‌ها و توضیحات تکمیلی را ارائه می‌دهد."
-    },
-    "custom": {
-      "name": "پایگاه داده سفارشی",
-      "desc": "متن آهنگ را از پایگاه داده سفارشی دریافت می‌کند."
-    }
   },
   "buttons": {
     "save": "ذخیره",
@@ -877,10 +848,6 @@ window.LANG_FA = {
         "stats": "متن آهنگ: {lyrics} مورد، ترجمه: {translations} مورد، متادیتا: {metadata} مورد"
       }
     },
-    "lyricsProviders": {
-      "title": "ارائه‌دهندگان متن آهنگ",
-      "subtitle": "اولویت و تنظیمات منابع متن آهنگ را مدیریت کنید"
-    },
     "languageDetection": {
       "title": "تشخیص زبان",
       "subtitle": "تنظیمات تشخیص زبان برای تبدیل متن",
@@ -1290,11 +1257,6 @@ window.LANG_FA = {
     "securityRestriction": "محدودیت به دلیل سیاست‌های امنیتی مرورگر",
     "serverError": "خطای پاسخ سرور",
     "terminalMac": "ترمینال (Terminal)"
-  },
-  "providerDescriptions": {
-    "lrclib": "متن آهنگ از lrclib.net ارائه می‌شود. هم متن همگام و هم غیر همگام را پشتیبانی می‌کند. LRCLIB یک ارائه‌دهنده متن‌باز و رایگان است.",
-    "spotify": "متن آهنگ از API رسمی Spotify ارائه می‌شود.",
-    "cache": "متن آهنگ از کش/فایل‌های محلی بارگذاری شده در جلسات قبلی Spotify ارائه می‌شود."
   },
   "modes": {
     "karaoke": "کارائوکه",

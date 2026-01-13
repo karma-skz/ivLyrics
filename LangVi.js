@@ -9,7 +9,6 @@ window.LANG_VI = {
     "general": "Chung",
     "appearance": "Giao diện",
     "behavior": "Hành vi",
-    "providers": "Nguồn lời bài hát",
     "advanced": "Nâng cao",
     "fullscreen": "Toàn màn hình",
     "debug": "Gỡ lỗi",
@@ -48,8 +47,6 @@ window.LANG_VI = {
     "syncedLyricsContent": "Nội dung lời bài hát đồng bộ",
     "unsyncedLyricsContent": "Nội dung lời bài hát không đồng bộ",
     "customPreview": "Tùy chỉnh xem trước",
-    "providerUsage": "Trạng thái nguồn cung cấp",
-    "providerUsageSubtitle": "Cài đặt các nguồn cung cấp lời bài hát sẽ sử dụng",
     "trackSyncInfo": "Thông tin đồng bộ bài hát",
     "customDatabase": "Cơ sở dữ liệu tùy chỉnh",
     "debug": "Gỡ lỗi",
@@ -311,32 +308,6 @@ window.LANG_VI = {
     },
     "solidBackgroundInUse": "ℹ️ Đang sử dụng nền màu đơn sắc",
     "fontPlaceholder": "Nhập tên phông chữ (ví dụ: Arial, Roboto)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch cung cấp danh mục lời bài hát lớn nhất thế giới."
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB cung cấp lời bài hát đồng bộ và là cơ sở dữ liệu miễn phí do cộng đồng quản lý."
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify cung cấp lời bài hát đồng bộ cho một số người dùng Premium."
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) cung cấp lời bài hát tiếng Trung."
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius cung cấp lời bài hát và chú thích."
-    },
-    "custom": {
-      "name": "Cơ sở dữ liệu tùy chỉnh",
-      "desc": "Lấy lời bài hát từ cơ sở dữ liệu tùy chỉnh."
-    }
   },
   "buttons": {
     "save": "Lưu",
@@ -905,10 +876,6 @@ window.LANG_VI = {
         "stats": "Lời bài hát: {lyrics}, Bản dịch: {translations}, Metadata: {metadata}"
       }
     },
-    "lyricsProviders": {
-      "title": "Nguồn lời bài hát",
-      "subtitle": "Quản lý ưu tiên và cài đặt nguồn lời bài hát"
-    },
     "languageDetection": {
       "title": "Phát hiện ngôn ngữ",
       "subtitle": "Cài đặt phát hiện ngôn ngữ cho chuyển đổi văn bản",
@@ -1318,11 +1285,6 @@ window.LANG_VI = {
     "securityRestriction": "Bị hạn chế bởi chính sách bảo mật của trình duyệt",
     "serverError": "Lỗi phản hồi từ máy chủ",
     "terminalMac": "Terminal"
-  },
-  "providerDescriptions": {
-    "lrclib": "Lời bài hát từ lrclib.net. Hỗ trợ cả lời đồng bộ và không đồng bộ. LRCLIB là cơ sở dữ liệu lời bài hát nguồn mở miễn phí.",
-    "spotify": "Lời bài hát chính thức từ Spotify API.",
-    "cache": "Lời bài hát từ bộ nhớ đệm/tệp cục bộ được tải từ phiên Spotify trước đó."
   },
   "modes": {
     "karaoke": "Karaoke",

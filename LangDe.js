@@ -9,7 +9,6 @@ window.LANG_DE = {
     "general": "Allgemein",
     "appearance": "Erscheinungsbild",
     "behavior": "Verhalten",
-    "providers": "Anbieter",
     "advanced": "Erweitert",
     "fullscreen": "Vollbild",
     "debug": "Debug",
@@ -48,8 +47,6 @@ window.LANG_DE = {
     "syncedLyricsContent": "Synchronisierter Inhalt",
     "unsyncedLyricsContent": "Unsynchronisierter Inhalt",
     "customPreview": "Benutzerdefinierte Vorschau",
-    "providerUsage": "Anbieterverfügbarkeit",
-    "providerUsageSubtitle": "Konfigurieren Sie die zu verwendenden Songtext-Anbieter",
     "trackSyncInfo": "Track-Sync-Info",
     "customDatabase": "Benutzerdefinierte Datenbank",
     "debug": "Debug",
@@ -319,32 +316,6 @@ window.LANG_DE = {
     },
     "solidBackgroundInUse": "ℹ️ Einfarbiger Hintergrund aktiv",
     "fontPlaceholder": "Schriftart eingeben (z.B. Arial, Roboto)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch bietet den weltweit größten Songtext-Katalog."
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB bietet synchronisierte Songtexte und ist eine kostenlose, von der Community gepflegte Datenbank."
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify bietet synchronisierte Songtexte für einige Premium-Nutzer."
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) bietet chinesische Songtexte."
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius bietet Songtexte und Anmerkungen."
-    },
-    "custom": {
-      "name": "Benutzerdefinierte Datenbank",
-      "desc": "Ruft Songtexte aus einer benutzerdefinierten Datenbank ab."
-    }
   },
   "buttons": {
     "save": "Speichern",
@@ -913,10 +884,6 @@ window.LANG_DE = {
         "stats": "Texte: {lyrics}, Übersetzungen: {translations}, Metadaten: {metadata}"
       }
     },
-    "lyricsProviders": {
-      "title": "Songtext-Anbieter",
-      "subtitle": "Priorität und Einstellungen der Songtext-Quellen verwalten"
-    },
     "languageDetection": {
       "title": "Spracherkennung",
       "subtitle": "Einstellungen zur Spracherkennung für Textkonvertierung",
@@ -1322,11 +1289,6 @@ window.LANG_DE = {
     "securityRestriction": "Einschränkung durch Browsersicherheitsrichtlinie",
     "serverError": "Serverantwortfehler",
     "terminalMac": "Terminal"
-  },
-  "providerDescriptions": {
-    "lrclib": "Songtexte bereitgestellt von lrclib.net. Unterstützt synchronisierte und unsynchronisierte Texte. LRCLIB ist ein kostenloser, von der Community gepflegter Songtext-Anbieter.",
-    "spotify": "Songtexte bereitgestellt von der offiziellen Spotify API.",
-    "cache": "Liefert zwischengespeicherte/lokale Songtexte, die aus früheren Spotify-Sitzungen geladen wurden."
   },
   "modes": {
     "karaoke": "Karaoke",

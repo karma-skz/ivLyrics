@@ -9,7 +9,6 @@ window.LANG_KO = {
     "general": "일반",
     "appearance": "외관",
     "behavior": "동작",
-    "providers": "제공자",
     "advanced": "고급",
     "fullscreen": "전체화면",
     "nowplaying": "패널 가사",
@@ -49,8 +48,6 @@ window.LANG_KO = {
     "syncedLyricsContent": "싱크 가사 콘텐츠",
     "unsyncedLyricsContent": "비싱크 가사 콘텐츠",
     "customPreview": "미리보기 커스텀",
-    "providerUsage": "제공자 사용 가능 여부",
-    "providerUsageSubtitle": "사용할 가사 제공자를 설정합니다",
     "trackSyncInfo": "트랙 싱크 정보",
     "customDatabase": "커스텀 데이터베이스",
     "debug": "디버그",
@@ -320,32 +317,6 @@ window.LANG_KO = {
     },
     "solidBackgroundInUse": "ℹ️ 단색 배경 사용 중",
     "fontPlaceholder": "폰트명 입력 (예: Arial, 맑은 고딕)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch는 세계 최대의 가사 카탈로그를 제공합니다."
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB는 싱크 가사를 제공하며, 커뮤니티가 관리하는 무료 가사 데이터베이스입니다."
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify는 일부 프리미엄 사용자에게 싱크 가사를 제공합니다."
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase(网易云音乐)는 중국어 가사를 제공합니다."
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius는 가사와 주석을 제공합니다."
-    },
-    "custom": {
-      "name": "커스텀 데이터베이스",
-      "desc": "커스텀 데이터베이스에서 가사를 가져옵니다."
-    }
   },
   "buttons": {
     "save": "저장",
@@ -914,10 +885,6 @@ window.LANG_KO = {
         "stats": "가사: {lyrics}개, 번역: {translations}개, 메타데이터: {metadata}개"
       }
     },
-    "lyricsProviders": {
-      "title": "가사 제공자",
-      "subtitle": "가사 소스의 우선순위와 설정을 관리하세요"
-    },
     "languageDetection": {
       "title": "언어 감지",
       "subtitle": "텍스트 변환을 위한 언어 감지 설정",
@@ -1324,11 +1291,6 @@ window.LANG_KO = {
     "serverError": "서버 응답 오류",
     "terminalMac": "Terminal (터미널)"
   },
-  "providerDescriptions": {
-    "lrclib": "lrclib.net에서 제공되는 가사입니다. 동기화된 가사와 동기화되지 않은 가사를 모두 지원합니다. LRCLIB은 무료 오픈소스 가사 제공자입니다.",
-    "spotify": "공식 Spotify API에서 제공되는 가사입니다.",
-    "cache": "이전 Spotify 세션에서 로드된 캐시/로컬 파일의 가사를 제공합니다."
-  },
   "modes": {
     "karaoke": "노래방",
     "synced": "동기화",
@@ -1608,8 +1570,9 @@ window.LANG_KO = {
     buttonTooltip: "노래방 싱크 생성",
     loading: "로딩 중...",
     loadLyrics: "가사 불러오기",
+    reload: "다시 로드",
     loadingLyrics: "가사를 불러오는 중...",
-    selectProvider: "Provider를 선택하고 가사를 불러오세요",
+    selectProvider: "가사를 자동으로 불러옵니다 (Spotify → LRCLIB)",
     noLyrics: "가사를 찾을 수 없습니다",
     loadError: "가사 로드 중 오류가 발생했습니다",
     currentLine: "현재 가사",
@@ -1645,15 +1608,18 @@ window.LANG_KO = {
       description: "이 곡의 가사가 없습니다. 가사를 직접 입력하여 LRCLIB에 등록하면 다른 사용자들도 이 가사를 사용할 수 있습니다. 등록 후에는 수정이 불가능하니 신중하게 입력해주세요.",
       trackInfo: "트랙 정보",
       placeholder: "가사를 입력하세요...\n\n각 줄을 새 줄로 구분해주세요.\n빈 줄은 자동으로 제거됩니다.",
-      useWithoutPublish: "등록 없이 사용",
       publishToLrcLib: "LRCLIB에 등록",
       publishing: "등록 중...",
+      cancelPublish: "등록 취소",
+      publishCancelled: "등록이 취소되었습니다",
+      timeWarning: "⚠️ LRCLIB은 무분별한 가사 등록을 막기 위해 암호화 토큰 해석 작업을 요구합니다. 이 과정은 컴퓨터 성능에 따라 약 5분 정도 소요될 수 있습니다.",
       requestingChallenge: "인증 요청 중...",
       solvingChallenge: "인증 처리 중...",
       solving: "인증 처리 중... ({nonce} 시도)",
       publishSuccess: "가사가 LRCLIB에 성공적으로 등록되었습니다!",
       publishError: "가사 등록에 실패했습니다",
-      noLyricsInput: "가사를 입력해주세요"
+      noLyricsInput: "가사를 입력해주세요",
+      loadingAfterPublish: "등록된 가사를 불러오는 중..."
     }
   }
 };

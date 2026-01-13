@@ -9,7 +9,6 @@ window.LANG_ES = {
     "general": "General",
     "appearance": "Apariencia",
     "behavior": "Comportamiento",
-    "providers": "Proveedores",
     "advanced": "Avanzado",
     "fullscreen": "Pantalla completa",
     "debug": "Depuración",
@@ -48,8 +47,6 @@ window.LANG_ES = {
     "syncedLyricsContent": "Contenido de letras sincronizadas",
     "unsyncedLyricsContent": "Contenido de letras no sincronizadas",
     "customPreview": "Vista previa personalizada",
-    "providerUsage": "Disponibilidad del proveedor",
-    "providerUsageSubtitle": "Configura los proveedores de letras a utilizar",
     "trackSyncInfo": "Información de sincronización de la pista",
     "customDatabase": "Base de datos personalizada",
     "debug": "Depuración",
@@ -319,32 +316,6 @@ window.LANG_ES = {
     },
     "solidBackgroundInUse": "ℹ️ Fondo de color sólido en uso",
     "fontPlaceholder": "Introduce el nombre de la fuente (ej: Arial, Roboto)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch proporciona el catálogo de letras más grande del mundo."
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB proporciona letras sincronizadas y es una base de datos de letras gratuita mantenida por la comunidad."
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify proporciona letras sincronizadas para algunos usuarios premium."
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) proporciona letras en chino."
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius proporciona letras y anotaciones."
-    },
-    "custom": {
-      "name": "Base de datos personalizada",
-      "desc": "Obtiene letras de una base de datos personalizada."
-    }
   },
   "buttons": {
     "save": "Guardar",
@@ -913,10 +884,6 @@ window.LANG_ES = {
         "stats": "Letras: {lyrics}, Traducciones: {translations}, Metadatos: {metadata}"
       }
     },
-    "lyricsProviders": {
-      "title": "Proveedores de letras",
-      "subtitle": "Gestiona la prioridad y configuración de las fuentes de letras"
-    },
     "languageDetection": {
       "title": "Detección de idioma",
       "subtitle": "Configuración de detección de idioma para conversión de texto",
@@ -1322,11 +1289,6 @@ window.LANG_ES = {
     "securityRestriction": "Restricción debido a política de seguridad del navegador",
     "serverError": "Error de respuesta del servidor",
     "terminalMac": "Terminal"
-  },
-  "providerDescriptions": {
-    "lrclib": "Letras proporcionadas por lrclib.net. Admite letras sincronizadas y no sincronizadas. LRCLIB es un proveedor de letras gratuito mantenido por la comunidad.",
-    "spotify": "Letras proporcionadas por la API oficial de Spotify.",
-    "cache": "Proporciona letras de caché/archivos locales cargados de sesiones anteriores de Spotify."
   },
   "modes": {
     "karaoke": "Karaoke",

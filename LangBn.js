@@ -9,7 +9,6 @@ window.LANG_BN = {
     "general": "সাধারণ",
     "appearance": "চেহারা",
     "behavior": "আচরণ",
-    "providers": "প্রদানকারী",
     "advanced": "উন্নত",
     "fullscreen": "পূর্ণ পর্দা",
     "debug": "ডিবাগ",
@@ -48,8 +47,6 @@ window.LANG_BN = {
     "syncedLyricsContent": "সিঙ্ক করা লিরিক্স বিষয়বস্তু",
     "unsyncedLyricsContent": "আনসিঙ্ক করা লিরিক্স বিষয়বস্তু",
     "customPreview": "কাস্টম প্রিভিউ",
-    "providerUsage": "প্রদানকারীর প্রাপ্যতা",
-    "providerUsageSubtitle": "ব্যবহার করার জন্য লিরিক্স প্রদানকারী সেট করুন",
     "trackSyncInfo": "ট্র্যাক সিঙ্ক তথ্য",
     "customDatabase": "কাস্টম ডেটাবেস",
     "debug": "ডিবাগ",
@@ -305,32 +302,6 @@ window.LANG_BN = {
     },
     "solidBackgroundInUse": "ℹ️ সলিড কালার ব্যাকগ্রাউন্ড ব্যবহার হচ্ছে",
     "fontPlaceholder": "ফন্টের নাম লিখুন (যেমন: Arial, Kalpurush)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch বিশ্বের বৃহত্তম লিরিক্স ক্যাটালগ প্রদান করে।"
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB সিঙ্ক লিরিক্স প্রদান করে এবং এটি একটি কমিউনিটি-চালিত ফ্রি লিরিক্স ডেটাবেস।"
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify কিছু প্রিমিয়াম ব্যবহারকারীদের জন্য সিঙ্ক লিরিক্স প্রদান করে।"
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) চীনা লিরিক্স প্রদান করে।"
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius লিরিক্স এবং টীকা প্রদান করে।"
-    },
-    "custom": {
-      "name": "কাস্টম ডেটাবেস",
-      "desc": "কাস্টম ডেটাবেস থেকে লিরিক্স নিয়ে আসে।"
-    }
   },
   "buttons": {
     "save": "সংরক্ষণ",
@@ -877,10 +848,6 @@ window.LANG_BN = {
         "stats": "লিরিক্স: {lyrics}, অনুবাদ: {translations}, মেটাডেটা: {metadata}"
       }
     },
-    "lyricsProviders": {
-      "title": "লিরিক্স প্রদানকারী",
-      "subtitle": "লিরিক্স উৎসের অগ্রাধিকার এবং সেটিংস পরিচালনা করুন"
-    },
     "languageDetection": {
       "title": "ভাষা সনাক্তকরণ",
       "subtitle": "টেক্সট রূপান্তরের জন্য ভাষা সনাক্তকরণ সেটিংস",
@@ -1290,11 +1257,6 @@ window.LANG_BN = {
     "securityRestriction": "ব্রাউজার নিরাপত্তা নীতির কারণে সীমাবদ্ধতা",
     "serverError": "সার্ভার প্রতিক্রিয়া ত্রুটি",
     "terminalMac": "টার্মিনাল (Terminal)"
-  },
-  "providerDescriptions": {
-    "lrclib": "lrclib.net থেকে লিরিক্স প্রদান করা হয়েছে। সিঙ্ক করা এবং আনসিঙ্ক করা লিরিক্স সমর্থন করে। LRCLIB একটি কমিউনিটি-চালিত ফ্রি লিরিক্স প্রদানকারী।",
-    "spotify": "অফিসিয়াল Spotify API থেকে লিরিক্স প্রদান করা হয়েছে।",
-    "cache": "পূর্ববর্তী Spotify সেশন থেকে লোড করা ক্যাশ/লোকাল ফাইল লিরিক্স প্রদান করে।"
   },
   "modes": {
     "karaoke": "কারাওকে",

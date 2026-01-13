@@ -9,7 +9,6 @@ window.LANG_FR = {
     "general": "Général",
     "appearance": "Apparence",
     "behavior": "Comportement",
-    "providers": "Fournisseurs",
     "advanced": "Avancé",
     "fullscreen": "Plein écran",
     "debug": "Débogage",
@@ -48,8 +47,6 @@ window.LANG_FR = {
     "syncedLyricsContent": "Contenu des paroles synchronisées",
     "unsyncedLyricsContent": "Contenu des paroles non synchronisées",
     "customPreview": "Aperçu personnalisé",
-    "providerUsage": "Disponibilité des fournisseurs",
-    "providerUsageSubtitle": "Configurez les fournisseurs de paroles à utiliser",
     "trackSyncInfo": "Infos de synchronisation de piste",
     "customDatabase": "Base de données personnalisée",
     "debug": "Débogage",
@@ -319,32 +316,6 @@ window.LANG_FR = {
     },
     "solidBackgroundInUse": "ℹ️ Arrière-plan uni en cours d'utilisation",
     "fontPlaceholder": "Nom de la police (ex: Arial, Roboto)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch fournit le plus grand catalogue de paroles au monde."
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB fournit des paroles synchronisées et est une base de données gratuite maintenue par la communauté."
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify fournit des paroles synchronisées pour certains utilisateurs premium."
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) fournit des paroles en chinois."
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius fournit des paroles et des annotations."
-    },
-    "custom": {
-      "name": "Base de données personnalisée",
-      "desc": "Récupère les paroles depuis une base de données personnalisée."
-    }
   },
   "buttons": {
     "save": "Enregistrer",
@@ -913,10 +884,6 @@ window.LANG_FR = {
         "stats": "Paroles : {lyrics}, Traductions : {translations}, Métadonnées : {metadata}"
       }
     },
-    "lyricsProviders": {
-      "title": "Fournisseurs de paroles",
-      "subtitle": "Gérez la priorité et les paramètres des sources de paroles"
-    },
     "languageDetection": {
       "title": "Détection de langue",
       "subtitle": "Paramètres de détection de langue pour la conversion de texte",
@@ -1322,11 +1289,6 @@ window.LANG_FR = {
     "securityRestriction": "Restriction due à la politique de sécurité du navigateur",
     "serverError": "Erreur de réponse du serveur",
     "terminalMac": "Terminal"
-  },
-  "providerDescriptions": {
-    "lrclib": "Paroles fournies par lrclib.net. Prend en charge les paroles synchronisées et non synchronisées. LRCLIB est un fournisseur de paroles gratuit maintenu par la communauté.",
-    "spotify": "Paroles fournies par l'API officielle de Spotify.",
-    "cache": "Fournit des paroles en cache/fichiers locaux chargés lors des sessions Spotify précédentes."
   },
   "modes": {
     "karaoke": "Karaoké",

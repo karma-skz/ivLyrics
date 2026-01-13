@@ -3042,15 +3042,6 @@ const ConfigModal = () => {
       keywords: ["초기화", "reset", "기본값", "default"]
     },
 
-    // 제공자 탭
-    {
-      section: I18n.t("tabs.providers"),
-      sectionKey: "translation",
-      settingKey: "lyrics-providers",
-      name: I18n.t("settingsAdvanced.lyricsProviders.title"),
-      desc: I18n.t("settingsAdvanced.lyricsProviders.subtitle"),
-      keywords: ["제공자", "provider", "가사", "lyrics", "소스", "source", "spotify", "lrclib", "musixmatch"]
-    },
     {
       section: I18n.t("tabs.providers"),
       sectionKey: "translation",
@@ -6401,31 +6392,6 @@ const ConfigModal = () => {
           className: `tab-content ${activeTab === "translation" ? "active" : ""
             }`,
         },
-        react.createElement(SectionTitle, {
-          title: I18n.t("settingsAdvanced.lyricsProviders.title"),
-          subtitle: I18n.t("settingsAdvanced.lyricsProviders.subtitle"),
-        }),
-        react.createElement(ServiceList, {
-          itemsList: CONFIG.providersOrder,
-          onListChange: (list) => {
-            CONFIG.providersOrder = list;
-            StorageManager.setItem(
-              `${APP_NAME}:services-order`,
-              JSON.stringify(list)
-            );
-            reloadLyrics?.();
-          },
-          onToggle: (name, value) => {
-            CONFIG.providers[name].on = value;
-            StorageManager.setItem(`${APP_NAME}:provider:${name}:on`, value);
-            reloadLyrics?.();
-          },
-          onTokenChange: (name, value) => {
-            CONFIG.providers[name].token = value;
-            StorageManager.setItem(`${APP_NAME}:provider:${name}:token`, value);
-            reloadLyrics?.();
-          },
-        })
       ),
       // 고급 탭
       react.createElement(

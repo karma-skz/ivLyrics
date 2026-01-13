@@ -1310,12 +1310,26 @@
         }
 
         /**
+         * sync-data에서 일반 싱크 가사 생성 (karaoke -> synced 변환)
+         * @param {Array} karaoke - karaoke 형식 가사
+         * @returns {Array} - synced 형식 가사
+         */
+        function convertKaraokeToSynced(karaoke) {
+            if (!karaoke || !Array.isArray(karaoke)) return null;
+
+            return karaoke.map(line => ({
+                startTime: line.startTime,
+                text: line.text
+            }));
+        }
+
+        /**
          * Provider에서 가사를 가져와 sync_data 적용
          * @param {Object} info - 트랙 정보
-         * @param {string} provider - 가사 Provider ('spotify', 'lrclib')
+         * @param {string} preferredProvider - 선호하는 Provider ('spotify', 'lrclib')
          * @returns {Promise<Object|null>} - karaoke 가사 또는 null
          */
-        async function getLyricsWithSyncData(info, provider) {
+        async function getLyricsWithSyncData(info, preferredProvider) {
             const trackId = info.uri.split(":")[2];
 
             // 1. 싱크 데이터 조회
@@ -1324,12 +1338,8 @@
                 return null;
             }
 
-            // Provider가 다르면 사용 불가
-            if (syncData.provider !== provider) {
-                console.warn(`[SyncDataService] Sync data provider mismatch: expected ${provider}, got ${syncData.provider}`);
-                // Provider 불일치시에도 syncData의 provider로 시도
-                provider = syncData.provider;
-            }
+            // sync-data의 provider를 우선 사용 (lrclib이 있으면 lrclib 우선)
+            let provider = syncData.provider;
 
             // 2. Provider에서 가사 가져오기
             let lyricsResult;
@@ -1357,14 +1367,19 @@
             const karaoke = applySyncDataToLyrics(baseLyrics, syncData);
 
             if (karaoke) {
+                // sync-data에서 생성된 karaoke를 synced로도 변환
+                const syncedFromSyncData = convertKaraokeToSynced(karaoke);
+
                 return {
                     uri: info.uri,
                     karaoke,
-                    synced: lyricsResult.synced,
+                    // sync-data가 있으면 기존 synced를 오버라이드
+                    synced: syncedFromSyncData || lyricsResult.synced,
                     unsynced: lyricsResult.unsynced,
                     provider: `${lyricsResult.provider} + SyncData`,
                     copyright: lyricsResult.copyright,
-                    syncDataApplied: true
+                    syncDataApplied: true,
+                    syncDataProvider: provider
                 };
             }
 
@@ -1375,7 +1390,8 @@
             getSyncData,
             submitSyncData,
             applySyncDataToLyrics,
-            getLyricsWithSyncData
+            getLyricsWithSyncData,
+            convertKaraokeToSynced
         };
     })();
 
@@ -1434,6 +1450,11 @@
                         if (karaoke) {
                             result.karaoke = karaoke;
                             result.syncDataApplied = true;
+                            // sync-data가 있으면 synced도 오버라이드
+                            const syncedFromSyncData = window.SyncDataService.convertKaraokeToSynced(karaoke);
+                            if (syncedFromSyncData) {
+                                result.synced = syncedFromSyncData;
+                            }
                         }
                     }
                 } catch (e) {
@@ -1485,6 +1506,11 @@
                         if (karaoke) {
                             result.karaoke = karaoke;
                             result.syncDataApplied = true;
+                            // sync-data가 있으면 synced도 오버라이드
+                            const syncedFromSyncData = window.SyncDataService.convertKaraokeToSynced(karaoke);
+                            if (syncedFromSyncData) {
+                                result.synced = syncedFromSyncData;
+                            }
                         }
                     }
                 } catch (e) {

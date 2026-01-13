@@ -9,7 +9,6 @@ window.LANG_EN = {
     "general": "General",
     "appearance": "Appearance",
     "behavior": "Behavior",
-    "providers": "Providers",
     "advanced": "Advanced",
     "fullscreen": "Fullscreen",
     "nowplaying": "Panel Lyrics",
@@ -49,8 +48,6 @@ window.LANG_EN = {
     "syncedLyricsContent": "Synced Lyrics Content",
     "unsyncedLyricsContent": "Unsynced Lyrics Content",
     "customPreview": "Custom Preview",
-    "providerUsage": "Provider Usage",
-    "providerUsageSubtitle": "Configure lyrics providers to use",
     "trackSyncInfo": "Track Sync Info",
     "customDatabase": "Custom Database",
     "debug": "Debug",
@@ -320,32 +317,6 @@ window.LANG_EN = {
     },
     "solidBackgroundInUse": "ℹ️ Solid Background In Use",
     "fontPlaceholder": "Font name (e.g., Arial, Georgia)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch provides the world's largest lyrics catalog."
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB provides synced lyrics and is a free community-maintained lyrics database."
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify provides synced lyrics for some premium users."
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) provides Chinese lyrics."
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius provides lyrics and annotations."
-    },
-    "custom": {
-      "name": "Custom Database",
-      "desc": "Fetch lyrics from custom database."
-    }
   },
   "buttons": {
     "save": "Save",
@@ -914,10 +885,6 @@ window.LANG_EN = {
         "stats": "Lyrics: {lyrics}, Translations: {translations}, Metadata: {metadata}"
       }
     },
-    "lyricsProviders": {
-      "title": "Lyrics Providers",
-      "subtitle": "Manage priority and settings of lyrics sources"
-    },
     "languageDetection": {
       "title": "Language Detection",
       "subtitle": "Language detection settings for text conversion",
@@ -1323,11 +1290,6 @@ window.LANG_EN = {
     "securityRestriction": "Browser security policy restriction",
     "serverError": "Server response error",
     "terminalMac": "Terminal"
-  },
-  "providerDescriptions": {
-    "lrclib": "Lyrics from lrclib.net. Supports both synced and unsynced lyrics. LRCLIB is a free open-source lyrics provider.",
-    "spotify": "Lyrics from official Spotify API.",
-    "cache": "Lyrics from cached/local files loaded from previous Spotify sessions."
   },
   "modes": {
     "karaoke": "Karaoke",

@@ -9,7 +9,6 @@ window.LANG_ID = {
     "general": "Umum",
     "appearance": "Tampilan",
     "behavior": "Perilaku",
-    "providers": "Penyedia",
     "advanced": "Lanjutan",
     "fullscreen": "Layar Penuh",
     "debug": "Debug",
@@ -48,8 +47,6 @@ window.LANG_ID = {
     "syncedLyricsContent": "Konten Lirik Ter-sinkronisasi",
     "unsyncedLyricsContent": "Konten Lirik Tidak Ter-sinkronisasi",
     "customPreview": "Pratinjau Kustom",
-    "providerUsage": "Status Penyedia",
-    "providerUsageSubtitle": "Atur penyedia lirik yang akan digunakan",
     "trackSyncInfo": "Info Sinkronisasi Lagu",
     "customDatabase": "Database Kustom",
     "debug": "Debug",
@@ -305,32 +302,6 @@ window.LANG_ID = {
     },
     "solidBackgroundInUse": "ℹ️ Latar belakang warna solid sedang digunakan",
     "fontPlaceholder": "Masukkan nama font (cth: Arial, Roboto)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch menyediakan katalog lirik terbesar di dunia."
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB menyediakan lirik tersinkronisasi dan merupakan database lirik gratis yang dikelola komunitas."
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify menyediakan lirik tersinkronisasi untuk beberapa pengguna Premium."
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) menyediakan lirik bahasa Mandarin."
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius menyediakan lirik dan anotasi."
-    },
-    "custom": {
-      "name": "Database Kustom",
-      "desc": "Ambil lirik dari database kustom."
-    }
   },
   "buttons": {
     "save": "Simpan",
@@ -877,10 +848,6 @@ window.LANG_ID = {
         "stats": "Lirik: {lyrics}, Terjemahan: {translations}, Metadata: {metadata}"
       }
     },
-    "lyricsProviders": {
-      "title": "Penyedia Lirik",
-      "subtitle": "Kelola prioritas dan pengaturan sumber lirik"
-    },
     "languageDetection": {
       "title": "Deteksi Bahasa",
       "subtitle": "Pengaturan deteksi bahasa untuk konversi teks",
@@ -1290,11 +1257,6 @@ window.LANG_ID = {
     "securityRestriction": "Dibatasi oleh kebijakan keamanan browser",
     "serverError": "Kesalahan respons server",
     "terminalMac": "Terminal"
-  },
-  "providerDescriptions": {
-    "lrclib": "Lirik dari lrclib.net. Mendukung lirik tersinkronisasi dan tidak tersinkronisasi. LRCLIB adalah database lirik sumber terbuka gratis.",
-    "spotify": "Lirik resmi dari Spotify API.",
-    "cache": "Lirik dari cache/file lokal yang dimuat dari sesi Spotify sebelumnya."
   },
   "modes": {
     "karaoke": "Karaoke",

@@ -9,7 +9,6 @@ window.LANG_AR = {
     "general": "عام",
     "appearance": "المظهر",
     "behavior": "السلوك",
-    "providers": "المزودون",
     "advanced": "متقدم",
     "fullscreen": "ملء الشاشة",
     "debug": "تصحيح الأخطاء",
@@ -48,8 +47,6 @@ window.LANG_AR = {
     "syncedLyricsContent": "محتوى الكلمات المتزامنة",
     "unsyncedLyricsContent": "محتوى الكلمات غير المتزامنة",
     "customPreview": "معاينة مخصصة",
-    "providerUsage": "تفر المزود",
-    "providerUsageSubtitle": "إعداد مزودي الكلمات للاستخدام",
     "trackSyncInfo": "معلومات مزامنة المسار",
     "customDatabase": "قاعدة بيانات مخصصة",
     "debug": "تصحيح الأخطاء",
@@ -311,32 +308,6 @@ window.LANG_AR = {
     },
     "solidBackgroundInUse": "ℹ️ خلفية بلون موحد قيد الاستخدام",
     "fontPlaceholder": "اسم الخط (مثال: Arial, Tajawal)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "يوفر Musixmatch أكبر كتالوج للكلمات في العالم."
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "يوفر LRCLIB كلمات متزامنة وهو قاعدة بيانات مجانية يديرها المجتمع."
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "يوفر Spotify كلمات متزامنة لبعض المستخدمين المميزين (Premium)."
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "يوفر NetEase (网易云音乐) كلمات باللغة الصينية."
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "يوفر Genius كلمات وشروحات."
-    },
-    "custom": {
-      "name": "قاعدة بيانات مخصصة",
-      "desc": "يجلب الكلمات من قاعدة بيانات مخصصة."
-    }
   },
   "buttons": {
     "save": "حفظ",
@@ -905,10 +876,6 @@ window.LANG_AR = {
         "stats": "الكلمات: {lyrics}، الترجمات: {translations}، البيانات الوصفية: {metadata}"
       }
     },
-    "lyricsProviders": {
-      "title": "مزودو الكلمات",
-      "subtitle": "إدارة أولوية وإعدادات مصادر الكلمات"
-    },
     "languageDetection": {
       "title": "كشف اللغة",
       "subtitle": "إعدادات كشف اللغة لتحويل النص",
@@ -1318,11 +1285,6 @@ window.LANG_AR = {
     "securityRestriction": "قيود بسبب سياسة أمان المتصفح",
     "serverError": "خطأ في استجابة الخادم",
     "terminalMac": "محطة (Terminal)"
-  },
-  "providerDescriptions": {
-    "lrclib": "الكلمات مقدمة من lrclib.net. يدعم الكلمات المتزامنة وغير المتزامنة. LRCLIB هو مزود كلمات مجاني يديره المجتمع.",
-    "spotify": "الكلمات مقدمة من Spotify API الرسمية.",
-    "cache": "يوفر الكلمات المخزنة مؤقتاً/الملفات المحلية التي تم تحميلها في جلسات Spotify السابقة."
   },
   "modes": {
     "karaoke": "كاريوكي",

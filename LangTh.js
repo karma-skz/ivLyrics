@@ -9,7 +9,6 @@ window.LANG_TH = {
     "general": "ทั่วไป",
     "appearance": "รูปลักษณ์",
     "behavior": "พฤติกรรม",
-    "providers": "ผู้ให้บริการ",
     "advanced": "ขั้นสูง",
     "fullscreen": "เต็มหน้าจอ",
     "debug": "ดีบัก",
@@ -48,8 +47,6 @@ window.LANG_TH = {
     "syncedLyricsContent": "เนื้อหาเนื้อเพลงแบบซิงค์",
     "unsyncedLyricsContent": "เนื้อหาเนื้อเพลงแบบไม่ซิงค์",
     "customPreview": "ปรับแต่งตัวอย่าง",
-    "providerUsage": "สถานะผู้ให้บริการ",
-    "providerUsageSubtitle": "ตั้งค่าผู้ให้บริการเนื้อเพลงที่จะใช้งาน",
     "trackSyncInfo": "ข้อมูลการซิงค์แทร็ก",
     "customDatabase": "ฐานข้อมูลกำหนดเอง",
     "debug": "ดีบัก",
@@ -311,32 +308,6 @@ window.LANG_TH = {
     },
     "solidBackgroundInUse": "ℹ️ กำลังใช้พื้นหลังสีทึบ",
     "fontPlaceholder": "ชื่อฟอนต์ (เช่น Arial, Cordia New)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch ให้บริการแคตตาล็อกเนื้อเพลงที่ใหญ่ที่สุดในโลก"
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB ให้บริการเนื้อเพลงแบบซิงค์ เป็นฐานข้อมูลฟรีที่ดูแลโดยชุมชน"
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify ให้บริการเนื้อเพลงแบบซิงค์สำหรับผู้ใช้พรีเมียมบางกลุ่ม"
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) ให้บริการเนื้อเพลงภาษาจีน"
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius ให้บริการเนื้อเพลงและคำอธิบายประกอบ"
-    },
-    "custom": {
-      "name": "ฐานข้อมูลกำหนดเอง",
-      "desc": "ดึงเนื้อเพลงจากฐานข้อมูลที่กำหนดเอง"
-    }
   },
   "buttons": {
     "save": "บันทึก",
@@ -884,10 +855,6 @@ window.LANG_TH = {
         "stats": "เนื้อเพลง: {lyrics}, คำแปล: {translations}, เมตาดาต้า: {metadata}"
       }
     },
-    "lyricsProviders": {
-      "title": "ผู้ให้บริการเนื้อเพลง",
-      "subtitle": "จัดการลำดับความสำคัญและการตั้งค่าของแหล่งเนื้อเพลง"
-    },
     "languageDetection": {
       "title": "การตรวจจับภาษา",
       "subtitle": "ตั้งค่าการตรวจจับภาษาสำหรับการแปลงข้อความ",
@@ -1297,11 +1264,6 @@ window.LANG_TH = {
     "securityRestriction": "ถูกจำกัดโดยนโยบายความปลอดภัยของเบราว์เซอร์",
     "serverError": "ข้อผิดพลาดการตอบสนองจากเซิร์ฟเวอร์",
     "terminalMac": "Terminal (เทอร์มินัล)"
-  },
-  "providerDescriptions": {
-    "lrclib": "เนื้อเพลงจาก lrclib.net รองรับทั้งแบบซิงค์และไม่ซิงค์ LRCLIB เป็นฐานข้อมูลเนื้อเพลงโอเพนซอร์สฟรี",
-    "spotify": "เนื้อเพลงจาก Spotify API อย่างเป็นทางการ",
-    "cache": "เนื้อเพลงจากแคช/ไฟล์ท้องถิ่นที่โหลดจากเซสชัน Spotify ก่อนหน้า"
   },
   "modes": {
     "karaoke": "คาราโอเกะ",

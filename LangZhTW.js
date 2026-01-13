@@ -9,7 +9,6 @@ window.LANG_ZH_TW = {
     "general": "一般",
     "appearance": "外觀",
     "behavior": "行為",
-    "providers": "提供者",
     "advanced": "進階",
     "fullscreen": "全螢幕",
     "debug": "除錯",
@@ -48,8 +47,6 @@ window.LANG_ZH_TW = {
     "syncedLyricsContent": "同步歌詞內容",
     "unsyncedLyricsContent": "非同步歌詞內容",
     "customPreview": "自訂預覽",
-    "providerUsage": "提供者使用",
-    "providerUsageSubtitle": "設定要使用的歌詞提供者",
     "trackSyncInfo": "曲目同步資訊",
     "customDatabase": "自訂資料庫",
     "debug": "偵錯",
@@ -319,32 +316,6 @@ window.LANG_ZH_TW = {
     },
     "solidBackgroundInUse": "ℹ️ 正在使用純色背景",
     "fontPlaceholder": "輸入字體名稱（如：Arial, 微軟正黑體）"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch提供全球最大的歌詞目錄。"
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB提供同步歌詞，是免費的社群維護歌詞資料庫。"
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify為部分Premium用戶提供同步歌詞。"
-    },
-    "netease": {
-      "name": "網易雲音樂",
-      "desc": "網易雲音樂提供中文歌詞。"
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius提供歌詞和註解。"
-    },
-    "custom": {
-      "name": "自訂資料庫",
-      "desc": "從自訂資料庫取得歌詞。"
-    }
   },
   "buttons": {
     "save": "儲存",
@@ -913,10 +884,6 @@ window.LANG_ZH_TW = {
         "stats": "歌詞: {lyrics}個，翻譯: {translations}個，元資料: {metadata}個"
       }
     },
-    "lyricsProviders": {
-      "title": "歌詞提供者",
-      "subtitle": "管理歌詞來源的優先順序和設定"
-    },
     "languageDetection": {
       "title": "語言偵測",
       "subtitle": "文字轉換的語言偵測設定",
@@ -1322,11 +1289,6 @@ window.LANG_ZH_TW = {
     "securityRestriction": "瀏覽器安全性原則限制",
     "serverError": "伺服器回應錯誤",
     "terminalMac": "終端機"
-  },
-  "providerDescriptions": {
-    "lrclib": "來自lrclib.net的歌詞。支援同步和非同步歌詞。LRCLIB是免費的開源歌詞提供者。",
-    "spotify": "來自官方Spotify API的歌詞。",
-    "cache": "來自先前Spotify工作階段載入的快取/本機檔案的歌詞。"
   },
   "modes": {
     "karaoke": "卡拉OK",

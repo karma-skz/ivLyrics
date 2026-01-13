@@ -9,7 +9,6 @@ window.LANG_JA = {
     "general": "一般",
     "appearance": "外観",
     "behavior": "動作",
-    "providers": "プロバイダー",
     "advanced": "詳細",
     "fullscreen": "フルスクリーン",
     "debug": "デバッグ",
@@ -48,8 +47,6 @@ window.LANG_JA = {
     "syncedLyricsContent": "同期歌詞コンテンツ",
     "unsyncedLyricsContent": "非同期歌詞コンテンツ",
     "customPreview": "カスタムプレビュー",
-    "providerUsage": "プロバイダー使用",
-    "providerUsageSubtitle": "使用する歌詞プロバイダーを設定",
     "trackSyncInfo": "トラック同期情報",
     "customDatabase": "カスタムデータベース",
     "debug": "デバッグ",
@@ -319,32 +316,6 @@ window.LANG_JA = {
     },
     "solidBackgroundInUse": "ℹ️ 単色背景使用中",
     "fontPlaceholder": "フォント名を入力（例：Arial, Meiryo UI）"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatchは世界最大の歌詞カタログを提供しています。"
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIBは同期歌詞を提供する無料のコミュニティ管理歌詞データベースです。"
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotifyは一部のPremiumユーザーに同期歌詞を提供しています。"
-    },
-    "netease": {
-      "name": "NetEase Music",
-      "desc": "NetEase Musicは中国語歌詞を提供しています。"
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Geniusは歌詞と注釈を提供しています。"
-    },
-    "custom": {
-      "name": "カスタムデータベース",
-      "desc": "カスタムデータベースから歌詞を取得。"
-    }
   },
   "buttons": {
     "save": "保存",
@@ -913,10 +884,6 @@ window.LANG_JA = {
         "stats": "歌詞: {lyrics}件、翻訳: {translations}件、メタデータ: {metadata}件"
       }
     },
-    "lyricsProviders": {
-      "title": "歌詞プロバイダー",
-      "subtitle": "歌詞ソースの優先順位と設定を管理"
-    },
     "languageDetection": {
       "title": "言語検出",
       "subtitle": "テキスト変換の言語検出設定",
@@ -1322,11 +1289,6 @@ window.LANG_JA = {
     "securityRestriction": "ブラウザセキュリティポリシー制限",
     "serverError": "サーバー応答エラー",
     "terminalMac": "ターミナル"
-  },
-  "providerDescriptions": {
-    "lrclib": "lrclib.netからの歌詞。同期・非同期歌詞をサポート。LRCLIBは無料のオープンソース歌詞プロバイダーです。",
-    "spotify": "公式Spotify APIからの歌詞。",
-    "cache": "以前のSpotifyセッションからロードされたキャッシュ/ローカルファイルからの歌詞。"
   },
   "modes": {
     "karaoke": "カラオケ",

@@ -9,7 +9,6 @@ window.LANG_ZH_CN = {
     "general": "常规",
     "appearance": "外观",
     "behavior": "行为",
-    "providers": "提供者",
     "advanced": "高级",
     "fullscreen": "全屏",
     "debug": "调试",
@@ -48,8 +47,6 @@ window.LANG_ZH_CN = {
     "syncedLyricsContent": "同步歌词内容",
     "unsyncedLyricsContent": "非同步歌词内容",
     "customPreview": "自定义预览",
-    "providerUsage": "提供者使用",
-    "providerUsageSubtitle": "配置要使用的歌词提供者",
     "trackSyncInfo": "曲目同步信息",
     "customDatabase": "自定义数据库",
     "debug": "调试",
@@ -319,32 +316,6 @@ window.LANG_ZH_CN = {
     },
     "solidBackgroundInUse": "ℹ️ 正在使用纯色背景",
     "fontPlaceholder": "输入字体名称（如：Arial, 微软雅黑）"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch提供世界上最大的歌词目录。"
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB提供同步歌词，是一个免费的社区维护歌词数据库。"
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify为部分高级用户提供同步歌词。"
-    },
-    "netease": {
-      "name": "网易云音乐",
-      "desc": "网易云音乐提供中文歌词。"
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius提供歌词和注释。"
-    },
-    "custom": {
-      "name": "自定义数据库",
-      "desc": "从自定义数据库获取歌词。"
-    }
   },
   "buttons": {
     "save": "保存",
@@ -913,10 +884,6 @@ window.LANG_ZH_CN = {
         "stats": "歌词: {lyrics}个，翻译: {translations}个，元数据: {metadata}个"
       }
     },
-    "lyricsProviders": {
-      "title": "歌词提供者",
-      "subtitle": "管理歌词来源的优先级和设置"
-    },
     "languageDetection": {
       "title": "语言检测",
       "subtitle": "文本转换的语言检测设置",
@@ -1322,11 +1289,6 @@ window.LANG_ZH_CN = {
     "securityRestriction": "浏览器安全策略限制",
     "serverError": "服务器响应错误",
     "terminalMac": "终端"
-  },
-  "providerDescriptions": {
-    "lrclib": "来自lrclib.net的歌词。支持同步和非同步歌词。LRCLIB是免费的开源歌词提供者。",
-    "spotify": "来自官方Spotify API的歌词。",
-    "cache": "来自之前Spotify会话加载的缓存/本地文件的歌词。"
   },
   "modes": {
     "karaoke": "卡拉OK",

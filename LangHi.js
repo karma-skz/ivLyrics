@@ -9,7 +9,6 @@ window.LANG_HI = {
     "general": "सामान्य",
     "appearance": "दिखावट",
     "behavior": "व्यवहार",
-    "providers": "प्रदाता",
     "advanced": "उन्नत",
     "fullscreen": "फुल स्क्रीन",
     "debug": "डीबग",
@@ -48,8 +47,6 @@ window.LANG_HI = {
     "syncedLyricsContent": "सिंक किए गए लिरिक्स कंटेंट",
     "unsyncedLyricsContent": "बिना सिंक किए गए लिरिक्स कंटेंट",
     "customPreview": "कस्टम पूर्वावलोकन",
-    "providerUsage": "प्रदाता उपलब्धता",
-    "providerUsageSubtitle": "उपयोग करने के लिए लिरिक्स प्रदाता सेट करें",
     "trackSyncInfo": "ट्रैक सिंक जानकारी",
     "customDatabase": "कस्टम डेटाबेस",
     "debug": "डिबग",
@@ -305,32 +302,6 @@ window.LANG_HI = {
     },
     "solidBackgroundInUse": "ℹ️ ठोस रंग बैकग्राउंड उपयोग में है",
     "fontPlaceholder": "फ़ॉन्ट का नाम दर्ज करें (जैसे: Arial, Mangal)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch दुनिया का सबसे बड़ा लिरिक्स कैटलॉग प्रदान करता है।"
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB सिंक लिरिक्स प्रदान करता है और यह एक समुदाय-संचालित मुफ्त लिरिक्स डेटाबेस है।"
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify कुछ प्रीमियम उपयोगकर्ताओं को सिंक लिरिक्स प्रदान करता है।"
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) चीनी लिरिक्स प्रदान करता है।"
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius लिरिक्स और एनोटेशन प्रदान करता है।"
-    },
-    "custom": {
-      "name": "कस्टम डेटाबेस",
-      "desc": "कस्टम डेटाबेस से लिरिक्स प्राप्त करता है।"
-    }
   },
   "buttons": {
     "save": "सहेजें",
@@ -870,10 +841,6 @@ window.LANG_HI = {
         "button": "कैश साफ़ करें"
       }
     },
-    "lyricsProviders": {
-      "title": "लिरिक्स प्रदाता",
-      "subtitle": "लिरिक्स स्रोतों की प्राथमिकता और सेटिंग्स प्रबंधित करें"
-    },
     "languageDetection": {
       "title": "भाषा पहचान",
       "subtitle": "टेक्स्ट रूपांतरण के लिए भाषा पहचान सेटिंग्स",
@@ -1283,11 +1250,6 @@ window.LANG_HI = {
     "securityRestriction": "ब्राउज़र सुरक्षा नीति के कारण प्रतिबंध",
     "serverError": "सर्वर प्रतिक्रिया त्रुटि",
     "terminalMac": "टर्मिनल (Terminal)"
-  },
-  "providerDescriptions": {
-    "lrclib": "lrclib.net द्वारा प्रदान किए गए लिरिक्स। सिंक किए गए और बिना सिंक किए गए लिरिक्स दोनों का समर्थन करता है। LRCLIB एक समुदाय-संचालित मुफ्त लिरिक्स प्रदाता है।",
-    "spotify": "आधिकारिक Spotify API द्वारा प्रदान किए गए लिरिक्स।",
-    "cache": "पिछले Spotify सत्रों से लोड किए गए कैश/लोकल फ़ाइल लिरिक्स प्रदान करता है।"
   },
   "modes": {
     "karaoke": "कराओके",

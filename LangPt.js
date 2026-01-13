@@ -9,7 +9,6 @@ window.LANG_PT = {
     "general": "Geral",
     "appearance": "Aparência",
     "behavior": "Comportamento",
-    "providers": "Provedores",
     "advanced": "Avançado",
     "fullscreen": "Tela Cheia",
     "debug": "Depuração",
@@ -48,8 +47,6 @@ window.LANG_PT = {
     "syncedLyricsContent": "Conteúdo da Letra Sincronizada",
     "unsyncedLyricsContent": "Conteúdo da Letra Não Sincronizada",
     "customPreview": "Pré-visualização Personalizada",
-    "providerUsage": "Disponibilidade do Provedor",
-    "providerUsageSubtitle": "Configure os provedores de letras a serem usados",
     "trackSyncInfo": "Info de Sincronização da Faixa",
     "customDatabase": "Banco de Dados Personalizado",
     "debug": "Depuração",
@@ -319,32 +316,6 @@ window.LANG_PT = {
     },
     "solidBackgroundInUse": "ℹ️ Fundo de cor sólida em uso",
     "fontPlaceholder": "Insira o nome da fonte (ex: Arial, Roboto)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch fornece o maior catálogo de letras do mundo."
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB fornece letras sincronizadas e é um banco de dados de letras gratuito mantido pela comunidade."
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify fornece letras sincronizadas para alguns usuários premium."
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) fornece letras em chinês."
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius fornece letras e anotações."
-    },
-    "custom": {
-      "name": "Banco de Dados Personalizado",
-      "desc": "Busca letras de um banco de dados personalizado."
-    }
   },
   "buttons": {
     "save": "Salvar",
@@ -913,10 +884,6 @@ window.LANG_PT = {
         "stats": "Letras: {lyrics}, Traduções: {translations}, Metadados: {metadata}"
       }
     },
-    "lyricsProviders": {
-      "title": "Provedores de Letra",
-      "subtitle": "Gerenciar prioridade e configurações dos provedores de letra"
-    },
     "languageDetection": {
       "title": "Detecção de Idioma",
       "subtitle": "Configurações de detecção de idioma para conversão de texto",
@@ -1322,11 +1289,6 @@ window.LANG_PT = {
     "securityRestriction": "Restrição devido à política de segurança do navegador",
     "serverError": "Erro de resposta do servidor",
     "terminalMac": "Terminal"
-  },
-  "providerDescriptions": {
-    "lrclib": "Letras fornecidas por lrclib.net. Suporta letras sincronizadas e não sincronizadas. LRCLIB é um banco de dados de letras gratuito mantido pela comunidade.",
-    "spotify": "Letras fornecidas pela API oficial do Spotify.",
-    "cache": "Fornece letras em cache/arquivos locais carregados de sessões anteriores do Spotify."
   },
   "modes": {
     "karaoke": "Karaokê",

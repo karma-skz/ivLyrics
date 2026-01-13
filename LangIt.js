@@ -9,7 +9,6 @@ window.LANG_IT = {
     "general": "Generale",
     "appearance": "Aspetto",
     "behavior": "Comportamento",
-    "providers": "Provider",
     "advanced": "Avanzate",
     "fullscreen": "Schermo Intero",
     "debug": "Debug",
@@ -48,8 +47,6 @@ window.LANG_IT = {
     "syncedLyricsContent": "Contenuto Testo Sincronizzato",
     "unsyncedLyricsContent": "Contenuto Testo Non Sincronizzato",
     "customPreview": "Anteprima Personalizzata",
-    "providerUsage": "Disponibilità Provider",
-    "providerUsageSubtitle": "Configura i provider di testi da utilizzare",
     "trackSyncInfo": "Info Sincronizzazione Traccia",
     "customDatabase": "Database Personalizzato",
     "debug": "Debug",
@@ -319,32 +316,6 @@ window.LANG_IT = {
     },
     "solidBackgroundInUse": "ℹ️ Sfondo tinta unita in uso",
     "fontPlaceholder": "Inserisci nome font (es: Arial, Roboto)"
-  },
-  "providers": {
-    "musixmatch": {
-      "name": "Musixmatch",
-      "desc": "Musixmatch fornisce il catalogo di testi più grande al mondo."
-    },
-    "lrclib": {
-      "name": "LRCLIB",
-      "desc": "LRCLIB fornisce testi sincronizzati ed è un database gratuito gestito dalla comunità."
-    },
-    "spotify": {
-      "name": "Spotify",
-      "desc": "Spotify fornisce testi sincronizzati per alcuni utenti premium."
-    },
-    "netease": {
-      "name": "NetEase",
-      "desc": "NetEase (网易云音乐) fornisce testi in cinese."
-    },
-    "genius": {
-      "name": "Genius",
-      "desc": "Genius fornisce testi e annotazioni."
-    },
-    "custom": {
-      "name": "Database Personalizzato",
-      "desc": "Recupera testi da un database personalizzato."
-    }
   },
   "buttons": {
     "save": "Salva",
@@ -913,10 +884,6 @@ window.LANG_IT = {
         "stats": "Testi: {lyrics}, Traduzioni: {translations}, Metadati: {metadata}"
       }
     },
-    "lyricsProviders": {
-      "title": "Provider Testi",
-      "subtitle": "Gestisci priorità e impostazioni delle fonti di testo"
-    },
     "languageDetection": {
       "title": "Rilevamento Lingua",
       "subtitle": "Impostazioni rilevamento lingua per conversione testo",
@@ -1322,11 +1289,6 @@ window.LANG_IT = {
     "securityRestriction": "Restrizione dovuta alla politica di sicurezza del browser",
     "serverError": "Errore risposta server",
     "terminalMac": "Terminale"
-  },
-  "providerDescriptions": {
-    "lrclib": "Testi forniti da lrclib.net. Supporta testi sincronizzati e non sincronizzati. LRCLIB è un provider di testi gratuito gestito dalla comunità.",
-    "spotify": "Testi forniti dall'API ufficiale di Spotify.",
-    "cache": "Fornisce testi in cache/file locali caricati da sessioni Spotify precedenti."
   },
   "modes": {
     "karaoke": "Karaoke",
