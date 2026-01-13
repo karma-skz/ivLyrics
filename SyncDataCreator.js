@@ -600,8 +600,21 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					charTimesRef.current = new Array(currentLineChars.length).fill(null);
 					charTimesRef.current[0] = currentTime;
 
-					// 첫 글자 다음이 공백이면 공백도 함께 처리
-					while (startIndex + 1 < currentLineChars.length && currentLineChars[startIndex + 1] === ' ') {
+					// 특수문자 패턴: 공백, 구두점, 닫는 괄호
+					const isTrailingChar = (ch) => /[\s!?\.,;:\)\]\}」』】〉》"''""]/.test(ch);
+					// 여는 괄호 패턴
+					const isLeadingChar = (ch) => /[\(\[\{「『【〈《"''""¿¡]/.test(ch);
+
+					// 첫 글자가 여는 괄호면 다음 글자까지 포함
+					if (isLeadingChar(currentLineChars[0])) {
+						while (startIndex + 1 < currentLineChars.length && isLeadingChar(currentLineChars[startIndex])) {
+							startIndex++;
+							charTimesRef.current[startIndex] = currentTime;
+						}
+					}
+
+					// 다음 글자가 구두점/닫는괄호/공백이면 함께 처리
+					while (startIndex + 1 < currentLineChars.length && isTrailingChar(currentLineChars[startIndex + 1])) {
 						startIndex++;
 						charTimesRef.current[startIndex] = currentTime;
 					}
@@ -616,8 +629,18 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					if (nextIndex < currentLineChars.length) {
 						charTimesRef.current[nextIndex] = currentTime;
 
-						// 이 글자 바로 다음이 공백이면 공백도 함께 처리
-						while (nextIndex + 1 < currentLineChars.length && currentLineChars[nextIndex + 1] === ' ') {
+						// 특수문자 패턴
+						const isTrailingChar = (ch) => /[\s!?\.,;:\)\]\}」』】〉》"''""]/.test(ch);
+						const isLeadingChar = (ch) => /[\(\[\{「『【〈《"''""¿¡]/.test(ch);
+
+						// 현재 글자가 여는 괄호면 다음 글자까지 포함
+						while (nextIndex + 1 < currentLineChars.length && isLeadingChar(currentLineChars[nextIndex])) {
+							nextIndex++;
+							charTimesRef.current[nextIndex] = currentTime;
+						}
+
+						// 다음 글자가 구두점/닫는괄호/공백이면 함께 처리
+						while (nextIndex + 1 < currentLineChars.length && isTrailingChar(currentLineChars[nextIndex + 1])) {
 							nextIndex++;
 							charTimesRef.current[nextIndex] = currentTime;
 						}
