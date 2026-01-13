@@ -451,8 +451,6 @@ const DebugInfoPanel = () => {
       const cachedLyrics = window.CACHE?.[trackUri];
 
       // CONFIG 정보
-      const providersOrder = CONFIG.providersOrder || [];
-      const enabledProviders = providersOrder.filter(p => CONFIG.providers[p]?.on);
 
       // 번역 설정
       const translateSource = CONFIG.visual["translate:translated-lyrics-source"];
@@ -488,8 +486,6 @@ const DebugInfoPanel = () => {
         },
         lyrics: lyricsInfo,
         settings: {
-          providersOrder: providersOrder,
-          enabledProviders: enabledProviders,
           translateSource: translateSource || "none",
           targetLang: targetLang || "none",
           karaokeEnabled: CONFIG.visual["karaoke-mode-enabled"] || false,
@@ -2443,173 +2439,6 @@ const ConfigKeyList = ({ name, settingKey, defaultValue, onChange = () => { } })
   );
 };
 
-const ServiceAction = ({ item, setTokenCallback }) => {
-  // CacheButton은 LocalCacheManager로 통합되어 제거됨
-  return null;
-};
-
-const ServiceOption = react.memo(
-  ({
-    item,
-    onToggle,
-    onSwap,
-    isFirst = false,
-    isLast = false,
-    onTokenChange = null,
-  }) => {
-    const [token, setToken] = useState(item.token);
-    const [active, setActive] = useState(item.on);
-
-    const setTokenCallback = useCallback(
-      (token) => {
-        setToken(token);
-        onTokenChange(item.name, token);
-      },
-      [item.name, onTokenChange]
-    );
-
-    const toggleActive = useCallback(() => {
-      setActive((prevActive) => {
-        const newState = !prevActive;
-        onToggle(item.name, newState);
-        return newState;
-      });
-    }, [item.name, onToggle]);
-
-    return react.createElement(
-      react.Fragment,
-      null,
-      react.createElement(
-        "div",
-        {
-          className: "setting-row",
-        },
-        react.createElement(
-          "div",
-          { className: "setting-row-content" },
-          react.createElement(
-            "div",
-            { className: "setting-row-left" },
-            react.createElement(
-              "div",
-              { className: "setting-name" },
-              item.name
-            ),
-            react.createElement("div", {
-              className: "setting-description",
-              dangerouslySetInnerHTML: {
-                __html: item.desc,
-              },
-            })
-          ),
-          react.createElement(
-            "div",
-            {
-              className: "setting-row-right",
-              style: { display: "flex", gap: "8px", alignItems: "center" },
-            },
-            react.createElement(ServiceAction, {
-              item,
-              setTokenCallback,
-            }),
-            react.createElement(SwapButton, {
-              icon: Spicetify.SVGIcons["chart-up"],
-              onClick: () => onSwap(item.name, -1),
-              disabled: isFirst,
-            }),
-            react.createElement(SwapButton, {
-              icon: Spicetify.SVGIcons["chart-down"],
-              onClick: () => onSwap(item.name, 1),
-              disabled: isLast,
-            }),
-            react.createElement(ButtonSVG, {
-              icon: Spicetify.SVGIcons.check,
-              active,
-              onClick: toggleActive,
-            })
-          )
-        )
-      ),
-      item.token !== undefined &&
-      react.createElement(
-        "div",
-        {
-          className: "service-token-input-wrapper",
-          style: {
-            padding: "0 16px 12px 16px",
-            background: "rgba(28, 28, 30, 0.5)",
-            backdropFilter: "blur(30px) saturate(150%)",
-            WebkitBackdropFilter: "blur(30px) saturate(150%)",
-            borderLeft: "1px solid rgba(255, 255, 255, 0.08)",
-            borderRight: "1px solid rgba(255, 255, 255, 0.08)",
-            borderBottom: "0.5px solid rgba(255, 255, 255, 0.08)",
-            marginTop: "-1px",
-          },
-        },
-        react.createElement("input", {
-          type: "text",
-          placeholder: `Place your ${item.name} token here`,
-          value: token,
-          onChange: (event) => setTokenCallback(event.target.value),
-          style: {
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            borderRadius: "8px",
-            padding: "8px 12px",
-            color: "#ffffff",
-            fontSize: "13px",
-            width: "100%",
-            boxSizing: "border-box",
-            fontFamily:
-              "Pretendard Variable, -apple-system, BlinkMacSystemFont, sans-serif",
-          },
-        })
-      )
-    );
-  }
-);
-
-const ServiceList = ({
-  itemsList,
-  onListChange = () => { },
-  onToggle = () => { },
-  onTokenChange = () => { },
-}) => {
-  const [items, setItems] = useState(itemsList);
-  const maxIndex = items.length - 1;
-
-  const onSwap = useCallback(
-    (name, direction) => {
-      const curPos = items.findIndex((val) => val === name);
-      const newPos = curPos + direction;
-      [items[curPos], items[newPos]] = [items[newPos], items[curPos]];
-      onListChange(items);
-      setItems([...items]);
-    },
-    [items]
-  );
-
-  const renderedItems = items.map((key, index) => {
-    const item = CONFIG.providers[key];
-    item.name = key;
-    return react.createElement(ServiceOption, {
-      item,
-      key,
-      isFirst: index === 0,
-      isLast: index === maxIndex,
-      onSwap,
-      onTokenChange,
-      onToggle,
-    });
-  });
-
-  // ServiceList도 wrapper로 감싸기
-  return react.createElement(
-    "div",
-    { className: "service-list-wrapper" },
-    ...renderedItems
-  );
-};
 
 const OptionList = ({ type, items, onChange }) => {
   const [itemList, setItemList] = useState(items);
@@ -3043,8 +2872,8 @@ const ConfigModal = () => {
     },
 
     {
-      section: I18n.t("tabs.providers"),
-      sectionKey: "translation",
+      section: I18n.t("tabs.advanced"),
+      sectionKey: "advanced",
       settingKey: "gemini-api",
       name: "Gemini API",
       desc: I18n.t("menu.apiSettings"),
@@ -5033,13 +4862,6 @@ const ConfigModal = () => {
         onClick: setActiveTab,
       }),
       react.createElement(TabButton, {
-        id: "translation",
-        label: I18n.t("tabs.providers"),
-        icon: "",
-        isActive: activeTab === "translation",
-        onClick: setActiveTab,
-      }),
-      react.createElement(TabButton, {
         id: "advanced",
         label: I18n.t("tabs.advanced"),
         icon: "",
@@ -6384,14 +6206,6 @@ const ConfigModal = () => {
             }
           },
         })
-      ),
-      // 번역 탭 (가사 제공자 포함)
-      react.createElement(
-        "div",
-        {
-          className: `tab-content ${activeTab === "translation" ? "active" : ""
-            }`,
-        },
       ),
       // 고급 탭
       react.createElement(

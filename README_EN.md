@@ -151,7 +151,7 @@ If you experience issues with settings or lyrics display:
 
 ### Common Issues
 
-- **Lyrics not displaying**: Check if lyrics providers are enabled in settings.
+- **Lyrics not displaying**: Check your internet connection or try another song.
 - **Translation not working**: Verify that your Gemini API key is entered correctly.
 - **Spotify won't launch**: Run `spicetify restore` followed by `spicetify apply`.
 

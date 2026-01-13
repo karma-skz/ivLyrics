@@ -3323,13 +3323,8 @@
 
                     console.log('[OverlaySender] 트랙 정보:', { title, artist });
 
-                    // 사용자 설정의 provider 순서 사용 (활성화된 것만 필터)
-                    const defaultOrder = ['spotify', 'lrclib', 'local'];
-                    const configOrder = window.CONFIG?.providersOrder;
-                    const providers = window.CONFIG?.providers || {};
-                    const providerOrder = Array.isArray(configOrder) && configOrder.length > 0
-                        ? configOrder.filter(id => providers[id]?.on !== false)
-                        : defaultOrder;
+                    // Default provider order
+                    const providerOrder = ['spotify', 'lrclib', 'local'];
 
                     // LyricsService.getFullLyrics 통합 API 사용
                     // (가사 로드 + endTime 계산 + 발음/번역 + 오버레이 전송까지 한 번에 처리)
@@ -3647,13 +3642,8 @@
 
                         console.log('[lyricsHelperSender] 트랙 정보:', { title, artist });
 
-                        // 사용자 설정의 provider 순서 사용 (활성화된 것만 필터)
-                        const defaultOrder = ['spotify', 'lrclib', 'local'];
-                        const configOrder = window.CONFIG?.providersOrder;
-                        const providers = window.CONFIG?.providers || {};
-                        const providerOrder = Array.isArray(configOrder) && configOrder.length > 0
-                            ? configOrder.filter(id => providers[id]?.on !== false)
-                            : defaultOrder;
+                        // Default provider order
+                        const providerOrder = ['spotify', 'lrclib', 'local'];
 
                         // LyricsService.getFullLyrics 통합 API 사용
                         // (가사 로드 + endTime 계산 + 발음/번역 + 오버레이 전송까지 한 번에 처리)

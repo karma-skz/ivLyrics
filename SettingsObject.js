@@ -100,10 +100,7 @@ const SettingKeys = [
   "ivLyrics:visual:fullscreen-key",
   "ivLyrics:visual:synced-compact",
   "ivLyrics:visual:global-delay",
-  "ivLyrics:provider:spotify:on",
-  "ivLyrics:provider:lrclib:on",
-  "ivLyrics:provider:local:on",
-  "ivLyrics:services-order",
+
   "ivLyrics:lock-mode",
   "ivLyrics:local-lyrics",
   "ivLyrics:track-sync-offsets",

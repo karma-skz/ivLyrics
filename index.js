@@ -1561,43 +1561,12 @@ const CONFIG = {
 
     delay: 0,
   },
-  providers: {
-    spotify: {
-      on: StorageManager.get("ivLyrics:provider:spotify:on", true),
-      get desc() { return window.I18n ? I18n.t("providerDescriptions.spotify") : "Lyrics from Spotify"; },
-      modes: [KARAOKE, SYNCED, UNSYNCED],
-    },
-    lrclib: {
-      on: StorageManager.get("ivLyrics:provider:lrclib:on"),
-      get desc() { return window.I18n ? I18n.t("providerDescriptions.lrclib") : "Lyrics from lrclib.net"; },
-      modes: [KARAOKE, SYNCED, UNSYNCED],
-    },
-    local: {
-      on: StorageManager.get("ivLyrics:provider:local:on"),
-      get desc() { return window.I18n ? I18n.t("providerDescriptions.cache") : "Cached lyrics"; },
-      modes: [SYNCED, UNSYNCED],
-    },
-  },
-  providersOrder: StorageManager.getItem("ivLyrics:services-order"),
+
   get modes() { return window.I18n ? [I18n.t("modes.karaoke"), I18n.t("modes.synced"), I18n.t("modes.unsynced")] : ["Karaoke", "Synced", "Unsynced"]; },
   locked: -1, // Lock mode deprecated - always auto-detect
 };
 
-try {
-  CONFIG.providersOrder = JSON.parse(CONFIG.providersOrder);
-  if (
-    !Array.isArray(CONFIG.providersOrder) ||
-    Object.keys(CONFIG.providers).length !== CONFIG.providersOrder.length
-  ) {
-    throw "";
-  }
-} catch {
-  CONFIG.providersOrder = ["spotify", "lrclib", "local"];
-  StorageManager.setItem(
-    "ivLyrics:services-order",
-    JSON.stringify(CONFIG.providersOrder)
-  );
-}
+
 
 CONFIG.locked = Number.parseInt(CONFIG.locked);
 CONFIG.visual["lines-before"] = Number.parseInt(CONFIG.visual["lines-before"]);
@@ -1952,7 +1921,7 @@ const Prefetcher = {
         console.log(`[Prefetcher] Fetching lyrics for: ${trackInfo.title}`);
 
         // LyricsService Extension을 통해 가사 로드
-        const providerOrder = CONFIG.providersOrder.filter(id => CONFIG.providers[id]?.on);
+        const providerOrder = ["spotify", "lrclib", "local"];
         const resp = await window.LyricsService.getLyricsFromProviders(trackInfo, providerOrder, mode);
         if (!resp.uri) resp.uri = trackInfo.uri;
 
@@ -2851,7 +2820,7 @@ class LyricsContainer extends react.Component {
   async tryServices(trackInfo, mode = -1) {
     // LyricsService Extension을 통해 가사 로드
     if (window.LyricsService?.getLyricsFromProviders) {
-      const providerOrder = CONFIG.providersOrder.filter(id => CONFIG.providers[id]?.on);
+      const providerOrder = ["spotify", "lrclib", "local"];
       const result = await window.LyricsService.getLyricsFromProviders(trackInfo, providerOrder, mode);
       if (!result.uri) result.uri = trackInfo.uri;
       return result;
@@ -2911,7 +2880,7 @@ class LyricsContainer extends react.Component {
         this.setState({ ...emptyState, isLoading: true, isCached: false });
 
         // LyricsService Extension을 통해 가사 로드
-        const providerOrder = CONFIG.providersOrder.filter(id => CONFIG.providers[id]?.on);
+        const providerOrder = ["spotify", "lrclib", "local"];
         const resp = await window.LyricsService.getLyricsFromProviders(info, providerOrder, mode);
         if (!resp.uri) resp.uri = info.uri;
 
@@ -4585,11 +4554,7 @@ class LyricsContainer extends react.Component {
   }
 
   updateVisualOnConfigChange() {
-    this.availableModes = CONFIG.modes.filter((_, id) => {
-      return Object.values(CONFIG.providers).some(
-        (p) => p.on && p.modes.includes(id)
-      );
-    });
+    this.availableModes = CONFIG.modes;
 
     if (!CONFIG.visual.colorful) {
       this.styleVariables = {

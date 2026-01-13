@@ -152,7 +152,7 @@ curl -fsSL https://ivlis.kr/ivLyrics/uninstall.sh | sh
 
 ### 자주 발생하는 문제
 
-- **가사가 표시되지 않음**: 설정에서 가사 제공자가 활성화되어 있는지 확인하세요.
+- **가사가 표시되지 않음**: 인터넷 연결을 확인하거나 다른 노래를 재생해보세요.
 - **번역이 작동하지 않음**: Gemini API 키가 올바르게 입력되었는지 확인하세요.
 - **Spotify가 실행되지 않음**: `spicetify restore` 후 `spicetify apply`를 다시 실행하세요.
 

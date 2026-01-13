@@ -87,12 +87,35 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		return syncData.lines.some(l => l.start === lineStart);
 	}, [syncData, lineCharOffsets, currentLineIndex]);
 
-	// 다음 곡 방지 - 싱크 생성기가 열려있으면 항상 활성화
+	// Visibility tracking for robust lock handling
+	const isVisibleRef = useRef(false);
+
+	// Visibility Observer
 	useEffect(() => {
-		preventNextTrackRef.current = true;
+		if (!containerRef.current) return;
+
+		const observer = new IntersectionObserver(([entry]) => {
+			isVisibleRef.current = entry.isIntersecting;
+			preventNextTrackRef.current = entry.isIntersecting;
+			// console.log("[SyncDataCreator] Visibility changed:", entry.isIntersecting);
+		}, { threshold: 0 });
+
+		observer.observe(containerRef.current);
+
+		return () => observer.disconnect();
+	}, []);
+
+	// 다음 곡 방지 - 싱크 생성기가 보일 때만 활성화
+	useEffect(() => {
+		// 초기 마운트/업데이트 시 visibility 상태 동기화
+		preventNextTrackRef.current = isVisibleRef.current;
 
 		const handleSongChange = () => {
+			// 화면에 보이지 않으면 동작하지 않음
+			if (!isVisibleRef.current) return;
+			// preventNextTrackRef가 false여도 동작하지 않음 (이중 체크)
 			if (!preventNextTrackRef.current) return;
+
 			const currentTrackUri = Spicetify.Player?.data?.item?.uri;
 			if (currentTrackUri && currentTrackUri !== trackUri) {
 				Spicetify.Player.playUri(trackUri);
@@ -100,7 +123,10 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		};
 
 		const handleProgress = () => {
+			// 화면에 보이지 않으면 동작하지 않음
+			if (!isVisibleRef.current) return;
 			if (!preventNextTrackRef.current) return;
+
 			const duration = Spicetify.Player?.data?.item?.duration?.milliseconds || 0;
 			const progress = Spicetify.Player.getProgress();
 			if (duration > 0 && progress >= duration - 250) {
@@ -112,6 +138,7 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		Spicetify.Player.addEventListener('songchange', handleSongChange);
 
 		return () => {
+			// 언마운트 시 해제 (단, 숨김 상태일 뿐이면 observer가 false로 설정함)
 			preventNextTrackRef.current = false;
 			clearInterval(progressInterval);
 			Spicetify.Player.removeEventListener('songchange', handleSongChange);
@@ -944,7 +971,12 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 	return react.createElement('div', { style: s.overlay, ref: containerRef },
 		// Header - 가운데 정렬
 		react.createElement('div', { style: s.header },
-			react.createElement('button', { style: s.backBtn, onClick: onClose },
+			react.createElement('button', {
+				style: s.backBtn, onClick: () => {
+					preventNextTrackRef.current = false;
+					if (onClose) onClose();
+				}
+			},
 				react.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'currentColor' },
 					react.createElement('path', { d: 'M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z' })
 				),
