@@ -11,32 +11,33 @@ window.LANG_ZH_CN = {
     "behavior": "行为",
     "advanced": "高级",
     "fullscreen": "全屏",
+    "nowplaying": "面板歌词",
     "debug": "调试",
     "about": "关于",
     "searchResults": "搜索结果"
   },
   "search": {
     "placeholder": "搜索设置...",
-    "noResults": "未找到结果",
-    "noResultsDesc": "请尝试其他搜索词",
-    "resultCount": "{count}个结果",
+    "noResults": "无搜索结果",
+    "noResultsDesc": "请尝试输入其他关键词",
+    "resultCount": "{count} 个结果",
     "clear": "清除",
-    "inSection": "在{section}中"
+    "inSection": "在 {section} 中"
   },
   "sections": {
     "language": "语言",
     "visualEffects": "视觉效果",
     "visualEffectsSubtitle": "自定义歌词界面的视觉元素",
     "syncMode": "同步模式",
-    "syncModeSubtitle": "配置歌词同步方式",
-    "typography": "字体样式",
-    "typographySubtitle": "调整歌词文本的样式",
-    "textShadow": "文字阴影",
+    "syncModeSubtitle": "设置歌词同步方式",
+    "typography": "文本样式",
+    "typographySubtitle": "调整歌词文本的风格",
+    "textShadow": "文本阴影",
     "textShadowSubtitle": "为歌词文本添加阴影效果",
     "updateCheck": "检查更新",
     "backgroundOpacity": "背景不透明度",
     "contentWidth": "内容宽度",
-    "japaneseConversion": "日语转换",
+    "japaneseConversion": "日语显示转换",
     "displayContent": "显示内容",
     "autoTranslation": "自动翻译",
     "lyrics": "歌词",
@@ -53,11 +54,11 @@ window.LANG_ZH_CN = {
     "github": "GitHub",
     "maintainers": "维护者",
     "contributors": "贡献者",
-    "fadWarningTitle": "⚠️ 全屏扩展程序已激活",
-    "fadWarningDesc": "在全屏扩展程序激活时不支持此功能。",
-    "fadWarningTip": "请在全屏扩展程序的设置中更改对齐方式。",
+    "fadWarningTitle": "⚠️ 正在使用 Full Screen 扩展程序",
+    "fadWarningDesc": "在使用 Full Screen 扩展程序时不支持此功能。",
+    "fadWarningTip": "请在 Full Screen 扩展本身的设置中更改对齐方式。",
     "desktopOverlay": "桌面悬浮窗",
-    "desktopOverlaySubtitle": "将歌词显示为桌面悬浮窗"
+    "desktopOverlaySubtitle": "在桌面上以悬浮窗形式显示歌词"
   },
   "overlay": {
     "enabled": {
@@ -77,7 +78,7 @@ window.LANG_ZH_CN = {
     },
     "openApp": "打开应用",
     "download": "下载应用",
-    "downloadDesc": "如果未安装悬浮窗应用，请下载"
+    "downloadDesc": "如果尚未安装悬浮窗应用，请先下载"
   },
   "settings": {
     "language": {
@@ -94,24 +95,24 @@ window.LANG_ZH_CN = {
       }
     },
     "noise": {
-      "label": "噪点覆盖",
-      "desc": "在背景上添加胶片颗粒效果"
+      "label": "噪点叠加",
+      "desc": "在背景添加胶片颗粒效果"
     },
     "albumBgBlur": {
       "label": "专辑背景模糊",
-      "desc": "调整专辑背景的模糊强度"
+      "desc": "调节专辑背景的模糊强度"
     },
     "blurGradientBackground": {
       "label": "模糊渐变背景",
-      "desc": "应用从专辑封面颜色提取的模糊渐变背景"
+      "desc": "提取专辑封面颜色并应用模糊渐变背景"
     },
     "colorful": {
-      "label": "彩色背景",
+      "label": "多彩背景",
       "desc": "启用基于专辑颜色的动态背景"
     },
     "gradientBackground": {
       "label": "专辑封面背景",
-      "desc": "使用当前播放的专辑封面作为背景（在全屏模式下可能无法正常工作）"
+      "desc": "使用当前播放的专辑封面作为背景（全屏模式下可能无法正常工作）"
     },
     "solidBackground": {
       "label": "纯色背景",
@@ -123,16 +124,16 @@ window.LANG_ZH_CN = {
     },
     "videoBackground": {
       "label": "视频背景",
-      "desc": "使用YouTube视频作为背景（测试版）"
+      "desc": "使用 YouTube 视频作为背景（Beta）"
     },
     "videoHelper": {
-      "label": "使用辅助程序",
-      "desc": "在本地下载并播放YouTube视频。无需登录即可观看视频。",
-      "info": "💡 YouTube视频无法加载？\n\nGoogle限制部分用户在未登录的情况下播放YouTube视频。\n使用辅助程序可以正常加载视频。",
-      "download": "下载辅助程序",
+      "label": "使用助手程序",
+      "desc": "在本地下载并播放 YouTube 视频。无需登录即可观看视频。",
+      "info": "💡 YouTube 视频无法加载？\n\nGoogle 限制部分用户在未登录的情况下播放 YouTube 视频。\n使用助手程序可以正常加载。",
+      "download": "下载助手",
       "checkConnection": "检查连接",
-      "connected": "已连接到辅助程序",
-      "disconnected": "无法连接到辅助程序",
+      "connected": "已连接到助手程序",
+      "disconnected": "无法连接到助手程序",
       "status": {
         "connected": "已连接",
         "disconnected": "未连接",
@@ -141,10 +142,10 @@ window.LANG_ZH_CN = {
     },
     "lyricsHelper": {
       "label": "使用歌词助手",
-      "desc": "发送曲目和歌词信息到助手。外部程序可通过 API 访问。",
-      "sectionTitle": "助手集成",
-      "sectionSubtitle": "将歌词发送到外部助手应用",
-      "info": "助手应用允许外部程序显示同步歌词",
+      "desc": "将曲目及歌词信息发送至助手。外部程序可通过 API 访问并使用。",
+      "sectionTitle": "助手联动",
+      "sectionSubtitle": "向外部助手应用发送歌词",
+      "info": "通过助手应用，可以在外部程序中显示同步歌词",
       "download": "下载助手",
       "connected": "助手已连接",
       "disconnected": "助手未连接",
@@ -156,58 +157,58 @@ window.LANG_ZH_CN = {
     },
     "videoBlur": {
       "label": "视频模糊",
-      "desc": "调整视频背景的模糊强度 (0-40px)"
+      "desc": "调节视频背景的模糊强度 (0-40px)"
     },
     "videoCover": {
-      "label": "视频填充",
-      "desc": "拉伸视频以填满屏幕（可能会裁剪上下或左右）"
+      "label": "视频填充屏幕",
+      "desc": "放大视频以填满屏幕（可能会裁剪顶部或底部/左右两侧）"
     },
     "backgroundBrightness": {
       "label": "背景亮度",
-      "desc": "调整背景亮度级别 (0-100%)"
+      "desc": "调节背景的亮度水平 (0-100%)"
     },
-    "solidBackgroundWarning": "使用纯色背景时，背景亮度调节不会生效。",
+    "solidBackgroundWarning": "使用纯色背景时，背景亮度调节不生效。",
     "updateCheck": {
       "label": "检查更新",
-      "desc": "自动检查是否有新更新",
-      "info": "更新检查最多每24小时执行一次。"
+      "desc": "自动检查是否有新版本",
+      "info": "每 24 小时检查一次更新。"
     },
     "backgroundOpacity": {
       "label": "封面背景不透明度",
-      "desc": "设置封面背景的不透明度"
+      "desc": "设置封面的不透明度"
     },
     "contentWidth": {
       "label": "内容宽度",
-      "desc": "设置全屏和非全屏模式下的内容宽度"
+      "desc": "设置全屏模式及非全屏模式下的内容宽度"
     },
     "japaneseConversion": {
-      "label": "日语转换",
-      "desc": "设置日语歌词的转换格式",
-      "info": "此设置仅适用于同步和非同步歌词，不适用于卡拉OK歌词。",
+      "label": "日语显示转换",
+      "desc": "设置日语歌词的显示转换格式",
+      "info": "此设置仅适用于同步和非同步歌词。卡拉OK歌词不起作用。",
       "options": {
         "disabled": "禁用",
-        "romaji": "罗马字",
-        "furigana": "振假名",
-        "hiragana": "平假名",
-        "katakana": "片假名"
+        "romaji": "罗马音 (Romaji)",
+        "furigana": "振假名 (Furigana)",
+        "hiragana": "平假名 (Hiragana)",
+        "katakana": "片假名 (Katakana)"
       }
     },
     "displayContent": {
       "label": "显示内容",
-      "desc": "与歌词一起显示附加内容",
+      "desc": "与歌词一起显示其他内容",
       "options": {
         "disabled": "禁用",
-        "romanization": "罗马化",
+        "romanization": "汉字发音",
         "translation": "翻译"
       }
     },
     "autoTranslation": {
       "label": "自动翻译",
-      "desc": "当歌词没有翻译时自动提供翻译",
+      "desc": "如果没有提供歌词翻译，则自动提供",
       "options": {
-        "disabled": "禁用（默认）",
-        "google": "谷歌翻译",
-        "microsoft": "微软翻译"
+        "disabled": "禁用 (默认)",
+        "google": "Google Translate",
+        "microsoft": "Microsoft Translator"
       }
     },
     "lyricsMode": {
@@ -224,49 +225,49 @@ window.LANG_ZH_CN = {
       "desc": "在播放栏显示歌词按钮",
       "options": {
         "disabled": "禁用",
-        "normal": "普通",
+        "normal": "标准",
         "fullscreen": "全屏"
       }
     },
     "autoScroll": {
       "label": "自动滚动",
-      "desc": "启用自动滚动。手动滚动后5秒恢复自动滚动。"
+      "desc": "启用自动滚动。手动滚动 5 秒后恢复自动滚动。"
     },
     "animation": {
       "label": "动画",
-      "desc": "显示卡拉OK高亮行以外的动画"
+      "desc": "显示除卡拉OK高亮行以外的动画"
     },
     "karaoke": {
-      "label": "卡拉OK前奏倒计时",
+      "label": "卡拉OK 倒计时",
       "desc": "以数字显示前奏倒计时。禁用时显示为点。"
     },
     "blurInactive": {
-      "label": "模糊非活动行",
-      "desc": "在同步歌词中模糊非活动行",
+      "label": "非活动行模糊",
+      "desc": "模糊处理同步歌词中的非活动行",
       "info": "启用此选项可能会导致性能问题。"
     },
     "fade": {
-      "label": "模糊和渐变",
-      "desc": "在歌词顶部和底部显示模糊和渐变",
+      "label": "模糊与渐变",
+      "desc": "在歌词顶部和底部显示模糊及渐变效果",
       "info": "启用此选项可能会导致性能问题。"
     },
     "syncedAsFallback": {
-      "label": "同步歌词备用",
-      "desc": "当卡拉OK歌词不可用时回退到同步歌词"
+      "label": "同步歌词替补",
+      "desc": "如果没有提供卡拉OK歌词，则使用同步歌词代替"
     },
     "unsyncedAsFallback": {
-      "label": "非同步歌词备用",
-      "desc": "当同步歌词不可用时回退到非同步歌词"
+      "label": "非同步歌词替补",
+      "desc": "如果没有提供同步歌词，则使用非同步歌词代替"
     },
     "preferUnsynced": {
-      "label": "优先非同步歌词",
-      "desc": "当同步和非同步歌词都可用时优先使用非同步歌词。",
-      "info": "* 某些非同步歌词可能包含同步歌词中没有的内容。"
+      "label": "优先显示非同步歌词",
+      "desc": "当同时存在同步歌词和非同步歌词时，优先使用非同步歌词。",
+      "info": "* 部分非同步歌词可能包含同步歌词中没有的内容。"
     },
     "customPreview": {
       "label": "自定义预览",
-      "desc": "自定义歌词屏幕预览图像。图像以300x150px显示。",
-      "placeholder": "输入图片URL"
+      "desc": "自定义歌词画面预览图。图像将显示为 300x150px。",
+      "placeholder": "请输入图片 URL"
     },
     "trackSyncInfo": {
       "label": "曲目同步信息",
@@ -274,48 +275,48 @@ window.LANG_ZH_CN = {
     },
     "customDatabase": {
       "label": "自定义数据库",
-      "desc": "设置自定义数据库URL",
-      "placeholder": "输入自定义数据库URL"
+      "desc": "设置自定义数据库 URL",
+      "placeholder": "请输入自定义数据库 URL"
     },
     "debugVerbose": {
-      "label": "调试详细信息",
-      "desc": "向控制台输出更详细的信息"
+      "label": "详细调试信息",
+      "desc": "在控制台输出更详细的信息"
     },
     "cache": {
-      "deleteAll": "删除所有缓存的歌词",
-      "noCache": "没有缓存的歌词"
+      "deleteAll": "删除所有缓存歌词",
+      "noCache": "无缓存歌词"
     },
     "colors": {
       "customColor": "自定义",
       "showMore": "更多 ▼",
       "showLess": "收起 ▲",
       "black": "黑色",
-      "charcoal": "炭灰色",
-      "darkSlate": "深石板色",
+      "charcoal": "炭黑",
+      "darkSlate": "深板岩灰",
       "gray": "灰色",
-      "darkNavy": "深海军蓝",
-      "navy": "海军蓝",
-      "royalBlue": "皇家蓝",
-      "sky": "天蓝色",
-      "indigo": "靛蓝色",
+      "darkNavy": "深藏青",
+      "navy": "藏青",
+      "royalBlue": "宝蓝",
+      "sky": "天蓝",
+      "indigo": "靛蓝",
       "purple": "紫色",
-      "fuchsia": "紫红色",
-      "pink": "粉红色",
-      "wine": "酒红色",
+      "fuchsia": "紫红",
+      "pink": "粉色",
+      "wine": "酒红",
       "red": "红色",
       "orange": "橙色",
       "amber": "琥珀色",
       "gold": "金色",
-      "lime": "青柠色",
+      "lime": "酸橙色",
       "green": "绿色",
-      "emerald": "翡翠绿",
+      "emerald": "翠绿",
       "teal": "青色",
-      "cyan": "青色",
+      "cyan": "青绿",
       "brown": "棕色",
       "chocolate": "巧克力色"
     },
     "solidBackgroundInUse": "ℹ️ 正在使用纯色背景",
-    "fontPlaceholder": "输入字体名称（如：Arial, 微软雅黑）"
+    "fontPlaceholder": "输入字体名称 (例如: Arial, Microsoft YaHei)"
   },
   "buttons": {
     "save": "保存",
@@ -340,35 +341,35 @@ window.LANG_ZH_CN = {
   "menu": {
     "translation": "转换",
     "settings": "设置",
-    "syncAdjust": "同步调整",
-    "syncAdjustTitle": "歌词同步调整",
+    "syncAdjust": "同步调节",
+    "syncAdjustTitle": "歌词同步调节",
     "copyLyrics": "复制歌词",
     "searchLyrics": "搜索歌词",
     "editLyrics": "编辑歌词",
     "shareImage": "分享歌词图片",
     "translationOptions": "转换选项",
-    "translationOptionsSubtitle": "配置歌词的发音和翻译显示",
+    "translationOptionsSubtitle": "设置歌词的发音和翻译显示",
     "detectedLanguage": "检测到的语言",
-    "detectedLanguageInfo": "当前播放歌曲的语言。转换选项会根据语言不同而变化。",
+    "detectedLanguageInfo": "当前播放歌曲的语言。根据语言不同，转换选项的应用也会不同。",
     "unknownLanguage": "未知",
     "autoDetect": "自动检测",
     "overrideLanguage": "手动设置语言",
-    "overrideLanguageInfo": "手动设置此曲目的语言。将使用选择的语言代替自动检测。",
+    "overrideLanguageInfo": "手动设置此歌曲的语言。将使用所选语言进行翻译，而不是自动检测。",
     "pronunciation": "发音",
-    "pronunciationInfo": "显示原文歌词的罗马化发音",
+    "pronunciationInfo": "显示原文歌词的发音（罗马音等）",
     "translationLabel": "翻译",
-    "translationInfo": "显示翻译后的歌词",
-    "apiSettings": "API设置",
-    "apiSettingsSubtitle": "配置Gemini API",
-    "apiKeySettings": "API密钥设置",
-    "apiKeySettingsInfo": "点击此处配置Gemini API密钥",
+    "translationInfo": "将原文歌词翻译为中文显示",
+    "apiSettings": "API 设置",
+    "apiSettingsSubtitle": "配置 Gemini API",
+    "apiKeySettings": "API 密钥设置",
+    "apiKeySettingsInfo": "点击此处设置 Gemini API 密钥",
     "openSettings": "打开设置",
     "translationSettings": "转换设置",
     "regenerateTranslation": "重新生成翻译",
     "fullscreen": "全屏"
   },
   "messages": {
-    "noLyrics": "没有可用的歌词",
+    "noLyrics": "暂无可用歌词",
     "loading": "加载中...",
     "error": "发生错误",
     "saved": "已保存",
@@ -376,7 +377,7 @@ window.LANG_ZH_CN = {
     "deleted": "已删除",
     "updated": "已更新",
     "applied": "已应用",
-    "noTrackInfo": "没有曲目信息",
+    "noTrackInfo": "无曲目信息",
     "syncedLyricsCopied": "同步歌词已复制到剪贴板。",
     "unsyncedLyricsCopied": "非同步歌词已复制到剪贴板。"
   },
@@ -391,8 +392,8 @@ window.LANG_ZH_CN = {
     "versionChange": "版本",
     "copyCommand": "复制命令",
     "releaseNotes": "发行说明",
-    "expand": "详情",
-    "collapse": "收起",
+    "expand": "详细",
+    "collapse": "简略",
     "copied": "已复制"
   },
   "fullscreen": {
@@ -400,37 +401,37 @@ window.LANG_ZH_CN = {
     "background": "背景",
     "backgroundOptions": {
       "albumArt": "专辑封面",
-      "animatedCanvas": "动画画布",
-      "artistArt": "艺术家图片",
+      "animatedCanvas": "动态画布",
+      "artistArt": "艺人图片",
       "staticColor": "纯色"
     },
     "showExtraControls": {
       "label": "显示额外控件",
-      "desc": "在全屏模式下显示额外控件"
+      "desc": "在全屏模式下显示额外的控制按钮"
     },
     "contextDisplay": {
-      "label": "上下文显示",
-      "desc": "在全屏模式下显示当前播放的上下文"
+      "label": "显示上下文",
+      "desc": "在全屏模式下显示当前播放的上下文信息"
     },
     "upcomingLyrics": {
-      "label": "显示即将播放的歌词",
-      "desc": "在全屏模式下预览即将播放的歌词"
+      "label": "显示下一句歌词",
+      "desc": "在全屏模式下预先显示下一句歌词"
     },
     "volumeDisplay": {
-      "label": "音量显示",
+      "label": "显示音量",
       "desc": "在全屏模式下显示音量控制"
     },
     "controls": {
       "like": "喜欢",
       "unlike": "取消喜欢",
       "shuffle": "随机播放",
-      "previous": "上一曲",
-      "next": "下一曲",
-      "nextTrackLabel": "下一曲",
+      "previous": "上一首",
+      "next": "下一首",
+      "nextTrackLabel": "下一首",
       "play": "播放",
       "pause": "暂停",
-      "repeatOff": "关闭重复",
-      "repeatAll": "重复全部",
+      "repeatOff": "不重复",
+      "repeatAll": "列表循环",
       "repeatOne": "单曲循环",
       "mute": "静音",
       "unmute": "取消静音",
@@ -441,15 +442,15 @@ window.LANG_ZH_CN = {
       "title": "播放队列",
       "recentlyPlayed": "最近播放",
       "nowPlaying": "正在播放",
-      "upNext": "即将播放",
+      "upNext": "接下来播放",
       "empty": "队列为空",
       "noRecent": "没有最近播放记录"
     },
     "contextType": {
-      "playlist": "播放列表",
+      "playlist": "歌单",
       "album": "专辑",
-      "artist": "艺术家",
-      "collection": "喜欢的歌曲",
+      "artist": "艺人",
+      "collection": "已点赞的歌曲",
       "station": "电台"
     }
   },
@@ -457,52 +458,52 @@ window.LANG_ZH_CN = {
     "version": "版本",
     "sourceCode": "源代码",
     "reportIssue": "报告问题",
-    "changelog": "更新日志",
+    "changelog": "变更日志",
     "license": "许可证",
     "credits": "致谢"
   },
   "translationMenu": {
     "none": "无",
     "disabled": "禁用",
-    "romaji": "罗马字",
+    "romaji": "罗马音",
     "hiragana": "平假名",
     "katakana": "片假名",
     "furigana": "振假名",
-    "romanization": "罗马化",
+    "romanization": "发音",
     "translation": "翻译",
-    "google": "谷歌翻译",
-    "microsoft": "微软翻译",
+    "google": "Google 翻译",
+    "microsoft": "Microsoft 翻译",
     "geminiRomaji": "发音",
     "geminiKo": "翻译",
-    "romajiGemini": "罗马字 (Gemini)",
-    "koGemini": "韩语 (Gemini)",
+    "romajiGemini": "罗马音 (Gemini)",
+    "koGemini": "中文 (Gemini)",
     "simplifiedChinese": "简体中文",
-    "traditionalChineseHK": "繁体中文（香港）",
-    "traditionalChineseTW": "繁体中文（台湾）",
+    "traditionalChineseHK": "繁体中文 (香港)",
+    "traditionalChineseTW": "繁体中文 (台湾)",
     "pinyin": "拼音"
   },
   "notifications": {
-    "languageChanged": "语言已更改。刷新后生效。",
+    "languageChanged": "语言已更改。刷新页面后生效。",
     "settingsSaved": "设置已保存",
     "settingsReset": "设置已重置",
     "exportSuccess": "导出成功",
     "importSuccess": "导入成功",
-    "importFailed": "导入设置失败",
-    "syncDataCleared": "同步数据已清除",
-    "syncDataClearFailed": "清除同步数据失败",
-    "lyricsCopied": "✓ 歌词已复制到剪贴板",
-    "lyricsCopyFailed": "复制歌词到剪贴板失败",
+    "importFailed": "设置导入失败",
+    "syncDataCleared": "同步数据已删除",
+    "syncDataClearFailed": "同步数据删除失败",
+    "lyricsCopied": "歌词已复制到剪贴板",
+    "lyricsCopyFailed": "歌词复制到剪贴板失败",
     "translationCopied": "翻译已复制到剪贴板",
-    "translationCopyFailed": "复制翻译到剪贴板失败",
+    "translationCopyFailed": "翻译复制到剪贴板失败",
     "secondTranslationCopied": "第二翻译已复制到剪贴板",
-    "secondTranslationCopyFailed": "复制第二翻译到剪贴板失败",
+    "secondTranslationCopyFailed": "第二翻译复制到剪贴板失败",
     "installCommandCopied": "安装命令已复制",
     "copyFailed": "复制失败",
-    "memoryCacheCleared": "✓ 内存缓存已清除",
-    "localCacheCleared": "✓ 所有本地缓存已清除",
-    "localCacheTrackCleared": "✓ 当前曲目缓存已清除",
-    "exportSuccessDesc": "设置文件已保存到下载文件夹。",
-    "exportFailed": "导出设置失败",
+    "memoryCacheCleared": "内存缓存已初始化",
+    "localCacheCleared": "本地缓存已全部删除",
+    "localCacheTrackCleared": "当前歌曲的本地缓存已删除",
+    "exportSuccessDesc": "配置文件将保存到下载文件夹。",
+    "exportFailed": "设置导出失败",
     "importSuccessDesc": "页面即将刷新...",
     "resetSuccess": "重置完成",
     "resetSuccessDesc": "页面即将刷新...",
@@ -511,33 +512,33 @@ window.LANG_ZH_CN = {
     "checkNetworkConnection": "请检查网络连接",
     "updateAvailable": "有可用更新",
     "latestVersion": "已是最新版本",
-    "noLyricsLoaded": "没有加载歌词。",
-    "translationRegenerateGeminiOnly": "重新生成翻译仅适用于Gemini翻译。",
+    "noLyricsLoaded": "歌词未加载。",
+    "translationRegenerateGeminiOnly": "仅支持在 Gemini 翻译中重新生成翻译。",
     "regeneratingTranslation": "正在重新生成翻译...",
-    "translationRegenerated": "✓ 翻译已重新生成",
-    "translationRegenerateFailed": "重新生成翻译失败",
-    "translationCacheRemoved": "✓ 翻译缓存已清除并重新加载！",
-    "translationCacheReset": "翻译缓存 {count} 项已重置",
-    "tooManyTranslationRequests": "翻译请求过多。请1分钟后重试。",
-    "requestingPronunciation": "正在请求发音。大约需要30秒",
-    "requestingTranslation": "正在请求翻译。大约需要30秒",
+    "translationRegenerated": "翻译已重新生成",
+    "translationRegenerateFailed": "翻译重新生成失败",
+    "translationCacheRemoved": "翻译缓存已移除并重新加载！",
+    "translationCacheReset": "已重置 {count} 个翻译缓存项",
+    "tooManyTranslationRequests": "翻译请求过多。请在 1 分钟后重试。",
+    "requestingPronunciation": "正在请求发音。大约需要 30 秒",
+    "requestingTranslation": "正在请求翻译。大约需要 30 秒",
     "shareImageCopied": "图片已复制到剪贴板",
     "shareImageDownloaded": "图片已下载",
-    "shareImageShared": "分享成功",
+    "shareImageShared": "已分享",
     "shareImageFailed": "图片生成失败",
     "shareImageNoLyrics": "请选择要分享的歌词",
     "noTrackPlaying": "没有正在播放的曲目",
     "overlayConnected": "悬浮窗已连接",
-    "romajiTranslationFailed": "罗马字/发音转换失败",
-    "koreanTranslationFailed": "韩语翻译失败",
-    "pinyinLibraryUnavailable": "拼音库不可用。显示原文。请允许jsDelivr或unpkg。",
-    "conversionSkippedSimplified": "跳过转换：已是简体字",
-    "conversionCompleted": "转换完成",
+    "romajiTranslationFailed": "罗马音/发音转换失败",
+    "koreanTranslationFailed": "中文翻译失败",
+    "pinyinLibraryUnavailable": "拼音库不可用。显示原文。请允许 jsDelivr 或 unpkg。",
+    "conversionSkippedSimplified": "跳过转换：已经是简体中文",
+    "conversionCompleted": "转换已完成",
     "conversionFailed": "转换失败",
-    "fileTooLarge": "文件太大：最大大小为1MB",
-    "noValidLyricsInFile": "在文件中找不到有效的歌词",
-    "lyricsLoadedFromFile": "从文件加载了 {types} 歌词",
-    "lyricsLoadFailed": "歌词加载失败：无效的文件格式",
+    "fileTooLarge": "文件过大：最大允许 1MB",
+    "noValidLyricsInFile": "无法在文件中找到有效歌词",
+    "lyricsLoadedFromFile": "成功从文件加载 {types} 歌词",
+    "lyricsLoadFailed": "歌词加载失败：文件格式错误",
     "fileReadFailed": "文件读取失败：文件可能已损坏"
   },
   "misc": {
@@ -554,28 +555,28 @@ window.LANG_ZH_CN = {
     "off": "关",
     "yes": "是",
     "no": "否",
-    "items": "项",
+    "items": "个",
     "seconds": "秒",
-    "minutes": "分钟"
+    "minutes": "分"
   },
   "settingsAdvanced": {
     "patchNotes": {
-      "empty": "没有更新说明。"
+      "empty": "没有更新日志。"
     },
     "donate": {
-      "title": "请开发者喝杯咖啡",
-      "button": "捐赠"
+      "title": "请开发者喝一杯咖啡",
+      "button": "赞助"
     },
     "syncMode": {
       "title": "同步模式",
       "subtitle": "紧凑同步模式的显示选项",
       "linesBefore": {
-        "label": "之前的行数",
-        "desc": "当前歌词之前显示的行数"
+        "label": "显示行数 (之前)",
+        "desc": "在当前播放歌词之前显示的行数"
       },
       "linesAfter": {
-        "label": "之后的行数",
-        "desc": "当前歌词之后显示的行数"
+        "label": "显示行数 (之后)",
+        "desc": "在当前播放歌词之后显示的行数"
       },
       "fadeoutBlur": {
         "label": "淡出模糊效果",
@@ -583,136 +584,136 @@ window.LANG_ZH_CN = {
       },
       "highlightMode": {
         "label": "高亮模式",
-        "desc": "只高亮显示当前播放的歌词，其他歌词变暗"
+        "desc": "仅高亮显示当前演唱的歌词，其余部分变暗"
       },
       "highlightIntensity": {
         "label": "高亮强度",
-        "desc": "调整非活动歌词的透明度（值越低越暗）"
+        "desc": "调节非活动歌词的透明度（越低越暗）"
       }
     },
     "livePreview": {
       "title": "实时预览",
-      "subtitle": "即时查看您的样式设置",
-      "sampleText": "这里有歌词",
-      "sampleTextMixed": "여기 Lyric あります",
-      "sampleTextPhonetic": "yeogi lyric arimasu"
+      "subtitle": "立即查看设置的样式",
+      "sampleText": "这里是歌词文本",
+      "sampleTextMixed": "这里是 Lyric 文本",
+      "sampleTextPhonetic": "这里是发音文本"
     },
     "originalStyle": {
       "title": "原文样式",
-      "subtitle": "原文歌词的字体设置",
-      "fontFamily": "字体",
-      "fontFamilyDesc": "选择应用于原文歌词的字体。用逗号（,）分隔多个字体按顺序应用。",
+      "subtitle": "歌词原文的字体设置",
+      "fontFamily": "字体系列",
+      "fontFamilyDesc": "选择原文歌词应用的字体。输入多个字体名称并用逗号(,)分隔时，将按顺序应用。",
       "fontSize": {
         "label": "字体大小",
-        "desc": "原文歌词的字体大小（像素）"
+        "desc": "原文歌词的字体大小 (像素)"
       },
       "fontWeight": {
         "label": "字体粗细",
         "desc": "原文歌词的字体粗细"
       },
       "opacity": {
-        "label": "不透明度",
+        "label": "透明度",
         "desc": "原文歌词的不透明度 (0-100%)"
       },
       "letterSpacing": {
-        "label": "字符间距",
-        "desc": "原文歌词的字符间距（像素）"
+        "label": "字间距",
+        "desc": "原文歌词的字符间距 (像素)"
       }
     },
     "pronunciationStyle": {
       "title": "发音样式",
-      "subtitle": "罗马化发音（罗马字、拼音）的字体设置",
-      "fontFamily": "字体",
-      "fontFamilyDesc": "选择应用于罗马化的字体。用逗号（,）分隔多个字体按顺序应用。",
+      "subtitle": "罗马音/拼音发音标记的字体设置",
+      "fontFamily": "字体系列",
+      "fontFamilyDesc": "选择发音标记应用的字体。输入多个字体名称并用逗号(,)分隔时，将按顺序应用。",
       "fontSize": {
         "label": "字体大小",
-        "desc": "罗马化的字体大小（像素）"
+        "desc": "发音标记的字体大小 (像素)"
       },
       "fontWeight": {
         "label": "字体粗细",
-        "desc": "罗马化的字体粗细"
+        "desc": "发音标记的字体粗细"
       },
       "opacity": {
-        "label": "不透明度",
-        "desc": "罗马化的不透明度 (0-100%)"
+        "label": "透明度",
+        "desc": "发音标记的不透明度 (0-100%)"
       },
       "gap": {
         "label": "与原文的间距",
-        "desc": "原文歌词与罗马化的间距"
+        "desc": "原文与发音标记之间的距离"
       },
       "letterSpacing": {
-        "label": "字符间距",
-        "desc": "罗马化的字符间距（像素）"
+        "label": "字间距",
+        "desc": "发音标记的字符间距 (像素)"
       },
       "hyphenReplace": {
-        "label": "连字符处理",
-        "desc": "将发音中的连字符(-)替换为其他字符",
+        "label": "连字符(-) 处理",
+        "desc": "选择如何显示发音中的连字符(-) (例如: Tah-shee-kah → Tah shee kah 或 Tahsheekah)",
         "options": {
-          "keep": "保持",
-          "space": "替换为空格",
-          "remove": "删除"
+          "keep": "保持 (Tah-shee-kah)",
+          "space": "替换为空格 (Tah shee kah)",
+          "remove": "移除 (Tahsheekah)"
         }
       }
     },
     "translationStyle": {
-      "title": "翻译样式",
+      "title": "译文样式",
       "subtitle": "翻译歌词的字体设置",
-      "fontFamily": "字体",
-      "fontFamilyDesc": "选择应用于翻译歌词的字体。用逗号（,）分隔多个字体按顺序应用。",
+      "fontFamily": "字体系列",
+      "fontFamilyDesc": "选择翻译歌词应用的字体。输入多个字体名称并用逗号(,)分隔时，将按顺序应用。",
       "fontSize": {
         "label": "字体大小",
-        "desc": "翻译歌词的字体大小（像素）"
+        "desc": "翻译歌词的字体大小 (像素)"
       },
       "fontWeight": {
         "label": "字体粗细",
         "desc": "翻译歌词的字体粗细"
       },
       "opacity": {
-        "label": "不透明度",
+        "label": "透明度",
         "desc": "翻译歌词的不透明度 (0-100%)"
       },
       "gap": {
         "label": "与发音的间距",
-        "desc": "罗马化与翻译的间距（像素）"
+        "desc": "发音标记与译文之间的距离 (像素)"
       },
       "letterSpacing": {
-        "label": "字符间距",
-        "desc": "翻译歌词的字符间距（像素）"
+        "label": "字间距",
+        "desc": "翻译歌词的字符间距 (像素)"
       }
     },
     "furiganaStyle": {
-      "title": "注音样式",
-      "subtitle": "显示在日文汉字上方的假名注音设置",
+      "title": "振假名样式",
+      "subtitle": "日文汉字上方显示的读音(振假名)设置",
       "fontSize": {
         "label": "字体大小",
-        "desc": "注音的字体大小（像素）"
+        "desc": "振假名的字体大小 (像素)"
       },
       "fontWeight": {
         "label": "字体粗细",
-        "desc": "注音的字体粗细"
+        "desc": "振假名的字体粗细"
       },
       "opacity": {
         "label": "透明度",
-        "desc": "注音的不透明度 (0-100%)"
+        "desc": "振假名的不透明度 (0-100%)"
       },
       "spacing": {
         "label": "间距",
-        "desc": "注音与汉字之间的间距（像素）"
+        "desc": "振假名与汉字之间的距离 (像素)"
       }
     },
     "textShadow": {
-      "title": "文字阴影",
+      "title": "文本阴影",
       "subtitle": "提高可读性的阴影效果",
       "enabled": {
         "label": "阴影效果",
-        "desc": "对歌词文本应用阴影效果"
+        "desc": "为歌词文本应用阴影效果"
       },
       "color": {
         "label": "阴影颜色",
-        "desc": "阴影的颜色（HEX代码）"
+        "desc": "阴影的颜色 (HEX 代码)"
       },
       "opacity": {
-        "label": "阴影不透明度",
+        "label": "阴影透明度",
         "desc": "阴影的不透明度 (0-100%)"
       },
       "blur": {
@@ -722,62 +723,62 @@ window.LANG_ZH_CN = {
     },
     "playback": {
       "title": "播放行为",
-      "subtitle": "与播放相关的功能设置",
+      "subtitle": "播放相关功能设置",
       "replaceButton": {
-        "label": "替换默认歌词按钮",
-        "info": "用ivLyrics替换Spotify的默认歌词按钮"
+        "label": "替换歌词按钮",
+        "info": "将 Spotify 的默认歌词按钮替换为 ivLyrics"
       },
       "replaceFullscreenButton": {
         "label": "替换全屏按钮",
-        "info": "用ivLyrics全屏替换Spotify的默认全屏按钮"
+        "info": "将 Spotify 的默认全屏按钮替换为 ivLyrics 全屏"
       },
       "fullscreenShortcut": {
         "label": "全屏快捷键",
         "desc": "歌词全屏模式的键盘快捷键"
-      },
+      }
     },
     "nowPlayingPanel": {
-      "title": "正在播放面板歌词",
-      "subtitle": "右侧「正在播放」面板的歌词显示设置",
+      "title": "NowPlaying 面板歌词",
+      "subtitle": "右侧“正在播放”面板的歌词显示设置",
       "enabled": {
         "label": "启用面板歌词",
-        "desc": "在正在播放面板中显示当前歌词"
+        "desc": "在正在播放面板显示当前歌词"
       },
       "lines": {
         "label": "歌词行数",
-        "desc": "面板中显示的歌词行数（默认: 5）"
+        "desc": "面板中显示的歌词行数 (默认: 5)"
       },
       "fontScale": {
-        "label": "整体字体大小比例",
-        "desc": "面板歌词的整体大小比例（50%-200%）"
+        "label": "整体字体缩放",
+        "desc": "面板歌词的整体大小比例 (50%-200%)"
       },
       "fontFamily": {
         "label": "默认字体",
-        "desc": "面板歌词使用的默认字体（未设置单独字体时适用）"
+        "desc": "面板歌词使用的默认字体（未单独设置字体时应用）"
       },
       "originalFont": {
         "label": "原文字体",
-        "desc": "原文歌词使用的字体（为空则使用默认字体，可用逗号分隔多个字体）"
+        "desc": "原文歌词使用的字体（留空使用默认字体，可用逗号分隔多个字体）"
       },
       "phoneticFont": {
         "label": "发音字体",
-        "desc": "发音（罗马字等）使用的字体（为空则使用默认字体，可用逗号分隔多个字体）"
+        "desc": "发音（罗马音等）使用的字体（留空使用默认字体，可用逗号分隔多个字体）"
       },
       "translationFont": {
         "label": "翻译字体",
-        "desc": "翻译歌词使用的字体（为空则使用默认字体，可用逗号分隔多个字体）"
+        "desc": "翻译歌词使用的字体（留空使用默认字体，可用逗号分隔多个字体）"
       },
       "originalSize": {
-        "label": "原文字体大小",
-        "desc": "原文歌词的字体大小（px）"
+        "label": "原文体大小",
+        "desc": "原文歌词的默认字体大小 (px)"
       },
       "phoneticSize": {
         "label": "发音字体大小",
-        "desc": "发音（罗马字等）的字体大小（px）"
+        "desc": "发音（罗马音等）的默认字体大小 (px)"
       },
       "translationSize": {
         "label": "翻译字体大小",
-        "desc": "翻译歌词的字体大小（px）"
+        "desc": "翻译歌词的默认字体大小 (px)"
       },
       "preview": "预览",
       "background": {
@@ -788,23 +789,23 @@ window.LANG_ZH_CN = {
           "desc": "选择背景样式",
           "album": "专辑颜色",
           "custom": "自定义颜色",
-          "gradient": "专辑渐变"
+          "gradient": "基于专辑的渐变"
         },
         "color": {
           "label": "背景颜色",
           "desc": "自定义背景颜色"
         },
         "gradient1": {
-          "label": "渐变色1",
+          "label": "渐变颜色 1",
           "desc": "第一个渐变颜色"
         },
         "gradient2": {
-          "label": "渐变色2",
+          "label": "渐变颜色 2",
           "desc": "第二个渐变颜色"
         },
         "opacity": {
           "label": "背景不透明度",
-          "desc": "背景不透明度（0%=透明，100%=不透明）"
+          "desc": "背景不透明度 (0%=透明, 100%=不透明)"
         }
       },
       "border": {
@@ -816,29 +817,29 @@ window.LANG_ZH_CN = {
         },
         "color": {
           "label": "边框颜色",
-          "desc": "边框的颜色"
+          "desc": "边框颜色"
         },
         "opacity": {
           "label": "边框不透明度",
-          "desc": "边框不透明度（0%=透明，100%=不透明）"
+          "desc": "边框不透明度 (0%=透明, 100%=不透明)"
         }
       }
     },
     "karaokeMode": {
-      "title": "卡拉OK模式",
-      "subtitle": "卡拉OK风格歌词显示",
+      "title": "卡拉OK 模式",
+      "subtitle": "卡拉OK 风格歌词显示",
       "enabled": {
-        "label": "启用卡拉OK模式",
-        "desc": "在支持卡拉OK歌词的歌曲中使用卡拉OK标签。禁用时使用同步标签"
+        "label": "使用卡拉OK 模式",
+        "desc": "在支持卡拉OK歌词的歌曲中使用卡拉OK标签页。禁用时将固定为同步标签页"
       },
       "bounce": {
-        "label": "字符弹跳效果",
-        "desc": "在卡拉OK模式下对当前字符应用弹跳动画"
+        "label": "文字弹跳效果",
+        "desc": "在卡拉OK模式下，为当前演唱的文字应用弹跳动画"
       }
     },
     "prefetch": {
       "title": "预加载下一首",
-      "subtitle": "预加载下一首歌曲的元素以减少切换延迟",
+      "subtitle": "预先加载下一首歌曲的元素，以减少切换时的延迟",
       "enabled": {
         "label": "预加载翻译/发音",
         "desc": "预先请求下一首歌曲的翻译和发音转换"
@@ -850,62 +851,62 @@ window.LANG_ZH_CN = {
     },
     "communitySync": {
       "title": "社区同步",
-      "subtitle": "与其他用户共享歌词同步偏移",
+      "subtitle": "与其他用户共享歌词同步偏移量",
       "enabled": {
         "label": "使用社区同步",
-        "desc": "使用社区共享的同步偏移"
+        "desc": "使用社区分享的同步偏移量"
       },
       "autoApply": {
         "label": "自动应用",
-        "desc": "当置信度足够时自动应用社区偏移"
+        "desc": "如果可信度足够高，自动应用社区偏移量"
       },
       "autoSubmit": {
         "label": "自动提交",
-        "desc": "更改同步偏移时自动分享给社区"
+        "desc": "更改同步偏移量时自动分享到社区"
       },
       "minConfidence": {
-        "label": "最低置信度",
-        "desc": "自动应用所需的最低置信度 (0.0 ~ 1.0)。置信度根据提交数量和偏移值的一致性计算。较高的值表示更多用户提交了相似的偏移值"
+        "label": "最低可信度",
+        "desc": "自动应用所需的最低可信度 (0.0 ~ 1.0)。可信度根据提交数量和偏移量的一致性计算。数值越高意味着越多用户提交了相似的偏移量"
       }
     },
     "cacheManagement": {
       "title": "缓存管理",
-      "subtitle": "管理存储的数据",
+      "subtitle": "管理已存储的数据",
       "memoryCache": {
-        "label": "清除内存缓存",
-        "desc": "加载的歌词临时存储在内存中以便快速重新加载。无需重启Spotify即可清除内存缓存",
-        "button": "清除缓存"
+        "label": "初始化内存缓存",
+        "desc": "加载的歌词会临时存储在内存中以便快速重新加载。无需重启 Spotify 即可清空内存缓存",
+        "button": "清空缓存"
       },
       "localCache": {
-        "label": "本地缓存管理 (IndexedDB)",
-        "desc": "歌词、翻译、发音等存储在本地，减少重复播放时的API调用",
-        "clearAll": "清除全部",
-        "clearCurrent": "清除当前曲目",
-        "stats": "歌词: {lyrics}个，翻译: {translations}个，元数据: {metadata}个"
+        "label": "管理本地缓存 (IndexedDB)",
+        "desc": "歌词、翻译、发音等存储在本地，以减少重复收听时的 API 调用",
+        "clearAll": "全部删除",
+        "clearCurrent": "删除当前歌曲",
+        "stats": "歌词: {lyrics}个, 翻译: {translations}个, 元数据: {metadata}个"
       }
     },
     "languageDetection": {
       "title": "语言检测",
       "subtitle": "文本转换的语言检测设置",
       "furigana": {
-        "label": "为日语汉字显示振假名",
+        "label": "日文汉字显示振假名",
         "desc": "在日语歌词的汉字上方显示平假名读音"
       },
       "japaneseThreshold": {
         "label": "日语检测阈值",
-        "desc": "通过歌词中假名字符的比例检测日语。值越高检测越严格（百分比）"
+        "desc": "根据歌词中假名字符的比例检测日语。值越高，检测越严格（百分比）"
       },
       "chineseThreshold": {
         "label": "中文检测阈值",
-        "desc": "通过繁简字符的比例检测中文类型。值越高检测越严格（百分比）"
+        "desc": "根据繁体字和简体字的比例检测中文类型。值越高，检测越严格（百分比）"
       }
     },
     "apiKeys": {
-      "subtitle": "用于外部服务集成的API密钥"
+      "subtitle": "用于外部服务集成的 API 密钥"
     },
     "exportImport": {
       "title": "导出/导入设置",
-      "subtitle": "将设置转移到另一台设备",
+      "subtitle": "将设置迁移到其他设备",
       "export": {
         "label": "导出设置",
         "button": "导出",
@@ -918,42 +919,42 @@ window.LANG_ZH_CN = {
       }
     },
     "resetSettings": {
-      "title": "重置设置",
+      "title": "初始化设置",
       "subtitle": "将所有设置恢复为默认值",
       "reset": {
-        "label": "重置所有设置",
+        "label": "初始化所有设置",
         "desc": "将所有设置恢复为默认值。此操作无法撤销",
-        "button": "重置",
-        "confirm": "确定要重置所有设置吗？\n\n此操作无法撤销，所有设置将恢复为默认值。\n\n点击'确定'继续。",
-        "processing": "正在重置..."
+        "button": "初始化",
+        "confirm": "确实要初始化所有设置吗？\n\n此操作无法撤销，所有设置将重置为默认值。\n\n如需继续，请点击“确认”。",
+        "processing": "正在初始化..."
       }
     },
     "fullscreenMode": {
-      "title": "全屏模式",
-      "subtitle": "全屏模式的布局和显示设置",
+      "title": "全屏默认设置",
+      "subtitle": "设置全屏模式的默认行为",
       "shortcut": {
         "desc": "全屏快捷键",
         "info": "设置切换全屏模式的键盘快捷键"
       },
       "toggleTvModeKey": {
-        "desc": "切换TV模式快捷键",
-        "info": "仅在全屏模式下有效。在TV模式和普通模式之间切换"
+        "desc": "TV 模式切换快捷键",
+        "info": "仅在全屏模式下有效。在 TV 模式和普通模式之间切换"
       },
       "tvMode": {
-        "desc": "TV模式",
-        "info": "在左下角显示专辑封面和曲目信息，歌词使用全屏"
+        "desc": "使用 TV 模式",
+        "info": "在左下角显示专辑封面和歌曲信息，歌词使用全屏显示"
       },
       "tvModeAlbumSize": {
-        "desc": "TV模式专辑大小",
-        "info": "设置TV模式下专辑封面的大小（像素）"
+        "desc": "专辑大小",
+        "info": "设置 TV 模式下专辑封面的大小 (像素)"
       },
       "splitView": {
-        "desc": "分割布局",
-        "info": "在全屏中左侧显示专辑封面，右侧显示歌词"
+        "desc": "分栏布局",
+        "info": "全屏时左侧显示专辑封面，右侧显示歌词"
       },
       "invertPosition": {
-        "desc": "反转专辑/歌词位置",
-        "info": "交换专辑和歌词的位置（左↔右，或纵向模式中的上↔下）"
+        "desc": "专辑/歌词位置互换",
+        "info": "交换专辑和歌词的位置（左右 ↔ 右左，竖屏模式下 上下 ↔ 下上）"
       },
       "showAlbumArt": {
         "desc": "显示专辑封面",
@@ -961,101 +962,101 @@ window.LANG_ZH_CN = {
       },
       "showTrackInfo": {
         "desc": "显示曲目信息",
-        "info": "在全屏中显示歌曲标题和艺术家"
+        "info": "全屏显示歌曲标题和艺人"
       },
       "trimTitle": {
-        "desc": "精简标题",
-        "info": "从歌曲标题中移除(Remaster)、[feat. xxx]等附加信息，使显示更简洁"
+        "desc": "显示简洁标题",
+        "info": "从歌曲标题中移除 (Remaster), [feat. xxx] 等附加信息，使其更简洁"
       },
       "translateMetadata": {
-        "desc": "翻译标题/艺术家",
-        "info": "翻译外语歌曲标题和艺术家名称（需要 Gemini API 密钥）"
+        "desc": "翻译标题/艺人",
+        "info": "翻译并显示外语歌曲标题和艺人姓名（需要 Gemini API 密钥）"
       },
       "translateMetadataMode": {
         "desc": "翻译显示方式",
-        "info": "选择如何显示标题和艺术家",
+        "info": "选择如何显示标题和艺人",
         "options": {
-          "translated": "仅翻译",
-          "romanized": "仅发音",
+          "all": "全部显示 (原文 + 翻译 + 发音)",
+          "translated": "仅显示翻译 (无翻译则显示原文)",
+          "romanized": "仅显示发音 (无发音则显示原文)",
           "originalTranslated": "原文 + 翻译",
-          "originalRomanized": "原文 + 发音",
-          "all": "全部显示"
+          "originalRomanized": "原文 + 发音"
         }
-      },
-      "centerWhenNoLyrics": {
-        "desc": "无歌词时居中显示专辑",
-        "info": "当歌词不可用或正在加载时将专辑封面居中"
       },
       "infoGap": {
         "desc": "专辑封面间距",
-        "info": "调整专辑封面与控件之间的间距（像素）"
+        "info": "调节专辑封面与控件/信息之间的距离 (像素)"
+      },
+      "centerWhenNoLyrics": {
+        "desc": "无歌词时专辑居中",
+        "info": "没有歌词或正在加载时，将专辑封面置于屏幕中央"
       },
       "twoColumnLayout": {
-        "desc": "使用双列布局"
+        "desc": "使用双栏布局"
       },
       "browserFullscreen": {
         "desc": "使用 Spotify 全屏",
-        "info": "进入全屏模式时将 Spotify 切换为全屏以填满整个显示器"
+        "info": "进入全屏模式时，将 Spotify 切换为全屏以占满显示器"
       }
     },
     "normalMode": {
       "title": "普通模式布局",
-      "subtitle": "配置普通全屏模式的布局（TV模式关闭时）",
+      "subtitle": "设置普通全屏模式的布局（非 TV 模式时）",
       "showAlbumName": {
-        "desc": "显示专辑名",
-        "info": "在歌曲标题和艺术家下方显示专辑名称",
-      },
+        "desc": "显示专辑名称",
+        "info": "在歌曲标题和艺人下方显示专辑名称"
+      }
     },
     "tvMode": {
-      "title": "TV模式设置",
-      "subtitle": "配置TV模式的显示选项",
+      "title": "TV 模式设置",
+      "subtitle": "设置 TV 模式下的显示选项",
       "showAlbumName": {
-        "desc": "显示专辑名",
-        "info": "在TV模式下在艺术家下方显示专辑名称",
+        "desc": "显示专辑名称",
+        "info": "在 TV 模式下，于艺人下方显示专辑名称"
       },
       "showControls": {
         "desc": "显示控制按钮",
-        "info": "在TV模式下显示播放/暂停、上一曲/下一曲按钮",
+        "info": "在 TV 模式下显示播放/暂停、上一首/下一首等控制按钮"
       },
       "showProgress": {
-        "desc": "显示进度条",
-        "info": "在TV模式下显示播放进度和时间",
-      },
+        "desc": "显示播放进度条",
+        "info": "在 TV 模式下显示指示歌曲播放位置和时间的进度条"
+      }
     },
     "metadataDisplay": {
-      "title": "标题/艺术家显示",
-      "subtitle": "配置歌曲标题和艺术家的显示方式",
+      "title": "标题/艺人显示",
+      "subtitle": "设置歌曲标题和艺人的显示方式"
     },
     "fullscreenStyle": {
       "title": "全屏样式",
       "subtitle": "全屏模式的视觉元素设置",
       "albumSize": {
         "desc": "专辑封面大小",
-        "info": "设置全屏中专辑封面的最大尺寸 (100-500px)"
+        "info": "设置全屏模式下专辑封面的最大尺寸 (100-500px)"
       },
       "albumRadius": {
         "desc": "专辑封面圆角",
-        "info": "设置专辑封面的圆角半径 (0-50px)"
+        "info": "设置专辑封面的圆角大小 (0-50px)"
       },
       "titleFontSize": {
         "desc": "标题字体大小",
-        "info": "设置全屏中歌曲标题的字体大小 (24-72px)"
+        "info": "设置全屏模式下歌曲标题的字体大小 (24-72px)"
       },
       "artistFontSize": {
-        "desc": "艺术家字体大小",
-        "info": "设置全屏中艺术家名称的字体大小 (14-36px)"
+        "desc": "艺人字体大小",
+        "info": "设置全屏模式下艺人名字的字体大小 (14-36px)"
       },
       "lyricsRightMargin": {
-        "desc": "歌词右边距",
-        "info": "设置全屏中歌词区域的右边距。防止居中对齐时歌词偏右 (0-300px)"
+        "desc": "歌词右侧边距",
+        "info": "设置全屏模式下歌词区域的右侧边距。防止居中对齐时歌词看起来偏右 (0-300px)"
       }
     },
     "fullscreenUI": {
-      "title": "全屏UI元素",
-      "subtitle": "配置全屏中显示的其他UI元素",
+      "title": "全屏 UI 元素",
+      "subtitle": "设置全屏显示的额外 UI 元素",
       "showClock": {
         "desc": "显示时钟",
-        "info": "在右上角显示当前时间"
+        "info": "在屏幕右上角显示当前时间"
       },
       "clockSize": {
         "desc": "时钟大小",
@@ -1067,28 +1068,28 @@ window.LANG_ZH_CN = {
       },
       "showContextImage": {
         "desc": "显示上下文图片",
-        "info": "显示播放列表/专辑缩略图"
+        "info": "同时显示播放列表/专辑的缩略图"
       },
       "showNextTrack": {
-        "desc": "下一曲预览",
-        "info": "在歌曲结束前显示下一曲信息（广播风格）"
+        "desc": "下一首预览",
+        "info": "歌曲结束前在右上角显示下一首歌曲信息（音乐广播风格）"
       },
       "nextTrackTime": {
-        "desc": "下一曲显示时间",
-        "info": "设置歌曲结束前多少秒显示下一曲 (5-30秒)",
+        "desc": "下一首显示时间",
+        "info": "设置歌曲结束前几秒开始显示下一首 (5-30秒)",
         "unit": "秒"
       },
       "showControls": {
         "desc": "显示播放器控件",
-        "info": "显示播放/暂停、上一曲/下一曲、随机播放、重复、喜欢按钮"
+        "info": "显示播放/暂停、上一首/下一首、随机、重复、喜欢按钮"
       },
       "showVolume": {
-        "desc": "显示音量控制",
-        "info": "在播放器控件中显示音量滑块"
+        "desc": "显示音量控件",
+        "info": "在播放器控件中显示音量调节滑块"
       },
       "showProgressBar": {
-        "desc": "显示进度条",
-        "info": "显示当前播放位置和总时长的进度条"
+        "desc": "显示播放进度条",
+        "info": "显示指示歌曲当前播放位置和总时间的进度条"
       },
       "showLyricsProgress": {
         "desc": "显示歌词进度",
@@ -1096,15 +1097,15 @@ window.LANG_ZH_CN = {
       },
       "showQueue": {
         "desc": "显示队列面板",
-        "info": "当鼠标悬停在屏幕右侧时显示播放队列"
+        "info": "鼠标移至屏幕右侧时显示播放队列"
       }
     },
     "controllerStyle": {
       "title": "控制器样式",
-      "subtitle": "配置播放器控制器外观",
+      "subtitle": "设置播放控制器的外观",
       "buttonSize": {
         "desc": "控制按钮大小",
-        "info": "设置播放、上一曲/下一曲按钮的大小 (28-48px)"
+        "info": "设置播放、上一首/下一首等按钮的大小 (28-48px)"
       },
       "background": {
         "desc": "控制器背景",
@@ -1113,36 +1114,36 @@ window.LANG_ZH_CN = {
     },
     "autoHide": {
       "title": "自动隐藏",
-      "subtitle": "鼠标不活动时自动隐藏UI",
+      "subtitle": "鼠标静止时自动隐藏 UI 设置",
       "enabled": {
-        "info": "鼠标不移动时控制器和信息将自动隐藏",
-        "desc": "自动隐藏UI"
+        "info": "如果不移动鼠标，控制器和信息将自动隐藏",
+        "desc": "UI 自动隐藏"
       },
       "delay": {
         "desc": "自动隐藏延迟",
-        "info": "鼠标不活动后UI隐藏的时间 (1-10秒)"
+        "info": "鼠标静止后到 UI 隐藏的时间 (1-10秒)"
       }
     },
     "tmiStyle": {
-      "title": "TMI样式",
-      "subtitle": "点击专辑封面时显示的TMI弹窗样式设置",
+      "title": "TMI 样式",
+      "subtitle": "点击专辑封面时显示的 TMI 模态框样式设置",
       "fontSize": {
-        "desc": "TMI字体大小",
-        "info": "调整TMI弹窗的整体字体大小 (80-150%)"
+        "desc": "TMI 字体大小",
+        "info": "调整 TMI 模态框的整体字体大小 (80-150%)"
       }
     },
     "aboutTab": {
       "appInfo": {
         "title": "应用信息"
       },
-      "developer": "开发者：",
-      "originalProject": "原始项目：",
-      "thanks": "感谢所有对开源项目的贡献者。",
+      "developer": "开发:",
+      "originalProject": "原始项目:",
+      "thanks": "感谢所有为开源项目做出贡献的人。",
       "clientInfo": {
         "title": "客户端信息",
         "subtitle": "此客户端的唯一标识符",
-        "description": "这是为账户关联自动生成的唯一标识符。此值无法修改，每个客户端唯一分配。请注意不要泄露此值。",
-        "copied": "客户端ID已复制",
+        "description": "这是为了账户关联自动生成的唯一标识符。此值无法修改，每个客户端分配唯一值。请注意不要泄露此值。",
+        "copied": "客户端 ID 已复制",
         "copyFailed": "复制失败",
         "copy": "复制"
       },
@@ -1159,45 +1160,45 @@ window.LANG_ZH_CN = {
         "copyFailed": "复制失败"
       },
       "patchNotes": {
-        "title": "更新说明",
-        "subtitle": "最新更新历史",
-        "loading": "正在加载更新说明..."
+        "title": "更新日志",
+        "subtitle": "最新更新内容",
+        "loading": "正在加载更新日志..."
       },
-      "subtitle": "关于ivLyrics",
-      "appDescription": "包含各种功能的歌词扩展",
+      "subtitle": "关于 ivLyrics",
+      "appDescription": "功能丰富的歌词 Extension",
       "versionPrefix": "版本",
-      "viewOnGithub": "在GitHub上查看",
-      "patchNotesLoadFailed": "无法加载更新说明",
-      "checkGithubReleases": "请查看GitHub发布页面",
-      "visitGithub": "访问GitHub仓库",
-      "joinDiscord": "加入Discord服务器"
+      "viewOnGithub": "在 GitHub 上查看",
+      "patchNotesLoadFailed": "无法加载更新日志",
+      "checkGithubReleases": "请查看 GitHub 发布页面",
+      "visitGithub": "访问 GitHub 仓库",
+      "joinDiscord": "加入 Discord 服务器"
     },
     "debugTab": {
       "title": "调试信息",
-      "subtitle": "报告错误时与开发者共享的信息",
+      "subtitle": "报告 Bug 时提供给开发者的信息",
       "currentTrack": "当前曲目信息",
       "trackInfo": "曲目信息",
       "lyricsInfo": "歌词信息",
       "settingsInfo": "设置信息",
-      "noLyrics": "没有歌词信息",
+      "noLyrics": "无歌词信息",
       "loading": "正在加载信息...",
       "refresh": "刷新",
       "copyToClipboard": "复制到剪贴板",
-      "copied": "已复制！",
+      "copied": "已复制!",
       "copyFailed": "复制失败",
-      "sendToDiscord": "报告到Discord",
-      "rawJson": "JSON数据"
+      "sendToDiscord": "报告给 Discord",
+      "rawJson": "JSON 数据"
     },
     "api": {
-      "title": "API设置",
+      "title": "API 设置",
       "getApiKey": {
-        "desc": "获取API密钥",
-        "info": "您可以在Google AI Studio免费获取Gemini API密钥",
-        "button": "打开API密钥页面"
+        "desc": "获取 API 密钥",
+        "info": "可以在 Google AI Studio 免费获取 Gemini API 密钥",
+        "button": "打开 API 密钥获取页面"
       },
       "geminiKey": {
-        "desc": "Gemini API密钥",
-        "info": "需要API密钥才能使用由Google Gemini AI驱动的歌词翻译功能"
+        "desc": "Gemini API 密钥",
+        "info": "使用基于 Google Gemini AI 的歌词翻译功能需要 API 密钥"
       }
     },
     "update": {
@@ -1211,111 +1212,111 @@ window.LANG_ZH_CN = {
       "copied": "已复制",
       "installCopied": "安装命令已复制",
       "copyFailed": "复制失败",
-      "currentVersionInfo": "当前版本：v{version}。在GitHub上检查新更新",
-      "checkFailedWithError": "检查更新失败：{error}"
+      "currentVersionInfo": "当前版本: v{version}. 检查 GitHub 是否有新更新",
+      "checkFailedWithError": "检查更新失败: {error}"
     }
   },
   "syncAdjust": {
-    "info": "将滑块向右移动会使歌词更快。",
+    "info": "向右移动滑块，歌词进度会变快。",
     "reset": "重置",
     "communityTitle": "社区同步",
-    "communityOffset": "偏移",
+    "communityOffset": "偏移量",
     "submissions": "提交数",
-    "confidenceHigh": "高置信度",
-    "confidenceMedium": "中置信度",
-    "confidenceLow": "低置信度",
+    "confidenceHigh": "高可信度",
+    "confidenceMedium": "中可信度",
+    "confidenceLow": "低可信度",
     "applyCommunity": "应用",
-    "submitMine": "提交我的偏移",
+    "submitMine": "提交我的偏移量",
     "submitting": "提交中...",
     "submitSuccess": "已提交到社区",
     "submitFailed": "提交失败",
-    "noData": "没有社区数据",
+    "noData": "无社区数据",
     "loading": "加载中...",
     "feedbackGood": "偏移量准确",
     "feedbackBad": "偏移量不准确",
     "cannotFeedbackOwnSubmission": "无法评价自己提交的偏移量",
-    "feedbackPositiveSuccess": "感谢您的肯定反馈！",
-    "feedbackNegativeSuccess": "感谢您的反馈。我们会改进！",
+    "feedbackPositiveSuccess": "感谢您的好评！",
+    "feedbackNegativeSuccess": "感谢反馈，我们会改进！",
     "feedbackFailed": "反馈提交失败",
     "autoSubmitEnabled": "⚡ 自动提交已启用"
   },
   "playbarButton": {
-    "label": "ivLyrics"
+    "label": "歌词 Plus"
   },
   "videoBackground": {
     "loading": "正在加载视频信息...",
     "notFound": "找不到视频。",
     "error": "发生错误。",
-    "loadingMessage": "正在加载视频背景... 大约需要30秒。",
-    "downloadingVideo": "正在下载视频...",
+    "loadingMessage": "视频背景加载中... 大约需要 30 秒。",
+    "downloadingVideo": "视频下载中...",
     "downloading": "下载中: {percent}%",
-    "processing": "正在处理视频...",
-    "checking": "正在检查视频...",
-    "preparing": "正在准备视频下载...",
+    "processing": "视频处理中...",
+    "checking": "视频检查中...",
+    "preparing": "正在准备下载视频...",
     "downloadComplete": "视频下载完成！",
-    "helperNotConnected": "无法连接到助手程序。请确保程序正在运行。",
+    "helperNotConnected": "无法连接到助手程序。请确认程序是否正在运行。",
     "helperError": "助手程序发生错误。",
-    "tryingCookiesFile": "正在尝试使用cookies.txt文件...",
-    "tryingBrowserCookies": "正在尝试使用{browser}浏览器Cookie...",
-    "checkingWithCookiesFile": "正在使用cookies.txt检查视频...",
-    "checkingWithBrowserCookies": "正在使用{browser}Cookie检查视频...",
+    "tryingCookiesFile": "正在尝试使用 cookies.txt 文件...",
+    "tryingBrowserCookies": "正在尝试使用 {browser} Cookies...",
+    "checkingWithCookiesFile": "正在使用 cookies.txt 检查视频...",
+    "checkingWithBrowserCookies": "正在使用 {browser} Cookie 检查视频...",
     "checkingAvailability": "正在检查视频可用性...",
-    "ageRestrictedNoCookies": "年龄限制视频。未找到cookies.txt文件或支持的浏览器。请在设置中配置cookies.txt文件。",
-    "ageRestrictedFailed": "年龄限制视频。请在设置中配置有效的cookies.txt文件。",
+    "ageRestrictedNoCookies": "此为年龄限制视频。未找到 cookies.txt 文件或支持的浏览器。请在设置中配置 cookies.txt 文件。",
+    "ageRestrictedFailed": "此为年龄限制视频。请在设置中配置有效的 cookies.txt 文件。",
     "videoAlreadyDownloaded": "视频已下载",
     "videoAvailable": "视频可用",
     "videoNotDownloaded": "视频未下载"
   },
   "translator": {
-    "missingApiKey": "未设置Gemini API密钥。请在设置中输入API密钥。",
-    "invalidApiKeyFormat": "API密钥格式无效。Gemini API密钥必须以'AIza'开头。",
-    "invalidRequestFormat": "请求格式无效。请检查您的API密钥。",
-    "invalidApiKey": "API密钥无效。请在设置中检查您的Gemini API密钥。",
-    "accessForbidden": "API访问被禁止。请检查您的API密钥权限。",
-    "rateLimitExceeded": "超出速率限制。请稍后重试。",
+    "missingApiKey": "未设置 Gemini API 密钥。请在设置中输入 API 密钥。",
+    "invalidApiKeyFormat": "API 密钥格式不正确。Gemini API 密钥必须以 'AIza' 开头。",
+    "invalidRequestFormat": "请求格式不正确。请检查 API 密钥。",
+    "invalidApiKey": "无效的 API 密钥。请在设置中检查 Gemini API 密钥。",
+    "accessForbidden": "API 访问被禁止。请检查 API 密钥权限。",
+    "rateLimitExceeded": "超出请求限制。请稍后重试。",
     "serviceUnavailable": "翻译服务暂时不可用。请稍后重试。",
-    "requestFailed": "API请求失败",
-    "apiKeyError": "发生Gemini API密钥错误。请在设置中检查您的API密钥。",
+    "requestFailed": "API 请求失败",
+    "apiKeyError": "发生 Gemini API 密钥相关错误。请在设置中检查 API 密钥。",
     "translationFailed": "翻译失败",
     "requestTimeout": "翻译请求超时。请重试。",
     "failedPrefix": "翻译失败"
   },
   "utils": {
-    "allUrlsFailed": "无法从所有URL获取版本信息",
-    "invalidVersionFormat": "版本格式无效",
+    "allUrlsFailed": "无法从所有 URL 获取版本信息",
+    "invalidVersionFormat": "无效的版本格式",
     "unknownError": "未知错误",
     "requestTimeout": "请求超时",
     "networkError": "网络连接失败",
-    "securityRestriction": "浏览器安全策略限制",
+    "securityRestriction": "由于浏览器安全策略受限",
     "serverError": "服务器响应错误",
-    "terminalMac": "终端"
+    "terminalMac": "终端 (Terminal)"
   },
   "modes": {
     "karaoke": "卡拉OK",
     "synced": "同步",
-    "unsynced": "非同步"
+    "unsynced": "纯文本"
   },
   "communityVideo": {
     "title": "社区视频推荐",
-    "loading": "加载视频中...",
-    "loadError": "加载视频失败",
-    "noVideos": "暂无社区视频",
-    "autoDetected": "自动",
+    "loading": "正在加载视频列表...",
+    "loadError": "无法加载视频列表",
+    "noVideos": "没有注册的社区视频",
+    "autoDetected": "自动注册",
     "startTime": "开始",
-    "submittedBy": "提交者",
+    "submittedBy": "注册者",
     "addVideo": "添加视频",
     "addVideoNoEmoji": "添加视频",
-    "youtubeUrl": "YouTube 链接",
-    "startTimeSeconds": "开始时间（秒）",
-    "submit": "提交",
-    "submitting": "提交中...",
-    "submitted": "视频提交成功！",
-    "updated": "视频更新成功！",
-    "submitError": "视频提交失败",
-    "invalidUrl": "无效的 YouTube 链接",
-    "videoNotFound": "YouTube 视频不存在",
-    "videoPrivate": "视频为私享或已删除",
-    "validationError": "无法验证视频，请重试",
+    "youtubeUrl": "YouTube URL",
+    "startTimeSeconds": "开始时间 (秒)",
+    "submit": "注册",
+    "submitting": "注册中...",
+    "submitted": "视频注册成功！",
+    "updated": "视频信息已更新！",
+    "submitError": "视频注册失败",
+    "invalidUrl": "无效的 YouTube URL",
+    "videoNotFound": "不存在的 YouTube 视频",
+    "videoPrivate": "私有或已删除的视频",
+    "validationError": "无法验证视频。请重试",
     "selectVideo": "选择视频",
     "preview": "预览",
     "apply": "应用",
@@ -1323,27 +1324,28 @@ window.LANG_ZH_CN = {
     "applied": "视频已应用",
     "videoTitle": "视频标题",
     "loadingTitle": "正在获取标题...",
-    "startTimeLabel": "首句歌词开始时间（秒）",
-    "startTimeHint": "请输入 YouTube 视频中第一句歌词开始的时间",
+    "startTimeLabel": "第一句歌词开始时间 (秒)",
+    "startTimeHint": "输入 YouTube 视频中第一句歌词开始的时间",
     "delete": "删除",
-    "deleteConfirm": "确定要删除这个视频吗？",
+    "deleteConfirm": "要删除此视频吗？",
     "deleted": "视频已删除",
-    "deleteError": "删除视频失败"
+    "deleteError": "视频删除失败",
+    "downloading": "视频下载中..."
   },
   "close": "关闭",
   "cancel": "取消",
   "shareImage": {
     "title": "分享歌词图片",
-    "subtitle": "创建并分享精美的歌词图片",
+    "subtitle": "将喜欢的歌词制作为图片并分享",
     "selectLyrics": "选择歌词",
-    "selectLyricsHint": "点击选择要包含在图片中的歌词行（最多6行）",
+    "selectLyricsHint": "点击图片中要包含的歌词行 (最多 6 行)",
     "template": "预设",
     "templates": {
       "cover": "封面模糊",
       "gradient": "渐变",
       "minimal": "极简",
-      "glass": "毛璃璃",
-      "story": "故事"
+      "glass": "玻璃",
+      "story": "快拍"
     },
     "advancedSettings": "详细设置",
     "sections": {
@@ -1353,12 +1355,12 @@ window.LANG_ZH_CN = {
       "layout": "布局",
       "other": "其他"
     },
-    "copyrightWarning": "⚠️ 版权提示\n\n此歌词图片可能包含受版权保护的内容。\n\n• 请仅供个人使用\n• 请勿用于商业目的\n• 在社交媒体上分享时请尊重原创者\n\n是否继续？",
-    "copyrightTitle": "版权提示",
+    "copyrightWarning": "⚠️ 版权提醒\n\n此歌词图片可能包含受版权保护的内容。\n\n• 请仅用于个人用途\n• 请勿用于商业目的\n• SNS 分享时请尊重原作者\n\n是否继续？",
+    "copyrightTitle": "版权提醒",
     "copyrightDesc": "此歌词图片可能包含受版权保护的内容。",
-    "copyrightPoint1": "请仅供个人使用",
+    "copyrightPoint1": "请仅用于个人用途",
     "copyrightPoint2": "请勿用于商业目的",
-    "copyrightPoint3": "在社交媒体上分享时请尊重原创者",
+    "copyrightPoint3": "SNS 分享时请尊重原作者",
     "copyrightConfirm": "同意并继续",
     "settings": {
       "backgroundType": "背景样式",
@@ -1396,29 +1398,29 @@ window.LANG_ZH_CN = {
     "copied": "✓ 已复制到剪贴板",
     "downloaded": "✓ 已下载",
     "shared": "✓ 已分享",
-    "maxLinesReached": "最多可选择3行",
+    "maxLinesReached": "最多可以选择 3 行",
     "noSelection": "请选择歌词"
   },
   "setupWizard": {
     "welcome": {
-      "title": "欢迎使用 ivLyrics！",
-      "subtitle": "在 Spotify 上享受美丽的歌词体验",
+      "title": "欢迎使用 ivLyrics!",
+      "subtitle": "在 Spotify 上享受精美的歌词体验",
       "features": {
         "lyrics": "实时同步歌词",
         "translation": "AI 翻译支持",
-        "customization": "丰富的自定义选项"
+        "customization": "丰富的自定义功能"
       },
-      "start": "开始"
+      "start": "开始使用"
     },
     "language": {
       "title": "语言选择",
-      "subtitle": "请选择您使用的语言"
+      "subtitle": "选择要使用的语言"
     },
     "apiKey": {
-      "title": "Gemini API 密钥设置",
+      "title": "设置 Gemini API 密钥",
       "subtitle": "使用 AI 翻译功能需要 API 密钥",
       "guide": {
-        "title": "如何获取 API 密钥",
+        "title": "API 密钥获取方法",
         "step1": "访问 Google AI Studio",
         "step2": "点击 Get API Key",
         "step3": "创建新 API 密钥",
@@ -1426,7 +1428,7 @@ window.LANG_ZH_CN = {
       },
       "getKey": "获取 API 密钥",
       "skip": "稍后设置",
-      "placeholder": "输入 API 密钥...",
+      "placeholder": "请输入 API 密钥...",
       "multipleKeysHint": "可以在设置中注册多个 API 密钥"
     },
     "theme": {
@@ -1444,21 +1446,21 @@ window.LANG_ZH_CN = {
     },
     "translationTip": {
       "title": "翻译设置指南",
-      "subtitle": "翻译功能按语言单独设置",
+      "subtitle": "翻译功能是按语言单独设置的",
       "pronunciation": "发音",
       "translation": "翻译",
-      "description": "即使在 K-POP 歌曲中启用了翻译，也不会应用于 J-POP。请点击下方的转换按钮，分别设置每种语言的“发音”和“翻译”选项。"
+      "description": "在 K-POP 歌曲中启用翻译并不会应用到 J-POP 中。请点击下方的转换按钮，为每种语言分别设置“发音”和“翻译”选项。"
     },
     "overlayTip": {
-      "title": "桌面覆盖",
-      "subtitle": "在桌面任何位置查看歌词",
-      "description": "安装覆盖应用后，您可以在使用其他应用时查看歌词。您可以随时在设置中启用它。",
-      "requiresApp": "使用此功能需要安装单独的覆盖应用程序。",
-      "enabled": "启用覆盖",
-      "downloadApp": "下载覆盖应用"
+      "title": "桌面悬浮窗",
+      "subtitle": "在桌面的任何位置查看歌词",
+      "description": "安装悬浮窗应用后，您可以在使用其他应用时查看歌词。随时可以在设置中启用。",
+      "requiresApp": "使用此功能需要单独安装悬浮窗应用。",
+      "enabled": "启用悬浮窗",
+      "downloadApp": "下载悬浮窗应用"
     },
     "nowPlayingTip": {
-      "title": "正在播放面板歌词",
+      "title": "NowPlaying 面板歌词",
       "subtitle": "在右侧面板查看当前歌词",
       "description": "在 Spotify 的“正在播放”面板中显示当前歌词。无需全屏模式即可查看歌词。",
       "enabled": "显示面板歌词",
@@ -1468,7 +1470,7 @@ window.LANG_ZH_CN = {
       "title": "准备就绪！",
       "subtitle": "现在可以开始使用 ivLyrics 了",
       "startNow": "立即开始",
-      "openSettings": "打开设置"
+      "openSettings": "更多设置"
     },
     "navigation": {
       "next": "下一步",
@@ -1477,101 +1479,120 @@ window.LANG_ZH_CN = {
     },
     "videoTest": {
       "title": "视频背景测试",
-      "subtitle": "请检查下方的YouTube视频是否正常播放",
+      "subtitle": "请确认下方的 YouTube 视频是否能正常播放",
       "question": "是否显示需要登录才能播放视频？",
       "yes": "是",
       "no": "否",
       "helperRequired": "如果是，您需要安装助手程序。",
-      "helperDesc": "助手程序可以让您无需YouTube登录即可播放视频。",
+      "helperDesc": "助手程序可以让您在无需登录 YouTube 的情况下播放视频。",
       "installHelper": "安装助手程序",
       "skip": "跳过"
     },
     "videoHelperTest": {
       "title": "助手程序测试",
-      "subtitle": "验证助手程序是否正常工作",
+      "subtitle": "检查助手程序是否正常工作",
       "enableHelper": "启用助手程序",
-      "testVideo": "测试视频播放",
+      "testVideo": "播放测试视频",
       "testing": "测试中...",
-      "success": "助手程序运行正常！",
-      "failed": "无法连接到助手程序。请确保程序正在运行。",
-      "downloading": "正在下载视频: {percent}%",
+      "success": "助手程序工作正常！",
+      "failed": "无法连接到助手程序。请确认程序是否正在运行。",
+      "downloading": "视频下载中: {percent}%",
       "skip": "跳过"
+    },
+    "tmi": {
+      "getApiKeyDesc": "获取 Gemini API 密钥",
+      "getApiKeyInfo": "用于加载 TMI。可以在 Google AI Studio 免费获取。",
+      "viewInfo": "点击查看关于这首歌的各种信息",
+      "requireKey": "需要在设置中配置 Gemini API 密钥",
+      "settingTitle": "Gemini API 密钥",
+      "settingDesc": "加载歌曲 TMI/信息所需。",
+      "title": "TMI (歌曲情报)",
+      "didYouKnow": "你知道吗？",
+      "close": "关闭",
+      "cancel": "取消",
+      "loading": "正在寻找有趣的事实...",
+      "noData": "暂无关于这首歌的 TMI。",
+      "clickForTMI": "查看 TMI",
+      "clickToClose": "✕ 或点击专辑封面关闭",
+      "regenerate": "重新生成 TMI。",
+      "errorFetch": "加载 TMI 时发生错误。",
+      "errorQuota": "API 配额已超限。",
+      "errorQuotaHint": "请稍后重试，或在设置中输入其他 API 密钥。",
+      "disclaimer": "该内容由 AI 加工互联网信息显示，可能包含不正确的信息。",
+      "verified": "已验证",
+      "unverified": "未验证",
+      "verifiedCount": "已验证",
+      "sources": "来源",
+      "verifiedSources": "验证来源",
+      "relatedSources": "相关来源",
+      "otherSources": "其他来源",
+      "confidenceVeryHigh": "可信度非常高",
+      "confidenceHigh": "可信度高",
+      "confidenceMedium": "可信度中等",
+      "confidenceLow": "可信度低",
+      "confidenceNone": "无来源"
+    },
+    "notice": {
+      "confirm": "确认",
+      "next": "下一步",
+      "dismissAll": "全部关闭"
+    },
+    "syncCreator": {
+      "title": "创建卡拉OK同步",
+      "buttonTooltip": "创建卡拉OK同步",
+      "clickHereHint": "点击这里调整歌词同步！",
+      "loading": "加载中...",
+      "loadLyrics": "加载歌词",
+      "reload": "重新加载",
+      "loadingLyrics": "正在加载歌词...",
+      "selectProvider": "自动加载歌词 (Spotify → LRCLIB)",
+      "noLyrics": "找不到歌词",
+      "loadError": "加载歌词时发生错误",
+      "currentLine": "当前歌词",
+      "nextLine": "下一句",
+      "progress": "进度",
+      "linesCompleted": "行完成",
+      "chars": "字",
+      "reset": "重置",
+      "firstLine": "回到首行",
+      "prevLine": "上一行",
+      "nextLineBtn": "下一行",
+      "recordMode": "录制模式",
+      "stopRecord": "停止录制",
+      "previewMode": "预览模式",
+      "stopPreview": "停止预览",
+      "idleMode": "空闲",
+      "submit": "提交",
+      "submitting": "提交中...",
+      "noSyncData": "没有注册的同步数据",
+      "incompleteConfirm": "部分行尚未同步。确定要提交吗？",
+      "submitSuccess": "同步数据已提交！管理员批准后生效。",
+      "submitError": "同步数据提交失败",
+      "dragHint": "拖动以记录每个字的计时。向左拖动取消。",
+      "globalOffset": "全局偏移",
+      "synced": "已注册",
+      "notSynced": "未注册",
+      "deleteLine": "删除此行",
+      "back": "关闭",
+      "lrclib": {
+        "registerLyrics": "在 LRCLIB 上注册歌词",
+        "title": "注册歌词到 LRCLIB",
+        "description": "此歌曲没有歌词。您可以直接输入歌词并注册到 LRCLIB，以便其他用户使用。注册后无法修改，请谨慎输入。",
+        "trackInfo": "曲目信息",
+        "placeholder": "请输入歌词...\n\n请换行区分每一句。\n空行将被自动移除。",
+        "publishToLrcLib": "注册到 LRCLIB",
+        "publishing": "注册中...",
+        "cancelPublish": "取消注册",
+        "publishCancelled": "注册已取消",
+        "timeWarning": "⚠️ 为了防止滥用，LRCLIB 要求进行加密令牌解析。根据计算机性能，此过程大约需要 5 分钟。",
+        "requestingChallenge": "正在请求验证...",
+        "solvingChallenge": "正在处理验证...",
+        "solving": "正在处理验证... (尝试 {nonce})",
+        "publishSuccess": "歌词已成功注册到 LRCLIB！",
+        "publishError": "歌词注册失败",
+        "noLyricsInput": "请输入歌词",
+        "loadingAfterPublish": "正在加载注册的歌词..."
+      }
     }
-  },
-  tmi: {
-    getApiKeyDesc: "获取 Gemini API 密钥",
-    getApiKeyInfo: "用于获取 TMI。可从 Google AI Studio 免费获取。",
-    viewInfo: "点击查看歌曲详细信息",
-    requireKey: "需要在设置中配置 Gemini API 密钥",
-    settingTitle: "Gemini API 密钥",
-    settingDesc: "用于加载歌曲 TMI/趣闻内容。",
-    title: "TMI",
-    didYouKnow: "你知道吗？",
-    close: "关闭",
-    cancel: "取消",
-    loading: "正在查找趣闻...",
-    noData: "暂无此歌曲的 TMI。",
-    clickForTMI: "点击查看 TMI",
-    clickToClose: "点击 ✕ 或专辑区域返回",
-    regenerate: "重新生成 TMI",
-    errorFetch: "获取 TMI 时发生错误。",
-    errorQuota: "API 配额已超出。",
-    errorQuotaHint: "请稍后重试或在设置中输入其他 API 密钥。",
-    disclaimer: "此内容由AI处理互联网信息后生成，可能包含不准确的信息。",
-    verified: "已验证",
-    unverified: "未验证",
-    verifiedCount: "已验证",
-    sources: "来源",
-    verifiedSources: "已验证的来源",
-    relatedSources: "相关来源",
-    otherSources: "其他来源",
-    confidenceVeryHigh: "极高可信度",
-    confidenceHigh: "高可信度",
-    confidenceMedium: "中可信度",
-    confidenceLow: "低可信度",
-    confidenceNone: "无来源"
-  },
-  notice: {
-    confirm: "确认",
-    next: "下一个",
-    dismissAll: "全部关闭"
-  },
-  syncCreator: {
-    title: "创建卡拉OK同步",
-    buttonTooltip: "创建卡拉OK同步",
-    clickHereHint: "点击此处同步歌词！",
-    loading: "加载中...",
-    loadLyrics: "加载歌词",
-    loadingLyrics: "正在加载歌词...",
-    selectProvider: "请选择提供商并加载歌词",
-    noLyrics: "未找到歌词",
-    loadError: "加载歌词时出错",
-    currentLine: "当前行",
-    nextLine: "下一行",
-    progress: "进度",
-    linesCompleted: "已完成行数",
-    chars: "字符",
-    reset: "重置",
-    firstLine: "首行",
-    prevLine: "上一行",
-    nextLineBtn: "下一行",
-    recordMode: "录制模式",
-    stopRecord: "停止录制",
-    previewMode: "预览模式",
-    stopPreview: "停止预览",
-    idleMode: "空闲",
-    recordLine: "快速录制行",
-    submit: "提交",
-    submitting: "正在提交...",
-    noSyncData: "没有同步数据",
-    incompleteConfirm: "部分行尚未同步。确定要提交吗？",
-    submitSuccess: "同步数据已提交！审核后将生效。",
-    submitError: "提交同步数据失败",
-    dragHint: "拖动以记录每个字符的时间。向左拖动取消。",
-    globalOffset: "全局偏移",
-    synced: "已同步",
-    notSynced: "未同步",
-    deleteLine: "删除此行",
-    back: "关闭"
   }
 };

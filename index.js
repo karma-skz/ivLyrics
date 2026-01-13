@@ -5115,7 +5115,7 @@ class LyricsContainer extends react.Component {
       react.createElement(
         "div",
         {
-          className: "lyrics-config-button-container",
+          className: "lyrics-config-button-container" + (this.state.isFullscreen ? " fullscreen-mode-container" : ""),
         },
         showTranslationButton &&
         react.createElement(TranslationMenu, {
@@ -5159,33 +5159,37 @@ class LyricsContainer extends react.Component {
         react.createElement(SettingsMenu),
         // Fullscreen toggle button
         (() => !document.getElementById("fad-ivLyrics-container"))() && react.createElement(
-          Spicetify.ReactComponent.TooltipWrapper,
-          {
-            label: I18n.t("menu.fullscreen"),
-          },
+          "div",
+          { className: "lyrics-fullscreen-exit-wrapper" },
           react.createElement(
-            "button",
+            Spicetify.ReactComponent.TooltipWrapper,
             {
-              className: "lyrics-config-button",
-              onClick: () => {
-                this.toggleFullscreen();
-              },
+              label: I18n.t("menu.fullscreen"),
             },
-            react.createElement("svg", {
-              width: 20,
-              height: 20,
-              viewBox: "0 0 24 24",
-              fill: "none",
-              stroke: "currentColor",
-              strokeWidth: 2,
-              strokeLinecap: "round",
-              strokeLinejoin: "round",
-              dangerouslySetInnerHTML: {
-                __html: this.state.isFullscreen
-                  ? '<path d="M9 4v3a2 2 0 0 1-2 2H4"/><path d="M15 4v3a2 2 0 0 0 2 2h3"/><path d="M9 20v-3a2 2 0 0 0-2-2H4"/><path d="M15 20v-3a2 2 0 0 1 2-2h3"/>'
-                  : '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>',
+            react.createElement(
+              "button",
+              {
+                className: "lyrics-config-button lyrics-fullscreen-exit-button",
+                onClick: () => {
+                  this.toggleFullscreen();
+                },
               },
-            })
+              react.createElement("svg", {
+                width: 20,
+                height: 20,
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "currentColor",
+                strokeWidth: 2,
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                dangerouslySetInnerHTML: {
+                  __html: this.state.isFullscreen
+                    ? '<path d="M9 4v3a2 2 0 0 1-2 2H4"/><path d="M15 4v3a2 2 0 0 0 2 2h3"/><path d="M9 20v-3a2 2 0 0 0-2-2H4"/><path d="M15 20v-3a2 2 0 0 1 2-2h3"/>'
+                    : '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>',
+                },
+              })
+            )
           )
         ),
         // Separator between tools and mode buttons
@@ -5274,7 +5278,7 @@ class LyricsContainer extends react.Component {
             artists: Spicetify.Player.data?.item?.artists || [],
             album: Spicetify.Player.data?.item?.album || {},
           },
-          showHint: !this.state.karaoke
+          showHint: true
         })
       ),
       activeItem

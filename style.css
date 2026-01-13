@@ -5645,9 +5645,109 @@ ruby .lyrics-karaoke-char.sung {
   border-radius: 2px;
   transition: width 0.1s linear;
 }
+
 /* Sync Creator Glitter & Hint */
-@keyframes glitter { 0% { box-shadow: 0 0 2px rgba(255,255,255,0.2); } 50% { box-shadow: 0 0 10px rgba(255,255,255,0.6), 0 0 5px rgba(255,255,255,0.4) inset; } 100% { box-shadow: 0 0 2px rgba(255,255,255,0.2); } }
-.lyrics-config-button.glitter-effect { animation: glitter 2s infinite ease-in-out; border: 1px solid rgba(255,255,255,0.3) !important; }
-.sync-creator-hint { position: absolute; right: 45px; top: 50%; transform: translateY(-50%); background: var(--spice-card); color: var(--spice-text); padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: bold; white-space: nowrap; pointer-events: none; opacity: 0; animation: hint-fade-in-out 4s ease-in-out forwards; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 1px solid var(--spice-button); }
-.sync-creator-hint::after { content: ''; position: absolute; top: 50%; right: -6px; transform: translateY(-50%); border-width: 6px 0 6px 6px; border-style: solid; border-color: transparent transparent transparent var(--spice-button); }
-@keyframes hint-fade-in-out { 0% { opacity: 0; transform: translateY(-50%) translateX(10px); } 15% { opacity: 1; transform: translateY(-50%) translateX(0); } 85% { opacity: 1; transform: translateY(-50%) translateX(0); } 100% { opacity: 0; transform: translateY(-50%) translateX(10px); } }
+@keyframes glitter {
+  0% {
+    box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 5px rgba(255, 255, 255, 0.4) inset;
+  }
+
+  100% {
+    box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.lyrics-config-button.glitter-effect {
+  animation: glitter 2s infinite ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.sync-creator-hint {
+  position: absolute;
+  right: 45px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--spice-card);
+  color: var(--spice-text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  animation: hint-fade-in-out 4s ease-in-out forwards;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--spice-button);
+}
+
+.sync-creator-hint::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  transform: translateY(-50%);
+  border-width: 6px 0 6px 6px;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--spice-button);
+}
+
+@keyframes hint-fade-in-out {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(10px);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+
+  85% {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(10px);
+  }
+}
+
+/* Fullscreen Floating Icons Logic */
+
+/* In fullscreen mode, only show the exit button initially */
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-config-button,
+.lyrics-config-button-container.fullscreen-mode-container .TranslationMenu,
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-config-separator,
+.lyrics-config-button-container.fullscreen-mode-container>div:not(.lyrics-fullscreen-exit-wrapper) {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Ensure the wrapper handles layout if needed */
+.lyrics-fullscreen-exit-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* Override opacity for the exit button inside the wrapper */
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-fullscreen-exit-wrapper .lyrics-config-button {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Show all on container hover */
+.lyrics-config-button-container.fullscreen-mode-container:hover .lyrics-config-button,
+.lyrics-config-button-container.fullscreen-mode-container:hover .TranslationMenu,
+.lyrics-config-button-container.fullscreen-mode-container:hover .lyrics-config-separator,
+.lyrics-config-button-container.fullscreen-mode-container:hover>div {
+  opacity: 1;
+  pointer-events: auto;
+}

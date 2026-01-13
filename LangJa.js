@@ -11,32 +11,33 @@ window.LANG_JA = {
     "behavior": "動作",
     "advanced": "詳細",
     "fullscreen": "フルスクリーン",
+    "nowplaying": "パネル歌詞",
     "debug": "デバッグ",
     "about": "情報",
     "searchResults": "検索結果"
   },
   "search": {
     "placeholder": "設定を検索...",
-    "noResults": "結果が見つかりません",
-    "noResultsDesc": "別の検索ワードをお試しください",
+    "noResults": "検索結果がありません",
+    "noResultsDesc": "別のキーワードで検索してみてください",
     "resultCount": "{count}件の結果",
     "clear": "クリア",
-    "inSection": "{section}内"
+    "inSection": "{section} 内"
   },
   "sections": {
     "language": "言語",
     "visualEffects": "視覚効果",
-    "visualEffectsSubtitle": "歌詞画面のビジュアル要素をカスタマイズ",
+    "visualEffectsSubtitle": "歌詞画面の視覚要素をカスタマイズします",
     "syncMode": "同期モード",
-    "syncModeSubtitle": "歌詞の同期方法を設定",
-    "typography": "タイポグラフィ",
-    "typographySubtitle": "歌詞テキストのスタイルを調整",
-    "textShadow": "テキストシャドウ",
-    "textShadowSubtitle": "歌詞テキストにシャドウ効果を追加",
+    "syncModeSubtitle": "歌詞の同期方式を設定します",
+    "typography": "テキストスタイル",
+    "typographySubtitle": "歌詞テキストのスタイルを調整します",
+    "textShadow": "テキストの影",
+    "textShadowSubtitle": "歌詞テキストに影の効果を追加します",
     "updateCheck": "アップデート確認",
     "backgroundOpacity": "背景の不透明度",
-    "contentWidth": "コンテンツ幅",
-    "japaneseConversion": "日本語変換",
+    "contentWidth": "コンテンツの幅",
+    "japaneseConversion": "日本語表記変換",
     "displayContent": "表示コンテンツ",
     "autoTranslation": "自動翻訳",
     "lyrics": "歌詞",
@@ -46,27 +47,27 @@ window.LANG_JA = {
     "karaoke": "カラオケ",
     "syncedLyricsContent": "同期歌詞コンテンツ",
     "unsyncedLyricsContent": "非同期歌詞コンテンツ",
-    "customPreview": "カスタムプレビュー",
+    "customPreview": "プレビューのカスタム",
     "trackSyncInfo": "トラック同期情報",
     "customDatabase": "カスタムデータベース",
     "debug": "デバッグ",
     "github": "GitHub",
-    "maintainers": "メンテナー",
+    "maintainers": "メンテナ",
     "contributors": "コントリビューター",
-    "fadWarningTitle": "⚠️ フルスクリーン拡張機能が有効です",
-    "fadWarningDesc": "フルスクリーン拡張機能が有効な場合、この機能はサポートされません。",
-    "fadWarningTip": "フルスクリーン拡張機能の設定で配置を変更してください。",
+    "fadWarningTitle": "⚠️ Full Screen 拡張機能を使用中",
+    "fadWarningDesc": "Full Screen 拡張機能の使用中はサポートされていません。",
+    "fadWarningTip": "配置方法は Full Screen 自体の設定で変更してください。",
     "desktopOverlay": "デスクトップオーバーレイ",
     "desktopOverlaySubtitle": "歌詞をデスクトップにオーバーレイ表示します"
   },
   "overlay": {
     "enabled": {
       "label": "デスクトップオーバーレイを使用",
-      "desc": "歌詞をデスクトップオーバーレイアプリに送信します"
+      "desc": "歌詞をオーバーレイアプリに送信します"
     },
     "port": {
       "label": "接続ポート",
-      "desc": "オーバーレイアプリとの接続ポート番号 (1024-65535)"
+      "desc": "オーバーレイアプリと接続するポート番号 (1024-65535)"
     },
     "portSaved": "ポートが保存されました",
     "portInvalid": "無効なポート番号です (1024-65535)",
@@ -82,11 +83,11 @@ window.LANG_JA = {
   "settings": {
     "language": {
       "label": "言語",
-      "desc": "拡張機能の言語を選択"
+      "desc": "拡張機能の言語を選択します"
     },
     "alignment": {
       "label": "配置",
-      "desc": "歌詞テキストの配置位置を選択",
+      "desc": "歌詞テキストの表示位置を選択してください",
       "options": {
         "left": "左揃え",
         "center": "中央揃え",
@@ -102,35 +103,35 @@ window.LANG_JA = {
       "desc": "アルバム背景のぼかし強度を調整します"
     },
     "blurGradientBackground": {
-      "label": "ぼかしグラデーション背景",
-      "desc": "アルバムアートの色から抽出したぼかしグラデーション背景を適用します"
+      "label": "ブラーグラデーション背景",
+      "desc": "アルバムアートの色を抽出してブラーグラデーション背景を適用します"
     },
     "colorful": {
       "label": "カラフル背景",
-      "desc": "アルバムカラーに基づくダイナミック背景を有効化"
+      "desc": "アルバムの色に基づいた動的な背景を有効にします"
     },
     "gradientBackground": {
       "label": "アルバムカバー背景",
-      "desc": "現在再生中のアルバムカバーを背景として使用（フルスクリーンモードでは正常に動作しない場合があります）"
+      "desc": "現在再生中のアルバムカバーを背景として使用します（フルスクリーンモードでは正しく動作しない場合があります）"
     },
     "solidBackground": {
       "label": "単色背景",
-      "desc": "カスタム単色を背景として使用"
+      "desc": "ユーザー指定の単色を背景として使用します"
     },
     "solidBackgroundColor": {
       "label": "単色背景の色",
-      "desc": "単色背景に使用する色を選択"
+      "desc": "単色背景に使用する色を選択してください"
     },
     "videoBackground": {
       "label": "動画背景",
-      "desc": "YouTube動画を背景として使用（ベータ版）"
+      "desc": "YouTube動画を背景として使用します（ベータ版）"
     },
     "videoHelper": {
       "label": "ヘルパープログラムを使用",
       "desc": "YouTube動画をローカルでダウンロードして再生します。ログインなしで動画を視聴できます。",
-      "info": "💡 YouTube動画が読み込まれませんか？\n\nGoogleは一部のユーザーがログインせずにYouTube動画を再生することを制限しています。\nヘルパープログラムを使用すると、正常に読み込むことができます。",
+      "info": "💡 YouTube動画が読み込まれませんか？\n\nGoogleは一部のユーザーがログインなしでYouTube動画を再生することを制限しています。\nヘルパープログラムを使用すると、正常に読み込むことができます。",
       "download": "ヘルパーをダウンロード",
-      "checkConnection": "接続確認",
+      "checkConnection": "接続を確認",
       "connected": "ヘルパープログラムに接続されました",
       "disconnected": "ヘルパープログラムに接続できません",
       "status": {
@@ -141,10 +142,10 @@ window.LANG_JA = {
     },
     "lyricsHelper": {
       "label": "歌詞ヘルパーを使用",
-      "desc": "トラックと歌詞の情報をヘルパーに送信します。外部プログラムからAPI経由でアクセスできます。",
+      "desc": "トラックおよび歌詞情報をヘルパーに送信します。外部プログラムからAPIでアクセスして使用できます。",
       "sectionTitle": "ヘルパー連携",
-      "sectionSubtitle": "外部ヘルパーアプリに歌詞を送信",
-      "info": "ヘルパーアプリを使用すると、外部プログラムで同期された歌詞を表示できます",
+      "sectionSubtitle": "外部ヘルパーアプリへの歌詞送信",
+      "info": "ヘルパーアプリを通じて外部プログラムで同期された歌詞を表示できます",
       "download": "ヘルパーをダウンロード",
       "connected": "ヘルパー接続済み",
       "disconnected": "ヘルパー未接続",
@@ -155,59 +156,59 @@ window.LANG_JA = {
       }
     },
     "videoBlur": {
-      "label": "動画ブラー",
-      "desc": "動画背景のブラー強度を調整 (0-40px)"
+      "label": "動画のぼかし",
+      "desc": "動画背景に適用するぼかしの強度を調整します (0-40px)"
     },
     "videoCover": {
-      "label": "動画フィル",
-      "desc": "動画を画面全体に引き伸ばす（上下または左右がクロップされる場合があります）"
+      "label": "動画の画面フィット",
+      "desc": "動画を画面いっぱいに拡大します（上下または左右が切り取られる場合があります）"
     },
     "backgroundBrightness": {
       "label": "背景の明るさ",
-      "desc": "背景の明るさレベルを調整 (0-100%)"
+      "desc": "背景の明るさレベルを調整します (0-100%)"
     },
-    "solidBackgroundWarning": "単色背景使用時は背景の明るさ調整が適用されません。",
+    "solidBackgroundWarning": "単色背景を使用する場合、背景の明るさ調整は適用されません。",
     "updateCheck": {
       "label": "アップデート確認",
-      "desc": "新しいアップデートを自動的に確認",
-      "info": "アップデート確認は最大24時間ごとに1回実行されます。"
+      "desc": "新しいアップデートがあるか自動的に確認します",
+      "info": "アップデートの確認は最大24時間ごとに行われます。"
     },
     "backgroundOpacity": {
       "label": "カバー背景の不透明度",
-      "desc": "カバー背景の不透明度を設定"
+      "desc": "カバーの不透明度を設定します"
     },
     "contentWidth": {
-      "label": "コンテンツ幅",
-      "desc": "フルスクリーンおよび非フルスクリーンモードでのコンテンツ幅を設定"
+      "label": "コンテンツの幅",
+      "desc": "フルスクリーンモードおよび通常モードでのコンテンツの幅を設定します"
     },
     "japaneseConversion": {
-      "label": "日本語変換",
-      "desc": "日本語歌詞の変換形式を設定",
-      "info": "この設定は同期・非同期歌詞にのみ適用され、カラオケ歌詞には適用されません。",
+      "label": "日本語表記変換",
+      "desc": "日本語歌詞の表記変換形式を設定します",
+      "info": "この設定は同期および非同期歌詞にのみ適用されます。カラオケ歌詞では機能しません。",
       "options": {
         "disabled": "無効",
-        "romaji": "ローマ字",
-        "furigana": "ふりがな",
-        "hiragana": "ひらがな",
-        "katakana": "カタカナ"
+        "romaji": "ローマ字 (Romaji)",
+        "furigana": "ふりがな (Furigana)",
+        "hiragana": "ひらがな (Hiragana)",
+        "katakana": "カタカナ (Katakana)"
       }
     },
     "displayContent": {
       "label": "表示コンテンツ",
-      "desc": "歌詞と一緒に追加コンテンツを表示",
+      "desc": "歌詞と一緒に他のコンテンツを表示します",
       "options": {
         "disabled": "無効",
-        "romanization": "ローマ字化",
+        "romanization": "発音（読み方）",
         "translation": "翻訳"
       }
     },
     "autoTranslation": {
       "label": "自動翻訳",
-      "desc": "歌詞に翻訳がない場合に自動的に翻訳を提供",
+      "desc": "歌詞の翻訳がない場合、自動的に提供します",
       "options": {
-        "disabled": "無効（デフォルト）",
-        "google": "Google翻訳",
-        "microsoft": "Microsoft翻訳"
+        "disabled": "無効 (デフォルト)",
+        "google": "Google 翻訳",
+        "microsoft": "Microsoft 翻訳"
       }
     },
     "lyricsMode": {
@@ -221,7 +222,7 @@ window.LANG_JA = {
     },
     "playBarButton": {
       "label": "プレイバーボタン",
-      "desc": "プレイバーに歌詞ボタンを表示",
+      "desc": "プレイバーに歌詞ボタンを表示します",
       "options": {
         "disabled": "無効",
         "normal": "通常",
@@ -230,65 +231,65 @@ window.LANG_JA = {
     },
     "autoScroll": {
       "label": "自動スクロール",
-      "desc": "自動スクロールを有効化。手動スクロール後5秒で自動スクロールに戻ります。"
+      "desc": "自動スクロールを有効にします。手動スクロール後、5秒後に自動スクロールに戻ります。"
     },
     "animation": {
       "label": "アニメーション",
-      "desc": "カラオケハイライト行以外のアニメーションを表示"
+      "desc": "カラオケのハイライト行以外のアニメーションを表示します"
     },
     "karaoke": {
-      "label": "カラオケイントロカウントダウン",
-      "desc": "イントロカウントダウンを数字で表示。無効時はドットで表示されます。"
+      "label": "カラオケのリードカウントダウン",
+      "desc": "リードカウントダウンを数字で表示します。無効にするとドットで表示されます。"
     },
     "blurInactive": {
-      "label": "非アクティブ行をブラー",
-      "desc": "同期歌詞で非アクティブ行をブラー表示",
-      "info": "このオプションを有効にするとパフォーマンスに問題が発生する場合があります。"
+      "label": "非アクティブ行のぼかし",
+      "desc": "同期歌詞で非アクティブな行をぼかします",
+      "info": "このオプションを有効にすると、パフォーマンスの問題が発生する可能性があります。"
     },
     "fade": {
-      "label": "ブラーとグラデーション",
-      "desc": "歌詞の上下にブラーとグラデーションを表示",
-      "info": "このオプションを有効にするとパフォーマンスに問題が発生する場合があります。"
+      "label": "ブラー＆グラデーション",
+      "desc": "歌詞の上部と下部にブラーとグラデーションを表示します",
+      "info": "このオプションを有効にすると、パフォーマンスの問題が発生する可能性があります。"
     },
     "syncedAsFallback": {
-      "label": "同期歌詞フォールバック",
-      "desc": "カラオケ歌詞が利用できない場合に同期歌詞にフォールバック"
+      "label": "同期歌詞で代替",
+      "desc": "カラオケ歌詞がない場合、同期歌詞で代替します"
     },
     "unsyncedAsFallback": {
-      "label": "非同期歌詞フォールバック",
-      "desc": "同期歌詞が利用できない場合に非同期歌詞にフォールバック"
+      "label": "非同期歌詞で代替",
+      "desc": "同期歌詞がない場合、非同期歌詞で代替します"
     },
     "preferUnsynced": {
-      "label": "非同期歌詞を優先",
-      "desc": "同期・非同期歌詞の両方が利用可能な場合に非同期歌詞を優先使用。",
-      "info": "* 一部の非同期歌詞には同期歌詞にないコンテンツが含まれている場合があります。"
+      "label": "同期歌詞より非同期歌詞を優先",
+      "desc": "同期歌詞と非同期歌詞の両方がある場合、非同期歌詞を優先的に使用します。",
+      "info": "* 一部の非同期歌詞には、同期歌詞にはない歌詞が含まれている場合があります。"
     },
     "customPreview": {
-      "label": "カスタムプレビュー",
-      "desc": "歌詞画面のプレビュー画像をカスタマイズ。画像は300x150pxで表示されます。",
-      "placeholder": "画像URLを入力"
+      "label": "プレビューのカスタム",
+      "desc": "歌詞画面のプレビュー画像をカスタマイズします。画像は300x150pxで表示されます。",
+      "placeholder": "画像のURLを入力してください"
     },
     "trackSyncInfo": {
       "label": "トラック同期情報",
-      "desc": "トラックに関連付けられた同期情報を管理"
+      "desc": "トラックに関連付けられた同期情報を管理します"
     },
     "customDatabase": {
       "label": "カスタムデータベース",
-      "desc": "カスタムデータベースURLを設定",
-      "placeholder": "カスタムデータベースURLを入力"
+      "desc": "カスタムデータベースのURLを設定します",
+      "placeholder": "カスタムデータベースのURLを入力してください"
     },
     "debugVerbose": {
-      "label": "デバッグ詳細",
-      "desc": "コンソールにより詳細な情報を出力"
+      "label": "デバッグ詳細情報",
+      "desc": "コンソールにより詳細な情報を出力します"
     },
     "cache": {
-      "deleteAll": "キャッシュされた歌詞をすべて削除",
-      "noCache": "キャッシュされた歌詞はありません"
+      "deleteAll": "キャッシュされたすべての歌詞を削除",
+      "noCache": "キャッシュされた歌詞なし"
     },
     "colors": {
       "customColor": "カスタム",
       "showMore": "もっと見る ▼",
-      "showLess": "閉じる ▲",
+      "showLess": "折りたたむ ▲",
       "black": "ブラック",
       "charcoal": "チャコール",
       "darkSlate": "ダークスレート",
@@ -296,10 +297,10 @@ window.LANG_JA = {
       "darkNavy": "ダークネイビー",
       "navy": "ネイビー",
       "royalBlue": "ロイヤルブルー",
-      "sky": "スカイブルー",
+      "sky": "スカイ",
       "indigo": "インディゴ",
       "purple": "パープル",
-      "fuchsia": "フクシャ",
+      "fuchsia": "フクシア",
       "pink": "ピンク",
       "wine": "ワイン",
       "red": "レッド",
@@ -314,15 +315,15 @@ window.LANG_JA = {
       "brown": "ブラウン",
       "chocolate": "チョコレート"
     },
-    "solidBackgroundInUse": "ℹ️ 単色背景使用中",
-    "fontPlaceholder": "フォント名を入力（例：Arial, Meiryo UI）"
+    "solidBackgroundInUse": "ℹ️ 単色背景を使用中",
+    "fontPlaceholder": "フォント名を入力 (例: Arial, Meiryo)"
   },
   "buttons": {
     "save": "保存",
     "cancel": "キャンセル",
     "reset": "リセット",
-    "import": "インポート",
-    "export": "エクスポート",
+    "import": "読み込み",
+    "export": "書き出し",
     "open": "開く",
     "close": "閉じる",
     "apply": "適用",
@@ -341,27 +342,27 @@ window.LANG_JA = {
     "translation": "変換",
     "settings": "設定",
     "syncAdjust": "同期調整",
-    "syncAdjustTitle": "歌詞同期調整",
+    "syncAdjustTitle": "歌詞の同期調整",
     "copyLyrics": "歌詞をコピー",
     "searchLyrics": "歌詞を検索",
     "editLyrics": "歌詞を編集",
     "shareImage": "歌詞画像を共有",
     "translationOptions": "変換オプション",
-    "translationOptionsSubtitle": "歌詞の発音と翻訳表示を設定",
+    "translationOptionsSubtitle": "歌詞の発音と翻訳表示を設定します",
     "detectedLanguage": "検出された言語",
-    "detectedLanguageInfo": "現在再生中の曲の言語です。言語によって変換オプションが異なります。",
+    "detectedLanguageInfo": "現在再生中の曲の言語です。言語に応じて変換オプションが適用されます。",
     "unknownLanguage": "不明",
     "autoDetect": "自動検出",
-    "overrideLanguage": "言語を手動で設定",
-    "overrideLanguageInfo": "この曲の言語を手動で設定します。自動検出の代わりに選択した言語が使用されます。",
+    "overrideLanguage": "言語を手動設定",
+    "overrideLanguageInfo": "この曲の言語を手動で設定します。自動検出の代わりに選択した言語で翻訳されます。",
     "pronunciation": "発音",
-    "pronunciationInfo": "原文歌詞のローマ字化発音を表示",
+    "pronunciationInfo": "原文歌詞の発音（ローマ字など）を表示します",
     "translationLabel": "翻訳",
-    "translationInfo": "翻訳された歌詞を表示",
+    "translationInfo": "原文歌詞を日本語に翻訳して表示します",
     "apiSettings": "API設定",
-    "apiSettingsSubtitle": "Gemini APIを設定",
+    "apiSettingsSubtitle": "Gemini APIを構成してください",
     "apiKeySettings": "APIキー設定",
-    "apiKeySettingsInfo": "ここをクリックしてGemini APIキーを設定",
+    "apiKeySettingsInfo": "Gemini APIキーを設定するにはここをクリックしてください",
     "openSettings": "設定を開く",
     "translationSettings": "変換設定",
     "regenerateTranslation": "翻訳を再生成",
@@ -371,29 +372,29 @@ window.LANG_JA = {
     "noLyrics": "利用可能な歌詞がありません",
     "loading": "読み込み中...",
     "error": "エラーが発生しました",
-    "saved": "保存されました",
-    "copied": "コピーされました",
-    "deleted": "削除されました",
-    "updated": "更新されました",
-    "applied": "適用されました",
+    "saved": "保存しました",
+    "copied": "コピーしました",
+    "deleted": "削除しました",
+    "updated": "アップデートしました",
+    "applied": "適用しました",
     "noTrackInfo": "トラック情報がありません",
     "syncedLyricsCopied": "同期歌詞がクリップボードにコピーされました。",
     "unsyncedLyricsCopied": "非同期歌詞がクリップボードにコピーされました。"
   },
   "update": {
-    "newVersion": "新バージョン",
+    "newVersion": "新しいアップデートバージョン",
     "available": "が利用可能です！",
-    "notes": "更新ノート",
-    "update": "更新",
+    "notes": "アップデートノート",
+    "update": "アップデート",
     "dismiss": "後で",
-    "alreadyLatest": "最新バージョンです",
-    "checkFailed": "アップデート確認に失敗しました",
+    "alreadyLatest": "すでに最新バージョンです",
+    "checkFailed": "アップデートの確認に失敗しました",
     "versionChange": "バージョン",
     "copyCommand": "コマンドをコピー",
     "releaseNotes": "リリースノート",
     "expand": "詳細",
-    "collapse": "閉じる",
-    "copied": "コピーされました"
+    "collapse": "簡易表示",
+    "copied": "コピー済み"
   },
   "fullscreen": {
     "title": "フルスクリーン",
@@ -406,19 +407,19 @@ window.LANG_JA = {
     },
     "showExtraControls": {
       "label": "追加コントロールを表示",
-      "desc": "フルスクリーンモードで追加コントロールを表示"
+      "desc": "フルスクリーンモードで追加のコントロールを表示します"
     },
     "contextDisplay": {
       "label": "コンテキスト表示",
-      "desc": "フルスクリーンモードで現在再生中のコンテキストを表示"
+      "desc": "フルスクリーンモードで現在再生中のコンテキストを表示します"
     },
     "upcomingLyrics": {
       "label": "次の歌詞を表示",
-      "desc": "フルスクリーンモードで次の歌詞をプレビュー"
+      "desc": "フルスクリーンモードで次の歌詞を事前に表示します"
     },
     "volumeDisplay": {
       "label": "音量表示",
-      "desc": "フルスクリーンモードで音量コントロールを表示"
+      "desc": "フルスクリーンモードで音量コントロールを表示します"
     },
     "controls": {
       "like": "いいね",
@@ -438,26 +439,26 @@ window.LANG_JA = {
       "shareCopied": "🔗 共有リンクがコピーされました"
     },
     "queue": {
-      "title": "キュー",
+      "title": "再生リスト",
       "recentlyPlayed": "最近再生した項目",
-      "nowPlaying": "現在再生中",
+      "nowPlaying": "再生中",
       "upNext": "次に再生",
-      "empty": "キューは空です",
-      "noRecent": "最近の再生履歴はありません"
+      "empty": "キューが空です",
+      "noRecent": "最近の再生履歴がありません"
     },
     "contextType": {
       "playlist": "プレイリスト",
       "album": "アルバム",
       "artist": "アーティスト",
       "collection": "お気に入りの曲",
-      "station": "ステーション"
+      "station": "ラジオ"
     }
   },
   "about": {
     "version": "バージョン",
     "sourceCode": "ソースコード",
     "reportIssue": "問題を報告",
-    "changelog": "更新履歴",
+    "changelog": "変更ログ",
     "license": "ライセンス",
     "credits": "クレジット"
   },
@@ -468,77 +469,77 @@ window.LANG_JA = {
     "hiragana": "ひらがな",
     "katakana": "カタカナ",
     "furigana": "ふりがな",
-    "romanization": "ローマ字化",
+    "romanization": "発音",
     "translation": "翻訳",
-    "google": "Google翻訳",
-    "microsoft": "Microsoft翻訳",
+    "google": "Google 翻訳",
+    "microsoft": "Microsoft 翻訳",
     "geminiRomaji": "発音",
     "geminiKo": "翻訳",
     "romajiGemini": "ローマ字 (Gemini)",
-    "koGemini": "韓国語 (Gemini)",
+    "koGemini": "日本語 (Gemini)",
     "simplifiedChinese": "簡体字中国語",
-    "traditionalChineseHK": "繁体字中国語（香港）",
-    "traditionalChineseTW": "繁体字中国語（台湾）",
+    "traditionalChineseHK": "繁体字中国語 (香港)",
+    "traditionalChineseTW": "繁体字中国語 (台湾)",
     "pinyin": "ピンイン"
   },
   "notifications": {
-    "languageChanged": "言語が変更されました。更新後に反映されます。",
+    "languageChanged": "言語が変更されました。再読み込み後に適用されます。",
     "settingsSaved": "設定が保存されました",
-    "settingsReset": "設定がリセットされました",
-    "exportSuccess": "エクスポート成功",
-    "importSuccess": "インポート成功",
-    "importFailed": "設定のインポートに失敗しました",
-    "syncDataCleared": "同期データがクリアされました",
-    "syncDataClearFailed": "同期データのクリアに失敗しました",
-    "lyricsCopied": "✓ 歌詞がクリップボードにコピーされました",
+    "settingsReset": "設定が初期化されました",
+    "exportSuccess": "書き出しに成功しました",
+    "importSuccess": "読み込みに成功しました",
+    "importFailed": "設定の読み込みに失敗しました",
+    "syncDataCleared": "同期データが削除されました",
+    "syncDataClearFailed": "同期データの削除に失敗しました",
+    "lyricsCopied": "歌詞がクリップボードにコピーされました",
     "lyricsCopyFailed": "歌詞のクリップボードへのコピーに失敗しました",
     "translationCopied": "翻訳がクリップボードにコピーされました",
     "translationCopyFailed": "翻訳のクリップボードへのコピーに失敗しました",
-    "secondTranslationCopied": "第2翻訳がクリップボードにコピーされました",
-    "secondTranslationCopyFailed": "第2翻訳のクリップボードへのコピーに失敗しました",
+    "secondTranslationCopied": "2番目の翻訳がクリップボードにコピーされました",
+    "secondTranslationCopyFailed": "2番目の翻訳のクリップボードへのコピーに失敗しました",
     "installCommandCopied": "インストールコマンドがコピーされました",
     "copyFailed": "コピーに失敗しました",
-    "memoryCacheCleared": "✓ メモリキャッシュがクリアされました",
-    "localCacheCleared": "✓ すべてのローカルキャッシュがクリアされました",
-    "localCacheTrackCleared": "✓ 現在のトラックのキャッシュがクリアされました",
-    "exportSuccessDesc": "設定ファイルがダウンロードフォルダに保存されました。",
-    "exportFailed": "設定のエクスポートに失敗しました",
-    "importSuccessDesc": "ページがまもなく更新されます...",
-    "resetSuccess": "リセット完了",
-    "resetSuccessDesc": "ページがまもなく更新されます...",
-    "resetFailed": "リセットに失敗しました",
+    "memoryCacheCleared": "メモリキャッシュが初期化されました",
+    "localCacheCleared": "ローカルキャッシュがすべて削除されました",
+    "localCacheTrackCleared": "現在の曲のローカルキャッシュが削除されました",
+    "exportSuccessDesc": "設定ファイルをダウンロードフォルダに保存します。",
+    "exportFailed": "設定の書き出しに失敗しました",
+    "importSuccessDesc": "まもなくページが再読み込みされます...",
+    "resetSuccess": "初期化が完了しました",
+    "resetSuccessDesc": "まもなくページが再読み込みされます...",
+    "resetFailed": "初期化に失敗しました",
     "updateCheckFailed": "アップデート確認に失敗しました",
     "checkNetworkConnection": "ネットワーク接続を確認してください",
     "updateAvailable": "アップデートが利用可能です",
     "latestVersion": "最新バージョンです",
     "noLyricsLoaded": "歌詞が読み込まれていません。",
-    "translationRegenerateGeminiOnly": "翻訳の再生成はGemini翻訳にのみ適用されます。",
-    "regeneratingTranslation": "翻訳を再生成中...",
-    "translationRegenerated": "✓ 翻訳が再生成されました",
+    "translationRegenerateGeminiOnly": "翻訳の再生成はGemini翻訳でのみ使用できます。",
+    "regeneratingTranslation": "翻訳を再生成しています...",
+    "translationRegenerated": "翻訳が再生成されました",
     "translationRegenerateFailed": "翻訳の再生成に失敗しました",
-    "translationCacheRemoved": "✓ 翻訳キャッシュがクリアされ、再読み込みされました！",
-    "translationCacheReset": "翻訳キャッシュ {count}件がリセットされました",
+    "translationCacheRemoved": "翻訳キャッシュを削除して再読み込みしました！",
+    "translationCacheReset": "翻訳キャッシュ {count} 項目が初期化されました",
     "tooManyTranslationRequests": "翻訳リクエストが多すぎます。1分後に再試行してください。",
-    "requestingPronunciation": "発音をリクエスト中。約30秒かかります",
-    "requestingTranslation": "翻訳をリクエスト中。約30秒かかります",
+    "requestingPronunciation": "発音をリクエストしています。30秒ほどかかります",
+    "requestingTranslation": "翻訳をリクエストしています。30秒ほどかかります",
     "shareImageCopied": "画像がクリップボードにコピーされました",
     "shareImageDownloaded": "画像がダウンロードされました",
     "shareImageShared": "共有されました",
-    "shareImageFailed": "画像生成に失敗しました",
+    "shareImageFailed": "画像の生成に失敗しました",
     "shareImageNoLyrics": "共有する歌詞を選択してください",
     "noTrackPlaying": "再生中のトラックがありません",
     "overlayConnected": "オーバーレイ接続済み",
-    "romajiTranslationFailed": "ローマ字/発音変換に失敗",
-    "koreanTranslationFailed": "韓国語翻訳に失敗",
-    "pinyinLibraryUnavailable": "ピンインライブラリが利用できません。オリジナルを表示します。jsDelivrまたはunpkgを許可してください。",
-    "conversionSkippedSimplified": "変換スキップ：既に簡体字です",
+    "romajiTranslationFailed": "ローマ字/発音変換に失敗しました",
+    "koreanTranslationFailed": "日本語翻訳に失敗しました",
+    "pinyinLibraryUnavailable": "ピンインライブラリを使用できません。原文を表示します。jsDelivrまたはunpkgを許可してください。",
+    "conversionSkippedSimplified": "変換スキップ: すでに簡体字です",
     "conversionCompleted": "変換が完了しました",
-    "conversionFailed": "変換に失敗しました",
-    "fileTooLarge": "ファイルが大きすぎます：最大サイズは1MBです",
-    "noValidLyricsInFile": "ファイルに有効な歌詞が見つかりません",
-    "lyricsLoadedFromFile": "ファイルから {types} 歌詞を読み込みました",
-    "lyricsLoadFailed": "歌詞の読み込みに失敗：無効なファイル形式",
-    "fileReadFailed": "ファイルの読み取りに失敗：ファイルが破損している可能性があります"
+    "conversionFailed": "変換失敗",
+    "fileTooLarge": "ファイルが大きすぎます: 最大サイズは1MBです",
+    "noValidLyricsInFile": "ファイルから有効な歌詞が見つかりません",
+    "lyricsLoadedFromFile": "ファイルから {types} 歌詞を正常に読み込みました",
+    "lyricsLoadFailed": "歌詞読み込み失敗: 無効なファイル形式",
+    "fileReadFailed": "ファイル読み取り失敗: ファイルが破損している可能性があります"
   },
   "misc": {
     "and": "および",
@@ -554,36 +555,36 @@ window.LANG_JA = {
     "off": "オフ",
     "yes": "はい",
     "no": "いいえ",
-    "items": "項目",
+    "items": "個",
     "seconds": "秒",
     "minutes": "分"
   },
   "settingsAdvanced": {
     "patchNotes": {
-      "empty": "更新ノートはありません。"
+      "empty": "パッチノートはありません。"
     },
     "donate": {
-      "title": "開発者にコーヒーを",
+      "title": "開発者にコーヒーを一杯奢る",
       "button": "寄付"
     },
     "syncMode": {
       "title": "同期モード",
       "subtitle": "コンパクト同期モードの表示オプション",
       "linesBefore": {
-        "label": "前の行数",
-        "desc": "現在の歌詞の前に表示する行数"
+        "label": "表示行数（前）",
+        "desc": "現在再生中の歌詞の前に表示する行数"
       },
       "linesAfter": {
-        "label": "後の行数",
-        "desc": "現在の歌詞の後に表示する行数"
+        "label": "表示行数（後）",
+        "desc": "現在再生中の歌詞の後に表示する行数"
       },
       "fadeoutBlur": {
         "label": "フェードアウトブラー効果",
-        "desc": "非アクティブな歌詞にブラー効果を適用"
+        "desc": "非アクティブな歌詞にブラー効果を適用します"
       },
       "highlightMode": {
         "label": "ハイライトモード",
-        "desc": "現在再生中の歌詞だけを明るく強調し、他は薄く表示します"
+        "desc": "現在歌っている歌詞のみ明るく強調し、その他は薄く表示します"
       },
       "highlightIntensity": {
         "label": "ハイライト強度",
@@ -591,193 +592,193 @@ window.LANG_JA = {
       }
     },
     "livePreview": {
-      "title": "ライブプレビュー",
-      "subtitle": "スタイル設定をリアルタイムで確認",
-      "sampleText": "ここに歌詞があります",
-      "sampleTextMixed": "여기 Lyric あります",
-      "sampleTextPhonetic": "ヨギ リリック アリマス"
+      "title": "リアルタイムプレビュー",
+      "subtitle": "設定したスタイルをすぐに確認できます",
+      "sampleText": "ここに歌詞が表示されます",
+      "sampleTextMixed": "ここに Lyric あります",
+      "sampleTextPhonetic": "ココニ リリック アリマス"
     },
     "originalStyle": {
       "title": "原文スタイル",
-      "subtitle": "原文歌詞のフォント設定",
-      "fontFamily": "フォント",
-      "fontFamilyDesc": "原文歌詞に適用するフォントを選択。カンマ（,）で複数のフォントを順番に適用。",
+      "subtitle": "歌詞原文のフォント設定",
+      "fontFamily": "フォントファミリー",
+      "fontFamilyDesc": "原文歌詞に適用するフォントを選択してください。カンマ(,)で区切って複数のフォントを入力すると順に適用されます。",
       "fontSize": {
         "label": "フォントサイズ",
-        "desc": "原文歌詞のフォントサイズ（ピクセル）"
+        "desc": "原文歌詞のフォントサイズ (ピクセル)"
       },
       "fontWeight": {
         "label": "フォントの太さ",
         "desc": "原文歌詞のフォントの太さ"
       },
       "opacity": {
-        "label": "不透明度",
+        "label": "透明度",
         "desc": "原文歌詞の不透明度 (0-100%)"
       },
       "letterSpacing": {
         "label": "文字間隔",
-        "desc": "原文歌詞の文字間隔（ピクセル）"
+        "desc": "原文歌詞の文字間の間隔 (ピクセル)"
       }
     },
     "pronunciationStyle": {
       "title": "発音スタイル",
-      "subtitle": "ローマ字化発音（ローマ字、ピンイン）のフォント設定",
-      "fontFamily": "フォント",
-      "fontFamilyDesc": "ローマ字化に適用するフォントを選択。カンマ（,）で複数のフォントを順番に適用。",
+      "subtitle": "ローマ字発音表記 (Romaji, Romaja, Pinyin) のフォント設定",
+      "fontFamily": "フォントファミリー",
+      "fontFamilyDesc": "ローマ字発音表記に適用するフォントを選択してください。カンマ(,)で区切って複数のフォントを入力すると順に適用されます。",
       "fontSize": {
         "label": "フォントサイズ",
-        "desc": "ローマ字化のフォントサイズ（ピクセル）"
+        "desc": "ローマ字発音表記のフォントサイズ (ピクセル)"
       },
       "fontWeight": {
         "label": "フォントの太さ",
-        "desc": "ローマ字化のフォントの太さ"
+        "desc": "ローマ字発音表記のフォントの太さ"
       },
       "opacity": {
-        "label": "不透明度",
-        "desc": "ローマ字化の不透明度 (0-100%)"
+        "label": "透明度",
+        "desc": "ローマ字発音表記の不透明度 (0-100%)"
       },
       "gap": {
         "label": "原文との間隔",
-        "desc": "原文歌詞とローマ字化の間隔"
+        "desc": "原文と発音表記の間の余白"
       },
       "letterSpacing": {
         "label": "文字間隔",
-        "desc": "ローマ字化の文字間隔（ピクセル）"
+        "desc": "発音表記の文字間の間隔 (ピクセル)"
       },
       "hyphenReplace": {
-        "label": "ハイフン処理",
-        "desc": "発音のハイフン(-)を別の文字に置き換え",
+        "label": "ハイフン(-)処理",
+        "desc": "発音のハイフン(-)をどのように表示するか選択します (例: Tah-shee-kah → Tah shee kah または Tahsheekah)",
         "options": {
-          "keep": "維持",
-          "space": "スペースに置換",
-          "remove": "削除"
+          "keep": "維持 (Tah-shee-kah)",
+          "space": "空白で置換 (Tah shee kah)",
+          "remove": "削除 (Tahsheekah)"
         }
       }
     },
     "translationStyle": {
-      "title": "翻訳スタイル",
-      "subtitle": "翻訳歌詞のフォント設定",
-      "fontFamily": "フォント",
-      "fontFamilyDesc": "翻訳歌詞に適用するフォントを選択。カンマ（,）で複数のフォントを順番に適用。",
+      "title": "翻訳文スタイル",
+      "subtitle": "翻訳された歌詞のフォント設定",
+      "fontFamily": "フォントファミリー",
+      "fontFamilyDesc": "翻訳された歌詞に適用するフォントを選択してください。カンマ(,)で区切って複数のフォントを入力すると順に適用されます。",
       "fontSize": {
         "label": "フォントサイズ",
-        "desc": "翻訳歌詞のフォントサイズ（ピクセル）"
+        "desc": "翻訳歌詞のフォントサイズ (ピクセル)"
       },
       "fontWeight": {
         "label": "フォントの太さ",
         "desc": "翻訳歌詞のフォントの太さ"
       },
       "opacity": {
-        "label": "不透明度",
+        "label": "透明度",
         "desc": "翻訳歌詞の不透明度 (0-100%)"
       },
       "gap": {
         "label": "発音との間隔",
-        "desc": "ローマ字化と翻訳の間隔（ピクセル）"
+        "desc": "発音表記と翻訳文の間の余白 (ピクセル)"
       },
       "letterSpacing": {
         "label": "文字間隔",
-        "desc": "翻訳歌詞の文字間隔（ピクセル）"
+        "desc": "翻訳歌詞の文字間の間隔 (ピクセル)"
       }
     },
     "furiganaStyle": {
       "title": "ふりがなスタイル",
-      "subtitle": "漢字の上に表示されるふりがなの設定",
+      "subtitle": "日本語の漢字の上に表示される読み（ふりがな）の設定",
       "fontSize": {
         "label": "フォントサイズ",
-        "desc": "ふりがなのフォントサイズ（ピクセル）"
+        "desc": "ふりがなのフォントサイズ (ピクセル)"
       },
       "fontWeight": {
         "label": "フォントの太さ",
         "desc": "ふりがなのフォントの太さ"
       },
       "opacity": {
-        "label": "不透明度",
+        "label": "透明度",
         "desc": "ふりがなの不透明度 (0-100%)"
       },
       "spacing": {
         "label": "間隔",
-        "desc": "ふりがなと漢字の間隔（ピクセル）"
+        "desc": "ふりがなと漢字の間の余白 (ピクセル)"
       }
     },
     "textShadow": {
-      "title": "テキストシャドウ",
-      "subtitle": "可読性を向上させるシャドウ効果",
+      "title": "テキストの影",
+      "subtitle": "可読性を高める影の効果",
       "enabled": {
-        "label": "シャドウ効果",
-        "desc": "歌詞テキストにシャドウ効果を適用"
+        "label": "影の効果",
+        "desc": "歌詞テキストに影の効果を適用します"
       },
       "color": {
-        "label": "シャドウの色",
-        "desc": "シャドウの色（HEXコード）"
+        "label": "影の色",
+        "desc": "影の色 (HEXコード)"
       },
       "opacity": {
-        "label": "シャドウの不透明度",
-        "desc": "シャドウの不透明度 (0-100%)"
+        "label": "影の透明度",
+        "desc": "影の不透明度 (0-100%)"
       },
       "blur": {
-        "label": "ブラー強度",
-        "desc": "シャドウのブラー程度"
+        "label": "ぼかし強度",
+        "desc": "影のぼけ具合"
       }
     },
     "playback": {
       "title": "再生動作",
       "subtitle": "再生関連の機能設定",
       "replaceButton": {
-        "label": "歌詞ボタンを置換",
-        "info": "Spotifyのデフォルト歌詞ボタンをivLyricsに置き換え"
+        "label": "歌詞ボタンの置き換え",
+        "info": "Spotifyのデフォルト歌詞ボタンをivLyricsに置き換えます"
       },
       "replaceFullscreenButton": {
-        "label": "フルスクリーンボタンを置換",
-        "info": "SpotifyのデフォルトフルスクリーンボタンをivLyricsフルスクリーンに置き換え"
+        "label": "フルスクリーンボタンの置き換え",
+        "info": "Spotifyのデフォルト全画面ボタンをivLyricsのフルスクリーンに置き換えます"
       },
       "fullscreenShortcut": {
         "label": "フルスクリーンショートカット",
-        "desc": "歌詞フルスクリーンモードのキーボードショートカット"
-      },
+        "desc": "歌詞フルスクリーンモードのためのキーボードショートカット"
+      }
     },
     "nowPlayingPanel": {
-      "title": "再生中パネル歌詞",
+      "title": "NowPlaying パネル歌詞",
       "subtitle": "右側の「再生中」パネルの歌詞表示設定",
       "enabled": {
         "label": "パネル歌詞を有効化",
-        "desc": "再生中パネルに現在の歌詞を表示"
+        "desc": "再生中パネルに現在の歌詞を表示します"
       },
       "lines": {
-        "label": "歌詞行数",
-        "desc": "パネルに表示する歌詞の行数（デフォルト: 5）"
+        "label": "歌詞の行数",
+        "desc": "パネルに表示する歌詞の行数 (デフォルト: 5)"
       },
       "fontScale": {
-        "label": "全体フォントサイズ比率",
-        "desc": "パネル歌詞の全体サイズ比率（50%-200%）"
+        "label": "全体フォントサイズ倍率",
+        "desc": "パネル歌詞の全体サイズ比率 (50%-200%)"
       },
       "fontFamily": {
-        "label": "デフォルトフォント",
-        "desc": "パネル歌詞に使用するデフォルトフォント（個別フォント未設定時に適用）"
+        "label": "基本フォント",
+        "desc": "パネル歌詞に使用する基本フォント (個別フォント未設定時に適用)"
       },
       "originalFont": {
         "label": "原文フォント",
-        "desc": "原文歌詞に使用するフォント（空欄の場合はデフォルトフォント使用、カンマで複数指定可）"
+        "desc": "原文歌詞に使用するフォント (空欄の場合は基本フォントを使用、カンマで複数指定可能)"
       },
       "phoneticFont": {
         "label": "発音フォント",
-        "desc": "発音（ローマ字等）に使用するフォント（空欄の場合はデフォルトフォント使用、カンマで複数指定可）"
+        "desc": "発音（ローマ字など）に使用するフォント (空欄の場合は基本フォントを使用、カンマで複数指定可能)"
       },
       "translationFont": {
         "label": "翻訳フォント",
-        "desc": "翻訳歌詞に使用するフォント（空欄の場合はデフォルトフォント使用、カンマで複数指定可）"
+        "desc": "翻訳歌詞に使用するフォント (空欄の場合は基本フォントを使用、カンマで複数指定可能)"
       },
       "originalSize": {
         "label": "原文フォントサイズ",
-        "desc": "原文歌詞のフォントサイズ（px）"
+        "desc": "原文歌詞の基本フォントサイズ (px)"
       },
       "phoneticSize": {
         "label": "発音フォントサイズ",
-        "desc": "発音（ローマ字等）のフォントサイズ（px）"
+        "desc": "発音（ローマ字など）の基本フォントサイズ (px)"
       },
       "translationSize": {
         "label": "翻訳フォントサイズ",
-        "desc": "翻訳歌詞のフォントサイズ（px）"
+        "desc": "翻訳歌詞の基本フォントサイズ (px)"
       },
       "preview": "プレビュー",
       "background": {
@@ -785,42 +786,42 @@ window.LANG_JA = {
         "subtitle": "パネル背景スタイル設定",
         "type": {
           "label": "背景タイプ",
-          "desc": "背景スタイルを選択",
+          "desc": "背景スタイルを選択します",
           "album": "アルバムカラー",
           "custom": "カスタムカラー",
-          "gradient": "アルバムベースグラデーション"
+          "gradient": "アルバムベースのグラデーション"
         },
         "color": {
           "label": "背景色",
           "desc": "カスタム背景色"
         },
         "gradient1": {
-          "label": "グラデーション色1",
-          "desc": "1番目のグラデーション色"
+          "label": "グラデーション色 1",
+          "desc": "1つ目のグラデーション色"
         },
         "gradient2": {
-          "label": "グラデーション色2",
-          "desc": "2番目のグラデーション色"
+          "label": "グラデーション色 2",
+          "desc": "2つ目のグラデーション色"
         },
         "opacity": {
-          "label": "背景不透明度",
-          "desc": "背景不透明度（0%=透明、100%=不透明）"
+          "label": "背景の不透明度",
+          "desc": "背景の不透明度 (0%=透明, 100%=不透明)"
         }
       },
       "border": {
-        "title": "ボーダー",
-        "subtitle": "パネルボーダースタイル設定",
+        "title": "枠線",
+        "subtitle": "パネル枠線スタイル設定",
         "enabled": {
-          "label": "ボーダーを有効化",
-          "desc": "パネルの周りにボーダーを表示"
+          "label": "枠線を有効化",
+          "desc": "パネルの周囲に枠線を表示します"
         },
         "color": {
-          "label": "ボーダー色",
-          "desc": "ボーダーの色"
+          "label": "枠線の色",
+          "desc": "枠線の色"
         },
         "opacity": {
-          "label": "ボーダー不透明度",
-          "desc": "ボーダー不透明度（0%=透明、100%=不透明）"
+          "label": "枠線の不透明度",
+          "desc": "枠線の不透明度 (0%=透明, 100%=不透明)"
         }
       }
     },
@@ -828,36 +829,36 @@ window.LANG_JA = {
       "title": "カラオケモード",
       "subtitle": "カラオケスタイルの歌詞表示",
       "enabled": {
-        "label": "カラオケモードを有効化",
-        "desc": "カラオケ歌詞をサポートする曲でカラオケタグを使用。無効時は同期タグを使用"
+        "label": "カラオケモードを使用",
+        "desc": "カラオケ歌詞をサポートする曲でカラオケタブを使用します。無効にすると同期タブに固定されます"
       },
       "bounce": {
         "label": "文字バウンス効果",
-        "desc": "カラオケモードで現在の文字にバウンスアニメーションを適用"
+        "desc": "カラオケモードで現在歌っている文字に弾むようなアニメーションを適用します"
       }
     },
     "prefetch": {
-      "title": "次の曲を先読み",
-      "subtitle": "次の曲の要素を先読みして切り替え時の遅延を減らします",
+      "title": "次の曲の先読み",
+      "subtitle": "次の曲の要素を事前に読み込み、切り替え時の遅延を減らします",
       "enabled": {
-        "label": "翻訳/発音を先読み",
+        "label": "翻訳/発音の先読み",
         "desc": "次の曲の翻訳と発音変換を事前にリクエストします"
       },
       "videoEnabled": {
-        "label": "動画背景を先読み",
+        "label": "動画背景の先読み",
         "desc": "次の曲の動画背景情報を事前に取得します"
       }
     },
     "communitySync": {
       "title": "コミュニティ同期",
-      "subtitle": "他のユーザーと歌詞同期オフセットを共有します",
+      "subtitle": "他のユーザーと歌詞の同期オフセットを共有します",
       "enabled": {
         "label": "コミュニティ同期を使用",
         "desc": "コミュニティで共有された同期オフセットを使用します"
       },
       "autoApply": {
         "label": "自動適用",
-        "desc": "信頼度が十分な場合、コミュニティオフセットを自動的に適用します"
+        "desc": "信頼度が十分であれば、コミュニティオフセットを自動的に適用します"
       },
       "autoSubmit": {
         "label": "自動送信",
@@ -865,262 +866,262 @@ window.LANG_JA = {
       },
       "minConfidence": {
         "label": "最小信頼度",
-        "desc": "自動適用に必要な最小信頼度 (0.0 ~ 1.0)。信頼度は提出数とオフセット値の一貫性に基づいて計算されます。高い値は、より多くのユーザーが似たオフセットを提出したことを意味します"
+        "desc": "自動適用に必要な最小信頼度 (0.0 ~ 1.0)。信頼度は提出数とオフセット値の一貫性に基づいて計算されます。高い値は、より多くのユーザーが同様のオフセットを提出したことを意味します"
       }
     },
     "cacheManagement": {
       "title": "キャッシュ管理",
-      "subtitle": "保存されたデータを管理",
+      "subtitle": "保存されたデータの管理",
       "memoryCache": {
-        "label": "メモリキャッシュをクリア",
-        "desc": "読み込まれた歌詞は高速再読み込みのためにメモリに一時保存されます。Spotifyを再起動せずにメモリキャッシュをクリア可能",
-        "button": "キャッシュをクリア"
+        "label": "メモリキャッシュの初期化",
+        "desc": "読み込まれた歌詞は高速な再読み込みのためにメモリに一時保存されます。Spotifyを再起動せずにメモリキャッシュを空にします",
+        "button": "キャッシュを空にする"
       },
       "localCache": {
         "label": "ローカルキャッシュ管理 (IndexedDB)",
-        "desc": "歌詞、翻訳、発音などがローカルに保存され、繰り返し再生時のAPI呼び出しを削減します",
+        "desc": "歌詞、翻訳、発音などがローカルに保存され、繰り返し聴く際のAPI呼び出しを減らします",
         "clearAll": "すべて削除",
         "clearCurrent": "現在の曲を削除",
-        "stats": "歌詞: {lyrics}件、翻訳: {translations}件、メタデータ: {metadata}件"
+        "stats": "歌詞: {lyrics}件, 翻訳: {translations}件, メタデータ: {metadata}件"
       }
     },
     "languageDetection": {
       "title": "言語検出",
-      "subtitle": "テキスト変換の言語検出設定",
+      "subtitle": "テキスト変換のための言語検出設定",
       "furigana": {
-        "label": "日本語漢字にふりがなを表示",
-        "desc": "日本語歌詞の漢字の上にひらがな読みを表示"
+        "label": "日本語の漢字にふりがなを表示",
+        "desc": "日本語歌詞の漢字の上にひらがなの読みを表示します"
       },
       "japaneseThreshold": {
-        "label": "日本語検出しきい値",
-        "desc": "歌詞中の仮名文字の割合で日本語を検出。値が高いほど厳密に検出（パーセント）"
+        "label": "日本語検出のしきい値",
+        "desc": "歌詞のかな文字の割合で日本語を検出します。値が高いほど厳格に検出します (パーセンテージ)"
       },
       "chineseThreshold": {
-        "label": "中国語検出しきい値",
-        "desc": "繁体字・簡体字の割合で中国語タイプを検出。値が高いほど厳密に検出（パーセント）"
+        "label": "中国語検出のしきい値",
+        "desc": "繁体字と簡体字の割合で中国語の種類を検出します。値が高いほど厳格に検出します (パーセンテージ)"
       }
     },
     "apiKeys": {
-      "subtitle": "外部サービス連携用のAPIキー"
+      "subtitle": "外部サービス連携のためのAPIキー"
     },
     "exportImport": {
-      "title": "設定のエクスポート/インポート",
-      "subtitle": "設定を別のデバイスに転送",
+      "title": "設定の書き出し/読み込み",
+      "subtitle": "別のデバイスに設定を移行します",
       "export": {
-        "label": "設定をエクスポート",
-        "button": "エクスポート",
-        "processing": "エクスポート中..."
+        "label": "設定の書き出し",
+        "button": "書き出し",
+        "processing": "書き出し中..."
       },
       "import": {
-        "label": "設定をインポート",
-        "button": "インポート",
-        "processing": "インポート中..."
+        "label": "設定の読み込み",
+        "button": "読み込み",
+        "processing": "読み込み中..."
       }
     },
     "resetSettings": {
-      "title": "設定のリセット",
-      "subtitle": "すべての設定をデフォルト値に戻す",
+      "title": "設定の初期化",
+      "subtitle": "すべての設定をデフォルトに戻します",
       "reset": {
-        "label": "すべての設定をリセット",
-        "desc": "すべての設定をデフォルト値に戻します。この操作は元に戻せません",
-        "button": "リセット",
-        "confirm": "すべての設定をリセットしますか？\n\nこの操作は元に戻せません。すべての設定がデフォルト値に戻ります。\n\n'OK'をクリックして続行。",
-        "processing": "リセット中..."
+        "label": "すべての設定を初期化",
+        "desc": "すべての設定をデフォルト値に戻します。この操作は取り消せません",
+        "button": "初期化",
+        "confirm": "本当にすべての設定を初期化しますか？\n\nこの操作は取り消せません。すべての設定がデフォルト値にリセットされます。\n\n続行するには「確認」をクリックしてください。",
+        "processing": "初期化中..."
       }
     },
     "fullscreenMode": {
-      "title": "フルスクリーンモード",
-      "subtitle": "フルスクリーンモードのレイアウトと表示設定",
+      "title": "フルスクリーン基本設定",
+      "subtitle": "フルスクリーンモードの基本動作を設定します",
       "shortcut": {
         "desc": "フルスクリーンショートカット",
-        "info": "フルスクリーンモード切り替えのキーボードショートカットを設定"
+        "info": "フルスクリーンモードを切り替えるキーボードショートカットを設定します"
       },
       "toggleTvModeKey": {
         "desc": "TVモード切替ショートカット",
         "info": "フルスクリーンモードでのみ動作します。TVモードと通常モードを切り替えます"
       },
       "tvMode": {
-        "desc": "TVモード",
-        "info": "左下にアルバムカバーと曲情報を表示し、歌詞は全画面を使用します"
+        "desc": "TVモードを使用",
+        "info": "左下にアルバムアートと曲情報を表示し、歌詞は画面全体を使用します"
       },
       "tvModeAlbumSize": {
-        "desc": "TVモードアルバムサイズ",
-        "info": "TVモードでのアルバムカバーのサイズを設定（ピクセル）"
+        "desc": "アルバムサイズ",
+        "info": "TVモードでのアルバムアートのサイズを設定します (ピクセル)"
       },
       "splitView": {
         "desc": "分割レイアウト",
-        "info": "フルスクリーンで左にアルバムカバー、右に歌詞を表示"
+        "info": "フルスクリーンで左側にアルバムアート、右側に歌詞を表示します"
       },
       "invertPosition": {
-        "desc": "アルバム/歌詞位置を反転",
-        "info": "アルバムと歌詞の位置を交換（左↔右、または縦向きモードで上↔下）"
+        "desc": "アルバム/歌詞位置の反転",
+        "info": "アルバムと歌詞の位置を入れ替えます (左右 ↔ 右左、縦モードでは上下 ↔ 下上)"
       },
       "showAlbumArt": {
-        "desc": "アルバムカバーを表示",
-        "info": "フルスクリーン左パネルにアルバムカバーを表示"
+        "desc": "アルバムアートを表示",
+        "info": "フルスクリーン左側パネルにアルバムアートを表示します"
       },
       "showTrackInfo": {
         "desc": "トラック情報を表示",
-        "info": "フルスクリーンで曲名とアーティストを表示"
+        "info": "フルスクリーンで曲のタイトルとアーティストを表示します"
       },
       "trimTitle": {
-        "desc": "タイトル短縮",
-        "info": "曲名から(Remaster)、[feat. xxx]などの付加情報を削除してシンプルに表示"
+        "desc": "短いタイトルを表示",
+        "info": "曲のタイトルから (Remaster), [feat. xxx] などの付加情報を削除して簡潔に表示します"
       },
       "translateMetadata": {
         "desc": "タイトル/アーティスト翻訳",
-        "info": "外国語の曲名とアーティスト名を翻訳して表示します（Gemini APIキーが必要）"
+        "info": "外国語の曲のタイトルとアーティスト名を翻訳して表示します (Gemini APIキーが必要)"
       },
       "translateMetadataMode": {
-        "desc": "翻訳表示方法",
-        "info": "タイトルとアーティストの表示方法を選択します",
+        "desc": "翻訳表示方式",
+        "info": "タイトルとアーティストをどのように表示するか選択します",
         "options": {
-          "translated": "翻訳のみ",
-          "romanized": "発音のみ",
-          "originalTranslated": "原語 + 翻訳",
-          "originalRomanized": "原語 + 発音",
-          "all": "すべて表示"
+          "all": "すべて表示 (原文 + 翻訳 + 発音)",
+          "translated": "翻訳のみ表示 (なければ原文)",
+          "romanized": "発音のみ表示 (なければ原文)",
+          "originalTranslated": "原文 + 翻訳",
+          "originalRomanized": "原文 + 発音"
         }
       },
-      "centerWhenNoLyrics": {
-        "desc": "歌詞がない場合にアルバムを中央に",
-        "info": "歌詞が利用できないか読み込み中の場合にアルバムカバーを中央に配置"
-      },
       "infoGap": {
-        "desc": "アルバムアート間隔",
-        "info": "アルバムアートとコントロールの間隔を調整 (ピクセル)"
+        "desc": "アルバムアートの間隔",
+        "info": "アルバムアートとコントロール/情報の間の間隔を調整します (ピクセル)"
+      },
+      "centerWhenNoLyrics": {
+        "desc": "歌詞がない時アルバムを中央配置",
+        "info": "歌詞がないか読み込み中の場合、アルバムアートを画面中央に配置します"
       },
       "twoColumnLayout": {
-        "desc": "2カラムレイアウトを使用"
+        "desc": "2列レイアウトを使用"
       },
       "browserFullscreen": {
         "desc": "Spotifyフルスクリーンを使用",
-        "info": "フルスクリーンモードに入るときにSpotifyをフルスクリーンにしてモニターいっぱいに表示します"
+        "info": "フルスクリーンモードに入る際、Spotifyを全画面にしてモニターいっぱいに表示します"
       }
     },
     "normalMode": {
       "title": "通常モードレイアウト",
-      "subtitle": "通常フルスクリーンモードのレイアウトを設定します（TVモードがオフの時）",
+      "subtitle": "通常のフルスクリーンモードのレイアウトを設定します (TVモードではない時)",
       "showAlbumName": {
         "desc": "アルバム名を表示",
-        "info": "曲名とアーティストの下にアルバム名を表示します",
-      },
+        "info": "曲のタイトルとアーティストの下にアルバム名を表示します"
+      }
     },
     "tvMode": {
       "title": "TVモード設定",
       "subtitle": "TVモードでの表示オプションを設定します",
       "showAlbumName": {
         "desc": "アルバム名を表示",
-        "info": "TVモードでアーティストの下にアルバム名を表示します",
+        "info": "TVモードでアーティストの下にアルバム名を表示します"
       },
       "showControls": {
         "desc": "コントロールボタンを表示",
-        "info": "TVモードで再生/一時停止、前/次の曲ボタンを表示します",
+        "info": "TVモードで再生/一時停止、前の曲/次の曲などのコントロールボタンを表示します"
       },
       "showProgress": {
-        "desc": "プログレスバーを表示",
-        "info": "TVモードで再生位置と時間を表示するプログレスバーを表示します",
-      },
+        "desc": "再生プログレスバーを表示",
+        "info": "TVモードで曲の再生位置と時間を表示するプログレスバーを表示します"
+      }
     },
     "metadataDisplay": {
       "title": "タイトル/アーティスト表示",
-      "subtitle": "曲のタイトルとアーティストの表示方法を設定します",
+      "subtitle": "曲のタイトルとアーティストの表示方式を設定します"
     },
     "fullscreenStyle": {
       "title": "フルスクリーンスタイル",
-      "subtitle": "フルスクリーンモードのビジュアル要素設定",
+      "subtitle": "フルスクリーンモードの視覚要素設定",
       "albumSize": {
-        "desc": "アルバムカバーサイズ",
-        "info": "フルスクリーンでのアルバムカバーの最大サイズを設定 (100-500px)"
+        "desc": "アルバムアートサイズ",
+        "info": "フルスクリーンでのアルバムアートの最大サイズを設定します (100-500px)"
       },
       "albumRadius": {
-        "desc": "アルバムカバー角丸",
-        "info": "アルバムカバーの角丸半径を設定 (0-50px)"
+        "desc": "アルバムアートの丸み",
+        "info": "アルバムアートの角の丸みを設定します (0-50px)"
       },
       "titleFontSize": {
-        "desc": "タイトルフォントサイズ",
-        "info": "フルスクリーンでの曲タイトルのフォントサイズを設定 (24-72px)"
+        "desc": "タイトルの文字サイズ",
+        "info": "フルスクリーンでの曲のタイトルの文字サイズを設定します (24-72px)"
       },
       "artistFontSize": {
-        "desc": "アーティストフォントサイズ",
-        "info": "フルスクリーンでのアーティスト名のフォントサイズを設定 (14-36px)"
+        "desc": "アーティストの文字サイズ",
+        "info": "フルスクリーンでのアーティスト名の文字サイズを設定します (14-36px)"
       },
       "lyricsRightMargin": {
-        "desc": "歌詞右マージン",
-        "info": "フルスクリーンでの歌詞エリアの右マージンを設定。中央揃え時に歌詞が右に寄るのを防止 (0-300px)"
+        "desc": "歌詞の右余白",
+        "info": "フルスクリーンでの歌詞領域の右余白を設定します。中央揃え時に歌詞が右に偏って見えるのを防ぎます (0-300px)"
       }
     },
     "fullscreenUI": {
       "title": "フルスクリーンUI要素",
-      "subtitle": "フルスクリーンで表示するその他のUI要素を設定",
+      "subtitle": "フルスクリーンに表示される追加UI要素を設定します",
       "showClock": {
         "desc": "時計を表示",
-        "info": "右上に現在時刻を表示"
+        "info": "画面右上に現在の時刻を表示します"
       },
       "clockSize": {
-        "desc": "時計サイズ",
-        "info": "時計テキストのサイズを設定 (24-72px)"
+        "desc": "時計のサイズ",
+        "info": "時計テキストのサイズを設定します (24-72px)"
       },
       "showContext": {
         "desc": "再生コンテキストを表示",
-        "info": "左下に現在再生中のプレイリスト/アルバム情報を表示"
+        "info": "現在再生中のプレイリスト/アルバム情報を左下に表示します"
       },
       "showContextImage": {
         "desc": "コンテキスト画像を表示",
-        "info": "プレイリスト/アルバムのサムネイルを表示"
+        "info": "プレイリスト/アルバムのサムネイル画像を一緒に表示します"
       },
       "showNextTrack": {
-        "desc": "次の曲プレビュー",
-        "info": "曲終了前に次の曲情報を表示（ラジオスタイル）"
+        "desc": "次の曲をプレビュー",
+        "info": "曲が終わる前に次の曲の情報を右上に表示します（音楽番組スタイル）"
       },
       "nextTrackTime": {
-        "desc": "次の曲表示時間",
-        "info": "曲終了の何秒前に次の曲を表示するか設定 (5-30秒)",
+        "desc": "次の曲の表示時間",
+        "info": "曲終了の何秒前から次の曲を表示するか設定します (5-30秒)",
         "unit": "秒"
       },
       "showControls": {
-        "desc": "プレーヤーコントロールを表示",
-        "info": "再生/一時停止、前/次の曲、シャッフル、リピート、いいねボタンを表示"
+        "desc": "プレイヤーコントロールを表示",
+        "info": "再生/一時停止、前の曲/次の曲、シャッフル、リピート、いいねボタンを表示します"
       },
       "showVolume": {
         "desc": "音量コントロールを表示",
-        "info": "プレーヤーコントロールに音量スライダーを表示"
+        "info": "プレイヤーコントロールに音量調節スライダーを表示します"
       },
       "showProgressBar": {
-        "desc": "プログレスバーを表示",
-        "info": "現在の再生位置と総時間のプログレスバーを表示"
+        "desc": "再生プログレスバーを表示",
+        "info": "曲の現在の再生位置と全体時間を表示するプログレスバーを表示します"
       },
       "showLyricsProgress": {
-        "desc": "歌詞進行を表示",
-        "info": "現在の歌詞行番号と総行数を表示"
+        "desc": "歌詞進行率を表示",
+        "info": "現在の歌詞行番号と全体の歌詞行数を表示します"
       },
       "showQueue": {
-        "desc": "キューパネルを表示",
-        "info": "画面右端でマウスホバー時にキューパネルを表示"
+        "desc": "待機リストパネルを表示",
+        "info": "画面右側にマウスを持っていくと再生待機リストを表示します"
       }
     },
     "controllerStyle": {
       "title": "コントローラースタイル",
-      "subtitle": "プレーヤーコントローラーの外観を設定",
+      "subtitle": "プレイヤーコントローラーの外観を設定します",
       "buttonSize": {
         "desc": "コントロールボタンサイズ",
-        "info": "再生、前/次の曲ボタンのサイズを設定 (28-48px)"
+        "info": "再生、前の曲/次の曲などのボタンのサイズを設定します (28-48px)"
       },
       "background": {
         "desc": "コントローラー背景",
-        "info": "コントローラーに半透明背景を追加"
+        "info": "コントローラーに半透明の背景を追加します"
       }
     },
     "autoHide": {
       "title": "自動非表示",
-      "subtitle": "マウス非アクティブ時にUIを自動的に非表示",
+      "subtitle": "マウス非アクティブ時のUI自動非表示設定",
       "enabled": {
-        "info": "マウスが動かない時にコントローラーと情報が自動的に非表示になります",
-        "desc": "UIを自動非表示"
+        "info": "マウスを動かさないとコントローラーと情報が自動的に隠れます",
+        "desc": "UI自動非表示"
       },
       "delay": {
-        "desc": "自動非表示遅延",
-        "info": "マウス非アクティブ後にUIが非表示になるまでの時間 (1-10秒)"
+        "desc": "自動非表示の遅延",
+        "info": "マウス非アクティブ後、UIが隠れるまでの時間 (1-10秒)"
       }
     },
     "tmiStyle": {
@@ -1128,194 +1129,194 @@ window.LANG_JA = {
       "subtitle": "アルバムアートクリック時に表示されるTMIモーダルのスタイル設定",
       "fontSize": {
         "desc": "TMIフォントサイズ",
-        "info": "TMIモーダルの全体フォントサイズを調整 (80-150%)"
+        "info": "TMIモーダルの全体フォントサイズを調整します (80-150%)"
       }
     },
     "aboutTab": {
       "appInfo": {
         "title": "アプリ情報"
       },
-      "developer": "開発者：",
-      "originalProject": "オリジナルプロジェクト：",
-      "thanks": "オープンソースプロジェクトへのすべての貢献者に感謝します。",
+      "developer": "開発:",
+      "originalProject": "オリジナルプロジェクト:",
+      "thanks": "オープンソースプロジェクトに貢献してくださったすべての方々に感謝します。",
       "clientInfo": {
         "title": "クライアント情報",
-        "subtitle": "このクライアントの一意識別子",
-        "description": "これはアカウント連携用に自動生成された一意識別子です。この値は変更できず、各クライアントに一意に割り当てられます。この値を漏洩しないようご注意ください。",
+        "subtitle": "このクライアントの固有識別子",
+        "description": "アカウント連携のために自動生成された固有識別子です。この値は修正できず、クライアントごとに固有に割り当てられます。この値が外部に漏れないよう注意してください。",
         "copied": "クライアントIDがコピーされました",
-        "copyFailed": "コピーに失敗しました",
+        "copyFailed": "コピー失敗",
         "copy": "コピー"
       },
       "update": {
         "title": "アップデート",
-        "subtitle": "最新バージョンを確認",
+        "subtitle": "最新バージョンの確認",
         "checkUpdate": {
-          "desc": "最新バージョンを確認",
-          "button": "アップデート確認",
+          "desc": "最新バージョン確認",
+          "button": "アップデートを確認",
           "checking": "確認中..."
         },
-        "copied": "コピーされました",
+        "copied": "コピー済み",
         "installCopied": "インストールコマンドがコピーされました",
         "copyFailed": "コピーに失敗しました"
       },
       "patchNotes": {
-        "title": "更新ノート",
-        "subtitle": "最新の更新履歴",
-        "loading": "更新ノートを読み込み中..."
+        "title": "パッチノート",
+        "subtitle": "最新のアップデート履歴",
+        "loading": "パッチノートを読み込み中..."
       },
       "subtitle": "ivLyricsについて",
-      "appDescription": "様々な機能を含む歌詞拡張機能",
+      "appDescription": "多彩な機能を含む歌詞Extension",
       "versionPrefix": "バージョン",
-      "viewOnGithub": "GitHubで表示",
-      "patchNotesLoadFailed": "更新ノートの読み込みに失敗しました",
-      "checkGithubReleases": "GitHubリリースページをご確認ください",
-      "visitGithub": "GitHubリポジトリを訪問",
+      "viewOnGithub": "GitHubで見る",
+      "patchNotesLoadFailed": "パッチノートを読み込めません",
+      "checkGithubReleases": "GitHubのリリースページを確認してください",
+      "visitGithub": "GitHubリポジトリへ",
       "joinDiscord": "Discordサーバーに参加"
     },
     "debugTab": {
       "title": "デバッグ情報",
-      "subtitle": "バグ報告時に開発者と共有する情報",
+      "subtitle": "バグ報告時に開発者に提供する情報です",
       "currentTrack": "現在のトラック情報",
       "trackInfo": "トラック情報",
       "lyricsInfo": "歌詞情報",
       "settingsInfo": "設定情報",
-      "noLyrics": "歌詞情報がありません",
+      "noLyrics": "歌詞情報なし",
       "loading": "情報を読み込み中...",
       "refresh": "更新",
       "copyToClipboard": "クリップボードにコピー",
       "copied": "コピーしました！",
       "copyFailed": "コピーに失敗しました",
-      "sendToDiscord": "Discordに報告",
+      "sendToDiscord": "Discordで報告する",
       "rawJson": "JSONデータ"
     },
     "api": {
       "title": "API設定",
       "getApiKey": {
         "desc": "APIキーを取得",
-        "info": "Google AI Studioで無料のGemini APIキーを取得できます",
+        "info": "Google AI Studioで無料でGemini APIキーを取得できます",
         "button": "APIキー取得ページを開く"
       },
       "geminiKey": {
         "desc": "Gemini APIキー",
-        "info": "Google Gemini AIを使用した歌詞翻訳機能にはAPIキーが必要です"
+        "info": "Google Gemini AIを活用した歌詞翻訳機能を使用するにはAPIキーが必要です"
       }
     },
     "update": {
       "title": "アップデート",
-      "subtitle": "最新バージョンを確認",
+      "subtitle": "最新バージョンの確認",
       "checkUpdate": {
-        "desc": "最新バージョンを確認",
-        "button": "アップデート確認",
+        "desc": "最新バージョン確認",
+        "button": "アップデートを確認",
         "checking": "確認中..."
       },
-      "copied": "コピーされました",
+      "copied": "コピー済み",
       "installCopied": "インストールコマンドがコピーされました",
       "copyFailed": "コピーに失敗しました",
-      "currentVersionInfo": "現在のバージョン：v{version}。GitHubで新しいアップデートを確認",
-      "checkFailedWithError": "アップデート確認に失敗しました：{error}"
+      "currentVersionInfo": "現在のバージョン: v{version}. GitHubで新しいアップデートがあるか確認します",
+      "checkFailedWithError": "アップデート確認失敗: {error}"
     }
   },
   "syncAdjust": {
-    "info": "スライダーを右に移動すると、歌詞が速くなります。",
-    "reset": "リセット",
-    "communityTitle": "コミュニティシンク",
+    "info": "スライダーを右に移動すると、歌詞が早く流れます。",
+    "reset": "初期化",
+    "communityTitle": "コミュニティ同期",
     "communityOffset": "オフセット",
     "submissions": "提出数",
-    "confidenceHigh": "高信頼度",
-    "confidenceMedium": "中信頼度",
-    "confidenceLow": "低信頼度",
+    "confidenceHigh": "高い信頼度",
+    "confidenceMedium": "中程度の信頼度",
+    "confidenceLow": "低い信頼度",
     "applyCommunity": "適用",
     "submitMine": "自分のオフセットを提出",
     "submitting": "提出中...",
-    "submitSuccess": "コミュニティに提出しました",
+    "submitSuccess": "コミュニティに提出されました",
     "submitFailed": "提出に失敗しました",
     "noData": "コミュニティデータがありません",
     "loading": "読み込み中...",
     "feedbackGood": "オフセットは正確です",
-    "feedbackBad": "オフセットは不正確です",
-    "cannotFeedbackOwnSubmission": "自分の提出したオフセットには評価できません",
+    "feedbackBad": "オフセットは正確ではありません",
+    "cannotFeedbackOwnSubmission": "自分が提出したオフセットには評価できません",
     "feedbackPositiveSuccess": "肯定的なフィードバックありがとうございます！",
     "feedbackNegativeSuccess": "フィードバックありがとうございます。改善します！",
     "feedbackFailed": "フィードバックの提出に失敗しました",
-    "autoSubmitEnabled": "⚡ 自動提出が有効です"
+    "autoSubmitEnabled": "⚡ 自動提出が有効になっています"
   },
   "playbarButton": {
-    "label": "ivLyrics"
+    "label": "歌詞プラス"
   },
   "videoBackground": {
     "loading": "動画情報を読み込み中...",
     "notFound": "動画が見つかりません。",
     "error": "エラーが発生しました。",
-    "loadingMessage": "動画背景を読み込み中... 約30秒かかります。",
+    "loadingMessage": "動画背景を読み込み中... 30秒ほどかかります。",
     "downloadingVideo": "動画をダウンロード中...",
     "downloading": "ダウンロード中: {percent}%",
     "processing": "動画を処理中...",
     "checking": "動画を確認中...",
-    "preparing": "動画ダウンロードを準備中...",
+    "preparing": "動画のダウンロードを準備しています...",
     "downloadComplete": "動画ダウンロード完了！",
     "helperNotConnected": "ヘルパープログラムに接続できません。プログラムが実行中か確認してください。",
     "helperError": "ヘルパープログラムでエラーが発生しました。",
     "tryingCookiesFile": "cookies.txtファイルで試行中...",
-    "tryingBrowserCookies": "{browser}のクッキーで試行中...",
+    "tryingBrowserCookies": "{browser}のCookieで試行中...",
     "checkingWithCookiesFile": "cookies.txtで動画を確認中...",
-    "checkingWithBrowserCookies": "{browser}のクッキーで動画を確認中...",
-    "checkingAvailability": "動画の利用可否を確認中...",
-    "ageRestrictedNoCookies": "年齢制限動画です。cookies.txtファイルまたは対応ブラウザがありません。設定でcookies.txtファイルを設定してください。",
-    "ageRestrictedFailed": "年齢制限動画です。設定で有効なcookies.txtファイルを設定してください。",
-    "videoAlreadyDownloaded": "動画は既にダウンロード済みです",
-    "videoAvailable": "動画は利用可能です",
-    "videoNotDownloaded": "動画はダウンロードされていません"
+    "checkingWithBrowserCookies": "{browser}のCookieで動画を確認中...",
+    "checkingAvailability": "動画の可用性を確認中...",
+    "ageRestrictedNoCookies": "年齢制限のある動画です。cookies.txtファイルやサポートされているブラウザがありません。設定でcookies.txtファイルを設定してください。",
+    "ageRestrictedFailed": "年齢制限のある動画です。設定で有効なcookies.txtファイルを設定してください。",
+    "videoAlreadyDownloaded": "動画はすでにダウンロードされています",
+    "videoAvailable": "動画利用可能",
+    "videoNotDownloaded": "動画がダウンロードされていません"
   },
   "translator": {
     "missingApiKey": "Gemini APIキーが設定されていません。設定でAPIキーを入力してください。",
-    "invalidApiKeyFormat": "APIキーの形式が無効です。Gemini APIキーは'AIza'で始まる必要があります。",
-    "invalidRequestFormat": "リクエスト形式が無効です。APIキーを確認してください。",
-    "invalidApiKey": "APIキーが無効です。設定でGemini APIキーを確認してください。",
-    "accessForbidden": "APIアクセスが禁止されています。APIキーの権限を確認してください。",
-    "rateLimitExceeded": "レート制限を超過しました。後でもう一度お試しください。",
-    "serviceUnavailable": "翻訳サービスが一時的に利用できません。後でもう一度お試しください。",
-    "requestFailed": "APIリクエストに失敗しました",
-    "apiKeyError": "Gemini APIキーエラーが発生しました。設定でAPIキーを確認してください。",
+    "invalidApiKeyFormat": "不正なAPIキー形式です。Gemini APIキーは 'AIza' で始まる必要があります。",
+    "invalidRequestFormat": "リクエスト形式が正しくありません。APIキーを確認してください。",
+    "invalidApiKey": "無効なAPIキーです。設定でGemini APIキーを確認してください。",
+    "accessForbidden": "APIへのアクセスが禁止されました。APIキーの権限を確認してください。",
+    "rateLimitExceeded": "リクエスト制限を超過しました。しばらくしてから再試行してください。",
+    "serviceUnavailable": "翻訳サービスが一時的に利用できません。後で再試行してください。",
+    "requestFailed": "APIリクエストが失敗しました",
+    "apiKeyError": "Gemini APIキー関連のエラーが発生しました。設定でAPIキーを確認してください。",
     "translationFailed": "翻訳に失敗しました",
-    "requestTimeout": "翻訳リクエストがタイムアウトしました。もう一度お試しください。",
+    "requestTimeout": "翻訳リクエストがタイムアウトしました。再試行してください。",
     "failedPrefix": "翻訳失敗"
   },
   "utils": {
     "allUrlsFailed": "すべてのURLからバージョン情報を取得できませんでした",
-    "invalidVersionFormat": "バージョン形式が無効です",
+    "invalidVersionFormat": "無効なバージョン形式",
     "unknownError": "不明なエラー",
     "requestTimeout": "リクエストタイムアウト",
-    "networkError": "ネットワーク接続に失敗しました",
-    "securityRestriction": "ブラウザセキュリティポリシー制限",
+    "networkError": "ネットワーク接続失敗",
+    "securityRestriction": "ブラウザのセキュリティポリシーによる制限",
     "serverError": "サーバー応答エラー",
-    "terminalMac": "ターミナル"
+    "terminalMac": "Terminal (ターミナル)"
   },
   "modes": {
     "karaoke": "カラオケ",
     "synced": "同期",
-    "unsynced": "非同期"
+    "unsynced": "通常歌詞"
   },
   "communityVideo": {
-    "title": "コミュニティ動画のおすすめ",
-    "loading": "動画を読み込み中...",
-    "loadError": "動画の読み込みに失敗しました",
-    "noVideos": "コミュニティ動画はまだありません",
+    "title": "コミュニティ動画推薦",
+    "loading": "動画リストを読み込み中...",
+    "loadError": "動画リストを読み込めませんでした",
+    "noVideos": "登録されたコミュニティ動画がありません",
     "autoDetected": "自動登録",
     "startTime": "開始",
-    "submittedBy": "投稿者",
+    "submittedBy": "登録者",
     "addVideo": "動画を追加",
     "addVideoNoEmoji": "動画を追加",
     "youtubeUrl": "YouTube URL",
-    "startTimeSeconds": "開始時間（秒）",
-    "submit": "送信",
-    "submitting": "送信中...",
-    "submitted": "動画が正常に送信されました！",
-    "updated": "動画が正常に更新されました！",
-    "submitError": "動画の送信に失敗しました",
+    "startTimeSeconds": "開始時間 (秒)",
+    "submit": "登録する",
+    "submitting": "登録中...",
+    "submitted": "動画が正常に登録されました！",
+    "updated": "動画情報が更新されました！",
+    "submitError": "動画の登録に失敗しました",
     "invalidUrl": "無効なYouTube URLです",
-    "videoNotFound": "YouTube動画が見つかりません",
-    "videoPrivate": "動画は非公開または削除されています",
-    "validationError": "動画を確認できませんでした。もう一度お試しください",
+    "videoNotFound": "存在しないYouTube動画です",
+    "videoPrivate": "非公開または削除された動画です",
+    "validationError": "動画を確認できません。再試行してください",
     "selectVideo": "動画を選択",
     "preview": "プレビュー",
     "apply": "適用",
@@ -1323,20 +1324,21 @@ window.LANG_JA = {
     "applied": "動画が適用されました",
     "videoTitle": "動画タイトル",
     "loadingTitle": "タイトルを取得中...",
-    "startTimeLabel": "最初の歌詞開始時間（秒）",
+    "startTimeLabel": "最初の歌詞の開始時間 (秒)",
     "startTimeHint": "YouTube動画で最初の歌詞が始まる時間を入力してください",
     "delete": "削除",
-    "deleteConfirm": "この動画を削除してもよろしいですか？",
+    "deleteConfirm": "この動画を削除しますか？",
     "deleted": "動画が削除されました",
-    "deleteError": "動画の削除に失敗しました"
+    "deleteError": "動画の削除に失敗しました",
+    "downloading": "動画をダウンロード中..."
   },
   "close": "閉じる",
   "cancel": "キャンセル",
   "shareImage": {
     "title": "歌詞画像を共有",
-    "subtitle": "美しい歌詞画像を作成して共有しましょう",
+    "subtitle": "お気に入りの歌詞を画像にして共有しましょう",
     "selectLyrics": "歌詞を選択",
-    "selectLyricsHint": "画像に含める歌詞行をクリックしてください（最大6行）",
+    "selectLyricsHint": "画像に含める歌詞の行をクリックしてください (最大6行)",
     "template": "プリセット",
     "templates": {
       "cover": "カバーブラー",
@@ -1353,12 +1355,12 @@ window.LANG_JA = {
       "layout": "レイアウト",
       "other": "その他"
     },
-    "copyrightWarning": "⚠️ 著作権について\n\nこの歌詞画像には著作権で保護されたコンテンツが含まれている可能性があります。\n\n• 個人的な使用に限定してください\n• 商用目的での使用は避けてください\n• SNSで共有する際は原作者を尊重してください\n\n続行しますか？",
-    "copyrightTitle": "著作権について",
-    "copyrightDesc": "この歌詞画像には著作権で保護されたコンテンツが含まれている可能性があります。",
-    "copyrightPoint1": "個人的な使用に限定してください",
-    "copyrightPoint2": "商用目的での使用は避けてください",
-    "copyrightPoint3": "SNSで共有する際は原作者を尊重してください",
+    "copyrightWarning": "⚠️ 著作権に関する注意\n\nこの歌詞画像には著作権のあるコンテンツが含まれる場合があります。\n\n• 個人的な用途でのみ使用してください\n• 商業目的で使用しないでください\n• SNS共有時は原作者を尊重してください\n\n続行しますか？",
+    "copyrightTitle": "著作権に関する注意",
+    "copyrightDesc": "この歌詞画像には著作権のあるコンテンツが含まれる場合があります。",
+    "copyrightPoint1": "個人的な用途でのみ使用してください",
+    "copyrightPoint2": "商業目的で使用しないでください",
+    "copyrightPoint3": "SNS共有時は原作者を尊重してください",
     "copyrightConfirm": "同意して続行",
     "settings": {
       "backgroundType": "背景スタイル",
@@ -1377,15 +1379,15 @@ window.LANG_JA = {
       "coverBlur": "カバーブラー",
       "showPronunciation": "発音",
       "showTranslation": "翻訳",
-      "lyricsAlign": "歌詞配置",
-      "alignLeft": "左",
-      "alignCenter": "中央",
+      "lyricsAlign": "歌詞の配置",
+      "alignLeft": "左揃え",
+      "alignCenter": "中央揃え",
       "fontSize": "フォントサイズ",
       "blockGap": "行間隔",
-      "aspectRatio": "アスペクト比",
+      "aspectRatio": "画像比率",
       "imageWidth": "画像幅",
       "padding": "余白",
-      "showWatermark": "ウォーターマーク表示"
+      "showWatermark": "透かしを表示"
     },
     "preview": "プレビュー",
     "actions": {
@@ -1393,9 +1395,9 @@ window.LANG_JA = {
       "download": "ダウンロード",
       "share": "共有"
     },
-    "copied": "✓ クリップボードにコピーされました",
-    "downloaded": "✓ ダウンロードされました",
-    "shared": "✓ 共有されました",
+    "copied": "✓ クリップボードにコピー済み",
+    "downloaded": "✓ ダウンロード済み",
+    "shared": "✓ 共有済み",
     "maxLinesReached": "最大3行まで選択できます",
     "noSelection": "歌詞を選択してください"
   },
@@ -1418,20 +1420,20 @@ window.LANG_JA = {
       "title": "Gemini APIキー設定",
       "subtitle": "AI翻訳機能を使用するにはAPIキーが必要です",
       "guide": {
-        "title": "APIキーの取得方法",
+        "title": "APIキー取得方法",
         "step1": "Google AI Studioにアクセス",
         "step2": "Get API Keyをクリック",
         "step3": "新しいAPIキーを作成",
-        "step4": "作成されたキーをコピー"
+        "step4": "生成されたキーをコピー"
       },
       "getKey": "APIキーを取得",
-      "skip": "後で設定",
-      "placeholder": "APIキーを入力...",
+      "skip": "後で設定する",
+      "placeholder": "APIキーを入力してください...",
       "multipleKeysHint": "設定で複数のAPIキーを登録できます"
     },
     "theme": {
       "title": "基本設定",
-      "subtitle": "歌詞の表示方法を選択してください",
+      "subtitle": "歌詞の表示方式を選択してください",
       "alignment": "配置",
       "background": "背景効果",
       "backgrounds": {
@@ -1443,32 +1445,32 @@ window.LANG_JA = {
       }
     },
     "translationTip": {
-      "title": "翻訳設定ガイド",
+      "title": "翻訳設定の案内",
       "subtitle": "翻訳機能は言語ごとに個別に設定されます",
       "pronunciation": "発音",
       "translation": "翻訳",
-      "description": "K-POP曲で翻訳を有効にしても、J-POPには適用されません。下の変換ボタンをクリックして、各言語の「発音」と「翻訳」オプションを個別に設定してください。"
+      "description": "K-POP曲で翻訳を有効にしても、J-POPには適用されません。下部の変換ボタンを押して、各言語ごとに「発音」と「翻訳」オプションを別途設定してください。"
     },
     "overlayTip": {
       "title": "デスクトップオーバーレイ",
-      "subtitle": "デスクトップのどこでも歌詞を確認",
-      "description": "オーバーレイアプリをインストールすると、他のアプリを使用しながら歌詞を見ることができます。設定でいつでも有効にできます。",
-      "requiresApp": "この機能を使用するには、別途オーバーレイアプリのインストールが必要です。",
+      "subtitle": "歌詞をデスクトップのどこでも確認",
+      "description": "オーバーレイアプリをインストールすると、他のアプリを使用しながら歌詞を見ることができます。設定からいつでも有効にできます。",
+      "requiresApp": "この機能を使用するには別途オーバーレイアプリのインストールが必要です。",
       "enabled": "オーバーレイを有効化",
       "downloadApp": "オーバーレイアプリをダウンロード"
     },
     "nowPlayingTip": {
-      "title": "NowPlayingパネル歌詞",
+      "title": "NowPlaying パネル歌詞",
       "subtitle": "右側パネルで現在の歌詞を確認",
       "description": "Spotifyの「再生中」パネルに現在の歌詞を表示します。フルスクリーンモードなしでも歌詞を確認できます。",
       "enabled": "パネル歌詞を表示",
-      "linesCount": "表示行数"
+      "linesCount": "表示する行数"
     },
     "complete": {
       "title": "準備完了！",
       "subtitle": "これでivLyricsを使用する準備が整いました",
-      "startNow": "今すぐ始める",
-      "openSettings": "設定を開く"
+      "startNow": "すぐに始める",
+      "openSettings": "設定をもっと見る"
     },
     "navigation": {
       "next": "次へ",
@@ -1478,100 +1480,119 @@ window.LANG_JA = {
     "videoTest": {
       "title": "動画背景テスト",
       "subtitle": "以下のYouTube動画が正常に再生されるか確認してください",
-      "question": "動画を再生するにはログインが必要と表示されますか？",
+      "question": "動画を再生するにはログインが必要だと表示されますか？",
       "yes": "はい",
       "no": "いいえ",
       "helperRequired": "その場合、ヘルパープログラムをインストールする必要があります。",
-      "helperDesc": "ヘルパープログラムを使用すると、YouTubeログインなしで動画を再生できます。",
+      "helperDesc": "ヘルパープログラムはYouTubeログインなしで動画を再生できるようにします。",
       "installHelper": "ヘルパープログラムをインストール",
       "skip": "スキップ"
     },
     "videoHelperTest": {
       "title": "ヘルパープログラムテスト",
       "subtitle": "ヘルパープログラムが正しく動作するか確認します",
-      "enableHelper": "ヘルパープログラムを有効化",
-      "testVideo": "テスト動画を再生",
+      "enableHelper": "ヘルパープログラム有効化",
+      "testVideo": "テスト動画再生",
       "testing": "テスト中...",
-      "success": "ヘルパープログラムは正常に動作しています！",
+      "success": "ヘルパープログラムが正常に動作しています！",
       "failed": "ヘルパープログラムに接続できません。プログラムが実行中か確認してください。",
-      "downloading": "動画をダウンロード中: {percent}%",
+      "downloading": "動画ダウンロード中: {percent}%",
       "skip": "スキップ"
+    },
+    "tmi": {
+      "getApiKeyDesc": "Gemini APIキーを取得",
+      "getApiKeyInfo": "TMIを読み込む際に使用されます。Google AI Studioで無料で取得できます。",
+      "viewInfo": "クリックしてこの曲に関する様々な情報を確認",
+      "requireKey": "設定でGemini APIキーの設定が必要です",
+      "settingTitle": "Gemini APIキー",
+      "settingDesc": "曲のTMI/情報を読み込むために必要です。",
+      "title": "TMI",
+      "didYouKnow": "ご存知でしたか？",
+      "close": "閉じる",
+      "cancel": "キャンセル",
+      "loading": "興味深い事実を探しています...",
+      "noData": "この曲に関するTMIはまだありません。",
+      "clickForTMI": "TMIを見に行く",
+      "clickToClose": "✕ またはアルバムアートをクリックして閉じる",
+      "regenerate": "TMIを再生成します。",
+      "errorFetch": "TMIを読み込み中にエラーが発生しました。",
+      "errorQuota": "API割り当てを超過しました。",
+      "errorQuotaHint": "しばらくしてから再試行するか、設定で別のAPIキーを入力してください。",
+      "disclaimer": "該当コンテンツはインターネット上の情報をAIで加工して表示しており、正確でない情報が含まれる場合があります。",
+      "verified": "検証済み",
+      "unverified": "未検証",
+      "verifiedCount": "検証済み",
+      "sources": "出典",
+      "verifiedSources": "検証済みの出典",
+      "relatedSources": "関連する出典",
+      "otherSources": "その他の出典",
+      "confidenceVeryHigh": "非常に高い信頼度",
+      "confidenceHigh": "高い信頼度",
+      "confidenceMedium": "中程度の信頼度",
+      "confidenceLow": "低い信頼度",
+      "confidenceNone": "出典なし"
+    },
+    "notice": {
+      "confirm": "確認",
+      "next": "次へ",
+      "dismissAll": "すべて閉じる"
+    },
+    "syncCreator": {
+      "title": "カラオケ同期作成",
+      "buttonTooltip": "カラオケ同期作成",
+      "clickHereHint": "ここをクリックして歌詞の同期を合わせてください！",
+      "loading": "読み込み中...",
+      "loadLyrics": "歌詞を読み込む",
+      "reload": "再読み込み",
+      "loadingLyrics": "歌詞を読み込み中...",
+      "selectProvider": "歌詞を自動的に読み込みます (Spotify → LRCLIB)",
+      "noLyrics": "歌詞が見つかりません",
+      "loadError": "歌詞読み込み中にエラーが発生しました",
+      "currentLine": "現在の歌詞",
+      "nextLine": "次の歌詞",
+      "progress": "進行",
+      "linesCompleted": "完了行数",
+      "chars": "文字",
+      "reset": "初期化",
+      "firstLine": "最初の行へ",
+      "prevLine": "前の行",
+      "nextLineBtn": "次の行",
+      "recordMode": "記録モード",
+      "stopRecord": "記録停止",
+      "previewMode": "プレビューモード",
+      "stopPreview": "プレビュー停止",
+      "idleMode": "待機中",
+      "submit": "提出",
+      "submitting": "提出中...",
+      "noSyncData": "登録された同期データがありません",
+      "incompleteConfirm": "一部の行がまだ同期されていません。それでも提出しますか？",
+      "submitSuccess": "同期データが提出されました！管理者の承認後に適用されます。",
+      "submitError": "同期データの提出に失敗しました",
+      "dragHint": "ドラッグして文字ごとのタイミングを記録してください。左にドラッグするとキャンセルされます。",
+      "globalOffset": "全体オフセット",
+      "synced": "登録済み",
+      "notSynced": "未登録",
+      "deleteLine": "この行を削除",
+      "back": "閉じる",
+      "lrclib": {
+        "registerLyrics": "LRCLIBに歌詞を登録する",
+        "title": "LRCLIBに歌詞登録",
+        "description": "この曲の歌詞がありません。歌詞を直接入力してLRCLIBに登録すると、他のユーザーもこの歌詞を使用できます。登録後は修正できませんので慎重に入力してください。",
+        "trackInfo": "トラック情報",
+        "placeholder": "歌詞を入力してください...\n\n各行を新しい行で区切ってください。\n空行は自動的に削除されます。",
+        "publishToLrcLib": "LRCLIBに登録",
+        "publishing": "登録中...",
+        "cancelPublish": "登録キャンセル",
+        "publishCancelled": "登録がキャンセルされました",
+        "timeWarning": "⚠️ LRCLIBは無分別な歌詞登録を防ぐため、暗号化トークン解析作業を要求します。この過程はコンピュータの性能によって約5分程度かかる場合があります。",
+        "requestingChallenge": "認証リクエスト中...",
+        "solvingChallenge": "認証処理中...",
+        "solving": "認証処理中... ({nonce} 回試行)",
+        "publishSuccess": "歌詞がLRCLIBに正常に登録されました！",
+        "publishError": "歌詞の登録に失敗しました",
+        "noLyricsInput": "歌詞を入力してください",
+        "loadingAfterPublish": "登録された歌詞を読み込み中..."
+      }
     }
-  },
-  tmi: {
-    getApiKeyDesc: "Gemini API キーを取得する",
-    getApiKeyInfo: "TMIの取得に使用されます。Google AI Studioから無料で取得できます。",
-    viewInfo: "クリックして曲の更なる情報を確認する",
-    requireKey: "設定で Gemini API キーの設定が必要です",
-    settingTitle: "Gemini API キー",
-    settingDesc: "曲の TMI/情報を読み込むために必要です。",
-    title: "TMI",
-    didYouKnow: "ご存知ですか？",
-    close: "閉じる",
-    cancel: "キャンセル",
-    loading: "興味深い事実を検索中...",
-    noData: "この曲のTMIはまだありません。",
-    clickForTMI: "TMIを見る",
-    clickToClose: "✕またはアルバムエリアをクリックして閉じる",
-    regenerate: "TMIを再生成します",
-    errorFetch: "TMIの取得中にエラーが発生しました。",
-    errorQuota: "APIの割り当て量を超過しました。",
-    errorQuotaHint: "しばらくしてから再試行するか、設定で別のAPIキーを入力してください。",
-    disclaimer: "このコンテンツはインターネット上の情報をAIで加工して表示しており、正確でない情報が含まれている可能性があります。",
-    verified: "検証済み",
-    unverified: "未検証",
-    verifiedCount: "検証済み",
-    sources: "出典",
-    verifiedSources: "検証済みの出典",
-    relatedSources: "関連の出典",
-    otherSources: "その他の出典",
-    confidenceVeryHigh: "非常に高い信頼性",
-    confidenceHigh: "高信頼性",
-    confidenceMedium: "中信頼性",
-    confidenceLow: "低信頼性",
-    confidenceNone: "出典なし"
-  },
-  notice: {
-    confirm: "確認",
-    next: "次へ",
-    dismissAll: "すべて閉じる"
-  },
-  syncCreator: {
-    title: "カラオケシンク作成",
-    buttonTooltip: "カラオケシンクを作成",
-    clickHereHint: "ここをクリックして歌詞を同期してください！",
-    loading: "読み込み中...",
-    loadLyrics: "歌詞を読み込む",
-    loadingLyrics: "歌詞を読み込んでいます...",
-    selectProvider: "プロバイダーを選択して歌詞を読み込んでください",
-    noLyrics: "歌詞が見つかりません",
-    loadError: "歌詞の読み込み中にエラーが発生しました",
-    currentLine: "現在の行",
-    nextLine: "次の行",
-    progress: "進捗",
-    linesCompleted: "行完了",
-    chars: "文字",
-    reset: "リセット",
-    firstLine: "最初の行へ",
-    prevLine: "前の行",
-    nextLineBtn: "次の行",
-    recordMode: "録音モード",
-    stopRecord: "録音停止",
-    previewMode: "プレビューモード",
-    stopPreview: "プレビュー停止",
-    idleMode: "待機中",
-    recordLine: "行をクイック登録",
-    submit: "送信",
-    submitting: "送信中...",
-    noSyncData: "シンクデータがありません",
-    incompleteConfirm: "まだシンクされていない行があります。送信しますか？",
-    submitSuccess: "シンクデータが送信されました！管理者の承認後に適用されます。",
-    submitError: "シンクデータの送信に失敗しました",
-    dragHint: "ドラッグしてタイミングを記録します。左にドラッグするとキャンセルされます。",
-    globalOffset: "全体オフセット",
-    synced: "登録済み",
-    notSynced: "未登録",
-    deleteLine: "この行を削除",
-    back: "閉じる"
   }
-};
+}

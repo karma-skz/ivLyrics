@@ -11,17 +11,18 @@ window.LANG_ES = {
     "behavior": "Comportamiento",
     "advanced": "Avanzado",
     "fullscreen": "Pantalla completa",
+    "nowplaying": "Letras en panel",
     "debug": "Depuración",
     "about": "Acerca de",
     "searchResults": "Resultados de búsqueda"
   },
   "search": {
-    "placeholder": "Buscar ajustes...",
-    "noResults": "No se encontraron resultados",
-    "noResultsDesc": "Intenta con otra palabra de búsqueda",
+    "placeholder": "Buscar configuración...",
+    "noResults": "No hay resultados",
+    "noResultsDesc": "Intenta con otra palabra clave",
     "resultCount": "{count} resultados",
-    "clear": "Limpiar",
-    "inSection": "En {section}"
+    "clear": "Borrar",
+    "inSection": "en {section}"
   },
   "sections": {
     "language": "Idioma",
@@ -29,7 +30,7 @@ window.LANG_ES = {
     "visualEffectsSubtitle": "Personaliza los elementos visuales de la pantalla de letras",
     "syncMode": "Modo de sincronización",
     "syncModeSubtitle": "Configura cómo se sincronizan las letras",
-    "typography": "Tipografía",
+    "typography": "Estilo de texto",
     "typographySubtitle": "Ajusta el estilo del texto de las letras",
     "textShadow": "Sombra de texto",
     "textShadowSubtitle": "Añade efectos de sombra al texto de las letras",
@@ -40,53 +41,53 @@ window.LANG_ES = {
     "displayContent": "Contenido a mostrar",
     "autoTranslation": "Traducción automática",
     "lyrics": "Letras",
-    "playBar": "Botón de la barra de reproducción",
+    "playBar": "Botón en barra de reproducción",
     "autoScroll": "Desplazamiento automático",
     "animation": "Animación",
     "karaoke": "Karaoke",
     "syncedLyricsContent": "Contenido de letras sincronizadas",
     "unsyncedLyricsContent": "Contenido de letras no sincronizadas",
     "customPreview": "Vista previa personalizada",
-    "trackSyncInfo": "Información de sincronización de la pista",
+    "trackSyncInfo": "Info. de sincronización de pista",
     "customDatabase": "Base de datos personalizada",
     "debug": "Depuración",
     "github": "GitHub",
     "maintainers": "Mantenedores",
     "contributors": "Colaboradores",
     "fadWarningTitle": "⚠️ Extensión Full Screen en uso",
-    "fadWarningDesc": "No es compatible mientras se usa la extensión Full Screen.",
-    "fadWarningTip": "Por favor, cambia la alineación en la configuración de Full Screen.",
+    "fadWarningDesc": "No compatible mientras se usa una extensión de pantalla completa externa.",
+    "fadWarningTip": "Cambia el método de alineación en la configuración de Full Screen.",
     "desktopOverlay": "Superposición de escritorio",
-    "desktopOverlaySubtitle": "Mostrar letras como superposición en el escritorio"
+    "desktopOverlaySubtitle": "Muestra las letras como una superposición en el escritorio"
   },
   "overlay": {
     "enabled": {
-      "label": "Habilitar superposición de escritorio",
-      "desc": "Enviar letras a la aplicación de superposición de escritorio"
+      "label": "Usar superposición de escritorio",
+      "desc": "Envía las letras a la aplicación de superposición de escritorio"
     },
     "port": {
       "label": "Puerto de conexión",
-      "desc": "Número de puerto para conectar con la app de superposición (1024-65535)"
+      "desc": "Número de puerto para conectar con la app (1024-65535)"
     },
     "portSaved": "Puerto guardado",
     "portInvalid": "Número de puerto inválido (1024-65535)",
     "status": {
       "connected": "✓ Conectado",
-      "disconnected": "No conectado",
+      "disconnected": "Desconectado",
       "checking": "Comprobando..."
     },
-    "openApp": "Abrir app",
-    "download": "Descargar app",
-    "downloadDesc": "Descarga la aplicación de superposición si no está instalada"
+    "openApp": "Abrir aplicación",
+    "download": "Descargar aplicación",
+    "downloadDesc": "Si no tienes la aplicación de superposición instalada, descárgala aquí"
   },
   "settings": {
     "language": {
       "label": "Idioma",
-      "desc": "Elige el idioma de la extensión"
+      "desc": "Selecciona el idioma de la extensión"
     },
     "alignment": {
       "label": "Alineación",
-      "desc": "Elige la alineación del texto de las letras",
+      "desc": "Elige la posición de alineación del texto de las letras",
       "options": {
         "left": "Izquierda",
         "center": "Centro",
@@ -98,20 +99,20 @@ window.LANG_ES = {
       "desc": "Añade un efecto de grano de película al fondo"
     },
     "albumBgBlur": {
-      "label": "Desenfoque del fondo del álbum",
+      "label": "Desenfoque de fondo de álbum",
       "desc": "Ajusta la intensidad del desenfoque del fondo del álbum"
     },
     "blurGradientBackground": {
-      "label": "Fondo de degradado desenfocado",
-      "desc": "Aplica un fondo de degradado desenfocado extraído de los colores de la portada del álbum"
+      "label": "Fondo degradado desenfocado",
+      "desc": "Aplica un fondo degradado desenfocado extrayendo colores de la portada del álbum"
     },
     "colorful": {
       "label": "Fondo colorido",
       "desc": "Activa un fondo dinámico basado en los colores del álbum"
     },
     "gradientBackground": {
-      "label": "Fondo de portada del álbum",
-      "desc": "Usa la portada del álbum actual como fondo (puede no funcionar correctamente en modo pantalla completa)"
+      "label": "Fondo de portada de álbum",
+      "desc": "Usa la portada del álbum actual como fondo (puede no funcionar bien en pantalla completa)"
     },
     "solidBackground": {
       "label": "Fondo de color sólido",
@@ -119,71 +120,71 @@ window.LANG_ES = {
     },
     "solidBackgroundColor": {
       "label": "Color de fondo sólido",
-      "desc": "Elige el color para el fondo sólido"
+      "desc": "Selecciona el color para el fondo sólido"
     },
     "videoBackground": {
       "label": "Fondo de video",
-      "desc": "Usa un video de YouTube como fondo (Beta)"
+      "desc": "Usa videos de YouTube como fondo (Beta)"
     },
     "videoHelper": {
-      "label": "Usar programa auxiliar",
-      "desc": "Descarga y reproduce videos de YouTube localmente. Ver videos sin iniciar sesión.",
-      "info": "💡 ¿Los videos de YouTube no cargan?\n\nGoogle restringe a algunos usuarios la reproducción de videos de YouTube sin iniciar sesión.\nUsar el programa auxiliar permite cargar los videos correctamente.",
-      "download": "Descargar auxiliar",
+      "label": "Usar programa asistente",
+      "desc": "Descarga y reproduce videos de YouTube localmente. Permite ver videos sin iniciar sesión.",
+      "info": "💡 ¿El video de YouTube no carga?\n\nGoogle restringe la reproducción sin inicio de sesión para algunos usuarios.\nUsar el programa asistente permite cargar los videos normalmente.",
+      "download": "Descargar Asistente",
       "checkConnection": "Verificar conexión",
-      "connected": "Conectado al programa auxiliar",
-      "disconnected": "No se puede conectar al programa auxiliar",
+      "connected": "Conectado al programa asistente",
+      "disconnected": "No se puede conectar al programa asistente",
       "status": {
         "connected": "Conectado",
         "disconnected": "Desconectado",
-        "checking": "Verificando..."
+        "checking": "Comprobando..."
       }
     },
     "lyricsHelper": {
       "label": "Usar asistente de letras",
-      "desc": "Envía información de la pista y letras al asistente. Programas externos pueden acceder vía API.",
-      "sectionTitle": "Integración del asistente",
-      "sectionSubtitle": "Enviar letras a aplicaciones de asistente externas",
-      "info": "La app de asistente permite que aplicaciones externas muestren letras sincronizadas",
-      "download": "Descargar asistente",
+      "desc": "Envía información de pista y letras al asistente. Accesible vía API para programas externos.",
+      "sectionTitle": "Integración de asistente",
+      "sectionSubtitle": "Enviar letras a app asistente externa",
+      "info": "Puedes mostrar letras sincronizadas en programas externos a través de la app asistente",
+      "download": "Descargar Asistente",
       "connected": "Asistente conectado",
-      "disconnected": "Asistente no conectado",
+      "disconnected": "Asistente desconectado",
       "status": {
-        "checking": "Verificando...",
+        "checking": "Comprobando...",
         "connected": "Conectado",
-        "disconnected": "No conectado"
+        "disconnected": "Desconectado"
       }
     },
     "videoBlur": {
       "label": "Desenfoque de video",
-      "desc": "Ajusta la intensidad del desenfoque aplicado al fondo de video (0-40px)"
+      "desc": "Ajusta la intensidad del desenfoque del fondo de video (0-40px)"
     },
     "videoCover": {
-      "label": "Relleno de pantalla de video",
-      "desc": "Amplía el video para llenar la pantalla (se puede recortar arriba/abajo o izquierda/derecha)"
+      "label": "Rellenar pantalla con video",
+      "desc": "Amplía el video para llenar la pantalla (puede recortar bordes)"
     },
     "backgroundBrightness": {
       "label": "Brillo del fondo",
       "desc": "Ajusta el nivel de brillo del fondo (0-100%)"
     },
-    "solidBackgroundWarning": "El ajuste de brillo del fondo no se aplica cuando se usa un fondo de color sólido.",
+    "solidBackgroundWarning": "El ajuste de brillo no se aplica cuando se usa un fondo de color sólido.",
     "updateCheck": {
       "label": "Buscar actualizaciones",
-      "desc": "Busca nuevas actualizaciones automáticamente",
-      "info": "Las actualizaciones se buscan cada 24 horas."
+      "desc": "Comprueba automáticamente si hay nuevas actualizaciones",
+      "info": "La búsqueda de actualizaciones se realiza como máximo cada 24 horas."
     },
     "backgroundOpacity": {
       "label": "Opacidad del fondo de portada",
-      "desc": "Establece la opacidad de la portada"
+      "desc": "Configura la opacidad de la portada"
     },
     "contentWidth": {
       "label": "Ancho del contenido",
-      "desc": "Establece el ancho del contenido en modo pantalla completa y no pantalla completa"
+      "desc": "Configura el ancho del contenido en modo pantalla completa y normal"
     },
     "japaneseConversion": {
       "label": "Conversión de japonés",
-      "desc": "Establece el formato de conversión para letras japonesas",
-      "info": "Esta configuración solo se aplica a letras sincronizadas y no sincronizadas. No funciona para letras de karaoke.",
+      "desc": "Configura el formato de conversión para letras en japonés",
+      "info": "Esta configuración solo aplica a letras sincronizadas y no sincronizadas. No funciona en letras Karaoke.",
       "options": {
         "disabled": "Desactivado",
         "romaji": "Romaji",
@@ -194,7 +195,7 @@ window.LANG_ES = {
     },
     "displayContent": {
       "label": "Contenido a mostrar",
-      "desc": "Muestra otro contenido junto con las letras",
+      "desc": "Muestra contenido adicional junto con las letras",
       "options": {
         "disabled": "Desactivado",
         "romanization": "Romanización",
@@ -203,9 +204,9 @@ window.LANG_ES = {
     },
     "autoTranslation": {
       "label": "Traducción automática",
-      "desc": "Proporciona traducción automáticamente si no está disponible",
+      "desc": "Proporciona traducción automáticamente si no hay una disponible",
       "options": {
-        "disabled": "Desactivado (Predeterminado)",
+        "disabled": "Desactivado (Por defecto)",
         "google": "Google Translate",
         "microsoft": "Microsoft Translator"
       }
@@ -220,8 +221,8 @@ window.LANG_ES = {
       }
     },
     "playBarButton": {
-      "label": "Botón de la barra de reproducción",
-      "desc": "Muestra el botón de letras en la barra de reproducción",
+      "label": "Botón en barra de reproducción",
+      "desc": "Muestra un botón de letras en la barra de reproducción",
       "options": {
         "disabled": "Desactivado",
         "normal": "Normal",
@@ -230,59 +231,59 @@ window.LANG_ES = {
     },
     "autoScroll": {
       "label": "Desplazamiento automático",
-      "desc": "Activa el desplazamiento automático. Volverá al desplazamiento automático 5 segundos después del desplazamiento manual."
+      "desc": "Activa el desplazamiento automático. Vuelve al automático 5 segundos después del desplazamiento manual."
     },
     "animation": {
       "label": "Animación",
-      "desc": "Muestra animaciones además de la línea resaltada de karaoke"
+      "desc": "Muestra animaciones aparte de la línea resaltada de Karaoke"
     },
     "karaoke": {
-      "label": "Cuenta regresiva de karaoke",
-      "desc": "Muestra la cuenta regresiva como números. Si se desactiva, se mostrará como puntos."
+      "label": "Cuenta regresiva de Karaoke",
+      "desc": "Muestra la cuenta regresiva con números. Si se desactiva, se mostrará con puntos."
     },
     "blurInactive": {
       "label": "Desenfocar líneas inactivas",
       "desc": "Desenfoca las líneas inactivas en letras sincronizadas",
-      "info": "Esta opción puede causar problemas de rendimiento si está activada."
+      "info": "Esta opción puede causar problemas de rendimiento si se activa."
     },
     "fade": {
       "label": "Desenfoque y degradado",
       "desc": "Muestra desenfoque y degradado en la parte superior e inferior de las letras",
-      "info": "Esta opción puede causar problemas de rendimiento si está activada."
+      "info": "Esta opción puede causar problemas de rendimiento si se activa."
     },
     "syncedAsFallback": {
-      "label": "Usar letras sincronizadas como respaldo",
-      "desc": "Usa letras sincronizadas si las letras de karaoke no están disponibles"
+      "label": "Usar sincronizadas como alternativa",
+      "desc": "Usa letras sincronizadas si no hay letras de Karaoke disponibles"
     },
     "unsyncedAsFallback": {
-      "label": "Usar letras no sincronizadas como respaldo",
-      "desc": "Usa letras no sincronizadas si las letras sincronizadas no están disponibles"
+      "label": "Usar no sincronizadas como alternativa",
+      "desc": "Usa letras no sincronizadas si no hay letras sincronizadas disponibles"
     },
     "preferUnsynced": {
-      "label": "Preferir letras no sincronizadas antes que sincronizadas",
-      "desc": "Prioriza las letras no sincronizadas cuando ambas están disponibles.",
-      "info": "* Algunas letras no sincronizadas pueden contener texto que no está en las letras sincronizadas."
+      "label": "Preferir no sincronizadas",
+      "desc": "Usa letras no sincronizadas preferentemente cuando ambas están disponibles.",
+      "info": "* Algunas letras no sincronizadas pueden contener texto que falta en las sincronizadas."
     },
     "customPreview": {
       "label": "Vista previa personalizada",
-      "desc": "Personaliza la imagen de vista previa de la pantalla de letras. La imagen se mostrará como 300x150px.",
-      "placeholder": "Introduce la URL de la imagen"
+      "desc": "Personaliza la imagen de vista previa de la pantalla de letras. La imagen se muestra a 300x150px.",
+      "placeholder": "Ingresa la URL de la imagen"
     },
     "trackSyncInfo": {
-      "label": "Información de sincronización de la pista",
-      "desc": "Gestiona la información de sincronización asociada con la pista"
+      "label": "Info. de sincronización de pista",
+      "desc": "Gestiona la información de sincronización vinculada a la pista"
     },
     "customDatabase": {
       "label": "Base de datos personalizada",
-      "desc": "Establece la URL de la base de datos personalizada",
-      "placeholder": "Introduce la URL de la base de datos personalizada"
+      "desc": "Configura la URL de una base de datos personalizada",
+      "placeholder": "Ingresa la URL de la base de datos personalizada"
     },
     "debugVerbose": {
-      "label": "Detalles de depuración",
-      "desc": "Muestra información más detallada en la consola"
+      "label": "Información detallada de depuración",
+      "desc": "Imprime información más detallada en la consola"
     },
     "cache": {
-      "deleteAll": "Eliminar todas las letras en caché",
+      "deleteAll": "Borrar todas las letras en caché",
       "noCache": "No hay letras en caché"
     },
     "colors": {
@@ -315,7 +316,7 @@ window.LANG_ES = {
       "chocolate": "Chocolate"
     },
     "solidBackgroundInUse": "ℹ️ Fondo de color sólido en uso",
-    "fontPlaceholder": "Introduce el nombre de la fuente (ej: Arial, Roboto)"
+    "fontPlaceholder": "Nombre de fuente (ej: Arial, Roboto)"
   },
   "buttons": {
     "save": "Guardar",
@@ -331,17 +332,17 @@ window.LANG_ES = {
     "edit": "Editar",
     "add": "Añadir",
     "remove": "Quitar",
-    "clear": "Limpiar",
+    "clear": "Borrar",
     "refresh": "Actualizar",
-    "settings": "Configuración",
+    "settings": "Ajustes",
     "fullscreen": "Pantalla completa",
     "exitFullscreen": "Salir de pantalla completa"
   },
   "menu": {
     "translation": "Conversión",
-    "settings": "Configuración",
+    "settings": "Ajustes",
     "syncAdjust": "Ajuste de sincronización",
-    "syncAdjustTitle": "Ajuste de sincronización de letras",
+    "syncAdjustTitle": "Ajustar sincronización de letras",
     "copyLyrics": "Copiar letras",
     "searchLyrics": "Buscar letras",
     "editLyrics": "Editar letras",
@@ -349,21 +350,21 @@ window.LANG_ES = {
     "translationOptions": "Opciones de conversión",
     "translationOptionsSubtitle": "Configura la visualización de pronunciación y traducción",
     "detectedLanguage": "Idioma detectado",
-    "detectedLanguageInfo": "El idioma de la canción actual. Las opciones de conversión se aplican según el idioma.",
+    "detectedLanguageInfo": "Idioma de la canción actual. Las opciones varían según el idioma.",
     "unknownLanguage": "Desconocido",
-    "autoDetect": "Detección Automática",
-    "overrideLanguage": "Configuración Manual de Idioma",
-    "overrideLanguageInfo": "Establecer manualmente el idioma para esta pista. El idioma seleccionado se utilizará en lugar de la detección automática.",
+    "autoDetect": "Detección automática",
+    "overrideLanguage": "Ajuste manual de idioma",
+    "overrideLanguageInfo": "Establece manualmente el idioma de esta canción. Se traducirá según el idioma seleccionado en lugar de la detección automática.",
     "pronunciation": "Pronunciación",
-    "pronunciationInfo": "Muestra la pronunciación (Romaji) de las letras originales",
+    "pronunciationInfo": "Muestra la pronunciación (romaji) de la letra original",
     "translationLabel": "Traducción",
-    "translationInfo": "Muestra las letras originales traducidas al español",
+    "translationInfo": "Muestra la traducción al español de la letra original",
     "apiSettings": "Configuración de API",
     "apiSettingsSubtitle": "Configura la API de Gemini",
-    "apiKeySettings": "Configuración de clave API",
+    "apiKeySettings": "Ajustes de clave API",
     "apiKeySettingsInfo": "Haz clic aquí para configurar tu clave API de Gemini",
-    "openSettings": "Abrir configuración",
-    "translationSettings": "Configuración de conversión",
+    "openSettings": "Abrir ajustes",
+    "translationSettings": "Ajustes de conversión",
     "regenerateTranslation": "Regenerar traducción",
     "fullscreen": "Pantalla completa"
   },
@@ -381,51 +382,51 @@ window.LANG_ES = {
     "unsyncedLyricsCopied": "Letras no sincronizadas copiadas al portapapeles."
   },
   "update": {
-    "newVersion": "Nueva versión de actualización",
-    "available": "está disponible!",
+    "newVersion": "Nueva versión",
+    "available": "disponible!",
     "notes": "Notas de actualización",
     "update": "Actualizar",
     "dismiss": "Más tarde",
-    "alreadyLatest": "Ya es la última versión",
-    "checkFailed": "Fallo al buscar actualizaciones",
+    "alreadyLatest": "Ya tienes la última versión",
+    "checkFailed": "Error al buscar actualizaciones",
     "versionChange": "Versión",
     "copyCommand": "Copiar comando",
     "releaseNotes": "Notas de la versión",
-    "expand": "Expandir",
-    "collapse": "Contraer",
+    "expand": "Detalles",
+    "collapse": "Ocultar",
     "copied": "Copiado"
   },
   "fullscreen": {
     "title": "Pantalla completa",
     "background": "Fondo",
     "backgroundOptions": {
-      "albumArt": "Arte del álbum",
+      "albumArt": "Portada de álbum",
       "animatedCanvas": "Lienzo animado",
       "artistArt": "Arte del artista",
       "staticColor": "Color sólido"
     },
     "showExtraControls": {
-      "label": "Mostrar controles adicionales",
+      "label": "Mostrar controles extra",
       "desc": "Muestra controles adicionales en modo pantalla completa"
     },
     "contextDisplay": {
       "label": "Visualización de contexto",
-      "desc": "Muestra el contexto de reproducción actual en modo pantalla completa"
+      "desc": "Muestra el contexto de reproducción actual en pantalla completa"
     },
     "upcomingLyrics": {
       "label": "Mostrar siguientes letras",
-      "desc": "Previsualiza las siguientes letras en modo pantalla completa"
+      "desc": "Muestra una vista previa de las siguientes letras en pantalla completa"
     },
     "volumeDisplay": {
-      "label": "Visualización de volumen",
-      "desc": "Muestra controles de volumen en modo pantalla completa"
+      "label": "Mostrar volumen",
+      "desc": "Muestra el control de volumen en pantalla completa"
     },
     "controls": {
       "like": "Me gusta",
-      "unlike": "Ya no me gusta",
+      "unlike": "Quitar Me gusta",
       "shuffle": "Aleatorio",
-      "previous": "Pista anterior",
-      "next": "Pista siguiente",
+      "previous": "Anterior",
+      "next": "Siguiente",
       "nextTrackLabel": "Siguiente pista",
       "play": "Reproducir",
       "pause": "Pausa",
@@ -434,19 +435,19 @@ window.LANG_ES = {
       "repeatOne": "Repetir una",
       "mute": "Silenciar",
       "unmute": "Activar sonido",
-      "share": "Copiar enlace para compartir",
-      "shareCopied": "🔗 Enlace para compartir copiado"
+      "share": "Copiar enlace",
+      "shareCopied": "🔗 Enlace de compartir copiado"
     },
     "queue": {
-      "title": "Cola",
-      "recentlyPlayed": "Reproducido recientemente",
+      "title": "Cola de reproducción",
+      "recentlyPlayed": "Escuchado recientemente",
       "nowPlaying": "Reproduciendo ahora",
       "upNext": "A continuación",
       "empty": "La cola está vacía",
-      "noRecent": "No hay reproducciones recientes"
+      "noRecent": "No hay historial de reproducción reciente"
     },
     "contextType": {
-      "playlist": "Lista de reproducción",
+      "playlist": "Playlist",
       "album": "Álbum",
       "artist": "Artista",
       "collection": "Canciones que te gustan",
@@ -456,8 +457,8 @@ window.LANG_ES = {
   "about": {
     "version": "Versión",
     "sourceCode": "Código fuente",
-    "reportIssue": "Informar problema",
-    "changelog": "Registro de cambios",
+    "reportIssue": "Reportar problema",
+    "changelog": "Historial de cambios",
     "license": "Licencia",
     "credits": "Créditos"
   },
@@ -482,70 +483,70 @@ window.LANG_ES = {
     "pinyin": "Pinyin"
   },
   "notifications": {
-    "languageChanged": "El idioma ha cambiado. Se aplicará después de actualizar.",
+    "languageChanged": "Idioma cambiado. Se aplicará después de actualizar.",
     "settingsSaved": "Configuración guardada",
     "settingsReset": "Configuración restablecida",
     "exportSuccess": "Exportación exitosa",
     "importSuccess": "Importación exitosa",
-    "importFailed": "Fallo al importar configuración",
-    "syncDataCleared": "Datos de sincronización borrados",
-    "syncDataClearFailed": "Fallo al borrar datos de sincronización",
-    "lyricsCopied": "✓ Letras copiadas al portapapeles",
-    "lyricsCopyFailed": "Fallo al copiar letras al portapapeles",
+    "importFailed": "Error al importar configuración",
+    "syncDataCleared": "Datos de sincronización eliminados",
+    "syncDataClearFailed": "Error al eliminar datos de sincronización",
+    "lyricsCopied": "Letras copiadas al portapapeles",
+    "lyricsCopyFailed": "Error al copiar letras",
     "translationCopied": "Traducción copiada al portapapeles",
-    "translationCopyFailed": "Fallo al copiar traducción al portapapeles",
+    "translationCopyFailed": "Error al copiar traducción",
     "secondTranslationCopied": "Segunda traducción copiada al portapapeles",
-    "secondTranslationCopyFailed": "Fallo al copiar segunda traducción al portapapeles",
+    "secondTranslationCopyFailed": "Error al copiar segunda traducción",
     "installCommandCopied": "Comando de instalación copiado",
-    "copyFailed": "Fallo al copiar",
-    "memoryCacheCleared": "✓ Caché de memoria borrada",
-    "localCacheCleared": "✓ Todo el caché local borrado",
-    "localCacheTrackCleared": "✓ Caché de la pista actual borrada",
-    "exportSuccessDesc": "Guardando archivo de configuración en la carpeta de descargas.",
-    "exportFailed": "Fallo al exportar configuración",
-    "importSuccessDesc": "La página se actualizará en unos momentos...",
+    "copyFailed": "Error al copiar",
+    "memoryCacheCleared": "Caché de memoria reiniciada",
+    "localCacheCleared": "Toda la caché local eliminada",
+    "localCacheTrackCleared": "Caché local de la pista actual eliminada",
+    "exportSuccessDesc": "El archivo de configuración se guardó en la carpeta de descargas.",
+    "exportFailed": "Error al exportar configuración",
+    "importSuccessDesc": "La página se actualizará en un momento...",
     "resetSuccess": "Restablecimiento completado",
-    "resetSuccessDesc": "La página se actualizará en unos momentos...",
-    "resetFailed": "Fallo al restablecer",
-    "updateCheckFailed": "Fallo al buscar actualizaciones",
-    "checkNetworkConnection": "Verifica tu conexión de red",
+    "resetSuccessDesc": "La página se actualizará en un momento...",
+    "resetFailed": "Error al restablecer",
+    "updateCheckFailed": "Error al buscar actualizaciones",
+    "checkNetworkConnection": "Revisa tu conexión a red",
     "updateAvailable": "Actualización disponible",
-    "latestVersion": "Es la última versión",
-    "noLyricsLoaded": "No se cargaron letras.",
-    "translationRegenerateGeminiOnly": "La regeneración de traducción solo está disponible para la traducción de Gemini.",
+    "latestVersion": "Ya tienes la última versión",
+    "noLyricsLoaded": "No se han cargado letras.",
+    "translationRegenerateGeminiOnly": "La regeneración de traducción solo está disponible con Gemini.",
     "regeneratingTranslation": "Regenerando traducción...",
-    "translationRegenerated": "✓ Traducción regenerada",
-    "translationRegenerateFailed": "Fallo al regenerar traducción",
-    "translationCacheRemoved": "✓ Caché de traducción eliminada y recargada!",
-    "translationCacheReset": "Caché de traducción {count} entradas restablecidas",
-    "tooManyTranslationRequests": "Demasiadas solicitudes de traducción. Por favor intenta de nuevo en 1 minuto.",
+    "translationRegenerated": "Traducción regenerada",
+    "translationRegenerateFailed": "Error al regenerar traducción",
+    "translationCacheRemoved": "¡Caché de traducción eliminada y recargada!",
+    "translationCacheReset": "Se restablecieron {count} elementos de caché de traducción",
+    "tooManyTranslationRequests": "Demasiadas solicitudes de traducción. Intenta de nuevo en 1 minuto.",
     "requestingPronunciation": "Solicitando pronunciación. Tardará unos 30 segundos",
     "requestingTranslation": "Solicitando traducción. Tardará unos 30 segundos",
     "shareImageCopied": "Imagen copiada al portapapeles",
     "shareImageDownloaded": "Imagen descargada",
-    "shareImageShared": "Compartido con éxito",
-    "shareImageFailed": "Fallo al generar imagen",
-    "shareImageNoLyrics": "Por favor selecciona letras para compartir",
-    "noTrackPlaying": "No hay pista en reproducción",
+    "shareImageShared": "Compartido",
+    "shareImageFailed": "Error al generar imagen",
+    "shareImageNoLyrics": "Selecciona las letras para compartir",
+    "noTrackPlaying": "No hay pista reproduciéndose",
     "overlayConnected": "Superposición conectada",
-    "romajiTranslationFailed": "Fallo en conversión de Romaji/pronunciación",
-    "koreanTranslationFailed": "Fallo en traducción al coreano",
-    "pinyinLibraryUnavailable": "Biblioteca de Pinyin no disponible. Mostrando original. Por favor permite jsDelivr o unpkg.",
-    "conversionSkippedSimplified": "Conversión omitida: Ya está en chino simplificado",
+    "romajiTranslationFailed": "Error en conversión Romaji/Pronunciación",
+    "koreanTranslationFailed": "Error en traducción al español",
+    "pinyinLibraryUnavailable": "Librería Pinyin no disponible. Mostrando original. Permite jsDelivr o unpkg.",
+    "conversionSkippedSimplified": "Conversión omitida: ya está en simplificado",
     "conversionCompleted": "Conversión completada",
-    "conversionFailed": "Fallo en la conversión",
-    "fileTooLarge": "Archivo demasiado grande: El tamaño máximo es 1MB",
+    "conversionFailed": "Error en conversión",
+    "fileTooLarge": "Archivo demasiado grande: máximo 1MB",
     "noValidLyricsInFile": "No se encontraron letras válidas en el archivo",
-    "lyricsLoadedFromFile": "Letras {types} cargadas desde archivo",
-    "lyricsLoadFailed": "Fallo al cargar letras: Formato de archivo inválido",
-    "fileReadFailed": "Fallo al leer archivo: El archivo puede estar dañado"
+    "lyricsLoadedFromFile": "Letras {types} cargadas exitosamente del archivo",
+    "lyricsLoadFailed": "Error al cargar letras: formato de archivo inválido",
+    "fileReadFailed": "Error al leer archivo: puede estar dañado"
   },
   "misc": {
     "and": "y",
     "or": "o",
-    "enabled": "Activado",
-    "disabled": "Desactivado",
-    "default": "Predeterminado",
+    "enabled": "Habilitado",
+    "disabled": "Deshabilitado",
+    "default": "Por defecto",
     "custom": "Personalizado",
     "none": "Ninguno",
     "auto": "Auto",
@@ -555,8 +556,8 @@ window.LANG_ES = {
     "yes": "Sí",
     "no": "No",
     "items": "elementos",
-    "seconds": "segundos",
-    "minutes": "minutos"
+    "seconds": "seg",
+    "minutes": "min"
   },
   "settingsAdvanced": {
     "patchNotes": {
@@ -568,7 +569,7 @@ window.LANG_ES = {
     },
     "syncMode": {
       "title": "Modo de sincronización",
-      "subtitle": "Opciones de visualización del modo de sincronización compacto",
+      "subtitle": "Opciones de visualización para modo de sincronización compacto",
       "linesBefore": {
         "label": "Líneas a mostrar (antes)",
         "desc": "Número de líneas a mostrar antes de la letra actual"
@@ -578,52 +579,52 @@ window.LANG_ES = {
         "desc": "Número de líneas a mostrar después de la letra actual"
       },
       "fadeoutBlur": {
-        "label": "Efecto de desenfoque de desvanecimiento",
+        "label": "Efecto de desenfoque de salida",
         "desc": "Aplica efecto de desenfoque a las letras inactivas"
       },
       "highlightMode": {
         "label": "Modo de resaltado",
-        "desc": "Resalta solo la letra actual y oscurece el resto"
+        "desc": "Resalta solo la letra actual y atenúa el resto"
       },
       "highlightIntensity": {
-        "label": "Intensidad del resaltado",
-        "desc": "Ajusta la opacidad de las letras inactivas (menor = más oscuro)"
+        "label": "Intensidad de resaltado",
+        "desc": "Ajusta la transparencia de las letras inactivas (más bajo es más tenue)"
       }
     },
     "livePreview": {
       "title": "Vista previa en vivo",
-      "subtitle": "Ve tu estilo configurado al instante",
-      "sampleText": "La letra está aquí",
-      "sampleTextMixed": "여기 Lyric あります",
-      "sampleTextPhonetic": "yeogi lyric arimasu"
+      "subtitle": "Verifica tu estilo al instante",
+      "sampleText": "Aquí están las letras",
+      "sampleTextMixed": "Aquí Lyric あります",
+      "sampleTextPhonetic": "Aquí lirik arimasu"
     },
     "originalStyle": {
-      "title": "Estilo de texto original",
-      "subtitle": "Configuración de fuente para letras originales",
-      "fontFamily": "Familia de fuentes",
-      "fontFamilyDesc": "Elige la fuente para aplicar a las letras originales. Ingresa múltiples fuentes separadas por comas (,) para aplicarlas en orden.",
+      "title": "Estilo original",
+      "subtitle": "Configuración de fuente para el texto original",
+      "fontFamily": "Familia de fuente",
+      "fontFamilyDesc": "Selecciona la fuente para la letra original. Separa con comas para múltiples fuentes.",
       "fontSize": {
         "label": "Tamaño de fuente",
-        "desc": "Tamaño de fuente de las letras originales (píxeles)"
+        "desc": "Tamaño de fuente del texto original (píxeles)"
       },
       "fontWeight": {
         "label": "Grosor de fuente",
-        "desc": "Grosor de fuente de las letras originales"
+        "desc": "Grosor de fuente del texto original"
       },
       "opacity": {
-        "label": "Opacidad",
-        "desc": "Opacidad de las letras originales (0-100%)"
+        "label": "Transparencia",
+        "desc": "Opacidad del texto original (0-100%)"
       },
       "letterSpacing": {
         "label": "Espaciado de letras",
-        "desc": "Espacio entre letras en el texto original (píxeles)"
+        "desc": "Espacio entre caracteres del texto original (píxeles)"
       }
     },
     "pronunciationStyle": {
       "title": "Estilo de pronunciación",
-      "subtitle": "Configuración de fuente para pronunciación Romaji (Romaji, Romaja, Pinyin)",
-      "fontFamily": "Familia de fuentes",
-      "fontFamilyDesc": "Elige la fuente para aplicar a la pronunciación. Ingresa múltiples fuentes separadas por comas (,) para aplicarlas en orden.",
+      "subtitle": "Configuración de fuente para la pronunciación (Romaji, Pinyin)",
+      "fontFamily": "Familia de fuente",
+      "fontFamilyDesc": "Selecciona la fuente para la pronunciación. Separa con comas para múltiples fuentes.",
       "fontSize": {
         "label": "Tamaño de fuente",
         "desc": "Tamaño de fuente de la pronunciación (píxeles)"
@@ -633,79 +634,79 @@ window.LANG_ES = {
         "desc": "Grosor de fuente de la pronunciación"
       },
       "opacity": {
-        "label": "Opacidad",
+        "label": "Transparencia",
         "desc": "Opacidad de la pronunciación (0-100%)"
       },
       "gap": {
-        "label": "Espacio desde el original",
+        "label": "Espacio con original",
         "desc": "Margen entre el texto original y la pronunciación"
       },
       "letterSpacing": {
         "label": "Espaciado de letras",
-        "desc": "Espacio entre letras en la pronunciación (píxeles)"
+        "desc": "Espacio entre caracteres de la pronunciación (píxeles)"
       },
       "hyphenReplace": {
-        "label": "Manejo del guión",
-        "desc": "Reemplazar el guión (-) en la pronunciación por otro carácter",
+        "label": "Manejo de guiones (-)",
+        "desc": "Elige cómo mostrar los guiones en la pronunciación (ej: Tah-shee-kah)",
         "options": {
-          "keep": "Mantener",
-          "space": "Reemplazar por espacio",
-          "remove": "Eliminar"
+          "keep": "Mantener (Tah-shee-kah)",
+          "space": "Reemplazar con espacio (Tah shee kah)",
+          "remove": "Eliminar (Tahsheekah)"
         }
       }
     },
     "translationStyle": {
       "title": "Estilo de traducción",
-      "subtitle": "Configuración de fuente para letras traducidas",
-      "fontFamily": "Familia de fuentes",
-      "fontFamilyDesc": "Elige la fuente para aplicar a las letras traducidas. Ingresa múltiples fuentes separadas por comas (,) para aplicarlas en orden.",
+      "subtitle": "Configuración de fuente para el texto traducido",
+      "fontFamily": "Familia de fuente",
+      "fontFamilyDesc": "Selecciona la fuente para la traducción. Separa con comas para múltiples fuentes.",
       "fontSize": {
         "label": "Tamaño de fuente",
-        "desc": "Tamaño de fuente de las letras traducidas (píxeles)"
+        "desc": "Tamaño de fuente de la traducción (píxeles)"
       },
       "fontWeight": {
         "label": "Grosor de fuente",
-        "desc": "Grosor de fuente de las letras traducidas"
+        "desc": "Grosor de fuente de la traducción"
       },
       "opacity": {
-        "label": "Opacidad",
-        "desc": "Opacidad de las letras traducidas (0-100%)"
+        "label": "Transparencia",
+        "desc": "Opacidad de la traducción (0-100%)"
       },
       "gap": {
-        "label": "Espacio desde la pronunciación",
+        "label": "Espacio con pronunciación",
         "desc": "Margen entre la pronunciación y la traducción (píxeles)"
       },
       "letterSpacing": {
         "label": "Espaciado de letras",
-        "desc": "Espacio entre letras en la traducción (píxeles)"
+        "desc": "Espacio entre caracteres de la traducción (píxeles)"
       }
     },
     "furiganaStyle": {
-      "title": "Estilo de Furigana",
-      "subtitle": "Configuración para la lectura (furigana) que se muestra sobre los kanji japoneses",
+      "title": "Estilo Furigana",
+      "subtitle": "Configuración de lectura sobre Kanji japonés",
       "fontSize": {
         "label": "Tamaño de fuente",
-        "desc": "Tamaño de fuente para furigana (píxeles)"
+        "desc": "Tamaño de fuente del furigana (píxeles)"
       },
       "fontWeight": {
         "label": "Grosor de fuente",
-        "desc": "Grosor de fuente para furigana"
+        "desc": "Grosor de fuente del furigana"
       },
       "opacity": {
-        "label": "Opacidad",
+        "label": "Transparencia",
         "desc": "Opacidad del furigana (0-100%)"
       },
       "spacing": {
         "label": "Espaciado",
-        "desc": "Espacio entre furigana y kanji (píxeles)"
+        "desc": "Margen entre furigana y kanji (píxeles)"
       }
     },
     "textShadow": {
       "title": "Sombra de texto",
-      "subtitle": "Efecto de sombra que mejora la legibilidad",
+      "subtitle": "Efecto de sombra para mejorar la legibilidad",
       "enabled": {
         "label": "Efecto de sombra",
-        "desc": "Aplica efecto de sombra al texto de las letras"
+        "desc": "Aplica sombra al texto de las letras"
       },
       "color": {
         "label": "Color de sombra",
@@ -721,98 +722,98 @@ window.LANG_ES = {
       }
     },
     "playback": {
-      "title": "Comportamiento de reproducción",
-      "subtitle": "Configuración de funciones relacionadas con la reproducción",
+      "title": "Reproducción",
+      "subtitle": "Configuración de funciones de reproducción",
       "replaceButton": {
         "label": "Reemplazar botón de letras",
         "info": "Reemplaza el botón de letras predeterminado de Spotify con ivLyrics"
       },
       "replaceFullscreenButton": {
-        "label": "Reemplazar botón de pantalla completa",
-        "info": "Reemplaza el botón de pantalla completa predeterminado de Spotify con ivLyrics"
+        "label": "Reemplazar botón pantalla completa",
+        "info": "Reemplaza el botón de pantalla completa predeterminado con ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "Atajo de pantalla completa",
         "desc": "Atajo de teclado para el modo de pantalla completa de letras"
-      },
+      }
     },
     "nowPlayingPanel": {
-      "title": "Letras del panel Reproduciendo ahora",
-      "subtitle": "Configuracion de visualizacion de letras para el panel Reproduciendo ahora a la derecha",
+      "title": "Letras en panel NowPlaying",
+      "subtitle": "Configuración de letras en el panel derecho 'Reproduciendo ahora'",
       "enabled": {
-        "label": "Activar letras del panel",
-        "desc": "Mostrar letras actuales en el panel Reproduciendo ahora"
+        "label": "Activar letras en panel",
+        "desc": "Muestra las letras actuales en el panel de reproducción"
       },
       "lines": {
-        "label": "Lineas de letras",
-        "desc": "Numero de lineas a mostrar en el panel (por defecto: 5)"
+        "label": "Número de líneas",
+        "desc": "Líneas de letras a mostrar en el panel (Por defecto: 5)"
       },
       "fontScale": {
         "label": "Escala de fuente global",
-        "desc": "Escala de fuente global para las letras del panel (50%-200%)"
+        "desc": "Proporción de tamaño general del texto (50%-200%)"
       },
       "fontFamily": {
         "label": "Fuente predeterminada",
-        "desc": "Fuente predeterminada para las letras del panel (se usa si no hay fuente individual)"
+        "desc": "Fuente base para el panel (se aplica si no se configura individualmente)"
       },
       "originalFont": {
-        "label": "Fuente del texto original",
-        "desc": "Fuente para el texto original (vacio = fuente predeterminada, varias separadas por coma)"
+        "label": "Fuente original",
+        "desc": "Fuente para texto original (vacío usa predeterminada)"
       },
       "phoneticFont": {
-        "label": "Fuente de pronunciacion",
-        "desc": "Fuente para la pronunciacion (vacio = fuente predeterminada, varias separadas por coma)"
+        "label": "Fuente de pronunciación",
+        "desc": "Fuente para pronunciación (vacío usa predeterminada)"
       },
       "translationFont": {
-        "label": "Fuente de traduccion",
-        "desc": "Fuente para el texto traducido (vacio = fuente predeterminada, varias separadas por coma)"
+        "label": "Fuente de traducción",
+        "desc": "Fuente para traducción (vacío usa predeterminada)"
       },
       "originalSize": {
-        "label": "Tamano del texto original",
-        "desc": "Tamano de fuente del texto original (px)"
+        "label": "Tamaño de fuente original",
+        "desc": "Tamaño base para texto original (px)"
       },
       "phoneticSize": {
-        "label": "Tamano de pronunciacion",
-        "desc": "Tamano de fuente de la pronunciacion (px)"
+        "label": "Tamaño de fuente pronunciación",
+        "desc": "Tamaño base para pronunciación (px)"
       },
       "translationSize": {
-        "label": "Tamano de traduccion",
-        "desc": "Tamano de fuente de la traduccion (px)"
+        "label": "Tamaño de fuente traducción",
+        "desc": "Tamaño base para traducción (px)"
       },
       "preview": "Vista previa",
       "background": {
         "title": "Fondo",
-        "subtitle": "Configuracion de estilo de fondo del panel",
+        "subtitle": "Estilo de fondo del panel",
         "type": {
           "label": "Tipo de fondo",
-          "desc": "Elegir el estilo de fondo",
-          "album": "Color del album",
+          "desc": "Selecciona el estilo de fondo",
+          "album": "Color del álbum",
           "custom": "Color personalizado",
-          "gradient": "Degradado del album"
+          "gradient": "Degradado basado en álbum"
         },
         "color": {
           "label": "Color de fondo",
           "desc": "Color de fondo personalizado"
         },
         "gradient1": {
-          "label": "Color de degradado 1",
+          "label": "Color degradado 1",
           "desc": "Primer color del degradado"
         },
         "gradient2": {
-          "label": "Color de degradado 2",
+          "label": "Color degradado 2",
           "desc": "Segundo color del degradado"
         },
         "opacity": {
           "label": "Opacidad del fondo",
-          "desc": "Opacidad del fondo (0%=transparente, 100%=opaco)"
+          "desc": "Opacidad (0%=Transparente, 100%=Opaco)"
         }
       },
       "border": {
         "title": "Borde",
-        "subtitle": "Configuracion de estilo de borde del panel",
+        "subtitle": "Estilo de borde del panel",
         "enabled": {
           "label": "Activar borde",
-          "desc": "Mostrar un borde alrededor del panel"
+          "desc": "Muestra un borde alrededor del panel"
         },
         "color": {
           "label": "Color del borde",
@@ -820,92 +821,92 @@ window.LANG_ES = {
         },
         "opacity": {
           "label": "Opacidad del borde",
-          "desc": "Opacidad del borde (0%=transparente, 100%=opaco)"
+          "desc": "Opacidad del borde (0%=Transparente, 100%=Opaco)"
         }
       }
     },
     "karaokeMode": {
-      "title": "Modo karaoke",
-      "subtitle": "Visualización de letras estilo karaoke",
+      "title": "Modo Karaoke",
+      "subtitle": "Visualización de letras estilo Karaoke",
       "enabled": {
-        "label": "Usar modo karaoke",
-        "desc": "Usa la pestaña de karaoke en canciones que admitan letras de karaoke. Si se desactiva, se fijará en la pestaña de sincronización"
+        "label": "Usar modo Karaoke",
+        "desc": "Usa la pestaña Karaoke en canciones compatibles. Si se desactiva, se fija en pestaña Sincronizado"
       },
       "bounce": {
         "label": "Efecto de rebote de texto",
-        "desc": "Aplica animación de rebote al texto que se canta actualmente en modo karaoke"
+        "desc": "Aplica una animación de rebote a la letra actual en modo Karaoke"
       }
     },
     "prefetch": {
-      "title": "Precargar Siguiente Pista",
-      "subtitle": "Precarga elementos para la siguiente pista para reducir retrasos de transición",
+      "title": "Precarga de siguiente canción",
+      "subtitle": "Carga elementos de la siguiente canción para reducir retrasos",
       "enabled": {
-        "label": "Precargar Traducción/Fonética",
-        "desc": "Precarga traducción y conversión fonética para la siguiente pista"
+        "label": "Precargar traducción/pronunciación",
+        "desc": "Solicita anticipadamente la conversión de la siguiente canción"
       },
       "videoEnabled": {
-        "label": "Precargar Fondo de Video",
-        "desc": "Precarga información de fondo de video para la siguiente pista"
+        "label": "Precargar fondo de video",
+        "desc": "Obtiene anticipadamente información del video de fondo de la siguiente canción"
       }
     },
     "communitySync": {
-      "title": "Sincronización Comunitaria",
-      "subtitle": "Comparte offsets de sincronización de letras con otros usuarios",
+      "title": "Sincronización comunitaria",
+      "subtitle": "Comparte ajustes de sincronización con otros usuarios",
       "enabled": {
-        "label": "Usar Sincronización Comunitaria",
-        "desc": "Usar offsets de sincronización compartidos por la comunidad"
+        "label": "Usar sincronización comunitaria",
+        "desc": "Usa los ajustes de sincronización compartidos por la comunidad"
       },
       "autoApply": {
-        "label": "Aplicación Automática",
-        "desc": "Aplicar automáticamente el offset de la comunidad cuando la confianza sea suficiente"
+        "label": "Aplicar automáticamente",
+        "desc": "Aplica automáticamente ajustes de la comunidad si la confianza es suficiente"
       },
       "autoSubmit": {
-        "label": "Envío Automático",
-        "desc": "Compartir automáticamente tus cambios de offset con la comunidad"
+        "label": "Envío automático",
+        "desc": "Comparte automáticamente tus cambios de sincronización con la comunidad"
       },
       "minConfidence": {
-        "label": "Confianza Mínima",
-        "desc": "Confianza mínima requerida para aplicar automáticamente (0.0 ~ 1.0). La confianza se calcula según el número de envíos y la consistencia de los valores de offset. Valores más altos significan que más usuarios enviaron offsets similares"
+        "label": "Confianza mínima",
+        "desc": "Confianza mínima para aplicar auto-ajuste (0.0 ~ 1.0). Se calcula según el número de envíos y la consistencia."
       }
     },
     "cacheManagement": {
       "title": "Gestión de caché",
-      "subtitle": "Gestionar datos guardados",
+      "subtitle": "Administrar datos guardados",
       "memoryCache": {
-        "label": "Borrar caché de memoria",
-        "desc": "Las letras cargadas se guardan temporalmente en la memoria para una recarga rápida. Borra la caché de memoria sin reiniciar Spotify",
-        "button": "Borrar caché"
+        "label": "Limpiar caché de memoria",
+        "desc": "Las letras cargadas se guardan temporalmente en memoria. Vacía la memoria sin reiniciar Spotify",
+        "button": "Vaciar caché"
       },
       "localCache": {
-        "label": "Caché local (IndexedDB)",
-        "desc": "Las letras, traducciones y pronunciaciones se almacenan localmente para reducir las llamadas API en reproducciones repetidas",
-        "clearAll": "Borrar todo",
-        "clearCurrent": "Borrar pista actual",
+        "label": "Gestión de caché local (IndexedDB)",
+        "desc": "Letras, traducciones, etc. guardadas localmente para reducir llamadas a API",
+        "clearAll": "Eliminar todo",
+        "clearCurrent": "Eliminar actual",
         "stats": "Letras: {lyrics}, Traducciones: {translations}, Metadatos: {metadata}"
       }
     },
     "languageDetection": {
       "title": "Detección de idioma",
-      "subtitle": "Configuración de detección de idioma para conversión de texto",
+      "subtitle": "Configuración para detección de idioma",
       "furigana": {
-        "label": "Mostrar furigana en Kanji japonés",
-        "desc": "Muestra la lectura hiragana sobre el Kanji en letras japonesas"
+        "label": "Mostrar Furigana en Kanji japonés",
+        "desc": "Muestra lectura Hiragana sobre los caracteres Kanji en letras japonesas"
       },
       "japaneseThreshold": {
         "label": "Umbral de detección de japonés",
-        "desc": "Detecta japonés por la proporción de caracteres Kana en las letras. Un valor más alto significa una detección más estricta (porcentaje)"
+        "desc": "Porcentaje de caracteres Kana para detectar japonés. Valor más alto es más estricto (%)"
       },
       "chineseThreshold": {
         "label": "Umbral de detección de chino",
-        "desc": "Detecta el tipo de chino por la proporción de caracteres tradicionales y simplificados. Un valor más alto significa una detección más estricta (porcentaje)"
+        "desc": "Porcentaje para distinguir entre chino tradicional y simplificado. Valor más alto es más estricto (%)"
       }
     },
     "apiKeys": {
-      "subtitle": "Claves API para integración de servicios externos"
+      "subtitle": "Claves API para servicios externos"
     },
     "exportImport": {
-      "title": "Exportar/Importar configuración",
-      "subtitle": "Transfiere la configuración a otro dispositivo",
+      "title": "Exportar/Importar ajustes",
+      "subtitle": "Mueve tu configuración a otro dispositivo",
       "export": {
         "label": "Exportar configuración",
         "button": "Exportar",
@@ -918,193 +919,193 @@ window.LANG_ES = {
       }
     },
     "resetSettings": {
-      "title": "Restablecer configuración",
-      "subtitle": "Devuelve toda la configuración a los valores predeterminados",
+      "title": "Restablecer ajustes",
+      "subtitle": "Vuelve todos los ajustes a sus valores predeterminados",
       "reset": {
-        "label": "Restablecer toda la configuración",
-        "desc": "Devuelve toda la configuración a los valores predeterminados. Esta acción no se puede deshacer",
+        "label": "Restablecer todo",
+        "desc": "Devuelve todo a valores de fábrica. Esta acción es irreversible",
         "button": "Restablecer",
-        "confirm": "¿Realmente quieres restablecer toda la configuración?\n\nEsta acción no se puede deshacer, y toda la configuración volverá a los valores predeterminados.\n\nHaz clic en 'Confirmar' para continuar.",
+        "confirm": "¿Realmente quieres restablecer toda la configuración?\n\nEsta acción no se puede deshacer y todo volverá a los valores predeterminados.\n\nHaz clic en 'Confirmar' para continuar.",
         "processing": "Restableciendo..."
       }
     },
     "fullscreenMode": {
-      "title": "Modo pantalla completa",
-      "subtitle": "Diseño y configuración de visualización del modo pantalla completa",
+      "title": "Preferencias de pantalla completa",
+      "subtitle": "Configura el comportamiento del modo pantalla completa",
       "shortcut": {
         "desc": "Atajo de pantalla completa",
-        "info": "Establece el atajo de teclado para alternar el modo pantalla completa"
+        "info": "Configura la tecla para alternar el modo pantalla completa"
       },
       "toggleTvModeKey": {
-        "desc": "Atajo alternar modo TV",
-        "info": "Solo en modo pantalla completa. Alterna entre modo TV y normal"
+        "desc": "Atajo modo TV",
+        "info": "Funciona solo en pantalla completa. Alterna entre modo TV y normal"
       },
       "tvMode": {
-        "desc": "Modo TV",
-        "info": "Muestra la carátula del álbum e información de la pista en la parte inferior izquierda, las letras usan la pantalla completa"
+        "desc": "Usar modo TV",
+        "info": "Muestra portada e info abajo a la izquierda, y letras en toda la pantalla"
       },
       "tvModeAlbumSize": {
-        "desc": "Tamaño del álbum en modo TV",
-        "info": "Establece el tamaño de la carátula del álbum en modo TV (píxeles)"
+        "desc": "Tamaño de álbum",
+        "info": "Tamaño de la portada en modo TV (píxeles)"
       },
       "splitView": {
-        "desc": "Vista dividida",
-        "info": "Muestra el arte del álbum a la izquierda y las letras a la derecha en pantalla completa"
+        "desc": "Diseño dividido",
+        "info": "Muestra la portada a la izquierda y letras a la derecha"
       },
       "invertPosition": {
-        "desc": "Invertir posición de álbum/letras",
-        "info": "Intercambia la posición del álbum y las letras (izquierda ↔ derecha, en modo retrato arriba ↔ abajo)"
+        "desc": "Invertir posición",
+        "info": "Intercambia la posición de álbum y letras"
       },
       "showAlbumArt": {
-        "desc": "Mostrar arte del álbum",
-        "info": "Muestra el arte del álbum en el panel izquierdo de pantalla completa"
+        "desc": "Mostrar portada",
+        "info": "Muestra la portada del álbum en el panel izquierdo"
       },
       "showTrackInfo": {
-        "desc": "Mostrar información de la pista",
-        "info": "Muestra el título de la canción y el artista en pantalla completa"
+        "desc": "Mostrar info de pista",
+        "info": "Muestra título y artista en pantalla completa"
       },
       "trimTitle": {
         "desc": "Acortar título",
-        "info": "Elimina información adicional como (Remaster), [feat. xxx] de los títulos para una visualización más limpia"
+        "info": "Elimina info extra como (Remaster), [feat. xxx] para un título más limpio"
       },
       "translateMetadata": {
         "desc": "Traducir título/artista",
-        "info": "Traduce los títulos de canciones extranjeras y nombres de artistas (requiere clave API de Gemini)"
+        "info": "Traduce títulos y nombres extranjeros (Requiere clave API Gemini)"
       },
       "translateMetadataMode": {
-        "desc": "Modo de visualización",
-        "info": "Elige cómo mostrar el título y el artista",
+        "desc": "Modo de visualización de traducción",
+        "info": "Cómo mostrar el título y artista traducidos",
         "options": {
-          "translated": "Solo traducción",
-          "romanized": "Solo romanización",
-          "originalTranslated": "Original + traducción",
-          "originalRomanized": "Original + romanización",
-          "all": "Mostrar todo"
+          "all": "Mostrar todo (Original + Traducción + Pronunciación)",
+          "translated": "Solo traducción (u original si no hay)",
+          "romanized": "Solo pronunciación (u original si no hay)",
+          "originalTranslated": "Original + Traducción",
+          "originalRomanized": "Original + Pronunciación"
         }
+      },
+      "infoGap": {
+        "desc": "Espaciado de portada",
+        "info": "Ajusta el espacio entre la portada y la información (píxeles)"
       },
       "centerWhenNoLyrics": {
         "desc": "Centrar álbum sin letras",
-        "info": "Centra el arte del álbum cuando no hay letras o se están cargando"
-      },
-      "infoGap": {
-        "desc": "Espacio del álbum",
-        "info": "Ajustar el espacio entre la portada del álbum y los controles (píxeles)"
+        "info": "Centra la portada si no hay letras o están cargando"
       },
       "twoColumnLayout": {
         "desc": "Usar diseño de 2 columnas"
       },
       "browserFullscreen": {
-        "desc": "Usar pantalla completa de Spotify",
-        "info": "Al entrar en modo pantalla completa, Spotify pasa a pantalla completa para llenar todo el monitor"
+        "desc": "Spotify en pantalla completa",
+        "info": "Pone la ventana de Spotify en pantalla completa al entrar al modo"
       }
     },
     "normalMode": {
-      "title": "Diseño del Modo Normal",
-      "subtitle": "Configurar el diseño del modo pantalla completa normal (cuando el modo TV está desactivado)",
+      "title": "Diseño modo normal",
+      "subtitle": "Diseño de pantalla completa normal (No modo TV)",
       "showAlbumName": {
-        "desc": "Mostrar Nombre del Álbum",
-        "info": "Mostrar el nombre del álbum debajo del título y artista",
-      },
+        "desc": "Mostrar nombre de álbum",
+        "info": "Muestra el nombre del álbum debajo del artista"
+      }
     },
     "tvMode": {
-      "title": "Configuración del Modo TV",
-      "subtitle": "Configurar las opciones de visualización del modo TV",
+      "title": "Configuración modo TV",
+      "subtitle": "Opciones de visualización para modo TV",
       "showAlbumName": {
-        "desc": "Mostrar Nombre del Álbum",
-        "info": "Mostrar el nombre del álbum debajo del artista en modo TV",
+        "desc": "Mostrar nombre de álbum",
+        "info": "Muestra el nombre del álbum debajo del artista en modo TV"
       },
       "showControls": {
-        "desc": "Mostrar Botones de Control",
-        "info": "Mostrar botones de reproducir/pausar, pista anterior/siguiente en modo TV",
+        "desc": "Mostrar botones de control",
+        "info": "Muestra botones de reproducción en modo TV"
       },
       "showProgress": {
-        "desc": "Mostrar Barra de Progreso",
-        "info": "Mostrar el progreso de reproducción y tiempo en modo TV",
-      },
+        "desc": "Mostrar barra de progreso",
+        "info": "Muestra la barra de tiempo en modo TV"
+      }
     },
     "metadataDisplay": {
-      "title": "Visualización de Título/Artista",
-      "subtitle": "Configurar cómo se muestran el título y artista de la canción",
+      "title": "Visualización Título/Artista",
+      "subtitle": "Configura cómo se muestran el título y el artista"
     },
     "fullscreenStyle": {
       "title": "Estilo de pantalla completa",
-      "subtitle": "Configuración de elementos visuales del modo pantalla completa",
+      "subtitle": "Elementos visuales del modo pantalla completa",
       "albumSize": {
-        "desc": "Tamaño del arte del álbum",
-        "info": "Establece el tamaño máximo del arte del álbum en pantalla completa (100-500px)"
+        "desc": "Tamaño de portada",
+        "info": "Tamaño máximo de la portada en pantalla completa (100-500px)"
       },
       "albumRadius": {
-        "desc": "Redondeo del arte del álbum",
-        "info": "Establece el radio de las esquinas del arte del álbum (0-50px)"
+        "desc": "Redondeo de portada",
+        "info": "Redondeo de las esquinas de la portada (0-50px)"
       },
       "titleFontSize": {
-        "desc": "Tamaño de fuente del título",
-        "info": "Establece el tamaño de fuente del título de la canción en pantalla completa (24-72px)"
+        "desc": "Tamaño fuente título",
+        "info": "Tamaño de letra del título de la canción (24-72px)"
       },
       "artistFontSize": {
-        "desc": "Tamaño de fuente del artista",
-        "info": "Establece el tamaño de fuente del nombre del artista en pantalla completa (14-36px)"
+        "desc": "Tamaño fuente artista",
+        "info": "Tamaño de letra del nombre del artista (14-36px)"
       },
       "lyricsRightMargin": {
-        "desc": "Margen derecho de letras",
-        "info": "Establece el margen derecho del área de letras en pantalla completa. Evita que las letras se vean demasiado a la derecha cuando están centradas (0-300px)"
+        "desc": "Margen derecho letras",
+        "info": "Margen derecho para el área de letras (0-300px)"
       }
     },
     "fullscreenUI": {
-      "title": "Elementos UI de pantalla completa",
-      "subtitle": "Configura elementos UI adicionales mostrados en pantalla completa",
+      "title": "Elementos UI pantalla completa",
+      "subtitle": "Configura elementos UI adicionales",
       "showClock": {
         "desc": "Mostrar reloj",
-        "info": "Muestra la hora actual en la esquina superior derecha"
+        "info": "Muestra la hora actual arriba a la derecha"
       },
       "clockSize": {
         "desc": "Tamaño del reloj",
-        "info": "Establece el tamaño del texto del reloj (24-72px)"
+        "info": "Tamaño del texto del reloj (24-72px)"
       },
       "showContext": {
-        "desc": "Mostrar contexto de reproducción",
-        "info": "Muestra la información de la lista de reproducción/álbum actual en la esquina inferior izquierda"
+        "desc": "Mostrar contexto",
+        "info": "Muestra info de playlist/álbum actual abajo a la izquierda"
       },
       "showContextImage": {
         "desc": "Mostrar imagen de contexto",
-        "info": "Muestra también la imagen en miniatura de la lista de reproducción/álbum"
+        "info": "Muestra la miniatura de la playlist/álbum"
       },
       "showNextTrack": {
-        "desc": "Previsualizar siguiente pista",
-        "info": "Muestra información de la siguiente canción en la esquina superior derecha antes de que termine la actual (estilo transmisión de música)"
+        "desc": "Vista previa siguiente pista",
+        "info": "Muestra info de la siguiente canción antes de terminar la actual"
       },
       "nextTrackTime": {
-        "desc": "Tiempo de visualización de siguiente pista",
-        "info": "Segundos antes del final de la canción para mostrar la siguiente pista (5-30 segundos)",
-        "unit": "segundos"
+        "desc": "Tiempo para mostrar siguiente",
+        "info": "Segundos antes del final para mostrar la siguiente canción (5-30s)",
+        "unit": "seg"
       },
       "showControls": {
-        "desc": "Mostrar controles del reproductor",
-        "info": "Muestra botones de reproducir/pausa, anterior/siguiente, aleatorio, repetir, me gusta"
+        "desc": "Mostrar controles",
+        "info": "Muestra botones de reproducir, pausa, siguiente, etc."
       },
       "showVolume": {
-        "desc": "Mostrar control de volumen",
-        "info": "Muestra el deslizador de ajuste de volumen en los controles del reproductor"
+        "desc": "Mostrar control volumen",
+        "info": "Muestra el deslizador de volumen en los controles"
       },
       "showProgressBar": {
         "desc": "Mostrar barra de progreso",
-        "info": "Muestra una barra de progreso con la posición actual y el tiempo total de la canción"
+        "info": "Muestra la barra de posición y duración de la canción"
       },
       "showLyricsProgress": {
         "desc": "Mostrar progreso de letras",
-        "info": "Muestra el número de línea actual y el total de líneas de letras"
+        "info": "Muestra el número de línea actual y el total"
       },
       "showQueue": {
         "desc": "Mostrar panel de cola",
-        "info": "Muestra la cola de reproducción cuando el ratón pasa sobre el lado derecho de la pantalla"
+        "info": "Muestra la cola de reproducción al pasar el mouse por la derecha"
       }
     },
     "controllerStyle": {
-      "title": "Estilo del controlador",
-      "subtitle": "Configura la apariencia del controlador del reproductor",
+      "title": "Estilo de controlador",
+      "subtitle": "Apariencia de los controles de reproducción",
       "buttonSize": {
-        "desc": "Tamaño de botones de control",
-        "info": "Establece el tamaño de los botones de reproducir, anterior/siguiente, etc. (28-48px)"
+        "desc": "Tamaño de botones",
+        "info": "Tamaño de los botones de control (28-48px)"
       },
       "background": {
         "desc": "Fondo del controlador",
@@ -1113,233 +1114,234 @@ window.LANG_ES = {
     },
     "autoHide": {
       "title": "Ocultar automáticamente",
-      "subtitle": "Configuración para ocultar UI con inactividad del mouse",
+      "subtitle": "Ocultar UI cuando no hay actividad del mouse",
       "enabled": {
-        "info": "El controlador y la información se ocultarán automáticamente si no mueves el mouse",
-        "desc": "Ocultar UI automáticamente"
+        "info": "Controles e información se ocultan si no mueves el mouse",
+        "desc": "Auto-ocultar UI"
       },
       "delay": {
-        "desc": "Retraso de ocultación automática",
-        "info": "Tiempo de inactividad del mouse antes de ocultar la UI (1-10 segundos)"
+        "desc": "Retraso de ocultación",
+        "info": "Tiempo de inactividad antes de ocultar la UI (1-10s)"
       }
     },
     "tmiStyle": {
-      "title": "Estilo TMI",
-      "subtitle": "Configuración de estilo del modal TMI que se muestra al hacer clic en la portada del álbum",
+      "title": "Estilo Curiosidades (TMI)",
+      "subtitle": "Estilo del modal de curiosidades al hacer clic en el álbum",
       "fontSize": {
         "desc": "Tamaño de fuente TMI",
-        "info": "Ajusta el tamaño de fuente general del modal TMI (80-150%)"
+        "info": "Ajusta el tamaño de fuente del modal (80-150%)"
       }
     },
     "aboutTab": {
       "appInfo": {
-        "title": "Información de la aplicación"
+        "title": "Info de App"
       },
       "developer": "Desarrollador:",
       "originalProject": "Proyecto original:",
-      "thanks": "Gracias a todos los que contribuyeron al proyecto de código abierto.",
+      "thanks": "Gracias a todos los que contribuyeron al proyecto open source.",
       "clientInfo": {
-        "title": "Información del cliente",
+        "title": "Info de Cliente",
         "subtitle": "Identificador único de este cliente",
-        "description": "Identificador único generado automáticamente para vincular cuentas. Este valor no se puede modificar y se asigna de forma única a cada cliente. Por favor, asegúrate de que este valor nunca sea expuesto.",
+        "description": "ID único generado automáticamente para vinculación de cuenta. No modificable y único por cliente. No expongas este valor.",
         "copied": "ID de cliente copiado",
-        "copyFailed": "Fallo al copiar",
+        "copyFailed": "Error al copiar",
         "copy": "Copiar"
       },
       "update": {
         "title": "Actualización",
-        "subtitle": "Buscar la última versión",
+        "subtitle": "Verificar última versión",
         "checkUpdate": {
-          "desc": "Buscar la última versión",
+          "desc": "Verificar última versión",
           "button": "Buscar actualización",
-          "checking": "Buscando..."
+          "checking": "Comprobando..."
         },
         "copied": "Copiado",
         "installCopied": "Comando de instalación copiado",
-        "copyFailed": "Fallo al copiar"
+        "copyFailed": "Error al copiar"
       },
       "patchNotes": {
         "title": "Notas de parche",
         "subtitle": "Historial de actualizaciones recientes",
         "loading": "Cargando notas de parche..."
       },
-      "subtitle": "Acerca de ivLyrics",
+      "subtitle": "Sobre ivLyrics",
       "appDescription": "Extensión de letras con varias funciones",
       "versionPrefix": "Versión",
       "viewOnGithub": "Ver en GitHub",
-      "patchNotesLoadFailed": "No se pudieron cargar las notas de parche",
-      "checkGithubReleases": "Por favor revisa la página de lanzamientos de GitHub",
-      "visitGithub": "Visitar repositorio de GitHub",
+      "patchNotesLoadFailed": "No se pudieron cargar las notas",
+      "checkGithubReleases": "Revisa la página de lanzamientos en GitHub",
+      "visitGithub": "Visitar repositorio GitHub",
       "joinDiscord": "Unirse al servidor de Discord"
     },
     "debugTab": {
-      "title": "Información de depuración",
-      "subtitle": "Información para compartir con los desarrolladores al reportar errores",
-      "currentTrack": "Información de la pista actual",
-      "trackInfo": "Información de la pista",
-      "lyricsInfo": "Información de la letra",
+      "title": "Info de depuración",
+      "subtitle": "Información para reportar bugs al desarrollador",
+      "currentTrack": "Info de pista actual",
+      "trackInfo": "Información de pista",
+      "lyricsInfo": "Información de letras",
       "settingsInfo": "Información de configuración",
-      "noLyrics": "No hay información de letras",
+      "noLyrics": "No hay info de letras",
       "loading": "Cargando información...",
       "refresh": "Actualizar",
       "copyToClipboard": "Copiar al portapapeles",
-      "copied": "¡Copiado!",
+      "copied": "Copiado!",
       "copyFailed": "Error al copiar",
       "sendToDiscord": "Reportar en Discord",
       "rawJson": "Datos JSON"
     },
     "api": {
-      "title": "Configuración de API",
+      "title": "Configuración API",
       "getApiKey": {
         "desc": "Obtener clave API",
-        "info": "Puedes obtener una clave API de Gemini gratis desde Google AI Studio",
+        "info": "Puedes obtener una clave API de Gemini gratis en Google AI Studio",
         "button": "Abrir página de clave API"
       },
       "geminiKey": {
         "desc": "Clave API de Gemini",
-        "info": "Se requiere una clave API para usar la función de traducción de letras con Google Gemini AI"
+        "info": "Necesaria para usar las funciones de traducción de letras con IA"
       }
     },
     "update": {
       "title": "Actualización",
-      "subtitle": "Buscar la última versión",
+      "subtitle": "Verificar última versión",
       "checkUpdate": {
-        "desc": "Buscar la última versión",
+        "desc": "Verificar última versión",
         "button": "Buscar actualización",
-        "checking": "Buscando..."
+        "checking": "Comprobando..."
       },
       "copied": "Copiado",
       "installCopied": "Comando de instalación copiado",
-      "copyFailed": "Fallo al copiar",
-      "currentVersionInfo": "Versión actual: v{version}. Buscando nuevas actualizaciones en GitHub",
-      "checkFailedWithError": "Fallo al buscar actualizaciones: {error}"
+      "copyFailed": "Error al copiar",
+      "currentVersionInfo": "Versión actual: v{version}. Comprobando GitHub para nuevas actualizaciones",
+      "checkFailedWithError": "Error al buscar actualización: {error}"
     }
   },
   "syncAdjust": {
-    "info": "Si mueves el control deslizante a la derecha, las letras pasarán más rápido.",
+    "info": "Mueve el deslizador a la derecha para adelantar las letras.",
     "reset": "Restablecer",
-    "communityTitle": "Sincronización Comunitaria",
-    "communityOffset": "Offset",
+    "communityTitle": "Sincronización comunitaria",
+    "communityOffset": "Desfase",
     "submissions": "Envíos",
-    "confidenceHigh": "Alta Confianza",
-    "confidenceMedium": "Media Confianza",
-    "confidenceLow": "Baja Confianza",
+    "confidenceHigh": "Confianza alta",
+    "confidenceMedium": "Confianza media",
+    "confidenceLow": "Confianza baja",
     "applyCommunity": "Aplicar",
-    "submitMine": "Enviar Mi Offset",
+    "submitMine": "Enviar mi desfase",
     "submitting": "Enviando...",
     "submitSuccess": "Enviado a la comunidad",
     "submitFailed": "Error al enviar",
-    "noData": "Sin datos de la comunidad",
+    "noData": "No hay datos comunitarios",
     "loading": "Cargando...",
-    "feedbackGood": "El offset es correcto",
-    "feedbackBad": "El offset es incorrecto",
+    "feedbackGood": "El desfase es correcto",
+    "feedbackBad": "El desfase es incorrecto",
     "cannotFeedbackOwnSubmission": "No puedes valorar tu propio envío",
-    "feedbackPositiveSuccess": "¡Gracias por tu valoración positiva!",
-    "feedbackNegativeSuccess": "Gracias por tu comentario. ¡Mejoraremos!",
-    "feedbackFailed": "Error al enviar la valoración",
+    "feedbackPositiveSuccess": "¡Gracias por el feedback positivo!",
+    "feedbackNegativeSuccess": "Gracias. ¡Mejoraremos!",
+    "feedbackFailed": "Error al enviar feedback",
     "autoSubmitEnabled": "⚡ Envío automático activado"
   },
   "playbarButton": {
-    "label": "ivLyrics"
+    "label": "Lyrics Plus"
   },
   "videoBackground": {
-    "loading": "Cargando información del video...",
+    "loading": "Cargando info de video...",
     "notFound": "Video no encontrado.",
     "error": "Ocurrió un error.",
     "loadingMessage": "Cargando fondo de video... Tardará unos 30 segundos.",
     "downloadingVideo": "Descargando video...",
     "downloading": "Descargando: {percent}%",
     "processing": "Procesando video...",
-    "checking": "Verificando video...",
+    "checking": "Comprobando video...",
     "preparing": "Preparando descarga de video...",
     "downloadComplete": "¡Descarga de video completada!",
-    "helperNotConnected": "No se puede conectar al programa auxiliar. Asegúrate de que esté ejecutándose.",
-    "helperError": "Ocurrió un error con el programa auxiliar.",
+    "helperNotConnected": "No se puede conectar al asistente. Verifica que esté ejecutándose.",
+    "helperError": "Ocurrió un error en el programa asistente.",
     "tryingCookiesFile": "Intentando con archivo cookies.txt...",
     "tryingBrowserCookies": "Intentando con cookies de {browser}...",
-    "checkingWithCookiesFile": "Verificando video con cookies.txt...",
-    "checkingWithBrowserCookies": "Verificando video con cookies de {browser}...",
-    "checkingAvailability": "Verificando disponibilidad del video...",
-    "ageRestrictedNoCookies": "Video con restricción de edad. No se encontró archivo cookies.txt ni navegadores compatibles. Por favor configura un archivo cookies.txt en Ajustes.",
-    "ageRestrictedFailed": "Video con restricción de edad. Por favor configura un archivo cookies.txt válido en Ajustes.",
-    "videoAlreadyDownloaded": "Video ya descargado",
+    "checkingWithCookiesFile": "Comprobando video con cookies.txt...",
+    "checkingWithBrowserCookies": "Comprobando video con cookies de {browser}...",
+    "checkingAvailability": "Comprobando disponibilidad de video...",
+    "ageRestrictedNoCookies": "Video con restricción de edad. No hay cookies.txt o navegador soportado. Configura cookies.txt en ajustes.",
+    "ageRestrictedFailed": "Video con restricción de edad. Configura un archivo cookies.txt válido.",
+    "videoAlreadyDownloaded": "El video ya está descargado",
     "videoAvailable": "Video disponible",
-    "videoNotDownloaded": "Video no descargado"
+    "videoNotDownloaded": "El video no se ha descargado"
   },
   "translator": {
-    "missingApiKey": "La clave API de Gemini no está configurada. Por favor introduce la clave API en la configuración.",
-    "invalidApiKeyFormat": "Formato de clave API no válido. La clave API de Gemini debe comenzar con 'AIza'.",
-    "invalidRequestFormat": "El formato de solicitud no es válido. Por favor verifica la clave API.",
-    "invalidApiKey": "Clave API incorrecta. Por favor verifica la clave API de Gemini en la configuración.",
-    "accessForbidden": "Acceso API prohibido. Por favor verifica los permisos de la clave API.",
-    "rateLimitExceeded": "Límite de solicitudes excedido. Por favor intenta de nuevo en un momento.",
-    "serviceUnavailable": "El servicio de traducción no está disponible temporalmente. Por favor intenta de nuevo más tarde.",
-    "requestFailed": "La solicitud API falló",
-    "apiKeyError": "Ocurrió un error relacionado con la clave API de Gemini. Por favor verifica la clave API en la configuración.",
-    "translationFailed": "La traducción falló",
-    "requestTimeout": "La solicitud de traducción expiró. Por favor intenta de nuevo.",
-    "failedPrefix": "Traducción fallida"
+    "missingApiKey": "Clave API de Gemini no configurada. Ingrésala en ajustes.",
+    "invalidApiKeyFormat": "Formato de clave API inválido. Debe empezar con 'AIza'.",
+    "invalidRequestFormat": "Formato de solicitud inválido. Verifica la clave API.",
+    "invalidApiKey": "Clave API incorrecta. Verifica la clave Gemini en ajustes.",
+    "accessForbidden": "Acceso API denegado. Verifica los permisos de la clave.",
+    "rateLimitExceeded": "Límite de solicitudes excedido. Intenta de nuevo más tarde.",
+    "serviceUnavailable": "Servicio de traducción no disponible temporalmente.",
+    "requestFailed": "Solicitud API fallida",
+    "apiKeyError": "Error relacionado con la clave API de Gemini. Verifícala en ajustes.",
+    "translationFailed": "Error en la traducción",
+    "requestTimeout": "Tiempo de espera de traducción agotado. Intenta de nuevo.",
+    "failedPrefix": "Fallo traducción"
   },
   "utils": {
-    "allUrlsFailed": "Fallo al obtener información de versión de todas las URLs",
-    "invalidVersionFormat": "Formato de versión no válido",
+    "allUrlsFailed": "No se pudo obtener información de versión de ninguna URL",
+    "invalidVersionFormat": "Formato de versión inválido",
     "unknownError": "Error desconocido",
-    "requestTimeout": "Tiempo de solicitud agotado",
-    "networkError": "Conexión de red fallida",
-    "securityRestriction": "Restricción debido a política de seguridad del navegador",
+    "requestTimeout": "Tiempo de espera agotado",
+    "networkError": "Fallo de conexión de red",
+    "securityRestriction": "Restricción por política de seguridad del navegador",
     "serverError": "Error de respuesta del servidor",
     "terminalMac": "Terminal"
   },
   "modes": {
     "karaoke": "Karaoke",
     "synced": "Sincronizado",
-    "unsynced": "Normal"
+    "unsynced": "Letra normal"
   },
   "communityVideo": {
-    "title": "Videos recomendados por la comunidad",
-    "loading": "Cargando videos...",
-    "loadError": "Error al cargar videos",
-    "noVideos": "Aún no hay videos de la comunidad",
-    "autoDetected": "Auto",
+    "title": "Videos recomendados",
+    "loading": "Cargando lista de videos...",
+    "loadError": "Error al cargar lista de videos",
+    "noVideos": "No hay videos comunitarios registrados",
+    "autoDetected": "Autodetectado",
     "startTime": "Inicio",
-    "submittedBy": "Por",
-    "addVideo": "Agregar video",
-    "addVideoNoEmoji": "Agregar video",
+    "submittedBy": "Enviado por",
+    "addVideo": "Añadir video",
+    "addVideoNoEmoji": "Añadir video",
     "youtubeUrl": "URL de YouTube",
-    "startTimeSeconds": "Tiempo de inicio (segundos)",
-    "submit": "Enviar",
-    "submitting": "Enviando...",
-    "submitted": "¡Video enviado con éxito!",
-    "updated": "¡Video actualizado con éxito!",
-    "submitError": "Error al enviar video",
+    "startTimeSeconds": "Tiempo de inicio (seg)",
+    "submit": "Registrar",
+    "submitting": "Registrando...",
+    "submitted": "¡Video registrado exitosamente!",
+    "updated": "¡Info de video actualizada!",
+    "submitError": "Error al registrar video",
     "invalidUrl": "URL de YouTube inválida",
-    "videoNotFound": "Video de YouTube no encontrado",
-    "videoPrivate": "El video es privado o fue eliminado",
-    "validationError": "No se pudo validar el video. Inténtalo de nuevo",
+    "videoNotFound": "Video de YouTube inexistente",
+    "videoPrivate": "Video privado o eliminado",
+    "validationError": "No se pudo verificar el video. Intenta de nuevo",
     "selectVideo": "Seleccionar video",
     "preview": "Vista previa",
     "apply": "Aplicar",
     "applyShort": "Aplicar",
     "applied": "Video aplicado",
     "videoTitle": "Título del video",
-    "loadingTitle": "Cargando título...",
-    "startTimeLabel": "Tiempo de inicio de la primera letra (segundos)",
-    "startTimeHint": "Ingrese el tiempo en que comienza la primera letra en el video de YouTube",
+    "loadingTitle": "Obteniendo título...",
+    "startTimeLabel": "Tiempo inicio primera letra (s)",
+    "startTimeHint": "Ingresa el tiempo en que comienza la primera letra en el video",
     "delete": "Eliminar",
-    "deleteConfirm": "¿Está seguro de que desea eliminar este video?",
-    "deleted": "Video eliminado exitosamente",
-    "deleteError": "Error al eliminar el video"
+    "deleteConfirm": "¿Quieres eliminar este video?",
+    "deleted": "Video eliminado",
+    "deleteError": "Error al eliminar video",
+    "downloading": "Descargando video..."
   },
   "close": "Cerrar",
   "cancel": "Cancelar",
   "shareImage": {
     "title": "Compartir imagen de letras",
-    "subtitle": "Crea y comparte hermosas imágenes de letras",
+    "subtitle": "Crea y comparte imágenes de tus letras favoritas",
     "selectLyrics": "Seleccionar letras",
-    "selectLyricsHint": "Haz clic en las líneas para incluir en la imagen (máx. 6 líneas)",
+    "selectLyricsHint": "Haz clic en las líneas para incluir (Máx 6 líneas)",
     "template": "Plantilla",
     "templates": {
-      "cover": "Desenfoque de portada",
+      "cover": "Portada desenfocada",
       "gradient": "Degradado",
       "minimal": "Minimalista",
       "glass": "Cristal",
@@ -1348,27 +1350,27 @@ window.LANG_ES = {
     "advancedSettings": "Configuración avanzada",
     "sections": {
       "background": "Fondo",
-      "cover": "Portada del álbum",
+      "cover": "Portada",
       "lyrics": "Letras",
       "layout": "Diseño",
       "other": "Otros"
     },
-    "copyrightWarning": "⚠️ Aviso de derechos de autor\n\nEsta imagen de letras puede contener contenido protegido por derechos de autor.\n\n• Usar solo para fines personales\n• No usar con fines comerciales\n• Respetar al creador original al compartir en redes sociales\n\n¿Desea continuar?",
+    "copyrightWarning": "⚠️ Aviso de derechos de autor\n\nEsta imagen puede contener contenido con derechos de autor.\n\n• Úsalo solo para fines personales\n• No usar para fines comerciales\n• Respeta al autor original al compartir\n\n¿Continuar?",
     "copyrightTitle": "Aviso de derechos de autor",
-    "copyrightDesc": "Esta imagen de letras puede contener contenido protegido por derechos de autor.",
-    "copyrightPoint1": "Usar solo para fines personales",
-    "copyrightPoint2": "No usar con fines comerciales",
-    "copyrightPoint3": "Respetar al creador original al compartir en redes sociales",
-    "copyrightConfirm": "Aceptar y continuar",
+    "copyrightDesc": "Esta imagen puede contener contenido con derechos de autor.",
+    "copyrightPoint1": "Úsalo solo para fines personales",
+    "copyrightPoint2": "No usar para fines comerciales",
+    "copyrightPoint3": "Respeta al autor original al compartir",
+    "copyrightConfirm": "Acepto y continúo",
     "settings": {
       "backgroundType": "Estilo de fondo",
       "coverBlur": "Desenfoque",
       "gradient": "Degradado",
       "solid": "Sólido",
       "backgroundBlur": "Desenfoque de fondo",
-      "backgroundOpacity": "Oscuridad del fondo",
-      "showCover": "Portada del álbum",
-      "showTrackInfo": "Info de la canción",
+      "backgroundOpacity": "Oscuridad de fondo",
+      "showCover": "Portada de álbum",
+      "showTrackInfo": "Info de pista",
       "coverPosition": "Posición de portada",
       "posLeft": "Izquierda",
       "posCenter": "Centro",
@@ -1382,9 +1384,9 @@ window.LANG_ES = {
       "alignCenter": "Centro",
       "fontSize": "Tamaño de fuente",
       "blockGap": "Espaciado de líneas",
-      "aspectRatio": "Relación de aspecto",
+      "aspectRatio": "Proporción",
       "imageWidth": "Ancho de imagen",
-      "padding": "Margen",
+      "padding": "Relleno (Padding)",
       "showWatermark": "Mostrar marca de agua"
     },
     "preview": "Vista previa",
@@ -1396,183 +1398,201 @@ window.LANG_ES = {
     "copied": "✓ Copiado al portapapeles",
     "downloaded": "✓ Descargado",
     "shared": "✓ Compartido",
-    "maxLinesReached": "Se pueden seleccionar máximo 3 líneas",
-    "noSelection": "Por favor selecciona letras"
+    "maxLinesReached": "Puedes seleccionar hasta 3 líneas",
+    "noSelection": "Selecciona las letras"
   },
   "setupWizard": {
     "welcome": {
       "title": "¡Bienvenido a ivLyrics!",
-      "subtitle": "Disfruta de hermosas letras en Spotify",
+      "subtitle": "Disfruta de letras hermosas en Spotify",
       "features": {
-        "lyrics": "Letras sincronizadas en tiempo real",
-        "translation": "Soporte de traducción por IA",
-        "customization": "Varias personalizaciones"
+        "lyrics": "Letras sincronizadas",
+        "translation": "Traducción por IA",
+        "customization": "Gran personalización"
       },
       "start": "Comenzar"
     },
     "language": {
-      "title": "Selección de Idioma",
-      "subtitle": "Por favor elige tu idioma"
+      "title": "Selección de idioma",
+      "subtitle": "Elige el idioma a usar"
     },
     "apiKey": {
-      "title": "Configuración de Clave API Gemini",
-      "subtitle": "Se requiere una clave API para usar la función de traducción por IA",
+      "title": "Configurar API Gemini",
+      "subtitle": "Necesaria para usar la traducción por IA",
       "guide": {
-        "title": "Cómo obtener la Clave API",
+        "title": "Cómo obtener clave API",
         "step1": "Visita Google AI Studio",
-        "step2": "Haz clic en Get API Key",
-        "step3": "Crea una nueva clave API",
-        "step4": "Copia la clave generada"
+        "step2": "Clic en Get API Key",
+        "step3": "Crear nueva clave API",
+        "step4": "Copiar la clave creada"
       },
-      "getKey": "Obtener Clave API",
+      "getKey": "Obtener clave API",
       "skip": "Configurar más tarde",
-      "placeholder": "Introduce tu clave API...",
-      "multipleKeysHint": "Puedes registrar varias claves API en la configuración"
+      "placeholder": "Ingresa la clave API...",
+      "multipleKeysHint": "Puedes registrar múltiples claves en los ajustes"
     },
     "theme": {
-      "title": "Configuración Básica",
+      "title": "Configuración básica",
       "subtitle": "Elige cómo mostrar las letras",
       "alignment": "Alineación",
-      "background": "Efecto de Fondo",
+      "background": "Efecto de fondo",
       "backgrounds": {
         "colorful": "Colorido",
-        "gradient": "Portada del Álbum",
-        "blurGradient": "Degradado Difuminado",
-        "solid": "Color Sólido",
+        "gradient": "Portada de álbum",
+        "blurGradient": "Degradado desenfocado",
+        "solid": "Sólido",
         "video": "Video"
       }
     },
     "translationTip": {
-      "title": "Guía de Configuración de Traducción",
-      "subtitle": "La función de traducción se configura individualmente para cada idioma",
+      "title": "Guía de traducción",
+      "subtitle": "La traducción se configura por idioma",
       "pronunciation": "Pronunciación",
       "translation": "Traducción",
-      "description": "Activar la traducción para canciones de K-POP no la aplicará al J-POP. Haz clic en el botón de conversión a continuación para configurar las opciones 'Pronunciación' y 'Traducción' por separado para cada idioma."
+      "description": "Activar traducción en K-POP no afecta al J-POP. Usa el botón de conversión abajo para configurar 'Pronunciación' y 'Traducción' para cada idioma por separado."
     },
     "overlayTip": {
-      "title": "Superposición de Escritorio",
-      "subtitle": "Ver letras en cualquier lugar de tu escritorio",
-      "description": "Instala la aplicación de superposición para ver letras mientras usas otras aplicaciones. Puedes habilitarlo en cualquier momento en Configuración.",
-      "requiresApp": "Esta función requiere la instalación separada de la aplicación de superposición.",
-      "enabled": "Habilitar Superposición",
-      "downloadApp": "Descargar Aplicación de Superposición"
+      "title": "Superposición de escritorio",
+      "subtitle": "Mira las letras en cualquier lugar",
+      "description": "Instala la app de superposición para ver letras sobre otras apps. Puedes activarlo en ajustes en cualquier momento.",
+      "requiresApp": "Requiere instalar una aplicación de superposición separada.",
+      "enabled": "Activar superposición",
+      "downloadApp": "Descargar app superposición"
     },
     "nowPlayingTip": {
-      "title": "Letras del Panel NowPlaying",
-      "subtitle": "Ver letra actual en el panel derecho",
-      "description": "Muestra la letra actual en el panel 'Reproduciendo ahora' de Spotify. Puedes consultar la letra sin el modo de pantalla completa.",
-      "enabled": "Mostrar Letras en el Panel",
-      "linesCount": "Número de Líneas"
+      "title": "Letras en panel NowPlaying",
+      "subtitle": "Ver letras en el panel derecho",
+      "description": "Muestra las letras en el panel 'Reproduciendo ahora' de Spotify. Útil para ver letras sin usar pantalla completa.",
+      "enabled": "Mostrar letras en panel",
+      "linesCount": "Líneas a mostrar"
     },
     "complete": {
-      "title": "¡Todo Listo!",
-      "subtitle": "Ahora estás listo para usar ivLyrics",
-      "startNow": "Empezar Ahora",
-      "openSettings": "Abrir Configuración"
+      "title": "¡Todo listo!",
+      "subtitle": "ivLyrics está listo para usarse",
+      "startNow": "Empezar ahora",
+      "openSettings": "Más ajustes"
     },
     "navigation": {
       "next": "Siguiente",
-      "back": "Atrás",
+      "back": "Anterior",
       "skip": "Omitir"
     },
     "videoTest": {
-      "title": "Prueba de Fondo de Video",
-      "subtitle": "Por favor, verifique si el video de YouTube se reproduce correctamente",
-      "question": "¿Muestra que necesita iniciar sesión para reproducir el video?",
+      "title": "Prueba de fondo de video",
+      "subtitle": "Verifica si el siguiente video de YouTube se reproduce correctamente",
+      "question": "¿Te pide iniciar sesión para reproducir el video?",
       "yes": "Sí",
       "no": "No",
-      "helperRequired": "Si es así, necesita instalar el programa auxiliar.",
-      "helperDesc": "El programa auxiliar le permite reproducir videos sin iniciar sesión en YouTube.",
-      "installHelper": "Instalar Programa Auxiliar",
+      "helperRequired": "Si es así, necesitas instalar el programa asistente.",
+      "helperDesc": "El asistente permite reproducir videos sin iniciar sesión en YouTube.",
+      "installHelper": "Instalar programa asistente",
       "skip": "Omitir"
     },
     "videoHelperTest": {
-      "title": "Prueba del Programa Auxiliar",
-      "subtitle": "Verifique que el programa auxiliar funciona correctamente",
-      "enableHelper": "Activar Programa Auxiliar",
-      "testVideo": "Probar Reproducción de Video",
+      "title": "Prueba de programa asistente",
+      "subtitle": "Verifica si el asistente funciona correctamente",
+      "enableHelper": "Activar programa asistente",
+      "testVideo": "Reproducir video de prueba",
       "testing": "Probando...",
-      "success": "¡El programa auxiliar funciona correctamente!",
-      "failed": "No se puede conectar al programa auxiliar. Asegúrese de que esté en ejecución.",
+      "success": "¡El asistente funciona correctamente!",
+      "failed": "No se puede conectar al asistente. Verifica que esté ejecutándose.",
       "downloading": "Descargando video: {percent}%",
       "skip": "Omitir"
+    },
+    "tmi": {
+      "getApiKeyDesc": "Obtener clave API Gemini",
+      "getApiKeyInfo": "Usada para cargar curiosidades (TMI). Gratis en Google AI Studio.",
+      "viewInfo": "Haz clic para ver info variada sobre esta canción",
+      "requireKey": "Requiere configurar clave API Gemini en ajustes",
+      "settingTitle": "Clave API Gemini",
+      "settingDesc": "Necesaria para cargar TMI/Info de la canción.",
+      "title": "Curiosidades (TMI)",
+      "didYouKnow": "¿Sabías que...?",
+      "close": "Cerrar",
+      "cancel": "Cancelar",
+      "loading": "Buscando datos interesantes...",
+      "noData": "Aún no hay curiosidades para esta canción.",
+      "clickForTMI": "Ver Curiosidades",
+      "clickToClose": "✕ o clic en portada para cerrar",
+      "regenerate": "Regenerar curiosidades.",
+      "errorFetch": "Error al cargar curiosidades.",
+      "errorQuota": "Cuota de API excedida.",
+      "errorQuotaHint": "Intenta más tarde o usa otra clave API en ajustes.",
+      "disclaimer": "Este contenido es procesado por IA desde internet y puede contener imprecisiones.",
+      "verified": "Verificado",
+      "unverified": "Sin verificar",
+      "verifiedCount": "Verificados",
+      "sources": "Fuentes",
+      "verifiedSources": "Fuentes verificadas",
+      "relatedSources": "Fuentes relacionadas",
+      "otherSources": "Otras fuentes",
+      "confidenceVeryHigh": "Confianza muy alta",
+      "confidenceHigh": "Confianza alta",
+      "confidenceMedium": "Confianza media",
+      "confidenceLow": "Confianza baja",
+      "confidenceNone": "Sin fuentes"
+    },
+    "notice": {
+      "confirm": "Confirmar",
+      "next": "Siguiente",
+      "dismissAll": "Cerrar todo"
+    },
+    "syncCreator": {
+      "title": "Crear sincronización Karaoke",
+      "buttonTooltip": "Crear sincronización Karaoke",
+      "clickHereHint": "¡Haz clic aquí para ajustar la sincronización!",
+      "loading": "Cargando...",
+      "loadLyrics": "Cargar letras",
+      "reload": "Recargar",
+      "loadingLyrics": "Cargando letras...",
+      "selectProvider": "Carga automática de letras (Spotify → LRCLIB)",
+      "noLyrics": "No se encontraron letras",
+      "loadError": "Error al cargar letras",
+      "currentLine": "Letra actual",
+      "nextLine": "Siguiente letra",
+      "progress": "Progreso",
+      "linesCompleted": "Líneas completadas",
+      "chars": "Caracteres",
+      "reset": "Restablecer",
+      "firstLine": "Primera línea",
+      "prevLine": "Línea anterior",
+      "nextLineBtn": "Siguiente línea",
+      "recordMode": "Modo grabación",
+      "stopRecord": "Detener grabación",
+      "previewMode": "Modo vista previa",
+      "stopPreview": "Detener vista previa",
+      "idleMode": "En espera",
+      "submit": "Enviar",
+      "submitting": "Enviando...",
+      "noSyncData": "No hay datos de sincronización registrados",
+      "incompleteConfirm": "Algunas líneas no están sincronizadas. ¿Enviar de todas formas?",
+      "submitSuccess": "¡Datos enviados! Se aplicarán tras aprobación del admin.",
+      "submitError": "Error al enviar datos de sincronización",
+      "dragHint": "Arrastra para grabar el tiempo por carácter. Arrastra a la izquierda para cancelar.",
+      "globalOffset": "Desfase global",
+      "synced": "Registrado",
+      "notSynced": "No registrado",
+      "deleteLine": "Eliminar línea",
+      "back": "Cerrar",
+      "lrclib": {
+        "registerLyrics": "Registrar letras en LRCLIB",
+        "title": "Registrar letras en LRCLIB",
+        "description": "Esta canción no tiene letras. Si las ingresas y registras en LRCLIB, otros usuarios podrán usarlas. No se pueden editar después, así que escribe con cuidado.",
+        "trackInfo": "Info de pista",
+        "placeholder": "Ingresa las letras...\n\nSepara cada línea con un salto de línea.\nLas líneas vacías se eliminan automáticamente.",
+        "publishToLrcLib": "Publicar en LRCLIB",
+        "publishing": "Publicando...",
+        "cancelPublish": "Cancelar publicación",
+        "publishCancelled": "Publicación cancelada",
+        "timeWarning": "⚠️ LRCLIB requiere resolver un token criptográfico para evitar spam. Esto puede tardar unos 5 minutos según tu PC.",
+        "requestingChallenge": "Solicitando verificación...",
+        "solvingChallenge": "Procesando verificación...",
+        "solving": "Procesando verificación... (Intento {nonce})",
+        "publishSuccess": "¡Letras registradas exitosamente en LRCLIB!",
+        "publishError": "Error al registrar letras",
+        "noLyricsInput": "Por favor ingresa las letras",
+        "loadingAfterPublish": "Cargando letras registradas..."
+      }
     }
-  },
-  tmi: {
-    getApiKeyDesc: "Obtener clave API de Gemini",
-    getApiKeyInfo: "Se usa para obtener TMI. Disponible gratis en Google AI Studio.",
-    viewInfo: "Haz clic para ver detalles de la canción",
-    requireKey: "Se requiere la clave API de Gemini en los ajustes",
-    settingTitle: "Clave API de Gemini",
-    settingDesc: "Requerida para cargar contenidos de TMI/Curiosidades de la canción.",
-    title: "TMI",
-    didYouKnow: "¿Sabías que?",
-    close: "Cerrar",
-    cancel: "Cancelar",
-    loading: "Buscando datos interesantes...",
-    noData: "Aún no hay TMI disponibles para esta canción.",
-    clickForTMI: "Haz clic para ver TMI",
-    clickToClose: "Haz clic en ✕ o en el área del álbum para volver",
-    regenerate: "Regenerar TMI",
-    errorFetch: "Ocurrió un error al obtener TMI.",
-    errorQuota: "Cuota de API excedida.",
-    errorQuotaHint: "Inténtalo de nuevo más tarde o ingresa otra clave API en los ajustes.",
-    disclaimer: "Este contenido es generado por IA utilizando información de Internet y puede contener información inexacta.",
-    verified: "Verificado",
-    unverified: "No verificado",
-    verifiedCount: "verificado",
-    sources: "Fuentes",
-    verifiedSources: "Fuentes verificadas",
-    relatedSources: "Fuentes relacionadas",
-    otherSources: "Otras fuentes",
-    confidenceVeryHigh: "Muy alta confiabilidad",
-    confidenceHigh: "Alta confiabilidad",
-    confidenceMedium: "Confiabilidad media",
-    confidenceLow: "Baja confiabilidad",
-    confidenceNone: "Sin fuentes"
-  },
-  notice: {
-    confirm: "OK",
-    next: "Siguiente",
-    dismissAll: "Descartar todo"
-  },
-  syncCreator: {
-    title: "Crear Sincronización Karaoke",
-    buttonTooltip: "Crear Sincronización Karaoke",
-    clickHereHint: "¡Haz clic aquí para sincronizar la letra!",
-    loading: "Cargando...",
-    loadLyrics: "Cargar Letra",
-    loadingLyrics: "Cargando letra...",
-    selectProvider: "Selecciona un proveedor y carga la letra",
-    noLyrics: "No se encontró letra",
-    loadError: "Error al cargar letra",
-    currentLine: "Línea Actual",
-    nextLine: "Siguiente Línea",
-    progress: "Progreso",
-    linesCompleted: "líneas completadas",
-    chars: "caracteres",
-    reset: "Reiniciar",
-    firstLine: "Primera Línea",
-    prevLine: "Anterior",
-    nextLineBtn: "Siguiente",
-    recordMode: "Modo Grabación",
-    stopRecord: "Detener Grabación",
-    previewMode: "Modo Vista Previa",
-    stopPreview: "Detener Vista Previa",
-    idleMode: "Inactivo",
-    recordLine: "Registro Rápido",
-    submit: "Enviar",
-    submitting: "Enviando...",
-    noSyncData: "No hay datos de sincronización",
-    incompleteConfirm: "Algunas líneas no están sincronizadas. ¿Enviar de todos modos?",
-    submitSuccess: "¡Datos de sincronización enviados! Se aplicarán tras la aprobación.",
-    submitError: "Error al enviar datos",
-    dragHint: "Arrastra sobre los caracteres para grabar el tiempo. Arrastra a la izquierda para cancelar.",
-    globalOffset: "Desplazamiento Global",
-    synced: "Sincronizado",
-    notSynced: "No Sincronizado",
-    deleteLine: "Borrar línea",
-    back: "Cerrar"
   }
 };
-

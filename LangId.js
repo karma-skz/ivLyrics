@@ -11,14 +11,15 @@ window.LANG_ID = {
     "behavior": "Perilaku",
     "advanced": "Lanjutan",
     "fullscreen": "Layar Penuh",
+    "nowplaying": "Lirik Panel",
     "debug": "Debug",
     "about": "Tentang",
     "searchResults": "Hasil Pencarian"
   },
   "search": {
     "placeholder": "Cari pengaturan...",
-    "noResults": "Tidak ada hasil yang ditemukan",
-    "noResultsDesc": "Coba kata pencarian lain",
+    "noResults": "Tidak ada hasil",
+    "noResultsDesc": "Coba kata kunci lain",
     "resultCount": "{count} hasil",
     "clear": "Hapus",
     "inSection": "Di {section}"
@@ -29,14 +30,14 @@ window.LANG_ID = {
     "visualEffectsSubtitle": "Sesuaikan elemen visual layar lirik",
     "syncMode": "Mode Sinkronisasi",
     "syncModeSubtitle": "Atur cara sinkronisasi lirik",
-    "typography": "Tipografi",
+    "typography": "Gaya Teks",
     "typographySubtitle": "Sesuaikan gaya teks lirik",
     "textShadow": "Bayangan Teks",
     "textShadowSubtitle": "Tambahkan efek bayangan pada teks lirik",
     "updateCheck": "Cek Pembaruan",
     "backgroundOpacity": "Opasitas Latar Belakang",
     "contentWidth": "Lebar Konten",
-    "japaneseConversion": "Konversi Bahasa Jepang",
+    "japaneseConversion": "Konversi Teks Jepang",
     "displayContent": "Konten Tampilan",
     "autoTranslation": "Terjemahan Otomatis",
     "lyrics": "Lirik",
@@ -44,18 +45,18 @@ window.LANG_ID = {
     "autoScroll": "Gulir Otomatis",
     "animation": "Animasi",
     "karaoke": "Karaoke",
-    "syncedLyricsContent": "Konten Lirik Ter-sinkronisasi",
-    "unsyncedLyricsContent": "Konten Lirik Tidak Ter-sinkronisasi",
+    "syncedLyricsContent": "Konten Lirik Sinkron",
+    "unsyncedLyricsContent": "Konten Lirik Tidak Sinkron",
     "customPreview": "Pratinjau Kustom",
     "trackSyncInfo": "Info Sinkronisasi Lagu",
     "customDatabase": "Database Kustom",
     "debug": "Debug",
     "github": "GitHub",
-    "maintainers": "Pemelihara",
+    "maintainers": "Pengelola",
     "contributors": "Kontributor",
-    "fadWarningTitle": "⚠️ Ekstensi Full Screen Sedang Aktif",
-    "fadWarningDesc": "Tidak didukung saat ekstensi Full Screen sedang digunakan.",
-    "fadWarningTip": "Silakan ubah pengaturan penyusunan di pengaturan ekstensi Full Screen secara langsung.",
+    "fadWarningTitle": "⚠️ Ekstensi Full Screen Terdeteksi",
+    "fadWarningDesc": "Tidak didukung saat menggunakan ekstensi Full Screen.",
+    "fadWarningTip": "Silakan ubah pengaturan tampilan pada ekstensi Full Screen itu sendiri.",
     "desktopOverlay": "Overlay Desktop",
     "desktopOverlaySubtitle": "Tampilkan lirik sebagai overlay di desktop"
   },
@@ -64,6 +65,12 @@ window.LANG_ID = {
       "label": "Aktifkan Overlay Desktop",
       "desc": "Kirim lirik ke aplikasi overlay desktop"
     },
+    "port": {
+      "label": "Port Koneksi",
+      "desc": "Nomor port untuk terhubung dengan aplikasi overlay (1024-65535)"
+    },
+    "portSaved": "Port disimpan",
+    "portInvalid": "Nomor port tidak valid (1024-65535)",
     "status": {
       "connected": "✓ Terhubung",
       "disconnected": "Tidak terhubung",
@@ -71,7 +78,7 @@ window.LANG_ID = {
     },
     "openApp": "Buka Aplikasi",
     "download": "Unduh Aplikasi",
-    "downloadDesc": "Unduh jika aplikasi overlay belum terpasang"
+    "downloadDesc": "Unduh aplikasi overlay jika belum terinstal"
   },
   "settings": {
     "language": {
@@ -80,7 +87,7 @@ window.LANG_ID = {
     },
     "alignment": {
       "label": "Perataan",
-      "desc": "Pilih perataan teks lirik",
+      "desc": "Pilih posisi perataan teks lirik",
       "options": {
         "left": "Kiri",
         "center": "Tengah",
@@ -89,7 +96,15 @@ window.LANG_ID = {
     },
     "noise": {
       "label": "Overlay Noise",
-      "desc": "Tambahkan efek film grain ke latar belakang"
+      "desc": "Tambahkan efek film grain pada latar belakang"
+    },
+    "albumBgBlur": {
+      "label": "Blur Latar Belakang Album",
+      "desc": "Atur intensitas blur pada latar belakang album"
+    },
+    "blurGradientBackground": {
+      "label": "Latar Belakang Gradasi Blur",
+      "desc": "Terapkan latar belakang gradasi blur berdasarkan warna sampul album"
     },
     "colorful": {
       "label": "Latar Belakang Berwarna",
@@ -97,7 +112,7 @@ window.LANG_ID = {
     },
     "gradientBackground": {
       "label": "Latar Belakang Sampul Album",
-      "desc": "Gunakan sampul album yang sedang diputar sebagai latar belakang (mungkin tidak berfungsi dengan baik di mode layar penuh)"
+      "desc": "Gunakan sampul album yang sedang diputar sebagai latar belakang (mungkin tidak berfungsi baik di mode layar penuh)"
     },
     "solidBackground": {
       "label": "Latar Belakang Warna Solid",
@@ -112,28 +127,28 @@ window.LANG_ID = {
       "desc": "Gunakan video YouTube sebagai latar belakang (Beta)"
     },
     "videoHelper": {
-      "label": "Gunakan program pembantu",
-      "desc": "Unduh dan putar video YouTube secara lokal. Tonton video tanpa login.",
-      "info": "💡 Video YouTube tidak dapat dimuat?\n\nGoogle membatasi beberapa pengguna untuk memutar video YouTube tanpa login.\nMenggunakan program pembantu memungkinkan video dimuat dengan benar.",
-      "download": "Unduh pembantu",
-      "checkConnection": "Periksa koneksi",
-      "connected": "Terhubung ke program pembantu",
-      "disconnected": "Tidak dapat terhubung ke program pembantu",
+      "label": "Gunakan Program Helper",
+      "desc": "Unduh dan putar video YouTube secara lokal. Memungkinkan menonton tanpa login.",
+      "info": "💡 Video YouTube tidak dimuat?\n\nGoogle membatasi pemutaran video tanpa login untuk beberapa pengguna. \nGunakan program Helper untuk memuat video dengan normal.",
+      "download": "Unduh Helper",
+      "checkConnection": "Cek Koneksi",
+      "connected": "Terhubung ke Program Helper",
+      "disconnected": "Tidak dapat terhubung ke Program Helper",
       "status": {
         "connected": "Terhubung",
-        "disconnected": "Terputus",
+        "disconnected": "Tidak terhubung",
         "checking": "Memeriksa..."
       }
     },
     "lyricsHelper": {
-      "label": "Gunakan Pembantu Lirik",
-      "desc": "Kirim informasi lagu dan lirik ke pembantu. Program eksternal dapat mengaksesnya melalui API.",
-      "sectionTitle": "Integrasi Pembantu",
-      "sectionSubtitle": "Kirim lirik ke aplikasi pembantu eksternal",
-      "info": "Aplikasi pembantu memungkinkan program eksternal menampilkan lirik yang tersinkronisasi",
-      "download": "Unduh Pembantu",
-      "connected": "Pembantu terhubung",
-      "disconnected": "Pembantu tidak terhubung",
+      "label": "Gunakan Helper Lirik",
+      "desc": "Kirim info trek dan lirik ke Helper. Dapat diakses oleh program eksternal melalui API.",
+      "sectionTitle": "Integrasi Helper",
+      "sectionSubtitle": "Kirim lirik ke aplikasi Helper eksternal",
+      "info": "Anda dapat menampilkan lirik tersinkronisasi di program eksternal melalui aplikasi Helper",
+      "download": "Unduh Helper",
+      "connected": "Helper Terhubung",
+      "disconnected": "Helper Tidak Terhubung",
       "status": {
         "checking": "Memeriksa...",
         "connected": "Terhubung",
@@ -142,34 +157,34 @@ window.LANG_ID = {
     },
     "videoBlur": {
       "label": "Blur Video",
-      "desc": "Sesuaikan intensitas blur untuk latar belakang video (0-40px)"
+      "desc": "Atur intensitas blur pada latar belakang video (0-40px)"
     },
     "videoCover": {
-      "label": "Video Layar Penuh",
-      "desc": "Perbesar video untuk mengisi layar (mungkin terpotong di tepi)"
+      "label": "Isi Layar dengan Video",
+      "desc": "Perbesar video untuk memenuhi layar (bagian atas/bawah atau kiri/kanan mungkin terpotong)"
     },
     "backgroundBrightness": {
       "label": "Kecerahan Latar Belakang",
-      "desc": "Sesuaikan tingkat kecerahan latar belakang (0-100%)"
+      "desc": "Atur tingkat kecerahan latar belakang (0-100%)"
     },
-    "solidBackgroundWarning": "Penyesuaian kecerahan latar belakang tidak berlaku saat menggunakan latar belakang warna solid.",
+    "solidBackgroundWarning": "Pengaturan kecerahan tidak berlaku saat menggunakan latar belakang warna solid.",
     "updateCheck": {
       "label": "Cek Pembaruan",
-      "desc": "Cek pembaruan baru secara otomatis",
-      "info": "Pengecekan pembaruan dilakukan maksimal setiap 24 jam."
+      "desc": "Otomatis memeriksa pembaruan baru",
+      "info": "Pembaruan diperiksa maksimal setiap 24 jam."
     },
     "backgroundOpacity": {
-      "label": "Opasitas Sampul Latar Belakang",
-      "desc": "Atur opasitas sampul album latar belakang"
+      "label": "Opasitas Latar Belakang Sampul",
+      "desc": "Atur opasitas sampul album"
     },
     "contentWidth": {
       "label": "Lebar Konten",
-      "desc": "Atur lebar konten di mode layar penuh dan mode normal"
+      "desc": "Atur lebar konten dalam mode layar penuh dan non-layar penuh"
     },
     "japaneseConversion": {
-      "label": "Konversi Bahasa Jepang",
+      "label": "Konversi Penulisan Jepang",
       "desc": "Atur format konversi untuk lirik bahasa Jepang",
-      "info": "Pengaturan ini hanya berlaku untuk lirik tersinkronisasi dan tidak tersinkronisasi. Tidak berfungsi untuk lirik Karaoke.",
+      "info": "Pengaturan ini hanya berlaku untuk lirik sinkron dan tidak sinkron. Tidak berfungsi pada lirik karaoke.",
       "options": {
         "disabled": "Nonaktif",
         "romaji": "Romaji",
@@ -179,17 +194,17 @@ window.LANG_ID = {
       }
     },
     "displayContent": {
-      "label": "Tampilkan Konten",
-      "desc": "Tampilkan konten lain bersama lirik",
+      "label": "Konten Tampilan",
+      "desc": "Tampilkan konten lain bersama dengan lirik",
       "options": {
         "disabled": "Nonaktif",
-        "romanization": "Romanisasi",
+        "romanization": "Pelafalan (Romanisasi)",
         "translation": "Terjemahan"
       }
     },
     "autoTranslation": {
       "label": "Terjemahan Otomatis",
-      "desc": "Sediakan terjemahan secara otomatis jika tidak tersedia",
+      "desc": "Sediakan terjemahan otomatis jika tidak ada terjemahan lirik",
       "options": {
         "disabled": "Nonaktif (Default)",
         "google": "Google Translate",
@@ -216,47 +231,47 @@ window.LANG_ID = {
     },
     "autoScroll": {
       "label": "Gulir Otomatis",
-      "desc": "Aktifkan gulir otomatis. Akan kembali menggulir otomatis setelah 5 detik dari pengguliran manual."
+      "desc": "Aktifkan gulir otomatis. Kembali ke gulir otomatis 5 detik setelah gulir manual."
     },
     "animation": {
       "label": "Animasi",
-      "desc": "Tampilkan animasi selain baris yang sedang dinyanyikan di Karaoke"
+      "desc": "Tampilkan animasi selain pada baris sorotan karaoke"
     },
     "karaoke": {
-      "label": "Hitung Mundur Karaoke",
-      "desc": "Tampilkan hitung mundur dengan angka. Jika nonaktif, akan ditampilkan dengan titik."
+      "label": "Hitung Mundur Awal Karaoke",
+      "desc": "Tampilkan hitung mundu awal dengan angka. Jika dinonaktifkan, akan ditampilkan sebagai titik."
     },
     "blurInactive": {
       "label": "Blur Baris Tidak Aktif",
-      "desc": "Blur baris yang tidak aktif pada lirik tersinkronisasi",
-      "info": "Dapat menyebabkan masalah kinerja saat opsi ini diaktifkan."
+      "desc": "Berikan efek blur pada baris yang tidak aktif di lirik sinkron",
+      "info": "Masalah kinerja mungkin terjadi jika opsi ini diaktifkan."
     },
     "fade": {
-      "label": "Blur & Gradien",
-      "desc": "Tampilkan efek blur dan gradien di atas dan bawah daftar lirik",
-      "info": "Dapat menyebabkan masalah kinerja saat opsi ini diaktifkan."
+      "label": "Blur & Gradasi",
+      "desc": "Tampilkan blur dan gradasi di bagian atas dan bawah lirik",
+      "info": "Masalah kinerja mungkin terjadi jika opsi ini diaktifkan."
     },
     "syncedAsFallback": {
-      "label": "Gunakan Lirik Sinkron Sebagai Cadangan",
-      "desc": "Gunakan lirik tersinkronisasi jika lirik Karaoke tidak tersedia"
+      "label": "Gunakan Lirik Sinkron sebagai Cadangan",
+      "desc": "Gunakan lirik sinkron jika lirik karaoke tidak tersedia"
     },
     "unsyncedAsFallback": {
-      "label": "Gunakan Lirik Tidak Sinkron Sebagai Cadangan",
-      "desc": "Gunakan lirik tidak tersinkronisasi jika lirik tersinkronisasi tidak tersedia"
+      "label": "Gunakan Lirik Tidak Sinkron sebagai Cadangan",
+      "desc": "Gunakan lirik tidak sinkron jika lirik sinkron tidak tersedia"
     },
     "preferUnsynced": {
       "label": "Prioritaskan Lirik Tidak Sinkron",
-      "desc": "Jika ada lirik tersinkronisasi dan tidak tersinkronisasi, prioritaskan penggunaan lirik tidak tersinkronisasi.",
-      "info": "* Beberapa lirik tidak tersinkronisasi mungkin berisi konten yang tidak ada di versi tersinkronisasi."
+      "desc": "Gunakan lirik tidak sinkron jika lirik sinkron dan tidak sinkron keduanya tersedia.",
+      "info": "* Beberapa lirik tidak sinkron mungkin berisi teks yang tidak ada di lirik sinkron."
     },
     "customPreview": {
       "label": "Pratinjau Kustom",
-      "desc": "Sesuaikan gambar pratinjau layar lirik. Gambar akan ditampilkan dalam ukuran 300x150px.",
+      "desc": "Sesuaikan gambar pratinjau layar lirik. Gambar ditampilkan dalam ukuran 300x150px.",
       "placeholder": "Masukkan URL gambar"
     },
     "trackSyncInfo": {
       "label": "Info Sinkronisasi Lagu",
-      "desc": "Kelola info sinkronisasi yang terkait dengan lagu"
+      "desc": "Kelola info sinkronisasi yang terhubung dengan lagu"
     },
     "customDatabase": {
       "label": "Database Kustom",
@@ -264,20 +279,20 @@ window.LANG_ID = {
       "placeholder": "Masukkan URL database kustom"
     },
     "debugVerbose": {
-      "label": "Debug Verbose",
-      "desc": "Cetak info lebih detail ke konsol"
+      "label": "Info Debug Detail",
+      "desc": "Tampilkan informasi lebih rinci di konsol"
     },
     "cache": {
-      "deleteAll": "Hapus Semua Cache Lirik",
+      "deleteAll": "Hapus semua lirik yang di-cache",
       "noCache": "Tidak ada lirik yang di-cache"
     },
     "colors": {
-      "customColor": "Kustom",
-      "showMore": "Tampilkan Lebih ▼",
-      "showLess": "Sembunyikan ▲",
+      "customColor": "Warna Kustom",
+      "showMore": "Lihat Lebih Banyak ▼",
+      "showLess": "Lihat Lebih Sedikit ▲",
       "black": "Hitam",
       "charcoal": "Arang",
-      "darkSlate": "Slate Gelap",
+      "darkSlate": "Batu Tulis Gelap",
       "gray": "Abu-abu",
       "darkNavy": "Navy Gelap",
       "navy": "Navy",
@@ -290,7 +305,7 @@ window.LANG_ID = {
       "wine": "Wine",
       "red": "Merah",
       "orange": "Oranye",
-      "amber": "Amber",
+      "amber": "Kuning Sawo",
       "gold": "Emas",
       "lime": "Lime",
       "green": "Hijau",
@@ -301,12 +316,12 @@ window.LANG_ID = {
       "chocolate": "Cokelat Tua"
     },
     "solidBackgroundInUse": "ℹ️ Latar belakang warna solid sedang digunakan",
-    "fontPlaceholder": "Masukkan nama font (cth: Arial, Roboto)"
+    "fontPlaceholder": "Nama font (contoh: Arial, Roboto)"
   },
   "buttons": {
     "save": "Simpan",
     "cancel": "Batal",
-    "reset": "Reset",
+    "reset": "Atur Ulang",
     "import": "Impor",
     "export": "Ekspor",
     "open": "Buka",
@@ -326,47 +341,48 @@ window.LANG_ID = {
   "menu": {
     "translation": "Konversi",
     "settings": "Pengaturan",
-    "syncAdjust": "Sesuaikan Sinkronisasi",
-    "syncAdjustTitle": "Sesuaikan Sinkronisasi Lirik",
+    "syncAdjust": "Atur Sinkronisasi",
+    "syncAdjustTitle": "Atur Sinkronisasi Lirik",
     "copyLyrics": "Salin Lirik",
     "searchLyrics": "Cari Lirik",
     "editLyrics": "Edit Lirik",
+    "shareImage": "Bagikan Gambar Lirik",
     "translationOptions": "Opsi Konversi",
-    "translationOptionsSubtitle": "Atur tampilan pelafalan dan terjemahan",
+    "translationOptionsSubtitle": "Atur tampilan pelafalan dan terjemahan lirik",
     "detectedLanguage": "Bahasa Terdeteksi",
-    "detectedLanguageInfo": "Bahasa lagu yang sedang diputar. Opsi konversi akan berubah tergantung bahasanya.",
+    "detectedLanguageInfo": "Bahasa lagu yang sedang diputar. Opsi konversi diterapkan berbeda tergantung bahasa.",
     "unknownLanguage": "Tidak Diketahui",
     "autoDetect": "Deteksi Otomatis",
     "overrideLanguage": "Atur Bahasa Manual",
-    "overrideLanguageInfo": "Atur bahasa secara manual untuk lagu ini. Bahasa yang dipilih akan digunakan alih-alih deteksi otomatis.",
+    "overrideLanguageInfo": "Atur bahasa lagu ini secara manual. Terjemahan akan menggunakan bahasa yang dipilih, bukan deteksi otomatis.",
     "pronunciation": "Pelafalan",
-    "pronunciationInfo": "Tampilkan pelafalan (Romanisasi) dari lirik asli",
+    "pronunciationInfo": "Tampilkan pelafalan (huruf Latin) dari lirik asli",
     "translationLabel": "Terjemahan",
-    "translationInfo": "Terjemahkan lirik asli ke Bahasa Indonesia",
+    "translationInfo": "Tampilkan terjemahan lirik asli ke Bahasa Indonesia",
     "apiSettings": "Pengaturan API",
     "apiSettingsSubtitle": "Konfigurasi Gemini API",
     "apiKeySettings": "Pengaturan Kunci API",
-    "apiKeySettingsInfo": "Klik di sini untuk mengatur kunci Gemini API",
+    "apiKeySettingsInfo": "Klik di sini untuk mengatur Kunci API Gemini",
     "openSettings": "Buka Pengaturan",
     "translationSettings": "Pengaturan Konversi",
     "regenerateTranslation": "Buat Ulang Terjemahan",
     "fullscreen": "Layar Penuh"
   },
   "messages": {
-    "noLyrics": "Tidak ada lirik tersedia",
+    "noLyrics": "Lirik tidak tersedia",
     "loading": "Memuat...",
     "error": "Terjadi kesalahan",
-    "saved": "Disimpan",
+    "saved": "Tersimpan",
     "copied": "Disalin",
     "deleted": "Dihapus",
     "updated": "Diperbarui",
     "applied": "Diterapkan",
-    "noTrackInfo": "Tidak ada info lagu",
-    "syncedLyricsCopied": "Lirik tersinkronisasi disalin ke papan klip.",
-    "unsyncedLyricsCopied": "Lirik tidak tersinkronisasi disalin ke papan klip."
+    "noTrackInfo": "Tidak ada info trek",
+    "syncedLyricsCopied": "Lirik sinkron disalin ke papan klip.",
+    "unsyncedLyricsCopied": "Lirik tidak sinkron disalin ke papan klip."
   },
   "update": {
-    "newVersion": "Versi Baru",
+    "newVersion": "Versi pembaruan baru",
     "available": "tersedia!",
     "notes": "Catatan Pembaruan",
     "update": "Perbarui",
@@ -377,7 +393,7 @@ window.LANG_ID = {
     "copyCommand": "Salin Perintah",
     "releaseNotes": "Catatan Rilis",
     "expand": "Selengkapnya",
-    "collapse": "Sembunyikan",
+    "collapse": "Ringkas",
     "copied": "Disalin"
   },
   "fullscreen": {
@@ -390,19 +406,19 @@ window.LANG_ID = {
       "staticColor": "Warna Solid"
     },
     "showExtraControls": {
-      "label": "Tampilkan Kontrol Ekstra",
-      "desc": "Tampilkan tombol kontrol tambahan di mode layar penuh"
+      "label": "Tampilkan Kontrol Tambahan",
+      "desc": "Tampilkan kontrol tambahan di mode layar penuh"
     },
     "contextDisplay": {
-      "label": "Tampilkan Konteks",
+      "label": "Tampilan Konteks",
       "desc": "Tampilkan konteks yang sedang diputar di mode layar penuh"
     },
     "upcomingLyrics": {
       "label": "Tampilkan Lirik Berikutnya",
-      "desc": "Tampilkan lirik baris berikutnya sebelumnya di mode layar penuh"
+      "desc": "Tampilkan pratinjau lirik berikutnya di mode layar penuh"
     },
     "volumeDisplay": {
-      "label": "Tampilkan Volume",
+      "label": "Tampilan Volume",
       "desc": "Tampilkan kontrol volume di mode layar penuh"
     },
     "controls": {
@@ -414,9 +430,9 @@ window.LANG_ID = {
       "nextTrackLabel": "Lagu Berikutnya",
       "play": "Putar",
       "pause": "Jeda",
-      "repeatOff": "Ulangi Mati",
-      "repeatAll": "Ulangi Semua",
-      "repeatOne": "Ulangi Satu",
+      "repeatOff": "Ulang Mati",
+      "repeatAll": "Ulang Semua",
+      "repeatOne": "Ulang Satu",
       "mute": "Bisukan",
       "unmute": "Bunyikan",
       "share": "Salin Tautan Berbagi",
@@ -428,21 +444,21 @@ window.LANG_ID = {
       "nowPlaying": "Sedang Diputar",
       "upNext": "Berikutnya",
       "empty": "Antrean kosong",
-      "noRecent": "Tidak ada pemutaran terbaru"
+      "noRecent": "Tidak ada riwayat pemutaran baru-baru ini"
     },
     "contextType": {
       "playlist": "Playlist",
       "album": "Album",
       "artist": "Artis",
       "collection": "Lagu yang Disukai",
-      "station": "Stasiun Radio"
+      "station": "Radio"
     }
   },
   "about": {
     "version": "Versi",
     "sourceCode": "Kode Sumber",
     "reportIssue": "Laporkan Masalah",
-    "changelog": "Catatan Perubahan",
+    "changelog": "Log Perubahan",
     "license": "Lisensi",
     "credits": "Kredit"
   },
@@ -460,49 +476,70 @@ window.LANG_ID = {
     "geminiRomaji": "Pelafalan",
     "geminiKo": "Terjemahan",
     "romajiGemini": "Romaji (Gemini)",
-    "koGemini": "Indonesia (Gemini)",
+    "koGemini": "Bahasa Indonesia (Gemini)",
     "simplifiedChinese": "Mandarin Sederhana",
-    "traditionalChineseHK": "Mandarin Tradisional (Hong Kong)",
-    "traditionalChineseTW": "Mandarin Tradisional (Taiwan)",
+    "traditionalChineseHK": "Mandarin Tradisional (HK)",
+    "traditionalChineseTW": "Mandarin Tradisional (TW)",
     "pinyin": "Pinyin"
   },
   "notifications": {
-    "languageChanged": "Bahasa diubah. Akan berlaku setelah penyegaran.",
+    "languageChanged": "Bahasa diubah. Akan diterapkan setelah penyegaran.",
     "settingsSaved": "Pengaturan disimpan",
-    "settingsReset": "Pengaturan direset",
+    "settingsReset": "Pengaturan diatur ulang",
     "exportSuccess": "Ekspor berhasil",
     "importSuccess": "Impor berhasil",
     "importFailed": "Gagal mengimpor pengaturan",
     "syncDataCleared": "Data sinkronisasi dihapus",
     "syncDataClearFailed": "Gagal menghapus data sinkronisasi",
-    "lyricsCopied": "✓ Lirik disalin ke papan klip",
+    "lyricsCopied": "Lirik disalin ke papan klip",
     "lyricsCopyFailed": "Gagal menyalin lirik",
+    "translationCopied": "Terjemahan disalin ke papan klip",
     "translationCopyFailed": "Gagal menyalin terjemahan",
+    "secondTranslationCopied": "Terjemahan kedua disalin ke papan klip",
     "secondTranslationCopyFailed": "Gagal menyalin terjemahan kedua",
     "installCommandCopied": "Perintah instalasi disalin",
     "copyFailed": "Gagal menyalin",
-    "memoryCacheCleared": "✓ Cache memori dibersihkan",
-    "localCacheCleared": "✓ Semua cache lokal dibersihkan",
-    "localCacheTrackCleared": "✓ Cache lagu saat ini dibersihkan",
-    "exportSuccessDesc": "File pengaturan disimpan ke folder unduhan.",
+    "memoryCacheCleared": "Cache memori dibersihkan",
+    "localCacheCleared": "Semua cache lokal dihapus",
+    "localCacheTrackCleared": "Cache lokal lagu saat ini dihapus",
+    "exportSuccessDesc": "Menyimpan file pengaturan ke folder unduhan.",
     "exportFailed": "Gagal mengekspor pengaturan",
     "importSuccessDesc": "Halaman akan disegarkan sebentar lagi...",
     "resetSuccess": "Reset selesai",
     "resetSuccessDesc": "Halaman akan disegarkan sebentar lagi...",
-    "resetFailed": "Gagal mereset",
+    "resetFailed": "Reset gagal",
     "updateCheckFailed": "Gagal memeriksa pembaruan",
-    "checkNetworkConnection": "Silakan periksa koneksi jaringan",
+    "checkNetworkConnection": "Periksa koneksi jaringan Anda",
     "updateAvailable": "Pembaruan tersedia",
-    "latestVersion": "Sudah versi terbaru",
-    "noLyricsLoaded": "Lirik belum dimuat",
+    "latestVersion": "Ini adalah versi terbaru",
+    "noLyricsLoaded": "Lirik belum dimuat.",
     "translationRegenerateGeminiOnly": "Pembuatan ulang terjemahan hanya tersedia untuk terjemahan Gemini.",
-    "regeneratingTranslation": "Sedang membuat ulang terjemahan...",
-    "translationRegenerated": "✓ Terjemahan dibuat ulang",
+    "regeneratingTranslation": "Membuat ulang terjemahan...",
+    "translationRegenerated": "Terjemahan dibuat ulang",
     "translationRegenerateFailed": "Gagal membuat ulang terjemahan",
-    "translationCacheRemoved": "✓ Cache terjemahan dihapus dan dimuat ulang!",
+    "translationCacheRemoved": "Cache terjemahan dihapus dan dimuat ulang!",
+    "translationCacheReset": "{count} item cache terjemahan diatur ulang",
     "tooManyTranslationRequests": "Terlalu banyak permintaan terjemahan. Silakan coba lagi dalam 1 menit.",
-    "requestingPronunciation": "Meminta pelafalan. Akan memakan waktu sekitar 30 detik.",
-    "requestingTranslation": "Meminta terjemahan. Akan memakan waktu sekitar 30 detik."
+    "requestingPronunciation": "Meminta pelafalan. Membutuhkan waktu sekitar 30 detik",
+    "requestingTranslation": "Meminta terjemahan. Membutuhkan waktu sekitar 30 detik",
+    "shareImageCopied": "Gambar disalin ke papan klip",
+    "shareImageDownloaded": "Gambar diunduh",
+    "shareImageShared": "Dibagikan",
+    "shareImageFailed": "Gagal membuat gambar",
+    "shareImageNoLyrics": "Pilih lirik untuk dibagikan",
+    "noTrackPlaying": "Tidak ada trek yang sedang diputar",
+    "overlayConnected": "Overlay Terhubung",
+    "romajiTranslationFailed": "Gagal konversi Romaji/Pelafalan",
+    "koreanTranslationFailed": "Gagal terjemahan Bahasa Indonesia",
+    "pinyinLibraryUnavailable": "Pustaka Pinyin tidak tersedia. Menampilkan asli. Izinkan jsDelivr atau unpkg.",
+    "conversionSkippedSimplified": "Konversi dilewati: Sudah dalam bentuk Sederhana",
+    "conversionCompleted": "Konversi selesai",
+    "conversionFailed": "Konversi gagal",
+    "fileTooLarge": "File terlalu besar: Ukuran maksimum adalah 1MB",
+    "noValidLyricsInFile": "Tidak ditemukan lirik yang valid dalam file",
+    "lyricsLoadedFromFile": "Berhasil memuat lirik {types} dari file",
+    "lyricsLoadFailed": "Gagal memuat lirik: Format file salah",
+    "fileReadFailed": "Gagal membaca file: File mungkin rusak"
   },
   "misc": {
     "and": "dan",
@@ -527,140 +564,140 @@ window.LANG_ID = {
       "empty": "Tidak ada catatan patch."
     },
     "donate": {
-      "title": "Traktir pengembang kopi",
-      "button": "Dukung"
+      "title": "Traktir kopi untuk pengembang",
+      "button": "Donasi"
     },
     "syncMode": {
       "title": "Mode Sinkronisasi",
-      "subtitle": "Opsi tampilan untuk mode sinkronisasi ringkas",
+      "subtitle": "Opsi tampilan mode sinkronisasi ringkas",
       "linesBefore": {
-        "label": "Jumlah Baris (Sebelum)",
-        "desc": "Jumlah baris yang ditampilkan sebelum lirik saat ini"
+        "label": "Baris Ditampilkan (Sebelum)",
+        "desc": "Jumlah baris yang ditampilkan sebelum lirik yang sedang diputar"
       },
       "linesAfter": {
-        "label": "Jumlah Baris (Sesudah)",
-        "desc": "Jumlah baris yang ditampilkan sesudah lirik saat ini"
+        "label": "Baris Ditampilkan (Sesudah)",
+        "desc": "Jumlah baris yang ditampilkan sesudah lirik yang sedang diputar"
       },
       "fadeoutBlur": {
-        "label": "Efek Blur Fadeout",
+        "label": "Efek Fadeout Blur",
         "desc": "Terapkan efek blur pada lirik yang tidak aktif"
       },
       "highlightMode": {
         "label": "Mode Sorotan",
-        "desc": "Hanya terangkan lirik yang sedang dinyanyikan dan redupkan sisanya"
+        "desc": "Hanya menyorot lirik yang sedang dinyanyikan, sisanya diredupkan"
       },
       "highlightIntensity": {
         "label": "Intensitas Sorotan",
-        "desc": "Atur transparansi lirik yang tidak aktif (semakin rendah semakin redup)"
+        "desc": "Mengatur transparansi lirik tidak aktif (semakin rendah semakin redup)"
       }
     },
     "livePreview": {
       "title": "Pratinjau Langsung",
-      "subtitle": "Lihat langsung gaya yang diatur",
+      "subtitle": "Lihat gaya yang diatur secara instan",
       "sampleText": "Ini adalah lirik",
-      "sampleTextMixed": "Ini adalah Lirik",
-      "sampleTextPhonetic": "Ini adalah Lirik"
+      "sampleTextMixed": "Ini Lyric あります",
+      "sampleTextPhonetic": "Ini lirik arimasu"
     },
     "originalStyle": {
-      "title": "Gaya Teks Asli",
-      "subtitle": "Pengaturan font untuk lirik asli",
+      "title": "Gaya Asli",
+      "subtitle": "Pengaturan font teks asli",
       "fontFamily": "Keluarga Font",
-      "fontFamilyDesc": "Pilih font untuk lirik asli. Jika memasukkan banyak font, pisahkan dengan koma (,).",
+      "fontFamilyDesc": "Pilih font untuk teks asli. Pisahkan dengan koma (,) untuk beberapa font.",
       "fontSize": {
         "label": "Ukuran Font",
-        "desc": "Ukuran font lirik asli (piksel)"
+        "desc": "Ukuran font teks asli (piksel)"
       },
       "fontWeight": {
         "label": "Ketebalan Font",
-        "desc": "Ketebalan lirik asli"
+        "desc": "Ketebalan font teks asli"
       },
       "opacity": {
         "label": "Transparansi",
-        "desc": "Opasitas lirik asli (0-100%)"
+        "desc": "Opasitas teks asli (0-100%)"
       },
       "letterSpacing": {
-        "label": "Spasi huruf",
-        "desc": "Jarak antar huruf dalam teks asli (piksel)"
+        "label": "Jarak Huruf",
+        "desc": "Jarak antar huruf teks asli (piksel)"
       }
     },
     "pronunciationStyle": {
       "title": "Gaya Pelafalan",
-      "subtitle": "Pengaturan font untuk pelafalan (Romaji, Pinyin)",
+      "subtitle": "Pengaturan font pelafalan (Romaji, Pinyin, dll.)",
       "fontFamily": "Keluarga Font",
-      "fontFamilyDesc": "Pilih font untuk pelafalan. Jika memasukkan banyak font, pisahkan dengan koma (,).",
+      "fontFamilyDesc": "Pilih font untuk pelafalan. Pisahkan dengan koma (,) untuk beberapa font.",
       "fontSize": {
         "label": "Ukuran Font",
         "desc": "Ukuran font pelafalan (piksel)"
       },
       "fontWeight": {
         "label": "Ketebalan Font",
-        "desc": "Ketebalan pelafalan"
+        "desc": "Ketebalan font pelafalan"
       },
       "opacity": {
         "label": "Transparansi",
         "desc": "Opasitas pelafalan (0-100%)"
       },
       "gap": {
-        "label": "Jarak dengan Asli",
-        "desc": "Jarak antara lirik asli dan pelafalan"
+        "label": "Jarak dari Asli",
+        "desc": "Jarak antara teks asli dan pelafalan"
       },
       "letterSpacing": {
-        "label": "Spasi huruf",
-        "desc": "Jarak antar huruf dalam pelafalan (piksel)"
+        "label": "Jarak Huruf",
+        "desc": "Jarak antar huruf pelafalan (piksel)"
       },
       "hyphenReplace": {
-        "label": "Penanganan tanda hubung",
-        "desc": "Ganti tanda hubung (-) dalam pengucapan dengan karakter lain",
+        "label": "Penanganan Tanda Hubung (-)",
+        "desc": "Pilih cara menampilkan tanda hubung dalam pelafalan (Contoh: Tah-shee-kah → Tah shee kah atau Tahsheekah)",
         "options": {
-          "keep": "Pertahankan",
-          "space": "Ganti dengan spasi",
-          "remove": "Hapus"
+          "keep": "Biarkan (Tah-shee-kah)",
+          "space": "Ganti spasi (Tah shee kah)",
+          "remove": "Hapus (Tahsheekah)"
         }
       }
     },
     "translationStyle": {
       "title": "Gaya Terjemahan",
-      "subtitle": "Pengaturan font untuk terjemahan",
+      "subtitle": "Pengaturan font lirik terjemahan",
       "fontFamily": "Keluarga Font",
-      "fontFamilyDesc": "Pilih font untuk terjemahan. Jika memasukkan banyak font, pisahkan dengan koma (,).",
+      "fontFamilyDesc": "Pilih font untuk terjemahan. Pisahkan dengan koma (,) untuk beberapa font.",
       "fontSize": {
         "label": "Ukuran Font",
         "desc": "Ukuran font terjemahan (piksel)"
       },
       "fontWeight": {
         "label": "Ketebalan Font",
-        "desc": "Ketebalan terjemahan"
+        "desc": "Ketebalan font terjemahan"
       },
       "opacity": {
         "label": "Transparansi",
         "desc": "Opasitas terjemahan (0-100%)"
       },
       "gap": {
-        "label": "Jarak dengan Pelafalan",
+        "label": "Jarak dari Pelafalan",
         "desc": "Jarak antara pelafalan dan terjemahan (piksel)"
       },
       "letterSpacing": {
-        "label": "Spasi huruf",
-        "desc": "Jarak antar huruf dalam terjemahan (piksel)"
+        "label": "Jarak Huruf",
+        "desc": "Jarak antar huruf terjemahan (piksel)"
       }
     },
     "furiganaStyle": {
       "title": "Gaya Furigana",
-      "subtitle": "Pengaturan untuk bacaan (furigana) yang ditampilkan di atas kanji Jepang",
+      "subtitle": "Pengaturan bacaan (furigana) di atas Kanji Jepang",
       "fontSize": {
-        "label": "Ukuran font",
-        "desc": "Ukuran font untuk furigana (piksel)"
+        "label": "Ukuran Font",
+        "desc": "Ukuran font furigana (piksel)"
       },
       "fontWeight": {
-        "label": "Ketebalan font",
-        "desc": "Ketebalan font untuk furigana"
+        "label": "Ketebalan Font",
+        "desc": "Ketebalan font furigana"
       },
       "opacity": {
-        "label": "Opasitas",
+        "label": "Transparansi",
         "desc": "Opasitas furigana (0-100%)"
       },
       "spacing": {
-        "label": "Spasi",
+        "label": "Jarak",
         "desc": "Jarak antara furigana dan kanji (piksel)"
       }
     },
@@ -680,7 +717,7 @@ window.LANG_ID = {
         "desc": "Opasitas bayangan (0-100%)"
       },
       "blur": {
-        "label": "Blur",
+        "label": "Intensitas Blur",
         "desc": "Tingkat kekaburan bayangan"
       }
     },
@@ -693,158 +730,158 @@ window.LANG_ID = {
       },
       "replaceFullscreenButton": {
         "label": "Ganti Tombol Layar Penuh",
-        "info": "Ganti tombol layar penuh default Spotify dengan ivLyrics"
+        "info": "Ganti tombol layar penuh default Spotify dengan layar penuh ivLyrics"
       },
       "fullscreenShortcut": {
         "label": "Pintasan Layar Penuh",
-        "desc": "Pintasan keyboard untuk masuk ke mode lirik layar penuh"
-      },
+        "desc": "Pintasan keyboard untuk mode layar penuh lirik"
+      }
     },
     "nowPlayingPanel": {
-      "title": "Lirik Panel Sedang Diputar",
-      "subtitle": "Pengaturan tampilan lirik untuk panel Sedang Diputar di kanan",
+      "title": "Lirik Panel NowPlaying",
+      "subtitle": "Pengaturan tampilan lirik di panel 'Sedang Diputar' di kanan",
       "enabled": {
-        "label": "Aktifkan lirik panel",
+        "label": "Aktifkan Lirik Panel",
         "desc": "Tampilkan lirik saat ini di panel Sedang Diputar"
       },
       "lines": {
-        "label": "Baris lirik",
-        "desc": "Jumlah baris yang ditampilkan di panel (default: 5)"
+        "label": "Jumlah Baris Lirik",
+        "desc": "Jumlah baris lirik yang ditampilkan di panel (Default: 5)"
       },
       "fontScale": {
-        "label": "Skala font keseluruhan",
-        "desc": "Skala font keseluruhan untuk lirik panel (50%-200%)"
+        "label": "Skala Ukuran Font Keseluruhan",
+        "desc": "Rasio ukuran keseluruhan lirik panel (50%-200%)"
       },
       "fontFamily": {
-        "label": "Font default",
-        "desc": "Font default untuk lirik panel (digunakan jika font individual tidak diatur)"
+        "label": "Font Dasar",
+        "desc": "Font dasar untuk lirik panel (jika font individu tidak diatur)"
       },
       "originalFont": {
-        "label": "Font teks asli",
-        "desc": "Font untuk teks asli (kosong = font default, pisahkan beberapa dengan koma)"
+        "label": "Font Asli",
+        "desc": "Font untuk lirik asli (gunakan font dasar jika kosong, koma untuk beberapa font)"
       },
       "phoneticFont": {
-        "label": "Font pelafalan",
-        "desc": "Font untuk pelafalan (kosong = font default, pisahkan beberapa dengan koma)"
+        "label": "Font Pelafalan",
+        "desc": "Font untuk pelafalan (gunakan font dasar jika kosong, koma untuk beberapa font)"
       },
       "translationFont": {
-        "label": "Font terjemahan",
-        "desc": "Font untuk teks terjemahan (kosong = font default, pisahkan beberapa dengan koma)"
+        "label": "Font Terjemahan",
+        "desc": "Font untuk terjemahan (gunakan font dasar jika kosong, koma untuk beberapa font)"
       },
       "originalSize": {
-        "label": "Ukuran teks asli",
-        "desc": "Ukuran font teks asli (px)"
+        "label": "Ukuran Font Asli",
+        "desc": "Ukuran font dasar lirik asli (px)"
       },
       "phoneticSize": {
-        "label": "Ukuran pelafalan",
-        "desc": "Ukuran font pelafalan (px)"
+        "label": "Ukuran Font Pelafalan",
+        "desc": "Ukuran font dasar pelafalan (px)"
       },
       "translationSize": {
-        "label": "Ukuran terjemahan",
-        "desc": "Ukuran font terjemahan (px)"
+        "label": "Ukuran Font Terjemahan",
+        "desc": "Ukuran font dasar terjemahan (px)"
       },
       "preview": "Pratinjau",
       "background": {
         "title": "Latar Belakang",
         "subtitle": "Pengaturan gaya latar belakang panel",
         "type": {
-          "label": "Jenis latar belakang",
+          "label": "Tipe Latar Belakang",
           "desc": "Pilih gaya latar belakang",
-          "album": "Warna album",
-          "custom": "Warna kustom",
-          "gradient": "Gradien album"
+          "album": "Warna Album",
+          "custom": "Warna Kustom",
+          "gradient": "Gradasi Berbasis Album"
         },
         "color": {
-          "label": "Warna latar belakang",
+          "label": "Warna Latar Belakang",
           "desc": "Warna latar belakang kustom"
         },
         "gradient1": {
-          "label": "Warna gradien 1",
-          "desc": "Warna pertama gradien"
+          "label": "Warna Gradasi 1",
+          "desc": "Warna gradasi pertama"
         },
         "gradient2": {
-          "label": "Warna gradien 2",
-          "desc": "Warna kedua gradien"
+          "label": "Warna Gradasi 2",
+          "desc": "Warna gradasi kedua"
         },
         "opacity": {
-          "label": "Opasitas latar belakang",
-          "desc": "Opasitas latar belakang (0%=transparan, 100%=opak)"
+          "label": "Opasitas Latar Belakang",
+          "desc": "Opasitas latar belakang (0%=Transparan, 100%=Solid)"
         }
       },
       "border": {
-        "title": "Batas",
-        "subtitle": "Pengaturan gaya batas panel",
+        "title": "Bingkai",
+        "subtitle": "Pengaturan gaya bingkai panel",
         "enabled": {
-          "label": "Aktifkan batas",
-          "desc": "Tampilkan batas di sekitar panel"
+          "label": "Aktifkan Bingkai",
+          "desc": "Tampilkan bingkai di sekitar panel"
         },
         "color": {
-          "label": "Warna batas",
-          "desc": "Warna batas"
+          "label": "Warna Bingkai",
+          "desc": "Warna bingkai"
         },
         "opacity": {
-          "label": "Opasitas batas",
-          "desc": "Opasitas batas (0%=transparan, 100%=opak)"
+          "label": "Opasitas Bingkai",
+          "desc": "Opasitas bingkai (0%=Transparan, 100%=Solid)"
         }
       }
     },
     "karaokeMode": {
       "title": "Mode Karaoke",
-      "subtitle": "Tampilkan lirik gaya Karaoke",
+      "subtitle": "Tampilan lirik gaya karaoke",
       "enabled": {
         "label": "Gunakan Mode Karaoke",
-        "desc": "Gunakan tab Karaoke untuk lagu yang mendukung. Jika mati, akan tetap di tab Sinkron"
+        "desc": "Gunakan tab karaoke untuk lagu yang mendukung lirik karaoke. Jika dinonaktifkan, akan tetap di tab sinkron"
       },
       "bounce": {
-        "label": "Efek Huruf Memantul",
-        "desc": "Terapkan animasi memantul pada karakter yang sedang dinyanyikan di mode Karaoke"
+        "label": "Efek Pantulan Huruf",
+        "desc": "Terapkan animasi memantul pada huruf yang sedang dinyanyikan di mode karaoke"
       }
     },
     "prefetch": {
-      "title": "Muat Lagu Berikutnya",
-      "subtitle": "Muat elemen lagu berikutnya sebelumnya untuk mengurangi jeda saat berganti lagu",
+      "title": "Pra-muat Lagu Berikutnya",
+      "subtitle": "Muat elemen lagu berikutnya sebelumnya untuk mengurangi jeda",
       "enabled": {
-        "label": "Muat Terjemahan/Pelafalan",
-        "desc": "Minta terjemahan dan pelafalan untuk lagu berikutnya sebelumnya"
+        "label": "Pra-muat Terjemahan/Pelafalan",
+        "desc": "Meminta terjemahan dan pelafalan lagu berikutnya sebelumnya"
       },
       "videoEnabled": {
-        "label": "Muat Latar Belakang Video",
-        "desc": "Ambil info latar belakang video untuk lagu berikutnya sebelumnya"
+        "label": "Pra-muat Latar Belakang Video",
+        "desc": "Mengambil info latar belakang video lagu berikutnya sebelumnya"
       }
     },
     "communitySync": {
       "title": "Sinkronisasi Komunitas",
-      "subtitle": "Bagikan offset sinkronisasi dengan pengguna lain",
+      "subtitle": "Bagikan offset sinkronisasi lirik dengan pengguna lain",
       "enabled": {
         "label": "Gunakan Sinkronisasi Komunitas",
-        "desc": "Gunakan offset sinkronisasi yang dibagikan di komunitas"
+        "desc": "Gunakan offset sinkronisasi yang dibagikan oleh komunitas"
       },
       "autoApply": {
         "label": "Terapkan Otomatis",
-        "desc": "Terapkan offset dari komunitas secara otomatis jika kepercayaan cukup"
+        "desc": "Terapkan offset komunitas secara otomatis jika kepercayaan cukup tinggi"
       },
       "autoSubmit": {
         "label": "Kirim Otomatis",
-        "desc": "Bagikan ke komunitas secara otomatis saat Anda mengubah offset sinkronisasi"
+        "desc": "Otomatis bagikan ke komunitas saat Anda mengubah offset sinkronisasi"
       },
       "minConfidence": {
         "label": "Kepercayaan Minimum",
-        "desc": "Kepercayaan minimum untuk penerapan otomatis (0.0 ~ 1.0). Dihitung berdasarkan jumlah kiriman dan konsistensi nilai."
+        "desc": "Kepercayaan minimum untuk penerapan otomatis (0.0 ~ 1.0). Kepercayaan dihitung berdasarkan jumlah kiriman dan konsistensi nilai offset."
       }
     },
     "cacheManagement": {
       "title": "Manajemen Cache",
-      "subtitle": "Kelola data yang tersimpan",
+      "subtitle": "Kelola data tersimpan",
       "memoryCache": {
         "label": "Bersihkan Cache Memori",
         "desc": "Lirik yang dimuat disimpan sementara di memori untuk pemuatan ulang cepat. Bersihkan cache memori tanpa me-restart Spotify",
         "button": "Bersihkan Cache"
       },
       "localCache": {
-        "label": "Cache Lokal (IndexedDB)",
-        "desc": "Lirik, terjemahan, dan pelafalan disimpan secara lokal untuk mengurangi panggilan API saat pemutaran berulang",
-        "clearAll": "Bersihkan semua",
-        "clearCurrent": "Bersihkan lagu saat ini",
+        "label": "Manajemen Cache Lokal (IndexedDB)",
+        "desc": "Lirik, terjemahan, pelafalan disimpan secara lokal untuk mengurangi panggilan API saat pemutaran ulang",
+        "clearAll": "Hapus Semua",
+        "clearCurrent": "Hapus Lagu Saat Ini",
         "stats": "Lirik: {lyrics}, Terjemahan: {translations}, Metadata: {metadata}"
       }
     },
@@ -852,20 +889,20 @@ window.LANG_ID = {
       "title": "Deteksi Bahasa",
       "subtitle": "Pengaturan deteksi bahasa untuk konversi teks",
       "furigana": {
-        "label": "Tampilkan Furigana di Kanji",
-        "desc": "Tampilkan bacaan Hiragana di atas karakter Kanji dalam lirik Jepang"
+        "label": "Tampilkan Furigana di Kanji Jepang",
+        "desc": "Tampilkan bacaan Hiragana di atas Kanji dalam lirik Jepang"
       },
       "japaneseThreshold": {
-        "label": "Ambang Deteksi Bahasa Jepang",
-        "desc": "Deteksi bahasa Jepang berdasarkan rasio karakter Kana. Semakin tinggi nilainya, deteksi semakin ketat (%)"
+        "label": "Ambang Batas Deteksi Jepang",
+        "desc": "Mendeteksi bahasa Jepang berdasarkan rasio karakter Kana. Semakin tinggi nilainya, semakin ketat deteksinya (persentase)"
       },
       "chineseThreshold": {
-        "label": "Ambang Deteksi Bahasa Mandarin",
-        "desc": "Deteksi jenis bahasa Mandarin berdasarkan rasio sederhana/tradisional. Semakin tinggi nilainya, deteksi semakin ketat (%)"
+        "label": "Ambang Batas Deteksi Mandarin",
+        "desc": "Mendeteksi jenis Mandarin berdasarkan rasio karakter Tradisional dan Sederhana. Semakin tinggi nilainya, semakin ketat deteksinya (persentase)"
       }
     },
     "apiKeys": {
-      "subtitle": "Kunci API untuk menghubungkan layanan eksternal"
+      "subtitle": "Kunci API untuk integrasi layanan eksternal"
     },
     "exportImport": {
       "title": "Ekspor/Impor Pengaturan",
@@ -882,218 +919,214 @@ window.LANG_ID = {
       }
     },
     "resetSettings": {
-      "title": "Reset Pengaturan",
+      "title": "Atur Ulang Pengaturan",
       "subtitle": "Kembalikan semua pengaturan ke default",
       "reset": {
-        "label": "Reset Semua Pengaturan",
-        "desc": "Kembalikan semua pengaturan ke default. Tindakan ini tidak dapat dibatalkan",
-        "button": "Reset",
-        "confirm": "Apakah Anda yakin ingin mereset semua pengaturan?\n\nTindakan ini tidak dapat dibatalkan dan semua pengaturan akan kembali ke default.\n\nKlik 'Konfirmasi' untuk melanjutkan.",
-        "processing": "Mereset..."
+        "label": "Atur Ulang Semua",
+        "desc": "Mengembalikan semua pengaturan ke nilai awal. Tindakan ini tidak dapat dibatalkan",
+        "button": "Atur Ulang",
+        "confirm": "Apakah Anda yakin ingin mengatur ulang semua pengaturan?\n\nTindakan ini tidak dapat dibatalkan, dan semua pengaturan akan kembali ke default.\n\nKlik 'Konfirmasi' untuk melanjutkan.",
+        "processing": "Mengatur ulang..."
       }
     },
     "fullscreenMode": {
-      "title": "Mode Layar Penuh",
-      "subtitle": "Pengaturan tata letak dan tampilan untuk mode layar penuh",
+      "title": "Pengaturan Dasar Layar Penuh",
+      "subtitle": "Atur perilaku default mode layar penuh",
       "shortcut": {
         "desc": "Pintasan Layar Penuh",
         "info": "Atur pintasan keyboard untuk beralih mode layar penuh"
       },
       "toggleTvModeKey": {
-        "desc": "Pintasan alihkan mode TV",
-        "info": "Hanya berfungsi dalam mode layar penuh. Beralih antara mode TV dan normal"
+        "desc": "Pintasan Beralih Mode TV",
+        "info": "Hanya bekerja di mode layar penuh. Beralih antara Mode TV dan Mode Normal"
       },
       "tvMode": {
-        "desc": "Mode TV",
-        "info": "Tampilkan sampul album dan info lagu di kiri bawah, lirik menggunakan layar penuh"
+        "desc": "Gunakan Mode TV",
+        "info": "Tampilkan sampul album dan info lagu di kiri bawah, dan lirik menggunakan seluruh layar"
       },
       "tvModeAlbumSize": {
-        "desc": "Ukuran Album Mode TV",
-        "info": "Atur ukuran sampul album dalam mode TV (piksel)"
+        "desc": "Ukuran Album",
+        "info": "Atur ukuran sampul album di Mode TV (piksel)"
       },
       "splitView": {
-        "desc": "Tampilan Terpisah",
+        "desc": "Tata Letak Terpisah",
         "info": "Tampilkan sampul album di kiri dan lirik di kanan dalam mode layar penuh"
       },
       "invertPosition": {
         "desc": "Balik Posisi Album/Lirik",
-        "info": "Tukar posisi antara album dan lirik (Kiri Kanan ↔ Kanan Kiri, Atas Bawah dalam mode potret)"
+        "info": "Tukar posisi album dan lirik (Kiri ↔ Kanan, atau Atas ↔ Bawah di mode potret)"
       },
       "showAlbumArt": {
         "desc": "Tampilkan Sampul Album",
-        "info": "Tampilkan sampul album di panel kiri dalam mode layar penuh"
+        "info": "Tampilkan sampul album di panel kiri layar penuh"
       },
       "showTrackInfo": {
-        "desc": "Tampilkan Info Lagu",
-        "info": "Tampilkan judul lagu dan artis dalam mode layar penuh"
+        "desc": "Tampilkan Info Trek",
+        "info": "Tampilkan judul lagu dan artis di layar penuh"
       },
       "trimTitle": {
-        "desc": "Persingkat judul",
-        "info": "Hapus info tambahan seperti (Remaster), [feat. xxx] dari judul untuk tampilan lebih bersih"
+        "desc": "Judul Singkat",
+        "info": "Hapus info tambahan seperti (Remaster), [feat. xxx] agar judul lebih ringkas"
       },
       "translateMetadata": {
-        "desc": "Terjemahkan judul/artis",
-        "info": "Menerjemahkan judul lagu asing dan nama artis (memerlukan kunci API Gemini)"
+        "desc": "Terjemahkan Judul/Artis",
+        "info": "Terjemahkan judul lagu dan nama artis asing (Membutuhkan Kunci API Gemini)"
       },
       "translateMetadataMode": {
-        "desc": "Mode tampilan",
+        "desc": "Mode Tampilan Terjemahan",
         "info": "Pilih cara menampilkan judul dan artis",
         "options": {
-          "translated": "Terjemahan saja",
-          "romanized": "Romanisasi saja",
-          "originalTranslated": "Asli + terjemahan",
-          "originalRomanized": "Asli + romanisasi",
-          "all": "Tampilkan semua"
+          "all": "Tampilkan Semua (Asli + Terjemahan + Pelafalan)",
+          "translated": "Hanya Terjemahan (Asli jika tidak ada)",
+          "romanized": "Hanya Pelafalan (Asli jika tidak ada)",
+          "originalTranslated": "Asli + Terjemahan",
+          "originalRomanized": "Asli + Pelafalan"
         }
       },
-      "centerWhenNoLyrics": {
-        "desc": "Tengah Saat Tidak Ada Lirik",
-        "info": "Tengahkan sampul album saat tidak ada lirik atau sedang memuat"
-      },
       "infoGap": {
-        "desc": "Jarak Seni Album",
-        "info": "Atur jarak antara seni album dan kontrol (piksel)"
+        "desc": "Jarak Sampul Album",
+        "info": "Sesuaikan jarak antara sampul album dan kontrol/info (piksel)"
+      },
+      "centerWhenNoLyrics": {
+        "desc": "Tengah Album Saat Tanpa Lirik",
+        "info": "Tempatkan sampul album di tengah layar jika lirik tidak ada atau sedang dimuat"
       },
       "twoColumnLayout": {
         "desc": "Gunakan Tata Letak 2 Kolom"
       },
-      "overlay": {
-        "label": "Overlay",
-        "desc": "Tampilkan overlay di layar lirik"
-      },
       "browserFullscreen": {
-        "desc": "Gunakan Spotify Layar Penuh",
-        "info": "Ubah Spotify ke layar penuh monitor saat masuk mode layar penuh"
+        "desc": "Gunakan Layar Penuh Spotify",
+        "info": "Alihkan Spotify ke layar penuh saat masuk ke mode layar penuh untuk memenuhi monitor"
       }
     },
     "normalMode": {
       "title": "Tata Letak Mode Normal",
-      "subtitle": "Konfigurasi tata letak untuk mode layar penuh normal (saat mode TV nonaktif)",
+      "subtitle": "Atur tata letak mode layar penuh normal (saat bukan Mode TV)",
       "showAlbumName": {
         "desc": "Tampilkan Nama Album",
-        "info": "Tampilkan nama album di bawah judul dan artis",
-      },
+        "info": "Tampilkan nama album di bawah judul lagu dan artis"
+      }
     },
     "tvMode": {
       "title": "Pengaturan Mode TV",
-      "subtitle": "Konfigurasi opsi tampilan untuk mode TV",
+      "subtitle": "Atur opsi tampilan di Mode TV",
       "showAlbumName": {
         "desc": "Tampilkan Nama Album",
-        "info": "Tampilkan nama album di bawah artis dalam mode TV",
+        "info": "Tampilkan nama album di bawah artis di Mode TV"
       },
       "showControls": {
         "desc": "Tampilkan Tombol Kontrol",
-        "info": "Tampilkan tombol putar/jeda, trek sebelumnya/berikutnya dalam mode TV",
+        "info": "Tampilkan tombol kontrol seperti putar/jeda, sebelumnya/berikutnya di Mode TV"
       },
       "showProgress": {
-        "desc": "Tampilkan Bilah Kemajuan",
-        "info": "Tampilkan kemajuan dan waktu pemutaran dalam mode TV",
-      },
+        "desc": "Tampilkan Bar Progres",
+        "info": "Tampilkan bar progres posisi dan waktu lagu di Mode TV"
+      }
     },
     "metadataDisplay": {
       "title": "Tampilan Judul/Artis",
-      "subtitle": "Konfigurasi bagaimana judul dan artis ditampilkan",
+      "subtitle": "Atur cara menampilkan judul lagu dan artis"
     },
     "fullscreenStyle": {
       "title": "Gaya Layar Penuh",
       "subtitle": "Pengaturan elemen visual mode layar penuh",
       "albumSize": {
         "desc": "Ukuran Sampul Album",
-        "info": "Atur ukuran maksimal sampul album dalam mode layar penuh (100-500px)"
+        "info": "Atur ukuran maksimal sampul album di layar penuh (100-500px)"
       },
       "albumRadius": {
-        "desc": "Radius Sampul Album",
-        "info": "Atur kelengkungan sudut sampul album (0-50px)"
+        "desc": "Kebulatan Sampul Album",
+        "info": "Atur kebulatan sudut sampul album (0-50px)"
       },
       "titleFontSize": {
         "desc": "Ukuran Font Judul",
-        "info": "Atur ukuran font judul lagu dalam mode layar penuh (24-72px)"
+        "info": "Atur ukuran font judul lagu di layar penuh (24-72px)"
       },
       "artistFontSize": {
         "desc": "Ukuran Font Artis",
-        "info": "Atur ukuran font nama artis dalam mode layar penuh (14-36px)"
+        "info": "Atur ukuran font nama artis di layar penuh (14-36px)"
       },
       "lyricsRightMargin": {
         "desc": "Margin Kanan Lirik",
-        "info": "Atur margin kanan area lirik dalam mode layar penuh. Mencegah lirik terlalu ke kanan saat rata tengah (0-300px)"
+        "info": "Atur margin kanan area lirik di layar penuh. Mencegah lirik terlihat berat sebelah kanan saat rata tengah (0-300px)"
       }
     },
     "fullscreenUI": {
       "title": "Elemen UI Layar Penuh",
-      "subtitle": "Atur elemen UI tambahan yang ditampilkan dalam mode layar penuh",
+      "subtitle": "Atur elemen UI tambahan yang ditampilkan di layar penuh",
       "showClock": {
         "desc": "Tampilkan Jam",
-        "info": "Tampilkan waktu saat ini di pojok kanan atas"
+        "info": "Tampilkan waktu saat ini di kanan atas"
       },
       "clockSize": {
         "desc": "Ukuran Jam",
-        "info": "Atur ukuran font jam (24-72px)"
+        "info": "Atur ukuran teks jam (24-72px)"
       },
       "showContext": {
         "desc": "Tampilkan Konteks Putar",
-        "info": "Tampilkan info playlist/album yang sedang diputar di pojok kiri bawah"
+        "info": "Tampilkan info playlist/album yang sedang diputar di kiri bawah"
       },
       "showContextImage": {
         "desc": "Tampilkan Gambar Konteks",
-        "info": "Tampilkan juga thumbnail playlist/album"
+        "info": "Tampilkan thumbnail playlist/album juga"
       },
       "showNextTrack": {
         "desc": "Pratinjau Lagu Berikutnya",
-        "info": "Tampilkan info lagu berikutnya di pojok kanan atas sebelum lagu berakhir (gaya acara musik)"
+        "info": "Tampilkan info lagu berikutnya di kanan atas sebelum lagu berakhir (Gaya siaran musik)"
       },
       "nextTrackTime": {
         "desc": "Waktu Tampil Lagu Berikutnya",
-        "info": "Atur waktu tampil lagu berikutnya sebelum berakhir (5-30 detik)",
+        "info": "Atur berapa detik sebelum lagu berakhir untuk menampilkan info lagu berikutnya (5-30 detik)",
         "unit": "detik"
       },
       "showControls": {
         "desc": "Tampilkan Kontrol Pemutar",
-        "info": "Tampilkan tombol putar/jeda, sebelumnya/berikutnya, acak, ulangi, suka"
+        "info": "Tampilkan tombol putar/jeda, sebelumnya/berikutnya, acak, ulang, suka"
       },
       "showVolume": {
         "desc": "Tampilkan Kontrol Volume",
-        "info": "Tampilkan slider pengatur volume dalam kontrol pemutar"
+        "info": "Tampilkan slider volume di kontrol pemutar"
       },
       "showProgressBar": {
-        "desc": "Tampilkan Bilah Progres",
-        "info": "Tampilkan bilah progres yang menunjukkan posisi putar saat ini dan total waktu"
+        "desc": "Tampilkan Bar Progres",
+        "info": "Tampilkan bar progres posisi dan waktu total lagu"
       },
       "showLyricsProgress": {
         "desc": "Tampilkan Progres Lirik",
-        "info": "Tampilkan nomor baris saat ini dan total baris lirik"
+        "info": "Tampilkan nomor baris lirik saat ini dan total baris"
       },
       "showQueue": {
         "desc": "Tampilkan Panel Antrean",
-        "info": "Tampilkan antrean pemutaran saat mouse berada di sisi kanan layar"
+        "info": "Tampilkan antrean putar saat mouse diarahkan ke sisi kanan layar"
       }
     },
     "controllerStyle": {
       "title": "Gaya Kontroler",
-      "subtitle": "Atur tampilan kontroler pemutar musik",
+      "subtitle": "Atur tampilan kontroler pemutar",
       "buttonSize": {
         "desc": "Ukuran Tombol Kontrol",
-        "info": "Atur ukuran tombol putar, sebelumnya/berikutnya, dll. (28-48px)"
+        "info": "Atur ukuran tombol seperti putar, sebelumnya/berikutnya (28-48px)"
       },
       "background": {
         "desc": "Latar Belakang Kontroler",
-        "info": "Tambahkan latar belakang semi-transparan untuk kontroler"
+        "info": "Tambahkan latar belakang semi-transparan pada kontroler"
       }
     },
     "autoHide": {
       "title": "Sembunyikan Otomatis",
-      "subtitle": "Atur penyembunyian UI otomatis saat mouse tidak aktif",
+      "subtitle": "Pengaturan sembunyikan UI saat mouse tidak aktif",
       "enabled": {
-        "info": "Kontroler dan informasi akan disembunyikan otomatis jika mouse tidak digerakkan",
+        "info": "Kontroler dan info akan disembunyikan otomatis jika mouse tidak bergerak",
         "desc": "Sembunyikan UI Otomatis"
       },
       "delay": {
-        "desc": "Jeda Sembunyikan Otomatis",
-        "info": "Waktu setelah berhenti menggerakkan mouse sebelum UI disembunyikan (1-10 detik)"
+        "desc": "Jeda Sembunyi Otomatis",
+        "info": "Waktu tunggu sebelum UI disembunyikan setelah mouse tidak aktif (1-10 detik)"
       }
     },
     "tmiStyle": {
       "title": "Gaya TMI",
-      "subtitle": "Pengaturan gaya untuk modal TMI yang ditampilkan saat mengklik sampul album",
+      "subtitle": "Pengaturan gaya modal TMI yang muncul saat klik sampul album",
       "fontSize": {
         "desc": "Ukuran Font TMI",
         "info": "Sesuaikan ukuran font keseluruhan modal TMI (80-150%)"
@@ -1103,14 +1136,14 @@ window.LANG_ID = {
       "appInfo": {
         "title": "Info Aplikasi"
       },
-      "developer": "Dikembangkan oleh:",
+      "developer": "Pengembang:",
       "originalProject": "Proyek Asli:",
-      "thanks": "Terima kasih kepada semua yang telah berkontribusi pada proyek sumber terbuka.",
+      "thanks": "Terima kasih kepada semua kontributor proyek open source.",
       "clientInfo": {
         "title": "Info Klien",
-        "subtitle": "Pengenal unik Klien ini",
-        "description": "Ini adalah pengenal unik yang dibuat secara otomatis untuk menautkan akun. Nilai ini tidak dapat diubah dan unik untuk setiap pengguna. Mohon jangan ungkapkan nilai ini.",
-        "copied": "ID Klien Disalin",
+        "subtitle": "Pengenal unik klien ini",
+        "description": "Pengenal unik yang dibuat otomatis untuk penautan akun. Nilai ini tidak dapat diubah dan unik untuk setiap klien. Hati-hati jangan sampai nilai ini bocor.",
+        "copied": "ID Klien disalin",
         "copyFailed": "Gagal menyalin",
         "copy": "Salin"
       },
@@ -1118,7 +1151,7 @@ window.LANG_ID = {
         "title": "Pembaruan",
         "subtitle": "Cek versi terbaru",
         "checkUpdate": {
-          "desc": "Cek versi terbaru",
+          "desc": "Cek Versi Terbaru",
           "button": "Cek Pembaruan",
           "checking": "Memeriksa..."
         },
@@ -1128,29 +1161,29 @@ window.LANG_ID = {
       },
       "patchNotes": {
         "title": "Catatan Patch",
-        "subtitle": "Riwayat pembaruan terkini",
+        "subtitle": "Riwayat pembaruan terbaru",
         "loading": "Memuat catatan patch..."
       },
       "subtitle": "Tentang ivLyrics",
-      "appDescription": "Ekstensi lirik dengan berbagai fitur",
+      "appDescription": "Ekstensi Lirik dengan berbagai fitur",
       "versionPrefix": "Versi",
       "viewOnGithub": "Lihat di GitHub",
       "patchNotesLoadFailed": "Gagal memuat catatan patch",
-      "checkGithubReleases": "Silakan periksa halaman Rilis GitHub",
+      "checkGithubReleases": "Silakan cek halaman rilis GitHub",
       "visitGithub": "Kunjungi Repositori GitHub",
       "joinDiscord": "Gabung Server Discord"
     },
     "debugTab": {
-      "title": "Informasi Debug",
-      "subtitle": "Informasi untuk dibagikan dengan pengembang saat melaporkan bug",
+      "title": "Info Debug",
+      "subtitle": "Info untuk diberikan ke pengembang saat melaporkan bug",
       "currentTrack": "Info Trek Saat Ini",
       "trackInfo": "Info Trek",
       "lyricsInfo": "Info Lirik",
       "settingsInfo": "Info Pengaturan",
-      "noLyrics": "Tidak ada informasi lirik",
+      "noLyrics": "Tidak ada info lirik",
       "loading": "Memuat info...",
       "refresh": "Segarkan",
-      "copyToClipboard": "Salin ke Clipboard",
+      "copyToClipboard": "Salin ke Papan Klip",
       "copied": "Disalin!",
       "copyFailed": "Gagal menyalin",
       "sendToDiscord": "Laporkan ke Discord",
@@ -1160,32 +1193,32 @@ window.LANG_ID = {
       "title": "Pengaturan API",
       "getApiKey": {
         "desc": "Dapatkan Kunci API",
-        "info": "Anda bisa mendapatkan kunci Gemini API gratis dari Google AI Studio",
-        "button": "Buka halaman kunci API"
+        "info": "Anda bisa mendapatkan Kunci API Gemini gratis di Google AI Studio",
+        "button": "Buka Halaman Kunci API"
       },
       "geminiKey": {
-        "desc": "Kunci Gemini API",
-        "info": "Kunci API diperlukan untuk menggunakan fitur terjemahan lirik dengan Google Gemini AI"
+        "desc": "Kunci API Gemini",
+        "info": "Kunci API diperlukan untuk menggunakan fitur terjemahan lirik berbasis Google Gemini AI"
       }
     },
     "update": {
       "title": "Pembaruan",
       "subtitle": "Cek versi terbaru",
       "checkUpdate": {
-        "desc": "Cek versi terbaru",
+        "desc": "Cek Versi Terbaru",
         "button": "Cek Pembaruan",
         "checking": "Memeriksa..."
       },
       "copied": "Disalin",
       "installCopied": "Perintah instalasi disalin",
       "copyFailed": "Gagal menyalin",
-      "currentVersionInfo": "Versi saat ini: v{version}. Memeriksa pembaruan baru dari GitHub",
+      "currentVersionInfo": "Versi saat ini: v{version}. Memeriksa pembaruan baru di GitHub",
       "checkFailedWithError": "Gagal memeriksa pembaruan: {error}"
     }
   },
   "syncAdjust": {
-    "info": "Geser slider ke kanan, lirik akan lebih cepat.",
-    "reset": "Reset",
+    "info": "Geser ke kanan, lirik akan muncul lebih cepat.",
+    "reset": "Atur Ulang",
     "communityTitle": "Sinkronisasi Komunitas",
     "communityOffset": "Offset",
     "submissions": "Kiriman",
@@ -1195,64 +1228,64 @@ window.LANG_ID = {
     "applyCommunity": "Terapkan",
     "submitMine": "Kirim Offset Saya",
     "submitting": "Mengirim...",
-    "submitSuccess": "Berhasil dikirim ke komunitas",
+    "submitSuccess": "Terkirim ke komunitas",
     "submitFailed": "Gagal mengirim",
-    "noData": "Tidak ada data dari komunitas",
+    "noData": "Tidak ada data komunitas",
     "loading": "Memuat...",
     "feedbackGood": "Offset akurat",
     "feedbackBad": "Offset tidak akurat",
-    "cannotFeedbackOwnSubmission": "Tidak dapat menilai offset yang dikirim sendiri",
-    "feedbackPositiveSuccess": "Terima kasih atas umpan balik positif Anda!",
-    "feedbackNegativeSuccess": "Terima kasih atas umpan balik Anda. Kami akan memperbaikinya!",
+    "cannotFeedbackOwnSubmission": "Tidak bisa menilai kiriman sendiri",
+    "feedbackPositiveSuccess": "Terima kasih atas umpan balik positifnya!",
+    "feedbackNegativeSuccess": "Terima kasih atas umpan baliknya. Akan kami tingkatkan!",
     "feedbackFailed": "Gagal mengirim umpan balik",
-    "autoSubmitEnabled": "⚡ Kirim otomatis sedang aktif"
+    "autoSubmitEnabled": "⚡ Kirim otomatis aktif"
   },
   "playbarButton": {
-    "label": "ivLyrics"
+    "label": "Lirik Plus"
   },
   "videoBackground": {
     "loading": "Memuat info video...",
     "notFound": "Video tidak ditemukan.",
     "error": "Terjadi kesalahan.",
-    "loadingMessage": "Memuat latar belakang video... Mungkin memakan waktu sekitar 30 detik.",
-    "downloadingVideo": "Mengunduh video...",
+    "loadingMessage": "Memuat latar belakang video... Membutuhkan waktu sekitar 30 detik.",
+    "downloadingVideo": "engunduh video...",
     "downloading": "Mengunduh: {percent}%",
     "processing": "Memproses video...",
     "checking": "Memeriksa video...",
-    "preparing": "Mempersiapkan unduhan video...",
+    "preparing": "Menyiapkan unduhan video...",
     "downloadComplete": "Unduhan video selesai!",
-    "helperNotConnected": "Tidak dapat terhubung ke program helper. Pastikan program berjalan.",
-    "helperError": "Terjadi kesalahan pada program helper.",
+    "helperNotConnected": "Tidak dapat terhubung ke program Helper. Pastikan program berjalan.",
+    "helperError": "Terjadi kesalahan pada program Helper.",
     "tryingCookiesFile": "Mencoba dengan file cookies.txt...",
     "tryingBrowserCookies": "Mencoba dengan cookie {browser}...",
     "checkingWithCookiesFile": "Memeriksa video dengan cookies.txt...",
     "checkingWithBrowserCookies": "Memeriksa video dengan cookie {browser}...",
     "checkingAvailability": "Memeriksa ketersediaan video...",
-    "ageRestrictedNoCookies": "Video dibatasi usia. File cookies.txt atau browser yang didukung tidak ditemukan. Silakan konfigurasikan file cookies.txt di Pengaturan.",
-    "ageRestrictedFailed": "Video dibatasi usia. Silakan konfigurasikan file cookies.txt yang valid di Pengaturan.",
+    "ageRestrictedNoCookies": "Video dengan batasan usia. File cookies.txt atau browser yang didukung tidak ditemukan. Harap atur file cookies.txt di pengaturan.",
+    "ageRestrictedFailed": "Video dengan batasan usia. Harap atur file cookies.txt yang valid di pengaturan.",
     "videoAlreadyDownloaded": "Video sudah diunduh",
     "videoAvailable": "Video tersedia",
     "videoNotDownloaded": "Video belum diunduh"
   },
   "translator": {
-    "missingApiKey": "Kunci Gemini API belum diatur. Silakan masukkan kunci API di pengaturan.",
-    "invalidApiKeyFormat": "Format kunci API tidak valid. Kunci Gemini API harus dimulai dengan 'AIza'.",
-    "invalidRequestFormat": "Format permintaan tidak valid. Silakan periksa kunci API.",
-    "invalidApiKey": "Kunci API tidak valid. Silakan periksa kunci Gemini API di pengaturan.",
-    "accessForbidden": "Akses API ditolak. Silakan periksa izin kunci API.",
+    "missingApiKey": "Kunci API Gemini belum diatur. Silakan masukkan Kunci API di pengaturan.",
+    "invalidApiKeyFormat": "Format Kunci API tidak valid. Kunci API Gemini harus dimulai dengan 'AIza'.",
+    "invalidRequestFormat": "Format permintaan tidak valid. Periksa Kunci API Anda.",
+    "invalidApiKey": "Kunci API salah. Periksa Kunci API Gemini di pengaturan.",
+    "accessForbidden": "Akses API dilarang. Periksa izin Kunci API Anda.",
     "rateLimitExceeded": "Batas permintaan terlampaui. Silakan coba lagi nanti.",
     "serviceUnavailable": "Layanan terjemahan sementara tidak tersedia. Silakan coba lagi nanti.",
     "requestFailed": "Permintaan API gagal",
-    "apiKeyError": "Terjadi kesalahan terkait kunci Gemini API. Silakan periksa kunci API di pengaturan.",
+    "apiKeyError": "Terjadi kesalahan terkait Kunci API Gemini. Periksa Kunci API di pengaturan.",
     "translationFailed": "Terjemahan gagal",
-    "requestTimeout": "Permintaan terjemahan habis waktu. Silakan coba lagi.",
-    "failedPrefix": "Terjemahan gagal"
+    "requestTimeout": "Waktu permintaan terjemahan habis. Silakan coba lagi.",
+    "failedPrefix": "Gagal Menerjemahkan"
   },
   "utils": {
     "allUrlsFailed": "Gagal mendapatkan info versi dari semua URL",
     "invalidVersionFormat": "Format versi tidak valid",
     "unknownError": "Kesalahan tidak diketahui",
-    "requestTimeout": "Permintaan habis waktu",
+    "requestTimeout": "Waktu permintaan habis",
     "networkError": "Koneksi jaringan gagal",
     "securityRestriction": "Dibatasi oleh kebijakan keamanan browser",
     "serverError": "Kesalahan respons server",
@@ -1261,182 +1294,182 @@ window.LANG_ID = {
   "modes": {
     "karaoke": "Karaoke",
     "synced": "Sinkron",
-    "unsynced": "Normal"
+    "unsynced": "Lirik Umum"
   },
   "communityVideo": {
     "title": "Rekomendasi Video Komunitas",
-    "loading": "Memuat video...",
-    "loadError": "Gagal memuat video",
-    "noVideos": "Belum ada video komunitas",
+    "loading": "Memuat daftar video...",
+    "loadError": "Gagal memuat daftar video",
+    "noVideos": "Tidak ada video komunitas terdaftar",
     "autoDetected": "Otomatis",
     "startTime": "Mulai",
-    "submittedBy": "Oleh",
+    "submittedBy": "Pengirim",
     "addVideo": "Tambah Video",
     "addVideoNoEmoji": "Tambah Video",
     "youtubeUrl": "URL YouTube",
-    "startTimeSeconds": "Waktu mulai (detik)",
-    "submit": "Kirim",
-    "submitting": "Mengirim...",
-    "submitted": "Video berhasil dikirim!",
-    "updated": "Video berhasil diperbarui!",
-    "submitError": "Gagal mengirim video",
+    "startTimeSeconds": "Waktu Mulai (detik)",
+    "submit": "Daftarkan",
+    "submitting": "Mendaftarkan...",
+    "submitted": "Video berhasil didaftarkan!",
+    "updated": "Info video diperbarui!",
+    "submitError": "Gagal mendaftarkan video",
     "invalidUrl": "URL YouTube tidak valid",
-    "videoNotFound": "Video YouTube tidak ditemukan",
-    "videoPrivate": "Video bersifat pribadi atau dihapus",
-    "validationError": "Tidak dapat memvalidasi video. Silakan coba lagi",
+    "videoNotFound": "Video YouTube tidak ada",
+    "videoPrivate": "Video pribadi atau telah dihapus",
+    "validationError": "Tidak dapat memverifikasi video. Silakan coba lagi",
     "selectVideo": "Pilih Video",
     "preview": "Pratinjau",
     "apply": "Terapkan",
     "applyShort": "Terapkan",
     "applied": "Video diterapkan",
-    "videoTitle": "Judul video",
-    "loadingTitle": "Memuat judul...",
-    "startTimeLabel": "Waktu mulai lirik pertama (detik)",
-    "startTimeHint": "Masukkan waktu saat lirik pertama dimulai di video YouTube",
+    "videoTitle": "Judul Video",
+    "loadingTitle": "Mengambil judul...",
+    "startTimeLabel": "Waktu Mulai Lirik Pertama (detik)",
+    "startTimeHint": "Masukkan waktu di mana lirik pertama dimulai dalam video YouTube",
     "delete": "Hapus",
-    "deleteConfirm": "Apakah Anda yakin ingin menghapus video ini?",
-    "deleted": "Video berhasil dihapus",
-    "deleteError": "Gagal menghapus video"
+    "deleteConfirm": "Apakah Anda ingin menghapus video ini?",
+    "deleted": "Video dihapus",
+    "deleteError": "Gagal menghapus video",
+    "downloading": "Mengunduh video..."
   },
   "close": "Tutup",
   "cancel": "Batal",
   "shareImage": {
-    "title": "Bagikan gambar lirik",
-    "subtitle": "Buat dan bagikan gambar lirik yang indah",
-    "selectLyrics": "Pilih lirik",
-    "selectLyricsHint": "Klik baris untuk disertakan dalam gambar (maks. 6 baris)",
-    "template": "Template",
+    "title": "Bagikan Gambar Lirik",
+    "subtitle": "Buat gambar dari lirik favoritmu dan bagikan",
+    "selectLyrics": "Pilih Lirik",
+    "selectLyricsHint": "Klik baris lirik yang ingin dimasukkan (Maks 6 baris)",
+    "template": "Preset",
     "templates": {
-      "cover": "Blur Cover",
+      "cover": "Cover Blur",
       "gradient": "Gradien",
       "minimal": "Minimal",
-      "glass": "Kaca",
+      "glass": "Glass",
       "story": "Story"
     },
-    "advancedSettings": "Pengaturan lanjutan",
+    "advancedSettings": "Pengaturan Lanjutan",
     "sections": {
-      "background": "Latar belakang",
-      "cover": "Cover album",
+      "background": "Latar Belakang",
+      "cover": "Sampul Album",
       "lyrics": "Lirik",
-      "layout": "Tata letak",
+      "layout": "Tata Letak",
       "other": "Lainnya"
     },
-    "copyrightWarning": "⚠️ Pemberitahuan Hak Cipta\n\nGambar lirik ini mungkin berisi konten yang dilindungi hak cipta.\n\n• Gunakan hanya untuk keperluan pribadi\n• Jangan gunakan untuk tujuan komersial\n• Hormati pencipta asli saat berbagi di media sosial\n\nApakah Anda ingin melanjutkan?",
+    "copyrightWarning": "⚠️ Pemberitahuan Hak Cipta\n\nGambar lirik ini mungkin berisi konten yang dilindungi hak cipta.\n\n• Gunakan hanya untuk keperluan pribadi\n• Jangan gunakan untuk tujuan komersial\n• Hormati pencipta asli saat berbagi di media sosial\n\nLanjutkan?",
     "copyrightTitle": "Pemberitahuan Hak Cipta",
     "copyrightDesc": "Gambar lirik ini mungkin berisi konten yang dilindungi hak cipta.",
     "copyrightPoint1": "Gunakan hanya untuk keperluan pribadi",
     "copyrightPoint2": "Jangan gunakan untuk tujuan komersial",
     "copyrightPoint3": "Hormati pencipta asli saat berbagi di media sosial",
-    "copyrightConfirm": "Setuju & Lanjutkan",
+    "copyrightConfirm": "Setuju dan Lanjutkan",
     "settings": {
-      "backgroundType": "Gaya latar belakang",
+      "backgroundType": "Gaya Latar Belakang",
       "coverBlur": "Blur",
-      "gradient": "Gradien",
+      "gradient": "Gradasi",
       "solid": "Solid",
-      "backgroundBlur": "Blur latar belakang",
-      "backgroundOpacity": "Kegelapan latar belakang",
-      "showCover": "Cover album",
-      "showTrackInfo": "Info lagu",
-      "coverPosition": "Posisi cover",
+      "backgroundBlur": "Blur Latar Belakang",
+      "backgroundOpacity": "Kegelapan Latar Belakang",
+      "showCover": "Sampul Album",
+      "showTrackInfo": "Info Lagu",
+      "coverPosition": "Posisi Sampul",
       "posLeft": "Kiri",
       "posCenter": "Tengah",
-      "coverSize": "Ukuran cover",
-      "coverRadius": "Radius cover",
-      "coverBlur": "Blur cover",
-      "showPronunciation": "Pengucapan",
+      "coverSize": "Ukuran Sampul",
+      "coverRadius": "Kebulatan Sampul",
+      "showPronunciation": "Pelafalan",
       "showTranslation": "Terjemahan",
-      "lyricsAlign": "Perataan lirik",
+      "lyricsAlign": "Perataan Lirik",
       "alignLeft": "Kiri",
       "alignCenter": "Tengah",
-      "fontSize": "Ukuran font",
-      "blockGap": "Jarak baris",
-      "aspectRatio": "Rasio aspek",
-      "imageWidth": "Lebar gambar",
-      "padding": "Margin",
-      "showWatermark": "Tampilkan watermark"
+      "fontSize": "Ukuran Font",
+      "blockGap": "Jarak Baris",
+      "aspectRatio": "Rasio Gambar",
+      "imageWidth": "Lebar Gambar",
+      "padding": "Padding",
+      "showWatermark": "Tampilkan Watermark"
     },
     "preview": "Pratinjau",
     "actions": {
-      "copy": "Salin ke clipboard",
+      "copy": "Salin ke Papan Klip",
       "download": "Unduh",
       "share": "Bagikan"
     },
-    "copied": "✓ Disalin ke clipboard",
+    "copied": "✓ Disalin ke Papan Klip",
     "downloaded": "✓ Diunduh",
     "shared": "✓ Dibagikan",
-    "maxLinesReached": "Maksimal 3 baris dapat dipilih",
-    "noSelection": "Silakan pilih lirik"
+    "maxLinesReached": "Maksimal memilih 3 baris",
+    "noSelection": "Pilih lirik terlebih dahulu"
   },
   "setupWizard": {
     "welcome": {
-      "title": "Selamat datang di ivLyrics!",
+      "title": "Selamat Datang di ivLyrics!",
       "subtitle": "Nikmati lirik indah di Spotify",
       "features": {
-        "lyrics": "Lirik tersinkronisasi real-time",
-        "translation": "Dukungan terjemahan AI",
-        "customization": "Berbagai kustomisasi"
+        "lyrics": "Lirik Sinkron Real-time",
+        "translation": "Dukungan Terjemahan AI",
+        "customization": "Kustomisasi Beragam"
       },
       "start": "Mulai"
     },
     "language": {
       "title": "Pilih Bahasa",
-      "subtitle": "Silakan pilih bahasa Anda"
+      "subtitle": "Pilih bahasa yang ingin digunakan"
     },
     "apiKey": {
       "title": "Pengaturan Kunci API Gemini",
       "subtitle": "Kunci API diperlukan untuk menggunakan fitur terjemahan AI",
       "guide": {
-        "title": "Cara mendapatkan Kunci API",
+        "title": "Cara Mendapatkan Kunci API",
         "step1": "Kunjungi Google AI Studio",
         "step2": "Klik Get API Key",
-        "step3": "Buat kunci API baru",
+        "step3": "Buat Kunci API Baru",
         "step4": "Salin kunci yang dibuat"
       },
       "getKey": "Dapatkan Kunci API",
-      "skip": "Atur nanti",
-      "placeholder": "Masukkan kunci API Anda...",
+      "skip": "Atur Nanti",
+      "placeholder": "Masukkan Kunci API...",
       "multipleKeysHint": "Anda dapat mendaftarkan beberapa kunci API di pengaturan"
     },
     "theme": {
       "title": "Pengaturan Dasar",
-      "subtitle": "Pilih cara menampilkan lirik",
+      "subtitle": "Pilih cara tampilan lirik",
       "alignment": "Perataan",
       "background": "Efek Latar Belakang",
       "backgrounds": {
         "colorful": "Berwarna",
         "gradient": "Sampul Album",
-        "blurGradient": "Gradien Blur",
-        "solid": "Warna Solid",
+        "blurGradient": "Gradasi Blur",
+        "solid": "Solid",
         "video": "Video"
       }
     },
     "translationTip": {
-      "title": "Panduan Pengaturan Terjemahan",
-      "subtitle": "Fitur terjemahan diatur secara individual untuk setiap bahasa",
+      "title": "Info Pengaturan Terjemahan",
+      "subtitle": "Fitur terjemahan diatur secara terpisah per bahasa",
       "pronunciation": "Pelafalan",
       "translation": "Terjemahan",
-      "description": "Mengaktifkan terjemahan untuk lagu K-POP tidak akan menerapkannya ke J-POP. Silakan klik tombol konversi di bawah ini untuk mengatur opsi 'Pelafalan' dan 'Terjemahan' secara terpisah untuk setiap bahasa."
+      "description": "Mengaktifkan terjemahan untuk lagu K-POP tidak otomatis menerapkannya untuk J-POP. Klik tombol konversi di bawah untuk mengatur opsi 'Pelafalan' dan 'Terjemahan' secara terpisah untuk setiap bahasa."
     },
     "overlayTip": {
       "title": "Overlay Desktop",
-      "subtitle": "Lihat lirik di mana saja di desktop Anda",
-      "description": "Instal aplikasi overlay untuk melihat lirik saat menggunakan aplikasi lain. Anda dapat mengaktifkannya kapan saja di Pengaturan.",
+      "subtitle": "Lihat lirik di mana saja di desktop",
+      "description": "Instal aplikasi overlay untuk melihat lirik saat menggunakan aplikasi lain. Anda dapat mengaktifkannya kapan saja di pengaturan.",
       "requiresApp": "Fitur ini memerlukan instalasi aplikasi overlay terpisah.",
       "enabled": "Aktifkan Overlay",
       "downloadApp": "Unduh Aplikasi Overlay"
     },
     "nowPlayingTip": {
-      "title": "Lirik Panel Sedang Diputar",
-      "subtitle": "Lihat lirik saat ini di panel kanan",
-      "description": "Menampilkan lirik saat ini di panel 'Sedang Diputar' Spotify. Anda dapat memeriksa lirik tanpa mode layar penuh.",
-      "enabled": "Tampilkan Lirik di Panel",
+      "title": "Lirik Panel NowPlaying",
+      "subtitle": "Cek lirik saat ini di panel kanan",
+      "description": "Tampilkan lirik saat ini di panel 'Sedang Diputar' Spotify. Anda bisa melihat lirik tanpa mode layar penuh.",
+      "enabled": "Tampilkan Lirik Panel",
       "linesCount": "Jumlah Baris"
     },
     "complete": {
-      "title": "Siap!",
+      "title": "Siap Digunakan!",
       "subtitle": "Sekarang Anda siap menggunakan ivLyrics",
       "startNow": "Mulai Sekarang",
-      "openSettings": "Buka Pengaturan"
+      "openSettings": "Lihat Pengaturan"
     },
     "navigation": {
       "next": "Lanjut",
@@ -1444,100 +1477,121 @@ window.LANG_ID = {
       "skip": "Lewati"
     },
     "videoTest": {
-      "title": "Uji Latar Belakang Video",
-      "subtitle": "Silakan periksa apakah video YouTube di bawah diputar dengan benar",
-      "question": "Apakah menampilkan bahwa Anda perlu masuk untuk memutar video?",
+      "title": "Tes Latar Belakang Video",
+      "subtitle": "Harap periksa apakah video YouTube di bawah ini diputar dengan normal",
+      "question": "Apakah muncul pesan perlu login untuk memutar video?",
       "yes": "Ya",
       "no": "Tidak",
-      "helperRequired": "Jika ya, Anda perlu menginstal program pembantu.",
-      "helperDesc": "Program pembantu memungkinkan Anda memutar video tanpa login YouTube.",
-      "installHelper": "Instal Program Pembantu",
+      "helperRequired": "Jika ya, Anda perlu menginstal program Helper.",
+      "helperDesc": "Program Helper memungkinkan pemutaran video tanpa login YouTube.",
+      "installHelper": "Instal Program Helper",
       "skip": "Lewati"
     },
     "videoHelperTest": {
-      "title": "Uji Program Pembantu",
-      "subtitle": "Verifikasi bahwa program pembantu berfungsi dengan benar",
-      "enableHelper": "Aktifkan Program Pembantu",
-      "testVideo": "Uji Pemutaran Video",
+      "title": "Tes Program Helper",
+      "subtitle": "Memeriksa apakah program Helper berfungsi dengan benar",
+      "enableHelper": "Aktifkan Program Helper",
+      "testVideo": "Putar Video Tes",
       "testing": "Menguji...",
-      "success": "Program pembantu berfungsi dengan benar!",
-      "failed": "Tidak dapat terhubung ke program pembantu. Pastikan program sedang berjalan.",
+      "success": "Program Helper berfungsi normal!",
+      "failed": "Tidak dapat terhubung ke program Helper. Pastikan program berjalan.",
       "downloading": "Mengunduh video: {percent}%",
       "skip": "Lewati"
+    },
+    "tmi": {
+      "getApiKeyDesc": "Dapatkan Kunci API Gemini",
+      "getApiKeyInfo": "Digunakan untuk memuat TMI. Gratis dari Google AI Studio.",
+      "viewInfo": "Klik untuk melihat berbagai info tentang lagu ini",
+      "requireKey": "Pengaturan Kunci API Gemini diperlukan di pengaturan",
+      "settingTitle": "Kunci API Gemini",
+      "settingDesc": "Diperlukan untuk memuat TMI/Info lagu.",
+      "title": "TMI",
+      "didYouKnow": "Tahukah Anda?",
+      "close": "Tutup",
+      "cancel": "Batal",
+      "loading": "Mencari fakta menarik...",
+      "noData": "Belum ada TMI untuk lagu ini.",
+      "clickForTMI": "Lihat TMI",
+      "clickToClose": "✕ atau klik sampul album untuk menutup",
+      "regenerate": "Buat ulang TMI.",
+      "errorFetch": "Terjadi kesalahan saat memuat TMI.",
+      "errorQuota": "Kuota API terlampaui.",
+      "errorQuotaHint": "Coba lagi nanti, atau masukkan kunci API lain di pengaturan.",
+      "disclaimer": "Konten ini diproses oleh AI dari informasi internet dan mungkin berisi informasi yang tidak akurat.",
+      "verified": "Terverifikasi",
+      "unverified": "Belum Terverifikasi",
+      "verifiedCount": "Terverifikasi",
+      "sources": "Sumber",
+      "verifiedSources": "Sumber Terverifikasi",
+      "relatedSources": "Sumber Terkait",
+      "otherSources": "Sumber Lain",
+      "confidenceVeryHigh": "Kepercayaan Sangat Tinggi",
+      "confidenceHigh": "Kepercayaan Tinggi",
+      "confidenceMedium": "Kepercayaan Sedang",
+      "confidenceLow": "Kepercayaan Rendah",
+      "confidenceNone": "Tanpa Sumber"
+    },
+    "notice": {
+      "confirm": "Konfirmasi",
+      "next": "Lanjut",
+      "dismissAll": "Tutup Semua"
+    },
+    "syncCreator": {
+      "title": "Buat Sinkronisasi Karaoke",
+      "buttonTooltip": "Buat Sinkronisasi Karaoke",
+      "clickHereHint": "Klik di sini untuk menyinkronkan lirik!",
+      "loading": "Memuat...",
+      "loadLyrics": "Muat Lirik",
+      "reload": "Muat Ulang",
+      "loadingLyrics": "Memuat lirik...",
+      "selectProvider": "Memuat lirik otomatis (Spotify → LRCLIB)",
+      "noLyrics": "Lirik tidak ditemukan",
+      "loadError": "Gagal memuat lirik",
+      "currentLine": "Lirik Saat Ini",
+      "nextLine": "Lirik Berikutnya",
+      "progress": "Progres",
+      "linesCompleted": "Baris Selesai",
+      "chars": "Karakter",
+      "reset": "Atur Ulang",
+      "firstLine": "Ke Baris Pertama",
+      "prevLine": "Baris Sebelumnya",
+      "nextLineBtn": "Baris Berikutnya",
+      "recordMode": "Mode Rekam",
+      "stopRecord": "Berhenti Rekam",
+      "previewMode": "Mode Pratinjau",
+      "stopPreview": "Berhenti Pratinjau",
+      "idleMode": "Siaga",
+      "submit": "Kirim",
+      "submitting": "Mengirim...",
+      "noSyncData": "Tidak ada data sinkronisasi yang terdaftar",
+      "incompleteConfirm": "Beberapa baris belum disinkronkan. Tetap kirim?",
+      "submitSuccess": "Data sinkronisasi terkirim! Akan diterapkan setelah persetujuan admin.",
+      "submitError": "Gagal mengirim data sinkronisasi",
+      "dragHint": "Seret untuk merekam waktu per karakter. Seret ke kiri untuk membatalkan.",
+      "globalOffset": "Offset Global",
+      "synced": "Tersinkron",
+      "notSynced": "Belum Sinkron",
+      "deleteLine": "Hapus baris ini",
+      "back": "Tutup",
+      "lrclib": {
+        "registerLyrics": "Daftarkan Lirik ke LRCLIB",
+        "title": "Daftarkan Lirik ke LRCLIB",
+        "description": "Lirik lagu ini tidak ada. Jika Anda memasukkan dan mendaftarkan lirik secara manual ke LRCLIB, pengguna lain juga dapat menggunakannya. Harap masukkan dengan hati-hati karena tidak dapat diedit setelah pendaftaran.",
+        "trackInfo": "Info Trek",
+        "placeholder": "Masukkan lirik...\n\nPisahkan setiap baris dengan baris baru.\nBaris kosong akan dihapus otomatis.",
+        "publishToLrcLib": "Daftar ke LRCLIB",
+        "publishing": "Mendaftarkan...",
+        "cancelPublish": "Batal Daftar",
+        "publishCancelled": "Pendaftaran dibatalkan",
+        "timeWarning": "⚠️ LRCLIB memerlukan penyelesaian token enkripsi untuk mencegah pendaftaran lirik sembarangan. Proses ini mungkin memakan waktu sekitar 5 menit tergantung kinerja komputer.",
+        "requestingChallenge": "Meminta autentikasi...",
+        "solvingChallenge": "Memproses autentikasi...",
+        "solving": "Memproses autentikasi... (Percobaan {nonce})",
+        "publishSuccess": "Lirik berhasil didaftarkan ke LRCLIB!",
+        "publishError": "Gagal mendaftarkan lirik",
+        "noLyricsInput": "Silakan masukkan lirik",
+        "loadingAfterPublish": "Memuat lirik yang terdaftar..."
+      }
     }
-  },
-  tmi: {
-    getApiKeyDesc: "Dapatkan Kunci API Gemini",
-    getApiKeyInfo: "Digunakan untuk mengambil TMI. Tersedia gratis dari Google AI Studio.",
-    viewInfo: "Klik untuk melihat detail lagu",
-    requireKey: "Kunci API Gemini diperlukan di pengaturan",
-    settingTitle: "Kunci API Gemini",
-    settingDesc: "Diperlukan untuk memuat konten TMI/Trivia lagu.",
-    title: "TMI",
-    didYouKnow: "Tahukah kamu?",
-    close: "Tutup",
-    cancel: "Batal",
-    loading: "Mencari fakta menarik...",
-    noData: "Belum ada TMI yang tersedia untuk lagu ini.",
-    clickForTMI: "Klik untuk TMI",
-    clickToClose: "Klik ✕ atau area album untuk kembali",
-    regenerate: "Regenerasi TMI",
-    errorFetch: "Terjadi kesalahan saat mengambil TMI.",
-    errorQuota: "Kuota API terlampaui.",
-    errorQuotaHint: "Silakan coba lagi nanti atau masukkan kunci API lain di pengaturan.",
-    disclaimer: "Konten ini dihasilkan oleh AI menggunakan informasi dari internet dan mungkin berisi informasi yang tidak akurat.",
-    sources: "Sumber",
-    verifiedSources: "Sumber Terverifikasi",
-    relatedSources: "Sumber Terkait",
-    otherSources: "Sumber Lainnya",
-    confidenceVeryHigh: "Kepercayaan Sangat Tinggi",
-    confidenceHigh: "Kepercayaan Tinggi",
-    confidenceMedium: "Kepercayaan Sedang",
-    confidenceLow: "Kepercayaan Rendah",
-    confidenceNone: "Tanpa Sumber"
-  },
-  notice: {
-    confirm: "OK",
-    next: "Berikutnya",
-    dismissAll: "Tutup Semua"
-  },
-  syncCreator: {
-    title: "Buat Sinkronisasi Karaoke",
-    buttonTooltip: "Buat Sinkronisasi Karaoke",
-    clickHereHint: "Klik di sini untuk menyinkronkan lirik!",
-    loading: "Memuat...",
-    loadLyrics: "Muat Lirik",
-    loadingLyrics: "Memuat lirik...",
-    selectProvider: "Silakan pilih penyedia dan muat lirik",
-    noLyrics: "Lirik tidak ditemukan",
-    loadError: "Gagal memuat lirik",
-    currentLine: "Baris Saat Ini",
-    nextLine: "Baris Berikutnya",
-    progress: "Kemajuan",
-    linesCompleted: "baris selesai",
-    chars: "karakter",
-    reset: "Reset",
-    firstLine: "Baris Pertama",
-    prevLine: "Sebelumnya",
-    nextLineBtn: "Berikutnya",
-    recordMode: "Mode Perekaman",
-    stopRecord: "Berhenti Merekam",
-    previewMode: "Mode Pratinjau",
-    stopPreview: "Berhenti Pratinjau",
-    idleMode: "Siaga",
-    recordLine: "Rekam Cepat",
-    submit: "Kirim",
-    submitting: "Mengirim...",
-    noSyncData: "Tidak ada data sinkronisasi",
-    incompleteConfirm: "Beberapa baris belum disinkronkan. Kirim saja?",
-    submitSuccess: "Data sinkronisasi dikirim! Akan diterapkan setelah disetujui.",
-    submitError: "Gagal mengirim data sinkronisasi",
-    dragHint: "Seret pada karakter untuk merekam waktu. Seret ke kiri untuk membatalkan.",
-    globalOffset: "Offset Global",
-    synced: "Tersinkron",
-    notSynced: "Tidak Tersinkron",
-    deleteLine: "Hapus baris",
-    back: "Tutup"
   }
 };
-
