@@ -46,12 +46,17 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		Spicetify.Player?.data?.item?.album?.images?.[0]?.url || '';
 
 	// 가사를 줄 단위로 파싱
+	// NFC 정규화를 적용하여 결합 문자(NFD)를 합성 문자로 변환
+	// 예: "e" + 결합 액센트 -> "é" (1개 코드포인트)
 	const lyricsLines = useMemo(() => {
 		if (!lyricsText) return [];
-		return lyricsText.split('\n').filter(line => line.trim().length > 0);
+		return lyricsText.split('\n')
+			.filter(line => line.trim().length > 0)
+			.map(line => line.normalize('NFC'));
 	}, [lyricsText]);
 
 	const totalChars = useMemo(() => {
+		// NFC 정규화된 lyricsLines를 사용하므로 Array.from()이 정확한 문자 수를 반환
 		return lyricsLines.reduce((sum, line) => sum + Array.from(line).length, 0);
 	}, [lyricsLines]);
 
@@ -212,6 +217,9 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 				} else if (typeof lyricsSource === 'string') {
 					text = lyricsSource;
 				}
+
+				// NFC 정규화 적용 - 결합 문자를 합성 문자로 변환
+				text = text.normalize('NFC');
 
 				if (text.trim().length > 0) {
 					setLyricsText(text);

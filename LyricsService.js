@@ -1280,9 +1280,17 @@
 
             // 전체 가사 텍스트를 하나로 합침 (줄바꿈 없이 - SyncDataCreator와 동일하게)
             // SyncDataCreator에서는 각 줄의 글자 수만 계산하고 줄바꿈은 포함하지 않음
-            // 중요: SyncDataCreator는 Array.from()으로 유니코드 코드 포인트 기준 인덱스를 사용하므로
+            // 중요 1: SyncDataCreator는 Array.from()으로 유니코드 코드 포인트 기준 인덱스를 사용하므로
             // 여기서도 동일하게 Array.from()을 사용해야 특수문자(서로게이트 페어, 결합 문자 등)가 포함된 경우에도 정확한 인덱싱이 가능함
-            const fullTextChars = lyrics.map(line => Array.from(line.text || '')).flat();
+            // 중요 2: SyncDataCreator에서는 filter(t => t.trim().length > 0)로 빈 줄/공백 줄을 제외하므로
+            // 여기서도 동일하게 필터링해야 인덱스가 맞음
+            // 중요 3: NFD(결합 문자) vs NFC(합성 문자) 정규화 차이로 인한 인덱스 불일치 방지
+            // 예: "é"가 NFD에서는 "e" + 결합 액센트로 2개 코드포인트, NFC에서는 1개 코드포인트
+            // SyncDataCreator와 동일하게 NFC로 정규화해야 함
+            const fullTextChars = lyrics
+                .filter(line => (line.text || '').trim().length > 0)
+                .map(line => Array.from((line.text || '').normalize('NFC')))
+                .flat();
 
             const result = [];
 
