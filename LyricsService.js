@@ -1282,14 +1282,20 @@
             // SyncDataCreator에서는 각 줄의 글자 수만 계산하고 줄바꿈은 포함하지 않음
             const fullText = lyrics.map(line => line.text || '').join('');
 
+            // 유니코드 문자 배열로 변환 - SyncDataCreator와 동일한 방식
+            // substring()은 UTF-16 코드 유닛 기반이지만, SyncDataCreator는 Array.from()으로 
+            // 유니코드 문자 단위로 인덱스를 계산하므로 이를 맞춰줘야 함
+            // (이모지 등 서러게이트 페어 문자가 있을 때 인덱스가 밀리는 문제 해결)
+            const fullTextChars = Array.from(fullText);
+
             const result = [];
 
             for (let i = 0; i < syncLines.length; i++) {
                 const lineData = syncLines[i];
                 const nextLineData = syncLines[i + 1];
 
-                // 해당 범위의 텍스트 추출
-                const lineText = fullText.substring(lineData.start, lineData.end + 1);
+                // 해당 범위의 텍스트 추출 (유니코드 문자 배열에서 슬라이스)
+                const lineText = fullTextChars.slice(lineData.start, lineData.end + 1).join('');
 
                 // 라인 시작/종료 시간 계산 (일단 다음 줄 시작 전까지로 잡지만, 아래에서 조정함)
                 const lineStartTime = Math.round(lineData.chars[0] * 1000);
