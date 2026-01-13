@@ -329,10 +329,6 @@ window.LANG_FR = {
       "name": "LRCLIB",
       "desc": "LRCLIB fournit des paroles synchronisées et est une base de données gratuite maintenue par la communauté."
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "IvLyrics fournit des paroles synchronisées et des paroles de karaoké."
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "Spotify fournit des paroles synchronisées pour certains utilisateurs premium."
@@ -1329,7 +1325,6 @@ window.LANG_FR = {
   },
   "providerDescriptions": {
     "lrclib": "Paroles fournies par lrclib.net. Prend en charge les paroles synchronisées et non synchronisées. LRCLIB est un fournisseur de paroles gratuit maintenu par la communauté.",
-    "ivLyrics": "Améliore algorithmiquement les données de synchronisation des paroles fournies par l'API officielle de Spotify.",
     "spotify": "Paroles fournies par l'API officielle de Spotify.",
     "cache": "Fournit des paroles en cache/fichiers locaux chargés lors des sessions Spotify précédentes."
   },

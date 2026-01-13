@@ -329,10 +329,6 @@ window.LANG_ZH_TW = {
       "name": "LRCLIB",
       "desc": "LRCLIB提供同步歌詞，是免費的社群維護歌詞資料庫。"
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "IvLyrics提供同步歌詞和卡拉OK歌詞。"
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "Spotify為部分Premium用戶提供同步歌詞。"
@@ -1329,7 +1325,6 @@ window.LANG_ZH_TW = {
   },
   "providerDescriptions": {
     "lrclib": "來自lrclib.net的歌詞。支援同步和非同步歌詞。LRCLIB是免費的開源歌詞提供者。",
-    "ivLyrics": "透過演算法改進官方Spotify API提供的歌詞同步資料。",
     "spotify": "來自官方Spotify API的歌詞。",
     "cache": "來自先前Spotify工作階段載入的快取/本機檔案的歌詞。"
   },

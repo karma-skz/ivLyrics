@@ -816,7 +816,7 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
                 // 1단계: 가사만 먼저 로드 (빠르게 표시)
                 // ==========================================
                 // 사용자 설정의 provider 순서 사용 (활성화된 것만 필터)
-                const defaultOrder = ['ivlyrics', 'spotify', 'lrclib', 'local'];
+                const defaultOrder = ['spotify', 'lrclib', 'local'];
                 const configOrder = window.CONFIG?.providersOrder;
                 const providers = window.CONFIG?.providers || {};
                 const providerOrder = Array.isArray(configOrder) && configOrder.length > 0

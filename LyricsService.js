@@ -1155,265 +1155,6 @@
 
     window.ProviderLRCLIB = ProviderLRCLIB;
 
-    // ============================================
-    // ProviderIvLyrics - ivLyrics API 제공자
-    // ============================================
-    const ProviderIvLyrics = (() => {
-        // LRC 파싱 유틸리티 (Utils.parseLocalLyrics 대체)
-        function parseLRC(lrc) {
-            const lines = lrc.split('\n');
-            const synced = [];
-            const unsynced = [];
-
-            for (const line of lines) {
-                const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)/);
-                if (match) {
-                    const minutes = parseInt(match[1], 10);
-                    const seconds = parseInt(match[2], 10);
-                    const milliseconds = match[3].length === 2
-                        ? parseInt(match[3], 10) * 10
-                        : parseInt(match[3], 10);
-                    const startTime = (minutes * 60 + seconds) * 1000 + milliseconds;
-                    const text = match[4].trim();
-
-                    synced.push({ startTime, text });
-                    unsynced.push({ text });
-                } else if (line.trim() && !line.startsWith('[')) {
-                    unsynced.push({ text: line.trim() });
-                }
-            }
-
-            return { synced: synced.length > 0 ? synced : null, unsynced };
-        }
-
-        // getUserHash 유틸리티
-        function getUserHash() {
-            let userHash = Spicetify.LocalStorage.get("ivLyrics:userHash");
-            if (!userHash) {
-                // 간단한 해시 생성
-                userHash = 'user_' + Math.random().toString(36).substring(2, 15);
-                Spicetify.LocalStorage.set("ivLyrics:userHash", userHash);
-            }
-            return userHash;
-        }
-
-        async function findLyrics(info) {
-            const trackId = info.uri.split(":")[2];
-
-            // ApiTracker에 현재 트랙 설정
-            if (window.ApiTracker) {
-                window.ApiTracker.setCurrentTrack(trackId);
-            }
-
-            // 1. 로컬 캐시 먼저 확인
-            try {
-                const cached = await LyricsCache.getLyrics(trackId, 'ivlyrics');
-                if (cached) {
-                    if (window.ApiTracker) {
-                        window.ApiTracker.logCacheHit('lyrics', `lyrics:${trackId}`, {
-                            provider: cached.provider,
-                            lyrics_type: cached.lyrics_type,
-                            lineCount: cached.synced?.length || cached.unsynced?.length || 0
-                        });
-                    }
-                    return cached;
-                }
-            } catch (e) {
-                console.warn('[ProviderIvLyrics] Cache check failed:', e);
-            }
-
-            // 2. API 호출
-            const userHash = getUserHash();
-            const baseURL = `https://lyrics.api.ivl.is/lyrics?trackId=${trackId}&userHash=${userHash}`;
-
-            let logId = null;
-            if (window.ApiTracker) {
-                logId = window.ApiTracker.logRequest('lyrics', baseURL, { trackId, userHash });
-            }
-
-            try {
-                const body = await fetch(baseURL, {
-                    headers: {
-                        "User-Agent": `spicetify v${Spicetify.Config.version} (https://github.com/spicetify/cli)`,
-                    },
-                    cache: "no-cache",
-                });
-
-                if (body.status !== 200) {
-                    const errorResult = {
-                        error: "Request error: Track wasn't found",
-                        uri: info.uri,
-                    };
-                    if (window.ApiTracker && logId) {
-                        window.ApiTracker.logResponse(logId, { status: body.status }, 'error', `HTTP ${body.status}`);
-                    }
-                    return errorResult;
-                }
-
-                const response = await body.json();
-
-                if (response.error) {
-                    if (window.ApiTracker && logId) {
-                        window.ApiTracker.logResponse(logId, response, 'error', response.error);
-                    }
-                    return {
-                        error: response.error,
-                        uri: info.uri,
-                    };
-                }
-
-                if (window.ApiTracker && logId) {
-                    window.ApiTracker.logResponse(logId, {
-                        provider: response.provider,
-                        lyrics_type: response.lyrics_type,
-                        source: response.source,
-                        lineCount: response.synced?.length || response.unsynced?.length || 0
-                    }, 'success');
-                }
-
-                // 3. 로컬 캐시에 저장
-                LyricsCache.setLyrics(trackId, 'ivlyrics', response).catch(() => { });
-
-                return response;
-            } catch (e) {
-                if (window.ApiTracker && logId) {
-                    window.ApiTracker.logResponse(logId, null, 'error', e.message);
-                }
-                throw e;
-            }
-        }
-
-        function getUnsynced(body) {
-            if (body.error) return null;
-
-            if (body.lyrics_type === "synced") {
-                const parsed = parseLRC(body.lyrics);
-                return parsed.unsynced;
-            } else if (body.lyrics_type === "unsynced") {
-                return parseLRC(body.lyrics).unsynced;
-            } else if (body.lyrics_type === "word_by_word") {
-                const lyrics = JSON.parse(body.lyrics);
-                return lyrics.map(line => ({
-                    text: line.x
-                }));
-            }
-
-            return null;
-        }
-
-        function getSynced(body) {
-            if (body.error) return null;
-
-            if (body.lyrics_type === "synced") {
-                const parsed = parseLRC(body.lyrics);
-                return parsed.synced;
-            } else if (body.lyrics_type === "word_by_word") {
-                const lyrics = JSON.parse(body.lyrics);
-                return lyrics.map(line => ({
-                    startTime: Math.round(line.ts * 1000),
-                    text: line.x
-                }));
-            }
-
-            return null;
-        }
-
-        function getKaraoke(body) {
-            if (body.error) return null;
-
-            if (body.lyrics_type === "word_by_word") {
-                const lyrics = JSON.parse(body.lyrics);
-                const result = lyrics.map(line => {
-                    const lineStartTime = Math.round(line.ts * 1000);
-                    const lineEndTime = Math.round(line.te * 1000);
-
-                    if (!line.l || line.l.length === 0) {
-                        return {
-                            startTime: lineStartTime,
-                            endTime: lineEndTime,
-                            text: line.x,
-                            syllables: [{
-                                text: line.x,
-                                startTime: lineStartTime,
-                                endTime: lineEndTime
-                            }]
-                        };
-                    }
-
-                    const vocalGroups = [];
-                    let currentGroup = [];
-                    let lastEndTime = 0;
-
-                    line.l.forEach((syllable, index) => {
-                        const syllableStartTime = Math.round((line.ts + syllable.o) * 1000);
-                        const nextSyllable = line.l[index + 1];
-                        const syllableEndTime = nextSyllable
-                            ? Math.round((line.ts + nextSyllable.o) * 1000)
-                            : lineEndTime;
-
-                        const gap = syllableStartTime - lastEndTime;
-                        const isNewVocalGroup = gap > 500 && currentGroup.length > 0;
-
-                        if (isNewVocalGroup) {
-                            vocalGroups.push([...currentGroup]);
-                            currentGroup = [];
-                        }
-
-                        currentGroup.push({
-                            text: syllable.c,
-                            startTime: syllableStartTime,
-                            endTime: syllableEndTime
-                        });
-
-                        lastEndTime = syllableEndTime;
-                    });
-
-                    if (currentGroup.length > 0) {
-                        vocalGroups.push(currentGroup);
-                    }
-
-                    if (vocalGroups.length > 1) {
-                        return {
-                            startTime: lineStartTime,
-                            endTime: lineEndTime,
-                            text: line.x,
-                            vocals: {
-                                lead: {
-                                    startTime: vocalGroups[0][0].startTime,
-                                    endTime: vocalGroups[0][vocalGroups[0].length - 1].endTime,
-                                    syllables: vocalGroups[0]
-                                },
-                                background: vocalGroups.slice(1).map(group => ({
-                                    startTime: group[0].startTime,
-                                    endTime: group[group.length - 1].endTime,
-                                    syllables: group
-                                }))
-                            }
-                        };
-                    } else {
-                        return {
-                            startTime: lineStartTime,
-                            endTime: lineEndTime,
-                            text: line.x,
-                            syllables: vocalGroups[0] || [{
-                                text: line.x,
-                                startTime: lineStartTime,
-                                endTime: lineEndTime
-                            }]
-                        };
-                    }
-                });
-
-                return result;
-            }
-
-            return null;
-        }
-
-        return { findLyrics, getSynced, getUnsynced, getKaraoke };
-    })();
-
-    window.ProviderIvLyrics = ProviderIvLyrics;
 
     // ============================================
     // SyncDataService - 커뮤니티 싱크 데이터 서비스
@@ -1754,45 +1495,6 @@
             return result;
         },
 
-        ivlyrics: async (info) => {
-            const result = {
-                uri: info.uri,
-                karaoke: null,
-                synced: null,
-                unsynced: null,
-                provider: "ivLyrics",
-                copyright: null,
-            };
-
-            let body;
-            try {
-                body = await ProviderIvLyrics.findLyrics(info);
-                if (body.error) {
-                    throw "";
-                }
-            } catch {
-                result.error = "No lyrics";
-                return result;
-            }
-
-            const synced = ProviderIvLyrics.getSynced(body);
-            if (synced) {
-                result.synced = synced;
-            }
-
-            const unsynced = synced || ProviderIvLyrics.getUnsynced(body);
-            if (unsynced) {
-                result.unsynced = unsynced;
-            }
-
-            const karaoke = ProviderIvLyrics.getKaraoke(body);
-            if (karaoke) {
-                result.karaoke = karaoke;
-            }
-
-            return result;
-        },
-
         local: (info) => {
             let result = {
                 uri: info.uri,
@@ -1850,10 +1552,10 @@
         /**
          * 가사 가져오기
          * @param {Object} info - 트랙 정보 (uri, title, artist, album, duration)
-         * @param {string} providerName - 제공자 이름 (spotify, lrclib, ivlyrics, local)
+         * @param {string} providerName - 제공자 이름 (spotify, lrclib, local)
          * @returns {Promise<Object>} - 가사 결과
          */
-        async getLyrics(info, providerName = 'ivlyrics') {
+        async getLyrics(info, providerName = 'spotify') {
             if (!Providers[providerName]) {
                 throw new Error(`Unknown provider: ${providerName}`);
             }
@@ -1867,7 +1569,7 @@
          * @param {number} mode - 가사 모드 (0: karaoke, 1: synced, 2: unsynced)
          * @returns {Promise<Object>} - 가사 결과
          */
-        async getLyricsFromProviders(info, providerOrder = ['ivlyrics', 'spotify', 'lrclib', 'local'], mode = 1) {
+        async getLyricsFromProviders(info, providerOrder = ['spotify', 'lrclib', 'local'], mode = 1) {
             // karaoke 모드일 때 커뮤니티 싱크 데이터 우선 확인
             if (mode === 0 && window.SyncDataService) {
                 try {
@@ -1916,7 +1618,7 @@
          * @param {string} provider - 제공자 이름
          * @returns {Promise<Object|null>} - 캐시된 가사 또는 null
          */
-        async getCachedLyrics(trackId, provider = 'ivlyrics') {
+        async getCachedLyrics(trackId, provider = 'spotify') {
             return await LyricsCache.getLyrics(trackId, provider);
         },
 
@@ -2044,7 +1746,7 @@
                 displayMode1 = null,
                 displayMode2 = null,
                 sendToOverlay = true,
-                providerOrder = ['ivlyrics', 'spotify', 'lrclib', 'local']
+                providerOrder = ['spotify', 'lrclib', 'local']
             } = options;
 
             try {
@@ -3596,7 +3298,7 @@
                     console.log('[OverlaySender] 트랙 정보:', { title, artist });
 
                     // 사용자 설정의 provider 순서 사용 (활성화된 것만 필터)
-                    const defaultOrder = ['ivlyrics', 'spotify', 'lrclib', 'local'];
+                    const defaultOrder = ['spotify', 'lrclib', 'local'];
                     const configOrder = window.CONFIG?.providersOrder;
                     const providers = window.CONFIG?.providers || {};
                     const providerOrder = Array.isArray(configOrder) && configOrder.length > 0
@@ -3920,7 +3622,7 @@
                         console.log('[lyricsHelperSender] 트랙 정보:', { title, artist });
 
                         // 사용자 설정의 provider 순서 사용 (활성화된 것만 필터)
-                        const defaultOrder = ['ivlyrics', 'spotify', 'lrclib', 'local'];
+                        const defaultOrder = ['spotify', 'lrclib', 'local'];
                         const configOrder = window.CONFIG?.providersOrder;
                         const providers = window.CONFIG?.providers || {};
                         const providerOrder = Array.isArray(configOrder) && configOrder.length > 0

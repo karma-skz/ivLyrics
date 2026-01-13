@@ -330,10 +330,6 @@ window.LANG_EN = {
       "name": "LRCLIB",
       "desc": "LRCLIB provides synced lyrics and is a free community-maintained lyrics database."
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "IvLyrics provides synced and karaoke lyrics."
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "Spotify provides synced lyrics for some premium users."
@@ -1330,7 +1326,6 @@ window.LANG_EN = {
   },
   "providerDescriptions": {
     "lrclib": "Lyrics from lrclib.net. Supports both synced and unsynced lyrics. LRCLIB is a free open-source lyrics provider.",
-    "ivLyrics": "Algorithmically enhances sync data for lyrics provided by the official Spotify API.",
     "spotify": "Lyrics from official Spotify API.",
     "cache": "Lyrics from cached/local files loaded from previous Spotify sessions."
   },

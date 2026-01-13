@@ -1562,20 +1562,15 @@ const CONFIG = {
     delay: 0,
   },
   providers: {
+    spotify: {
+      on: StorageManager.get("ivLyrics:provider:spotify:on", true),
+      get desc() { return window.I18n ? I18n.t("providerDescriptions.spotify") : "Lyrics from Spotify"; },
+      modes: [KARAOKE, SYNCED, UNSYNCED],
+    },
     lrclib: {
       on: StorageManager.get("ivLyrics:provider:lrclib:on"),
       get desc() { return window.I18n ? I18n.t("providerDescriptions.lrclib") : "Lyrics from lrclib.net"; },
-      modes: [SYNCED, UNSYNCED],
-    },
-    ivlyrics: {
-      on: StorageManager.get("ivLyrics:provider:ivlyrics:on", true),
-      get desc() { return window.I18n ? I18n.t("providerDescriptions.ivLyrics") : "Lyrics from ivLyrics API"; },
       modes: [KARAOKE, SYNCED, UNSYNCED],
-    },
-    spotify: {
-      on: StorageManager.get("ivLyrics:provider:spotify:on"),
-      get desc() { return window.I18n ? I18n.t("providerDescriptions.spotify") : "Lyrics from Spotify"; },
-      modes: [SYNCED, UNSYNCED],
     },
     local: {
       on: StorageManager.get("ivLyrics:provider:local:on"),
@@ -1597,7 +1592,7 @@ try {
     throw "";
   }
 } catch {
-  CONFIG.providersOrder = ["ivlyrics", "spotify", "lrclib", "local"];
+  CONFIG.providersOrder = ["spotify", "lrclib", "local"];
   StorageManager.setItem(
     "ivLyrics:services-order",
     JSON.stringify(CONFIG.providersOrder)

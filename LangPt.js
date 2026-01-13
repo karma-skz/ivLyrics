@@ -329,10 +329,6 @@ window.LANG_PT = {
       "name": "LRCLIB",
       "desc": "LRCLIB fornece letras sincronizadas e é um banco de dados de letras gratuito mantido pela comunidade."
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "IvLyrics fornece letras sincronizadas e letras de karaokê."
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "Spotify fornece letras sincronizadas para alguns usuários premium."
@@ -1329,7 +1325,6 @@ window.LANG_PT = {
   },
   "providerDescriptions": {
     "lrclib": "Letras fornecidas por lrclib.net. Suporta letras sincronizadas e não sincronizadas. LRCLIB é um banco de dados de letras gratuito mantido pela comunidade.",
-    "ivLyrics": "Melhora algoritmicamente os dados de sincronização das letras fornecidas pela API oficial do Spotify.",
     "spotify": "Letras fornecidas pela API oficial do Spotify.",
     "cache": "Fornece letras em cache/arquivos locais carregados de sessões anteriores do Spotify."
   },

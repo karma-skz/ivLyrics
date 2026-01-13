@@ -329,10 +329,6 @@ window.LANG_IT = {
       "name": "LRCLIB",
       "desc": "LRCLIB fornisce testi sincronizzati ed è un database gratuito gestito dalla comunità."
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "IvLyrics fornisce testi sincronizzati e testi karaoke."
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "Spotify fornisce testi sincronizzati per alcuni utenti premium."
@@ -1329,7 +1325,6 @@ window.LANG_IT = {
   },
   "providerDescriptions": {
     "lrclib": "Testi forniti da lrclib.net. Supporta testi sincronizzati e non sincronizzati. LRCLIB è un provider di testi gratuito gestito dalla comunità.",
-    "ivLyrics": "Migliora algoritmicamente i dati di sincronizzazione per i testi forniti dall'API ufficiale di Spotify.",
     "spotify": "Testi forniti dall'API ufficiale di Spotify.",
     "cache": "Fornisce testi in cache/file locali caricati da sessioni Spotify precedenti."
   },

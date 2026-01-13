@@ -321,10 +321,6 @@ window.LANG_AR = {
       "name": "LRCLIB",
       "desc": "يوفر LRCLIB كلمات متزامنة وهو قاعدة بيانات مجانية يديرها المجتمع."
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "يوفر IvLyrics كلمات متزامنة وكلمات كاريوكي."
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "يوفر Spotify كلمات متزامنة لبعض المستخدمين المميزين (Premium)."
@@ -1325,7 +1321,6 @@ window.LANG_AR = {
   },
   "providerDescriptions": {
     "lrclib": "الكلمات مقدمة من lrclib.net. يدعم الكلمات المتزامنة وغير المتزامنة. LRCLIB هو مزود كلمات مجاني يديره المجتمع.",
-    "ivLyrics": "يحسّن بيانات المزامنة للكلمات المقدمة من API Spotify الرسمي خوارزمياً.",
     "spotify": "الكلمات مقدمة من Spotify API الرسمية.",
     "cache": "يوفر الكلمات المخزنة مؤقتاً/الملفات المحلية التي تم تحميلها في جلسات Spotify السابقة."
   },

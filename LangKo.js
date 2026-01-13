@@ -330,10 +330,6 @@ window.LANG_KO = {
       "name": "LRCLIB",
       "desc": "LRCLIB는 싱크 가사를 제공하며, 커뮤니티가 관리하는 무료 가사 데이터베이스입니다."
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "IvLyrics는 싱크 가사와 가라오케 가사를 제공합니다."
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "Spotify는 일부 프리미엄 사용자에게 싱크 가사를 제공합니다."
@@ -1330,7 +1326,6 @@ window.LANG_KO = {
   },
   "providerDescriptions": {
     "lrclib": "lrclib.net에서 제공되는 가사입니다. 동기화된 가사와 동기화되지 않은 가사를 모두 지원합니다. LRCLIB은 무료 오픈소스 가사 제공자입니다.",
-    "ivLyrics": "공식 Spotify API에서 제공되는 가사에 싱크 데이터를 알고리즘으로 개선합니다.",
     "spotify": "공식 Spotify API에서 제공되는 가사입니다.",
     "cache": "이전 Spotify 세션에서 로드된 캐시/로컬 파일의 가사를 제공합니다."
   },

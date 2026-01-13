@@ -329,10 +329,6 @@ window.LANG_ZH_CN = {
       "name": "LRCLIB",
       "desc": "LRCLIB提供同步歌词，是一个免费的社区维护歌词数据库。"
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "IvLyrics提供同步歌词和卡拉OK歌词。"
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "Spotify为部分高级用户提供同步歌词。"
@@ -1329,7 +1325,6 @@ window.LANG_ZH_CN = {
   },
   "providerDescriptions": {
     "lrclib": "来自lrclib.net的歌词。支持同步和非同步歌词。LRCLIB是免费的开源歌词提供者。",
-    "ivLyrics": "通过算法改进官方Spotify API提供的歌词同步数据。",
     "spotify": "来自官方Spotify API的歌词。",
     "cache": "来自之前Spotify会话加载的缓存/本地文件的歌词。"
   },

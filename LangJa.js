@@ -329,10 +329,6 @@ window.LANG_JA = {
       "name": "LRCLIB",
       "desc": "LRCLIBは同期歌詞を提供する無料のコミュニティ管理歌詞データベースです。"
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "IvLyricsは同期歌詞とカラオケ歌詞を提供しています。"
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "Spotifyは一部のPremiumユーザーに同期歌詞を提供しています。"
@@ -1329,7 +1325,6 @@ window.LANG_JA = {
   },
   "providerDescriptions": {
     "lrclib": "lrclib.netからの歌詞。同期・非同期歌詞をサポート。LRCLIBは無料のオープンソース歌詞プロバイダーです。",
-    "ivLyrics": "公式Spotify APIから提供される歌詞の同期データをアルゴリズムで改善します。",
     "spotify": "公式Spotify APIからの歌詞。",
     "cache": "以前のSpotifyセッションからロードされたキャッシュ/ローカルファイルからの歌詞。"
   },

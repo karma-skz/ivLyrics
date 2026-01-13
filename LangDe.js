@@ -329,10 +329,6 @@ window.LANG_DE = {
       "name": "LRCLIB",
       "desc": "LRCLIB bietet synchronisierte Songtexte und ist eine kostenlose, von der Community gepflegte Datenbank."
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "IvLyrics bietet synchronisierte Songtexte und Karaoke-Texte."
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "Spotify bietet synchronisierte Songtexte für einige Premium-Nutzer."
@@ -1329,7 +1325,6 @@ window.LANG_DE = {
   },
   "providerDescriptions": {
     "lrclib": "Songtexte bereitgestellt von lrclib.net. Unterstützt synchronisierte und unsynchronisierte Texte. LRCLIB ist ein kostenloser, von der Community gepflegter Songtext-Anbieter.",
-    "ivLyrics": "Verbessert algorithmisch die Sync-Daten für Liedtexte, die von der offiziellen Spotify API bereitgestellt werden.",
     "spotify": "Songtexte bereitgestellt von der offiziellen Spotify API.",
     "cache": "Liefert zwischengespeicherte/lokale Songtexte, die aus früheren Spotify-Sitzungen geladen wurden."
   },

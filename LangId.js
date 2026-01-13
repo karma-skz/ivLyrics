@@ -315,10 +315,6 @@ window.LANG_ID = {
       "name": "LRCLIB",
       "desc": "LRCLIB menyediakan lirik tersinkronisasi dan merupakan database lirik gratis yang dikelola komunitas."
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "IvLyrics menyediakan lirik tersinkronisasi dan Karaoke."
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "Spotify menyediakan lirik tersinkronisasi untuk beberapa pengguna Premium."
@@ -1297,7 +1293,6 @@ window.LANG_ID = {
   },
   "providerDescriptions": {
     "lrclib": "Lirik dari lrclib.net. Mendukung lirik tersinkronisasi dan tidak tersinkronisasi. LRCLIB adalah database lirik sumber terbuka gratis.",
-    "ivLyrics": "Secara algoritmik meningkatkan data sinkronisasi untuk lirik yang disediakan oleh API resmi Spotify.",
     "spotify": "Lirik resmi dari Spotify API.",
     "cache": "Lirik dari cache/file lokal yang dimuat dari sesi Spotify sebelumnya."
   },

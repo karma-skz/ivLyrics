@@ -321,10 +321,6 @@ window.LANG_VI = {
       "name": "LRCLIB",
       "desc": "LRCLIB cung cấp lời bài hát đồng bộ và là cơ sở dữ liệu miễn phí do cộng đồng quản lý."
     },
-    "ivlyrics": {
-      "name": "IvLyrics",
-      "desc": "IvLyrics cung cấp lời bài hát đồng bộ và Karaoke."
-    },
     "spotify": {
       "name": "Spotify",
       "desc": "Spotify cung cấp lời bài hát đồng bộ cho một số người dùng Premium."
@@ -1325,7 +1321,6 @@ window.LANG_VI = {
   },
   "providerDescriptions": {
     "lrclib": "Lời bài hát từ lrclib.net. Hỗ trợ cả lời đồng bộ và không đồng bộ. LRCLIB là cơ sở dữ liệu lời bài hát nguồn mở miễn phí.",
-    "ivLyrics": "Cải thiện thuật toán dữ liệu đồng bộ cho lời bài hát được cung cấp bởi API chính thức của Spotify.",
     "spotify": "Lời bài hát chính thức từ Spotify API.",
     "cache": "Lời bài hát từ bộ nhớ đệm/tệp cục bộ được tải từ phiên Spotify trước đó."
   },
