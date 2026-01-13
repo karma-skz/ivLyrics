@@ -1638,6 +1638,22 @@ window.LANG_KO = {
     synced: "등록됨",
     notSynced: "미등록",
     deleteLine: "이 줄 삭제",
-    back: "닫기"
+    back: "닫기",
+    lrclib: {
+      registerLyrics: "LRCLIB에 가사 등록하기",
+      title: "LRCLIB에 가사 등록",
+      description: "이 곡의 가사가 없습니다. 가사를 직접 입력하여 LRCLIB에 등록하면 다른 사용자들도 이 가사를 사용할 수 있습니다. 등록 후에는 수정이 불가능하니 신중하게 입력해주세요.",
+      trackInfo: "트랙 정보",
+      placeholder: "가사를 입력하세요...\n\n각 줄을 새 줄로 구분해주세요.\n빈 줄은 자동으로 제거됩니다.",
+      useWithoutPublish: "등록 없이 사용",
+      publishToLrcLib: "LRCLIB에 등록",
+      publishing: "등록 중...",
+      requestingChallenge: "인증 요청 중...",
+      solvingChallenge: "인증 처리 중...",
+      solving: "인증 처리 중... ({nonce} 시도)",
+      publishSuccess: "가사가 LRCLIB에 성공적으로 등록되었습니다!",
+      publishError: "가사 등록에 실패했습니다",
+      noLyricsInput: "가사를 입력해주세요"
+    }
   }
 };

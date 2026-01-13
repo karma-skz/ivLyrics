@@ -21,6 +21,10 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 	const [dragStartCharIndex, setDragStartCharIndex] = useState(-1);
 	const [isDragging, setIsDragging] = useState(false);
 	const [globalOffset, setGlobalOffset] = useState(0);
+	const [showLrcLibPublish, setShowLrcLibPublish] = useState(false);
+	const [manualLyricsInput, setManualLyricsInput] = useState('');
+	const [isPublishingToLrcLib, setIsPublishingToLrcLib] = useState(false);
+	const [lrcLibPublishProgress, setLrcLibPublishProgress] = useState('');
 
 	// Refs
 	const containerRef = useRef(null);
@@ -125,21 +129,32 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		setMode('idle');
 
 		try {
+			// LRCLIB는 첫 번째 아티스트만 사용 (콤마로 연결된 아티스트는 검색 실패)
+			const firstArtist = trackInfo?.artists?.[0]?.name ||
+				Spicetify.Player?.data?.item?.artists?.[0]?.name ||
+				artistName.split(',')[0].trim();
+
 			const info = {
 				uri: trackInfo?.uri || Spicetify.Player?.data?.item?.uri,
 				title: trackName,
 				name: trackName,
-				artist: artistName,
+				artist: provider === 'lrclib' ? firstArtist : artistName,
 				album: trackInfo?.album?.name || Spicetify.Player?.data?.item?.album?.name || '',
 				duration: Spicetify.Player?.data?.item?.duration?.milliseconds || 0
 			};
 
+			console.log('[SyncDataCreator] Loading lyrics with info:', info, 'provider:', provider);
+
 			let result = null;
 
-			if (typeof LyricsService !== 'undefined' && LyricsService.getLyrics) {
-				result = await LyricsService.getLyrics(info, provider);
-			} else if (typeof Providers !== 'undefined' && Providers[provider]) {
+			if (typeof Providers !== 'undefined' && Providers[provider]) {
 				result = await Providers[provider](info);
+				console.log('[SyncDataCreator] Providers result:', result);
+			} else if (typeof LyricsService !== 'undefined' && LyricsService.getLyrics) {
+				result = await LyricsService.getLyrics(info, provider);
+				console.log('[SyncDataCreator] LyricsService result:', result);
+			} else {
+				console.warn('[SyncDataCreator] No provider available');
 			}
 
 			if (result && (result.synced || result.unsynced)) {
@@ -577,6 +592,177 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		setIsSubmitting(false);
 	}, [syncData, lyricsLines.length, trackId, provider, onClose]);
 
+	// LRCLIB Proof-of-Work 솔버 (Web Worker 사용)
+	const solveLrcLibChallenge = useCallback((prefix, targetHex) => {
+		return new Promise((resolve) => {
+			const workerCount = navigator.hardwareConcurrency || 4;
+			const workers = [];
+			let solved = false;
+			let totalProgress = 0;
+
+			// Web Worker 코드를 Blob으로 생성
+			const workerCode = `
+				self.onmessage = async function(e) {
+					const { prefix, targetHex, start, step } = e.data;
+					const target = new Uint8Array(targetHex.match(/.{2}/g).map(b => parseInt(b, 16)));
+
+					const isHashLessThanTarget = (hash) => {
+						for (let i = 0; i < 32; i++) {
+							if (hash[i] < target[i]) return true;
+							if (hash[i] > target[i]) return false;
+						}
+						return false;
+					};
+
+					const encoder = new TextEncoder();
+					let nonce = start;
+					let count = 0;
+
+					while (true) {
+						const data = encoder.encode(prefix + nonce);
+						const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+						const hash = new Uint8Array(hashBuffer);
+
+						if (isHashLessThanTarget(hash)) {
+							self.postMessage({ found: true, nonce });
+							return;
+						}
+
+						nonce += step;
+						count++;
+
+						if (count % 10000 === 0) {
+							self.postMessage({ found: false, count });
+						}
+					}
+				};
+			`;
+
+			const blob = new Blob([workerCode], { type: 'application/javascript' });
+			const workerUrl = URL.createObjectURL(blob);
+
+			for (let i = 0; i < workerCount; i++) {
+				const worker = new Worker(workerUrl);
+				workers.push(worker);
+
+				worker.onmessage = (e) => {
+					if (e.data.found && !solved) {
+						solved = true;
+						console.log('[SyncDataCreator] PoW solved! nonce:', e.data.nonce);
+						workers.forEach(w => w.terminate());
+						URL.revokeObjectURL(workerUrl);
+						resolve(e.data.nonce.toString());
+					} else if (!e.data.found && !solved) {
+						totalProgress += e.data.count;
+						setLrcLibPublishProgress(
+							I18n.t('syncCreator.lrclib.solving').replace('{nonce}', totalProgress.toLocaleString())
+						);
+					}
+				};
+
+				worker.postMessage({ prefix, targetHex, start: i, step: workerCount });
+			}
+		});
+	}, []);
+
+	// LRCLIB에 가사 발행
+	const publishToLrcLib = useCallback(async () => {
+		if (!manualLyricsInput.trim()) {
+			Toast.error(I18n.t('syncCreator.lrclib.noLyricsInput'));
+			return;
+		}
+
+		setIsPublishingToLrcLib(true);
+		setLrcLibPublishProgress(I18n.t('syncCreator.lrclib.requestingChallenge'));
+
+		try {
+			// 1. Challenge 요청 (CORS 프록시 사용)
+			const challengeRes = await fetch('https://corsproxy.io/?url=' + encodeURIComponent('https://lrclib.net/api/request-challenge'), {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' }
+			});
+
+			if (!challengeRes.ok) {
+				throw new Error('Failed to request challenge');
+			}
+
+			const challenge = await challengeRes.json();
+			setLrcLibPublishProgress(I18n.t('syncCreator.lrclib.solvingChallenge'));
+
+			// 2. Proof-of-Work 솔브
+			const nonce = await solveLrcLibChallenge(challenge.prefix, challenge.target);
+			const publishToken = `${challenge.prefix}:${nonce}`;
+
+			setLrcLibPublishProgress(I18n.t('syncCreator.lrclib.publishing'));
+
+			// 3. 가사 발행
+			const duration = Math.round((Spicetify.Player?.data?.item?.duration?.milliseconds || 0) / 1000);
+			const albumName = trackInfo?.album?.name || Spicetify.Player?.data?.item?.album?.name || '';
+
+			// syncData가 있으면 싱크된 가사로 변환
+			let syncedLyrics = '';
+			if (syncData && syncData.lines && syncData.lines.length > 0) {
+				const lines = manualLyricsInput.split('\n').filter(l => l.trim());
+				syncedLyrics = syncData.lines.map(lineData => {
+					const lineIdx = lyricsLines.findIndex((_, idx) => lineCharOffsets[idx] === lineData.start);
+					if (lineIdx >= 0 && lines[lineIdx]) {
+						const startTime = lineData.chars[0];
+						const mins = Math.floor(startTime / 60);
+						const secs = (startTime % 60).toFixed(2);
+						return `[${mins.toString().padStart(2, '0')}:${secs.padStart(5, '0')}] ${lines[lineIdx]}`;
+					}
+					return null;
+				}).filter(Boolean).join('\n');
+			}
+
+			// CORS 프록시를 통해 발행 (lrclib.net은 CORS를 허용하지 않음)
+			const publishRes = await fetch('https://corsproxy.io/?url=' + encodeURIComponent('https://lrclib.net/api/publish'), {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-Publish-Token': publishToken
+				},
+				body: JSON.stringify({
+					trackName: trackName,
+					artistName: artistName,
+					albumName: albumName,
+					duration: duration,
+					plainLyrics: manualLyricsInput.trim(),
+					syncedLyrics: syncedLyrics || ''
+				})
+			});
+
+			if (publishRes.ok) {
+				Toast.success(I18n.t('syncCreator.lrclib.publishSuccess'));
+				setShowLrcLibPublish(false);
+				setManualLyricsInput('');
+				// 발행 후 가사 다시 로드
+				setProvider('lrclib');
+				setTimeout(() => loadLyrics(), 1000);
+			} else {
+				const errData = await publishRes.json().catch(() => ({}));
+				throw new Error(errData.message || 'Publish failed');
+			}
+		} catch (e) {
+			console.error('[SyncDataCreator] LRCLIB publish error:', e);
+			Toast.error(I18n.t('syncCreator.lrclib.publishError') + ': ' + e.message);
+		}
+
+		setIsPublishingToLrcLib(false);
+		setLrcLibPublishProgress('');
+	}, [manualLyricsInput, trackName, artistName, trackInfo, syncData, lyricsLines, lineCharOffsets, solveLrcLibChallenge, loadLyrics]);
+
+	// 수동 가사 적용 (LRCLIB에 발행하지 않고 싱크만 생성)
+	const applyManualLyrics = useCallback(() => {
+		if (!manualLyricsInput.trim()) {
+			Toast.error(I18n.t('syncCreator.lrclib.noLyricsInput'));
+			return;
+		}
+		setLyricsText(manualLyricsInput.trim());
+		setShowLrcLibPublish(false);
+		setError(null);
+	}, [manualLyricsInput]);
+
 	const formatTime = useCallback((ms) => {
 		const totalSeconds = Math.floor(ms / 1000);
 		return `${Math.floor(totalSeconds / 60)}:${(totalSeconds % 60).toString().padStart(2, '0')}`;
@@ -674,6 +860,18 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		deleteBtn: { background: 'transparent', color: '#f44336', border: '1px solid #f44336', padding: '10px 16px', borderRadius: '10px', fontWeight: '600', cursor: 'pointer', fontSize: '13px' },
 		loading: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '200px', color: 'var(--spice-subtext)' },
 		error: { textAlign: 'center', padding: '40px', color: '#e53935' },
+		// LRCLIB 발행 모달 스타일
+		lrcLibModal: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', zIndex: 10001, display: 'flex', alignItems: 'center', justifyContent: 'center' },
+		lrcLibContent: { background: 'var(--spice-card)', borderRadius: '16px', padding: '24px', width: '90%', maxWidth: '600px', maxHeight: '80vh', display: 'flex', flexDirection: 'column', gap: '16px' },
+		lrcLibTitle: { fontSize: '18px', fontWeight: '700', color: 'var(--spice-text)', margin: 0 },
+		lrcLibDesc: { fontSize: '13px', color: 'var(--spice-subtext)', lineHeight: 1.5 },
+		lrcLibTextarea: { width: '100%', height: '300px', background: 'var(--spice-main)', color: 'var(--spice-text)', border: '1px solid var(--spice-misc)', borderRadius: '8px', padding: '12px', fontSize: '14px', fontFamily: 'inherit', resize: 'vertical', boxSizing: 'border-box' },
+		lrcLibBtnRow: { display: 'flex', gap: '10px', justifyContent: 'flex-end', flexWrap: 'wrap' },
+		lrcLibBtn: { background: 'var(--spice-button)', color: 'var(--spice-button-text, #000)', border: 'none', padding: '10px 20px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '13px' },
+		lrcLibBtnSecondary: { background: 'var(--spice-misc)', color: 'var(--spice-text)', border: 'none', padding: '10px 20px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '13px' },
+		lrcLibBtnCancel: { background: 'transparent', color: 'var(--spice-subtext)', border: '1px solid var(--spice-misc)', padding: '10px 20px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '13px' },
+		lrcLibProgress: { fontSize: '12px', color: 'var(--spice-subtext)', textAlign: 'center', padding: '8px' },
+		publishBtn: { background: '#4caf50', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '13px', marginTop: '12px' },
 	};
 
 	return react.createElement('div', { style: s.overlay, ref: containerRef },
@@ -738,7 +936,13 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		// Lyrics Area
 		react.createElement('div', { style: s.lyricsArea },
 			isLoading && react.createElement('div', { style: s.loading }, I18n.t('syncCreator.loadingLyrics')),
-			error && react.createElement('div', { style: s.error }, error),
+			error && react.createElement('div', { style: { ...s.error, display: 'flex', flexDirection: 'column', alignItems: 'center' } },
+				react.createElement('div', null, error),
+				react.createElement('button', {
+					style: s.publishBtn,
+					onClick: () => setShowLrcLibPublish(true)
+				}, I18n.t('syncCreator.lrclib.registerLyrics'))
+			),
 			!isLoading && !error && !lyricsText && react.createElement('div', { style: s.loading }, I18n.t('syncCreator.selectProvider')),
 
 			lyricsText && lyricsLines.length > 0 && react.createElement(react.Fragment, null,
@@ -817,6 +1021,43 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 			// 현재 줄 삭제
 			isCurrentLineSynced && react.createElement('button', { style: s.deleteBtn, onClick: deleteCurrentLineSync },
 				I18n.t('syncCreator.deleteLine')
+			)
+		),
+
+		// LRCLIB 발행 모달
+		showLrcLibPublish && react.createElement('div', { style: s.lrcLibModal, onClick: (e) => e.target === e.currentTarget && !isPublishingToLrcLib && setShowLrcLibPublish(false) },
+			react.createElement('div', { style: s.lrcLibContent },
+				react.createElement('h3', { style: s.lrcLibTitle }, I18n.t('syncCreator.lrclib.title')),
+				react.createElement('p', { style: s.lrcLibDesc }, I18n.t('syncCreator.lrclib.description')),
+				react.createElement('div', { style: { fontSize: '12px', color: 'var(--spice-subtext)', padding: '8px', background: 'var(--spice-main)', borderRadius: '6px' } },
+					react.createElement('div', null, `${I18n.t('syncCreator.lrclib.trackInfo')}:`),
+					react.createElement('div', { style: { fontWeight: '600', color: 'var(--spice-text)' } }, `${trackName} - ${artistName}`)
+				),
+				react.createElement('textarea', {
+					style: s.lrcLibTextarea,
+					placeholder: I18n.t('syncCreator.lrclib.placeholder'),
+					value: manualLyricsInput,
+					onChange: (e) => setManualLyricsInput(e.target.value),
+					disabled: isPublishingToLrcLib
+				}),
+				lrcLibPublishProgress && react.createElement('div', { style: s.lrcLibProgress }, lrcLibPublishProgress),
+				react.createElement('div', { style: s.lrcLibBtnRow },
+					react.createElement('button', {
+						style: s.lrcLibBtnCancel,
+						onClick: () => { setShowLrcLibPublish(false); setManualLyricsInput(''); },
+						disabled: isPublishingToLrcLib
+					}, I18n.t('cancel')),
+					react.createElement('button', {
+						style: s.lrcLibBtnSecondary,
+						onClick: applyManualLyrics,
+						disabled: isPublishingToLrcLib || !manualLyricsInput.trim()
+					}, I18n.t('syncCreator.lrclib.useWithoutPublish')),
+					react.createElement('button', {
+						style: { ...s.lrcLibBtn, opacity: isPublishingToLrcLib || !manualLyricsInput.trim() ? 0.5 : 1 },
+						onClick: publishToLrcLib,
+						disabled: isPublishingToLrcLib || !manualLyricsInput.trim()
+					}, isPublishingToLrcLib ? I18n.t('syncCreator.lrclib.publishing') : I18n.t('syncCreator.lrclib.publishToLrcLib'))
+				)
 			)
 		)
 	);

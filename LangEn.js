@@ -1638,6 +1638,22 @@ window.LANG_EN = {
     synced: "Synced",
     notSynced: "Not synced",
     deleteLine: "Delete this line",
-    back: "Close"
+    back: "Close",
+    lrclib: {
+      registerLyrics: "Register Lyrics to LRCLIB",
+      title: "Register Lyrics to LRCLIB",
+      description: "No lyrics found for this track. You can enter lyrics manually and register them to LRCLIB so other users can use them too. Please note that lyrics cannot be modified after registration.",
+      trackInfo: "Track Info",
+      placeholder: "Enter lyrics here...\n\nSeparate each line with a new line.\nEmpty lines will be removed automatically.",
+      useWithoutPublish: "Use Without Publishing",
+      publishToLrcLib: "Publish to LRCLIB",
+      publishing: "Publishing...",
+      requestingChallenge: "Requesting authentication...",
+      solvingChallenge: "Processing authentication...",
+      solving: "Processing authentication... ({nonce} attempts)",
+      publishSuccess: "Lyrics successfully registered to LRCLIB!",
+      publishError: "Failed to register lyrics",
+      noLyricsInput: "Please enter lyrics"
+    }
   }
 };
