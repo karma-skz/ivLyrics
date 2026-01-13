@@ -5155,15 +5155,7 @@ class LyricsContainer extends react.Component {
               Spicetify.Player.data?.item?.album?.images?.[0]?.url || '',
           },
         }),
-        // Sync Data Creator Button
-        react.createElement(SyncDataCreatorButton, {
-          trackInfo: {
-            uri: this.currentTrackUri,
-            name: Spicetify.Player.data?.item?.name || '',
-            artists: Spicetify.Player.data?.item?.artists || [],
-            album: Spicetify.Player.data?.item?.album || {},
-          },
-        }),
+
         react.createElement(SettingsMenu),
         // Fullscreen toggle button
         (() => !document.getElementById("fad-ivLyrics-container"))() && react.createElement(
@@ -5273,7 +5265,17 @@ class LyricsContainer extends react.Component {
               },
             })
           )
-        )
+        ),
+        // Sync Data Creator Button (Moved to bottom)
+        react.createElement(SyncDataCreatorButton, {
+          trackInfo: {
+            uri: this.currentTrackUri,
+            name: Spicetify.Player.data?.item?.name || '',
+            artists: Spicetify.Player.data?.item?.artists || [],
+            album: Spicetify.Player.data?.item?.album || {},
+          },
+          showHint: !this.state.karaoke
+        })
       ),
       activeItem
     );

@@ -3510,28 +3510,33 @@ function openSyncDataCreator(trackInfo) {
 }
 
 // Sync Data Creator Button
-const SyncDataCreatorButton = react.memo(({ trackInfo }) => {
+const SyncDataCreatorButton = react.memo(({ trackInfo, showHint }) => {
   const handleClick = () => {
     openSyncDataCreator(trackInfo);
   };
 
   return react.createElement(
-    Spicetify.ReactComponent.TooltipWrapper,
-    { label: I18n.t("syncCreator.buttonTooltip") || "Create Karaoke Sync" },
+    "div",
+    { style: { position: "relative" } },
+    showHint && react.createElement("div", { className: "sync-creator-hint" }, I18n.t("syncCreator.clickHereHint") || ""),
     react.createElement(
-      "button",
-      {
-        className: "lyrics-config-button",
-        onClick: handleClick,
-      },
+      Spicetify.ReactComponent.TooltipWrapper,
+      { label: I18n.t("syncCreator.buttonTooltip") || "Create Karaoke Sync" },
       react.createElement(
-        "svg",
-        { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" },
-        // 마이크 아이콘
-        react.createElement("path", { d: "M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" }),
-        react.createElement("path", { d: "M19 10v2a7 7 0 0 1-14 0v-2" }),
-        react.createElement("line", { x1: 12, y1: 19, x2: 12, y2: 23 }),
-        react.createElement("line", { x1: 8, y1: 23, x2: 16, y2: 23 })
+        "button",
+        {
+          className: "lyrics-config-button glitter-effect",
+          onClick: handleClick,
+        },
+        react.createElement(
+          "svg",
+          { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" },
+          // 마이크 아이콘
+          react.createElement("path", { d: "M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" }),
+          react.createElement("path", { d: "M19 10v2a7 7 0 0 1-14 0v-2" }),
+          react.createElement("line", { x1: 12, y1: 19, x2: 12, y2: 23 }),
+          react.createElement("line", { x1: 8, y1: 23, x2: 16, y2: 23 })
+        )
       )
     )
   );
