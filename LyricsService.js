@@ -1168,23 +1168,32 @@
         /**
          * 승인된 싱크 데이터 조회
          * @param {string} trackId - Spotify Track ID
+         * @param {string} provider - 가사 provider (예: spotify-musixmatch, lrclib). 없으면 모든 provider 조회
          * @returns {Promise<Object|null>} - 싱크 데이터 또는 null
          */
-        async function getSyncData(trackId) {
+        async function getSyncData(trackId, provider = null) {
+            // 캐시 키: provider가 있으면 trackId:provider, 없으면 trackId
+            const cacheKey = provider ? `${trackId}:${provider}` : trackId;
+
             // 1. 캐시 확인
-            if (_syncDataCache.has(trackId)) {
-                return _syncDataCache.get(trackId);
+            if (_syncDataCache.has(cacheKey)) {
+                return _syncDataCache.get(cacheKey);
             }
 
             // 2. 진행 중인 요청이 있으면 그 Promise를 재사용
-            if (_inflightRequests.has(trackId)) {
-                return _inflightRequests.get(trackId);
+            if (_inflightRequests.has(cacheKey)) {
+                return _inflightRequests.get(cacheKey);
             }
 
             // 3. 새 요청 시작
             const requestPromise = (async () => {
                 try {
-                    const response = await fetch(`${API_BASE}/lyrics/sync-data?trackId=${trackId}`, {
+                    let url = `${API_BASE}/lyrics/sync-data?trackId=${trackId}`;
+                    if (provider) {
+                        url += `&provider=${encodeURIComponent(provider)}`;
+                    }
+
+                    const response = await fetch(url, {
                         headers: {
                             "User-Agent": `spicetify v${Spicetify.Config.version}`,
                         },
@@ -1192,7 +1201,7 @@
                     });
 
                     if (response.status === 404) {
-                        _syncDataCache.set(trackId, null);
+                        _syncDataCache.set(cacheKey, null);
                         return null;
                     }
 
@@ -1203,23 +1212,40 @@
 
                     const result = await response.json();
                     if (result.success && result.data) {
-                        _syncDataCache.set(trackId, result.data);
+                        _syncDataCache.set(cacheKey, result.data);
                         return result.data;
                     }
 
-                    _syncDataCache.set(trackId, null);
+                    // provider 없이 조회했을 때 providers 배열이 있으면 저장
+                    if (result.success && result.providers && result.providers.length > 0) {
+                        // 각 provider별로 캐시 저장
+                        result.providers.forEach(p => {
+                            const pCacheKey = `${trackId}:${p.provider}`;
+                            _syncDataCache.set(pCacheKey, {
+                                trackId,
+                                provider: p.provider,
+                                syncData: p.syncData,
+                                createdAt: p.createdAt,
+                                updatedAt: p.updatedAt
+                            });
+                        });
+                        // 첫 번째 데이터 반환 (하위 호환성)
+                        return result.data;
+                    }
+
+                    _syncDataCache.set(cacheKey, null);
                     return null;
                 } catch (e) {
                     console.warn('[SyncDataService] Failed to get sync data:', e);
                     return null;
                 } finally {
                     // 요청 완료 후 inflight에서 제거
-                    _inflightRequests.delete(trackId);
+                    _inflightRequests.delete(cacheKey);
                 }
             })();
 
             // inflight에 등록
-            _inflightRequests.set(trackId, requestPromise);
+            _inflightRequests.set(cacheKey, requestPromise);
             return requestPromise;
         }
 
@@ -1455,6 +1481,7 @@
                 unsynced: null,
                 provider: "Spotify",
                 copyright: null,
+                spotifyLyricsProvider: null,  // Spotify 내부 가사 provider (musixmatch, syncpower 등)
             };
 
             const baseURL = "https://spclient.wg.spotify.com/color-lyrics/v2/track/";
@@ -1473,6 +1500,10 @@
                 return { error: "No lyrics", uri: info.uri };
             }
 
+            // Spotify 내부 가사 provider 추출 (musixmatch, syncpower, petitlyrics 등)
+            const spotifyLyricsProvider = lyrics.provider || 'unknown';
+            result.spotifyLyricsProvider = spotifyLyricsProvider;
+
             const lines = lyrics.lines;
             if (lyrics.syncType === "LINE_SYNCED") {
                 result.synced = lines.map((line) => ({
@@ -1487,15 +1518,18 @@
             }
 
             // 커뮤니티 싱크 데이터 확인 및 적용
+            // 세분화된 provider 형식 사용: spotify-{내부provider}
             if (window.SyncDataService) {
                 try {
-                    const syncData = await window.SyncDataService.getSyncData(id);
-                    if (syncData && syncData.provider === 'spotify') {
+                    const fullProvider = `spotify-${spotifyLyricsProvider}`;
+                    const syncData = await window.SyncDataService.getSyncData(id, fullProvider);
+                    if (syncData && syncData.provider === fullProvider) {
                         const baseLyrics = result.synced || result.unsynced;
                         const karaoke = window.SyncDataService.applySyncDataToLyrics(baseLyrics, syncData);
                         if (karaoke) {
                             result.karaoke = karaoke;
                             result.syncDataApplied = true;
+                            result.syncDataProvider = fullProvider;
                             // sync-data가 있으면 synced도 오버라이드
                             const syncedFromSyncData = window.SyncDataService.convertKaraokeToSynced(karaoke);
                             if (syncedFromSyncData) {
@@ -1545,13 +1579,14 @@
             // 커뮤니티 싱크 데이터 확인 및 적용
             if (window.SyncDataService) {
                 try {
-                    const syncData = await window.SyncDataService.getSyncData(id);
+                    const syncData = await window.SyncDataService.getSyncData(id, 'lrclib');
                     if (syncData && syncData.provider === 'lrclib') {
                         const baseLyrics = result.synced || result.unsynced;
                         const karaoke = window.SyncDataService.applySyncDataToLyrics(baseLyrics, syncData);
                         if (karaoke) {
                             result.karaoke = karaoke;
                             result.syncDataApplied = true;
+                            result.syncDataProvider = 'lrclib';
                             // sync-data가 있으면 synced도 오버라이드
                             const syncedFromSyncData = window.SyncDataService.convertKaraokeToSynced(karaoke);
                             if (syncedFromSyncData) {
