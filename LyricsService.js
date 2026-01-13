@@ -1164,6 +1164,7 @@
         const API_BASE = 'https://lyrics.api.ivl.is';
         const _syncDataCache = new Map();
         const _inflightRequests = new Map(); // 진행 중인 요청 추적
+        const _fullyLoadedTracks = new Set(); // 전체 목록이 로드된 트랙 ID
 
         /**
          * 승인된 싱크 데이터 조회
@@ -1178,6 +1179,12 @@
             // 1. 캐시 확인
             if (_syncDataCache.has(cacheKey)) {
                 return _syncDataCache.get(cacheKey);
+            }
+
+            // 1-1. 특정 provider 요청인데, 이미 전체 목록이 로드된 경우 (그리고 캐시에는 없음)
+            // 목록에 없는 provider이므로 데이터 없음 처리
+            if (provider && _fullyLoadedTracks.has(trackId)) {
+                return null;
             }
 
             // 2. 진행 중인 요청이 있으면 그 Promise를 재사용
@@ -1211,26 +1218,32 @@
                     }
 
                     const result = await response.json();
+
+                    // 단일 데이터 응답 (provider 지정 시)
                     if (result.success && result.data) {
                         _syncDataCache.set(cacheKey, result.data);
                         return result.data;
                     }
 
-                    // provider 없이 조회했을 때 providers 배열이 있으면 저장
-                    if (result.success && result.providers && result.providers.length > 0) {
-                        // 각 provider별로 캐시 저장
-                        result.providers.forEach(p => {
-                            const pCacheKey = `${trackId}:${p.provider}`;
-                            _syncDataCache.set(pCacheKey, {
-                                trackId,
-                                provider: p.provider,
-                                syncData: p.syncData,
-                                createdAt: p.createdAt,
-                                updatedAt: p.updatedAt
+                    // 전체 목록 응답 (provider 미지정 시)
+                    if (!provider && result.success && result.providers) {
+                        _fullyLoadedTracks.add(trackId); // 전체 로드 완료 표시
+
+                        if (result.providers.length > 0) {
+                            // 각 provider별로 캐시 저장
+                            result.providers.forEach(p => {
+                                const pCacheKey = `${trackId}:${p.provider}`;
+                                _syncDataCache.set(pCacheKey, {
+                                    trackId,
+                                    provider: p.provider,
+                                    syncData: p.syncData,
+                                    createdAt: p.createdAt,
+                                    updatedAt: p.updatedAt
+                                });
                             });
-                        });
-                        // 첫 번째 데이터 반환 (하위 호환성)
-                        return result.data;
+                            // 첫 번째 데이터 반환 (하위 호환성), 또는 null
+                            return result.data || null;
+                        }
                     }
 
                     _syncDataCache.set(cacheKey, null);
@@ -1252,8 +1265,16 @@
         function clearCache(trackId) {
             if (trackId) {
                 _syncDataCache.delete(trackId);
+                // trackId 관련 모든 캐시 삭제
+                for (const key of _syncDataCache.keys()) {
+                    if (key.startsWith(`${trackId}:`)) {
+                        _syncDataCache.delete(key);
+                    }
+                }
+                _fullyLoadedTracks.delete(trackId);
             } else {
                 _syncDataCache.clear();
+                _fullyLoadedTracks.clear();
             }
         }
 
@@ -1503,6 +1524,10 @@
             // Spotify 내부 가사 provider 추출 (musixmatch, syncpower, petitlyrics 등)
             const spotifyLyricsProvider = lyrics.provider || 'unknown';
             result.spotifyLyricsProvider = spotifyLyricsProvider;
+
+            // provider 필드 업데이트: 세분화된 형식 사용 (예: spotify-musixmatch)
+            // 이를 통해 getFullLyrics 및 번역 API 호출 시 올바른 provider가 전달됨
+            result.provider = `spotify-${spotifyLyricsProvider}`;
 
             const lines = lyrics.lines;
             if (lyrics.syncType === "LINE_SYNCED") {

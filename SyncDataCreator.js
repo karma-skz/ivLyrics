@@ -201,13 +201,17 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 			}
 
 			if (result && (result.synced || result.unsynced)) {
-				// provider 설정: Spotify의 경우 내부 가사 provider를 포함한 세분화된 형식 사용
-				// 예: spotify-musixmatch, spotify-syncpower, spotify-petitlyrics
-				let fullProvider = usedProvider || preferredProvider;
-				if (fullProvider === 'spotify' && result.spotifyLyricsProvider) {
-					fullProvider = `spotify-${result.spotifyLyricsProvider}`;
+				// provider 설정
+				// 1. result.provider가 있으면 최우선 사용 (Providers.spotify가 spotify-xxx 형식 반환)
+				// 2. 아니면 usedProvider (루프에서 찾은 키) 사용
+				let finalProvider = result.provider || usedProvider || preferredProvider;
+
+				// 혹시라도 'spotify'로 되어있고 내부 provider 정보가 있다면 조합 (안전장치)
+				if ((finalProvider === 'Spotify' || finalProvider === 'spotify') && result.spotifyLyricsProvider) {
+					finalProvider = `spotify-${result.spotifyLyricsProvider}`;
 				}
-				setProvider(fullProvider);
+
+				setProvider(finalProvider);
 				setLyrics(result);
 				const lyricsSource = result.synced || result.unsynced;
 				let text = '';
