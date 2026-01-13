@@ -925,7 +925,7 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		lyricsBox: { background: 'var(--spice-card)', borderRadius: '12px', padding: '32px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: mode === 'record' ? 'pointer' : 'default', userSelect: 'none', marginBottom: '12px' },
 		lyricsScroll: { width: '100%', overflowX: 'auto', overflowY: 'hidden', paddingBottom: '28px', display: 'flex', justifyContent: 'center' },
 		lyricsLine: { display: 'inline-flex', flexWrap: 'nowrap', gap: '0px', paddingLeft: '32px', paddingRight: '32px', justifyContent: 'center' },
-		charSpan: { padding: '10px 2px', borderRadius: '4px', cursor: mode === 'record' ? 'pointer' : 'default', position: 'relative', fontSize: '32px', fontWeight: '600', minWidth: '18px', textAlign: 'center', flexShrink: 0, color: 'var(--spice-text)', letterSpacing: '-1px' },
+		charSpan: { padding: '10px 1px', borderRadius: '4px', cursor: mode === 'record' ? 'pointer' : 'default', position: 'relative', fontSize: '32px', fontWeight: '600', minWidth: '6px', textAlign: 'center', flexShrink: 0, color: 'var(--spice-text)', letterSpacing: '-1px' },
 		charSynced: { background: 'rgba(var(--spice-rgb-button), 0.2)' },
 		charPlayed: { background: 'var(--spice-button)', color: 'var(--spice-button-text, #000)' },
 		charRecording: { background: 'rgba(255, 152, 0, 0.6)' },

@@ -5722,25 +5722,53 @@ ruby .lyrics-karaoke-char.sung {
 /* Fullscreen Floating Icons Logic */
 
 /* In fullscreen mode, only show the exit button initially */
+/* Collapse unrelated items effectively */
 .lyrics-config-button-container.fullscreen-mode-container .lyrics-config-button,
 .lyrics-config-button-container.fullscreen-mode-container .TranslationMenu,
 .lyrics-config-button-container.fullscreen-mode-container .lyrics-config-separator,
 .lyrics-config-button-container.fullscreen-mode-container>div:not(.lyrics-fullscreen-exit-wrapper) {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  height: 0;
+  width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  transition: opacity 0.3s ease, height 0.3s ease, margin 0.3s ease;
 }
 
 /* Ensure the wrapper handles layout if needed */
 .lyrics-fullscreen-exit-wrapper {
+  display: flexbox;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 /* Override opacity for the exit button inside the wrapper */
 .lyrics-config-button-container.fullscreen-mode-container .lyrics-fullscreen-exit-wrapper .lyrics-config-button {
   opacity: 1 !important;
   pointer-events: auto !important;
+  height: 40px !important;
+  width: 40px !important;
+}
+
+/* Adjust container when collapsed */
+/* Adjust container when collapsed */
+.lyrics-config-button-container.fullscreen-mode-container:not(:hover) {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: none;
+  gap: 0;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Show all on container hover */
@@ -5750,4 +5778,16 @@ ruby .lyrics-karaoke-char.sung {
 .lyrics-config-button-container.fullscreen-mode-container:hover>div {
   opacity: 1;
   pointer-events: auto;
+  height: 40px;
+  width: 40px;
+}
+
+.lyrics-config-button-container.fullscreen-mode-container:hover .lyrics-config-button {
+  margin: 2px 0;
+}
+
+.lyrics-config-button-container.fullscreen-mode-container:hover .lyrics-config-separator {
+  height: 1px;
+  width: 80%;
+  margin: 4px 0;
 }
