@@ -38,6 +38,31 @@ const NOTICE_URL = "https://ivlis.kr/ivLyrics/notice/";
  */
 
 /**
+ * 버전 문자열 비교 (Utils 로드 전에도 사용 가능)
+ * @param {string} a - 첫 번째 버전 (예: "1.1.0")
+ * @param {string} b - 두 번째 버전 (예: "1.0.9")
+ * @returns {number} - a > b면 1, a < b면 -1, 같으면 0
+ */
+const compareVersions = (a, b) => {
+    const aParts = a.split(".").map(Number);
+    const bParts = b.split(".").map(Number);
+
+    for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
+        const aPart = aParts[i] || 0;
+        const bPart = bParts[i] || 0;
+
+        if (aPart > bPart) return 1;
+        if (aPart < bPart) return -1;
+    }
+
+    return 0;
+};
+
+const getCurrentVersion = () => {
+    return "3.4.1";
+};
+
+/**
  * 공지사항의 실제 dismissible 상태를 계산합니다.
  * @param {Object} notice - 공지사항 객체
  * @returns {boolean} - 닫기 가능 여부
@@ -56,12 +81,11 @@ const calculateDismissible = (notice) => {
 
     // min_version이 설정된 경우, 현재 버전과 비교
     try {
-        const currentVersion = window.Utils?.currentVersion || "0.0.0";
+        const currentVersion = getCurrentVersion();
         const minVersion = notice.min_version;
 
-        // Utils.compareVersions: a > b면 1, a < b면 -1, 같으면 0
         // 현재 버전 >= min_version 이면 닫기 가능
-        const comparison = window.Utils?.compareVersions(currentVersion, minVersion);
+        const comparison = compareVersions(currentVersion, minVersion);
         return comparison >= 0;
     } catch (e) {
         console.error("[NoticeSystem] Failed to compare versions:", e);
