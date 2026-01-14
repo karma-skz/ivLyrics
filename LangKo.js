@@ -366,7 +366,8 @@ window.LANG_KO = {
     "openSettings": "설정 열기",
     "translationSettings": "변환 설정",
     "regenerateTranslation": "번역 재생성",
-    "fullscreen": "전체화면"
+    "fullscreen": "전체화면",
+    "exitFullscreen": "전체화면 종료"
   },
   "messages": {
     "noLyrics": "사용 가능한 가사가 없음",

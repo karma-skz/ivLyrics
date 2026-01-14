@@ -2257,6 +2257,7 @@ class LyricsContainer extends react.Component {
       versionIndex: 0,
       versionIndex2: 0,
       isFullscreen: false,
+      isFloatingMenuOpen: false,
       isFADMode: false,
       isCached: false,
       language: null,
@@ -4717,7 +4718,10 @@ class LyricsContainer extends react.Component {
         backgroundStyle.filter = `brightness(${brightness}) blur(${blurAmount}px)`;
         backgroundStyle.backgroundSize = "cover";
         backgroundStyle.backgroundPosition = "center";
-        backgroundStyle.transform = "scale(1.1)"; // 블러 경계선 숨기기
+        // 블러 경계선 숨기기 - scale 대신 inset 사용하여 스크롤 방지
+        backgroundStyle.inset = "-5%";
+        backgroundStyle.width = "100%";
+        backgroundStyle.height = "100%";
       }
     } else if (!this.state.isFADMode && CONFIG.visual["blur-gradient-background"]) {
       const brightness = CONFIG.visual["background-brightness"] / 100;
@@ -5115,67 +5119,113 @@ class LyricsContainer extends react.Component {
           )
         )
       ),
+      // ===== 플로팅 바 (일반 모드: 전체 표시, 전체화면: 메뉴 토글 방식) =====
       react.createElement(
         "div",
         {
-          className: "lyrics-config-button-container" + (this.state.isFullscreen ? " fullscreen-mode-container" : ""),
-          onMouseEnter: () => this.setState({ isMenuHovered: true }),
-          onMouseLeave: () => this.setState({ isMenuHovered: false, justEnteredFullscreen: false }),
-        },
-        showTranslationButton &&
-        react.createElement(TranslationMenu, {
-          friendlyLanguage,
-          hasTranslation: {},
-        }),
-        react.createElement(RegenerateTranslationButton, {
-          onRegenerate: this.regenerateTranslation,
-          isEnabled: canRegenerateTranslation,
-          isLoading: this.state.isTranslationLoading,
-        }),
-        react.createElement(SyncAdjustButton, {
-          trackUri: this.currentTrackUri,
-          onOffsetChange: (offset) => {
-            this.forceUpdate();
-          },
-        }),
-        react.createElement(CommunityVideoButton, {
-          trackUri: this.currentTrackUri,
-          videoInfo: this.state.videoInfo,
-          onVideoSelect: async (newVideoInfo) => {
-            this.setState({ videoInfo: newVideoInfo });
-            // 선택한 영상을 IndexedDB에 저장
-            if (newVideoInfo && this.currentTrackUri) {
-              await Utils.saveSelectedVideo(this.currentTrackUri, newVideoInfo);
+          className: "lyrics-config-button-container" +
+            (this.state.isFullscreen ? " fullscreen-mode-container" : "") +
+            (this.state.isFullscreen && this.state.isFloatingMenuOpen ? " menu-open" : ""),
+          ref: (el) => {
+            if (el && this.state.isFullscreen) {
+              // 전체화면에서 바깥 클릭 시 메뉴 닫기
+              const handleClickOutside = (e) => {
+                if (!el.contains(e.target) && this.state.isFloatingMenuOpen) {
+                  this.setState({ isFloatingMenuOpen: false });
+                }
+              };
+              if (!el._clickOutsideAttached) {
+                el._clickOutsideAttached = true;
+                document.addEventListener('click', handleClickOutside);
+                el._cleanupClickOutside = () => {
+                  document.removeEventListener('click', handleClickOutside);
+                };
+              }
             }
           },
-        }),
-        react.createElement(ShareImageButton, {
-          lyrics: this.state.currentLyrics || [],
-          trackInfo: {
-            name: Spicetify.Player.data?.item?.name || Spicetify.Player.data?.item?.metadata?.title || '',
-            artist: Spicetify.Player.data?.item?.artists?.map(a => a.name).join(', ') || Spicetify.Player.data?.item?.metadata?.artist_name || '',
-            cover: Spicetify.Player.data?.item?.metadata?.image_xlarge_url ||
-              Spicetify.Player.data?.item?.metadata?.image_large_url ||
-              Spicetify.Player.data?.item?.metadata?.image_url ||
-              Spicetify.Player.data?.item?.album?.images?.[0]?.url || '',
+        },
+        // 전체화면에서만 보이는 메뉴 토글 버튼
+        this.state.isFullscreen && react.createElement(
+          "button",
+          {
+            className: "lyrics-config-button lyrics-floating-menu-toggle",
+            onClick: (e) => {
+              e.stopPropagation();
+              this.setState({ isFloatingMenuOpen: !this.state.isFloatingMenuOpen });
+            },
           },
-        }),
-
-        react.createElement(SettingsMenu),
-        // Fullscreen toggle button
-        (() => !document.getElementById("fad-ivLyrics-container"))() && react.createElement(
-          "div",
-          { className: "lyrics-fullscreen-exit-wrapper" },
-          react.createElement(
+          react.createElement("svg", {
+            width: 20,
+            height: 20,
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            strokeWidth: 2,
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            dangerouslySetInnerHTML: {
+              __html: this.state.isFloatingMenuOpen
+                ? '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>' // X 아이콘
+                : '<line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>', // 햄버거 아이콘
+            },
+          })
+        ),
+        // 메뉴 내용 (일반 모드: 항상 표시, 전체화면: 열렸을 때만 표시)
+        (!this.state.isFullscreen || this.state.isFloatingMenuOpen) && react.createElement(
+          react.Fragment,
+          null,
+          showTranslationButton &&
+          react.createElement(TranslationMenu, {
+            friendlyLanguage,
+            hasTranslation: {},
+          }),
+          react.createElement(RegenerateTranslationButton, {
+            onRegenerate: this.regenerateTranslation,
+            isEnabled: canRegenerateTranslation,
+            isLoading: this.state.isTranslationLoading,
+          }),
+          react.createElement(SyncAdjustButton, {
+            trackUri: this.currentTrackUri,
+            onOffsetChange: (offset) => {
+              this.forceUpdate();
+            },
+          }),
+          react.createElement(CommunityVideoButton, {
+            trackUri: this.currentTrackUri,
+            videoInfo: this.state.videoInfo,
+            onVideoSelect: async (newVideoInfo) => {
+              this.setState({ videoInfo: newVideoInfo });
+              if (newVideoInfo && this.currentTrackUri) {
+                await Utils.saveSelectedVideo(this.currentTrackUri, newVideoInfo);
+              }
+            },
+          }),
+          react.createElement(ShareImageButton, {
+            lyrics: this.state.currentLyrics || [],
+            trackInfo: {
+              name: Spicetify.Player.data?.item?.name || Spicetify.Player.data?.item?.metadata?.title || '',
+              artist: Spicetify.Player.data?.item?.artists?.map(a => a.name).join(', ') || Spicetify.Player.data?.item?.metadata?.artist_name || '',
+              cover: Spicetify.Player.data?.item?.metadata?.image_xlarge_url ||
+                Spicetify.Player.data?.item?.metadata?.image_large_url ||
+                Spicetify.Player.data?.item?.metadata?.image_url ||
+                Spicetify.Player.data?.item?.album?.images?.[0]?.url || '',
+            },
+          }),
+          react.createElement(SettingsMenu),
+          // 전체화면 토글 버튼
+          (() => !document.getElementById("fad-ivLyrics-container"))() && react.createElement(
             Spicetify.ReactComponent.TooltipWrapper,
             {
-              label: I18n.t("menu.fullscreen"),
+              label: this.state.isFullscreen ? I18n.t("menu.exitFullscreen") || "Exit Fullscreen" : I18n.t("menu.fullscreen"),
             },
             react.createElement(
               "button",
               {
-                className: "lyrics-config-button lyrics-fullscreen-exit-button",
+                className: "lyrics-config-button lyrics-fullscreen-toggle-button",
                 onClick: () => {
+                  if (this.state.isFullscreen) {
+                    this.setState({ isFloatingMenuOpen: false });
+                  }
                   this.toggleFullscreen();
                 },
               },
@@ -5190,103 +5240,97 @@ class LyricsContainer extends react.Component {
                 strokeLinejoin: "round",
                 dangerouslySetInnerHTML: {
                   __html: this.state.isFullscreen
-                    ? (this.state.isMenuHovered && !this.state.justEnteredFullscreen
-                      ? '<path d="M9 4v3a2 2 0 0 1-2 2H4"/><path d="M15 4v3a2 2 0 0 0 2 2h3"/><path d="M9 20v-3a2 2 0 0 0-2-2H4"/><path d="M15 20v-3a2 2 0 0 1 2-2h3"/>' // Exit Fullscreen
-                      : '<line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>') // Menu (Hamburger)
-                    : '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>', // Enter Fullscreen
+                    ? '<path d="M4 14h6v6"/><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M3 21l7-7"/>'
+                    : '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>',
                 },
               })
             )
-          )
-        ),
-        // Separator between tools and mode buttons
-        react.createElement("div", { className: "lyrics-config-separator" }),
-        // Mode switching buttons
-        // Karaoke mode button
-        this.state.karaoke && CONFIG.visual["karaoke-mode-enabled"] && react.createElement(
-          Spicetify.ReactComponent.TooltipWrapper,
-          { label: I18n.t("modes.karaoke") },
-          react.createElement(
-            "button",
-            {
-              className: `lyrics-config-button lyrics-mode-button ${mode === KARAOKE ? "active" : ""}`,
-              onClick: () => this.switchTo(KARAOKE),
-            },
-            react.createElement("svg", {
-              width: 18,
-              height: 18,
-              viewBox: "0 0 24 24",
-              fill: "none",
-              stroke: "currentColor",
-              strokeWidth: 2,
-              strokeLinecap: "round",
-              strokeLinejoin: "round",
-              dangerouslySetInnerHTML: {
-                __html: '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',
+          ),
+          // 구분선
+          react.createElement("div", { className: "lyrics-config-separator" }),
+          // 모드 전환 버튼들
+          this.state.karaoke && CONFIG.visual["karaoke-mode-enabled"] && react.createElement(
+            Spicetify.ReactComponent.TooltipWrapper,
+            { label: I18n.t("modes.karaoke") },
+            react.createElement(
+              "button",
+              {
+                className: `lyrics-config-button lyrics-mode-button ${mode === KARAOKE ? "active" : ""}`,
+                onClick: () => this.switchTo(KARAOKE),
               },
-            })
-          )
-        ),
-        // Synced mode button
-        this.state.synced && react.createElement(
-          Spicetify.ReactComponent.TooltipWrapper,
-          { label: I18n.t("modes.synced") },
-          react.createElement(
-            "button",
-            {
-              className: `lyrics-config-button lyrics-mode-button ${mode === SYNCED ? "active" : ""}`,
-              onClick: () => this.switchTo(SYNCED),
-            },
-            react.createElement("svg", {
-              width: 18,
-              height: 18,
-              viewBox: "0 0 24 24",
-              fill: "none",
-              stroke: "currentColor",
-              strokeWidth: 2,
-              strokeLinecap: "round",
-              strokeLinejoin: "round",
-              dangerouslySetInnerHTML: {
-                __html: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+              react.createElement("svg", {
+                width: 18,
+                height: 18,
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "currentColor",
+                strokeWidth: 2,
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                dangerouslySetInnerHTML: {
+                  __html: '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',
+                },
+              })
+            )
+          ),
+          this.state.synced && react.createElement(
+            Spicetify.ReactComponent.TooltipWrapper,
+            { label: I18n.t("modes.synced") },
+            react.createElement(
+              "button",
+              {
+                className: `lyrics-config-button lyrics-mode-button ${mode === SYNCED ? "active" : ""}`,
+                onClick: () => this.switchTo(SYNCED),
               },
-            })
-          )
-        ),
-        // Unsynced mode button
-        this.state.unsynced && react.createElement(
-          Spicetify.ReactComponent.TooltipWrapper,
-          { label: I18n.t("modes.unsynced") },
-          react.createElement(
-            "button",
-            {
-              className: `lyrics-config-button lyrics-mode-button ${mode === UNSYNCED ? "active" : ""}`,
-              onClick: () => this.switchTo(UNSYNCED),
-            },
-            react.createElement("svg", {
-              width: 18,
-              height: 18,
-              viewBox: "0 0 24 24",
-              fill: "none",
-              stroke: "currentColor",
-              strokeWidth: 2,
-              strokeLinecap: "round",
-              strokeLinejoin: "round",
-              dangerouslySetInnerHTML: {
-                __html: '<path d="M17 6.1H3"/><path d="M21 12.1H3"/><path d="M15.1 18H3"/>',
+              react.createElement("svg", {
+                width: 18,
+                height: 18,
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "currentColor",
+                strokeWidth: 2,
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                dangerouslySetInnerHTML: {
+                  __html: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+                },
+              })
+            )
+          ),
+          this.state.unsynced && react.createElement(
+            Spicetify.ReactComponent.TooltipWrapper,
+            { label: I18n.t("modes.unsynced") },
+            react.createElement(
+              "button",
+              {
+                className: `lyrics-config-button lyrics-mode-button ${mode === UNSYNCED ? "active" : ""}`,
+                onClick: () => this.switchTo(UNSYNCED),
               },
-            })
-          )
-        ),
-        // Sync Data Creator Button (Moved to bottom)
-        react.createElement(SyncDataCreatorButton, {
-          trackInfo: {
-            uri: this.currentTrackUri,
-            name: Spicetify.Player.data?.item?.name || '',
-            artists: Spicetify.Player.data?.item?.artists || [],
-            album: Spicetify.Player.data?.item?.album || {},
-          },
-          showHint: true
-        })
+              react.createElement("svg", {
+                width: 18,
+                height: 18,
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "currentColor",
+                strokeWidth: 2,
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                dangerouslySetInnerHTML: {
+                  __html: '<path d="M17 6.1H3"/><path d="M21 12.1H3"/><path d="M15.1 18H3"/>',
+                },
+              })
+            )
+          ),
+          react.createElement(SyncDataCreatorButton, {
+            trackInfo: {
+              uri: this.currentTrackUri,
+              name: Spicetify.Player.data?.item?.name || '',
+              artists: Spicetify.Player.data?.item?.artists || [],
+              album: Spicetify.Player.data?.item?.album || {},
+            },
+            showHint: true
+          })
+        )
       ),
       activeItem
     );

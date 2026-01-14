@@ -986,6 +986,10 @@ div.lyrics-tabBar-headerItemLink {
 /* 전체화면에서 배경 요소 오버플로우 방지 */
 #lyrics-fullscreen-container #ivLyrics-gradient-background {
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 #lyrics-fullscreen-container .lyrics-lyricsContainer-LyricsBackground {
@@ -1398,6 +1402,7 @@ div.lyrics-tabBar-headerItemLink {
   width: 100%;
   height: 100%;
   z-index: 0;
+  overflow: hidden;
   transition: background-color 0.5s ease, background-image 0.5s ease,
     filter 0.5s ease, background 1.5s ease;
   pointer-events: none;
@@ -5721,73 +5726,187 @@ ruby .lyrics-karaoke-char.sung {
 
 /* Fullscreen Floating Icons Logic */
 
-/* In fullscreen mode, only show the exit button initially */
-/* Collapse unrelated items effectively */
-.lyrics-config-button-container.fullscreen-mode-container .lyrics-config-button,
-.lyrics-config-button-container.fullscreen-mode-container .TranslationMenu,
-.lyrics-config-button-container.fullscreen-mode-container .lyrics-config-separator,
-.lyrics-config-button-container.fullscreen-mode-container>div:not(.lyrics-fullscreen-exit-wrapper) {
-  opacity: 0;
-  pointer-events: none;
-  height: 0;
-  width: 0;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden;
-  transition: opacity 0.3s ease, height 0.3s ease, margin 0.3s ease;
-}
+/* ============================================ */
+/* 전체화면 플로팅 바 - 메뉴 토글 방식 (v4)      */
+/* ============================================ */
 
-/* Ensure the wrapper handles layout if needed */
-.lyrics-fullscreen-exit-wrapper {
-  display: flexbox;
+/* 전체화면 모드 플로팅 바 컨테이너 - 기본(접힌 상태) */
+.lyrics-config-button-container.fullscreen-mode-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-}
-
-/* Override opacity for the exit button inside the wrapper */
-.lyrics-config-button-container.fullscreen-mode-container .lyrics-fullscreen-exit-wrapper .lyrics-config-button {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  height: 40px !important;
-  width: 40px !important;
-}
-
-/* Adjust container when collapsed */
-/* Adjust container when collapsed */
-.lyrics-config-button-container.fullscreen-mode-container:not(:hover) {
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-color: rgba(255, 255, 255, 0.05);
-  box-shadow: none;
-  gap: 0;
-  padding: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Show all on container hover */
-.lyrics-config-button-container.fullscreen-mode-container:hover .lyrics-config-button,
-.lyrics-config-button-container.fullscreen-mode-container:hover .TranslationMenu,
-.lyrics-config-button-container.fullscreen-mode-container:hover .lyrics-config-separator,
-.lyrics-config-button-container.fullscreen-mode-container:hover>div {
-  opacity: 1;
+  z-index: 10000;
   pointer-events: auto;
-  height: 40px;
-  width: 40px;
+
+  /* 접힌 상태 스타일 - 일반 모드와 비슷한 glassmorphism */
+  padding: 0;
+  gap: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  width: 48px;
+  height: 48px;
+
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.lyrics-config-button-container.fullscreen-mode-container:hover .lyrics-config-button {
-  margin: 2px 0;
+/* 메뉴 토글 버튼 스타일 - 접힌 상태에서는 완전히 투명 */
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-floating-menu-toggle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
-.lyrics-config-button-container.fullscreen-mode-container:hover .lyrics-config-separator {
-  height: 1px;
-  width: 80%;
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-floating-menu-toggle:hover {
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* 메뉴 열린 상태 - 일반 모드와 완전히 동일한 스타일 */
+.lyrics-config-button-container.fullscreen-mode-container.menu-open {
+  padding: 12px 8px;
+  gap: 8px;
+  border-radius: 24px;
+  width: auto;
+  height: auto;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.lyrics-config-button-container.fullscreen-mode-container.menu-open:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.lyrics-config-button-container.fullscreen-mode-container.menu-open .lyrics-floating-menu-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  margin-bottom: 0;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.lyrics-config-button-container.fullscreen-mode-container.menu-open .lyrics-floating-menu-toggle:hover {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* 플로팅 바 내부 버튼 기본 스타일 - 일반 모드와 동일 */
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-config-button {
+  align-items: center;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 0;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  display: flex;
+  gap: 0;
+  justify-content: center;
+  padding: 0;
+  height: 44px;
+  width: 44px;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-config-button:hover {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 20px rgba(var(--spice-rgb-accent, 30, 215, 96), 0.15);
+}
+
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-config-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 전체화면 토글 버튼 특별 스타일 */
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-fullscreen-toggle-button {
+  background: linear-gradient(145deg, rgba(255, 107, 107, 0.3) 0%, rgba(255, 107, 107, 0.15) 100%);
+  border-color: rgba(255, 107, 107, 0.3);
+}
+
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-fullscreen-toggle-button:hover {
+  background: linear-gradient(145deg, rgba(255, 107, 107, 0.4) 0%, rgba(255, 107, 107, 0.2) 100%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 20px rgba(255, 107, 107, 0.25);
+}
+
+/* 구분선 스타일 - 일반 모드와 동일 */
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-config-separator {
+  width: 28px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+  border-radius: 1px;
   margin: 4px 0;
+  pointer-events: none;
+}
+
+/* 하위 컴포넌트들 */
+.lyrics-config-button-container.fullscreen-mode-container>* {
+  pointer-events: auto;
+}
+
+/* TranslationMenu, RegenerateButton 등 하위 메뉴들 */
+.lyrics-config-button-container.fullscreen-mode-container .TranslationMenu,
+.lyrics-config-button-container.fullscreen-mode-container>div {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 드롭다운 메뉴 위치 조정 */
+.lyrics-config-button-container.fullscreen-mode-container .main-contextMenu-menu {
+  z-index: 10001;
+}
+
+/* 마우스가 3초 이상 움직이지 않으면 살짝 투명해짐 */
+.lyrics-lyricsContainer-LyricsContainer.fullscreen-active.controls-hidden .lyrics-config-button-container.fullscreen-mode-container {
+  opacity: 0.4;
+  transform: translateY(5px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.lyrics-lyricsContainer-LyricsContainer.fullscreen-active.controls-hidden .lyrics-config-button-container.fullscreen-mode-container:hover {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 모드 버튼 활성화 상태 - 일반 모드와 동일 */
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-mode-button.active {
+  background: linear-gradient(145deg, rgba(var(--spice-rgb-accent, 30, 215, 96), 0.35) 0%, rgba(var(--spice-rgb-accent, 30, 215, 96), 0.15) 100%) !important;
+  border-color: rgba(var(--spice-rgb-accent, 30, 215, 96), 0.5) !important;
+  box-shadow: 0 2px 12px rgba(var(--spice-rgb-accent, 30, 215, 96), 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-mode-button.active:hover {
+  box-shadow: 0 4px 16px rgba(var(--spice-rgb-accent, 30, 215, 96), 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.lyrics-config-button-container.fullscreen-mode-container .lyrics-mode-button.active svg {
+  color: var(--spice-accent, #1ed760);
 }

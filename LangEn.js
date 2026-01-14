@@ -366,7 +366,8 @@ window.LANG_EN = {
     "openSettings": "Open Settings",
     "translationSettings": "Conversion Settings",
     "regenerateTranslation": "Regenerate Translation",
-    "fullscreen": "Fullscreen"
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen"
   },
   "messages": {
     "noLyrics": "No lyrics available",
