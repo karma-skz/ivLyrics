@@ -1105,7 +1105,7 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 				body: JSON.stringify({
 					publishToken: publishToken,
 					trackName: trackName,
-					artistName: artistName,
+					artistName: trackInfo?.artists?.[0]?.name || Spicetify.Player?.data?.item?.artists?.[0]?.name || artistName.split(',')[0].trim(),
 					albumName: albumName,
 					duration: duration,
 					plainLyrics: manualLyricsInput.trim(),
