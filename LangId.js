@@ -1574,6 +1574,7 @@ window.LANG_ID = {
     "notSynced": "Belum Sinkron",
     "deleteLine": "Hapus baris ini",
     "loadedExistingSyncData": "Data sinkronisasi yang ada dimuat",
+    "providerMismatch": "Data sinkronisasi yang ada menggunakan penyedia berbeda. Anda perlu membuat data baru untuk penyedia akun Anda.",
     "back": "Tutup",
     "lrclib": {
       "registerLyrics": "Daftarkan Lirik ke LRCLIB",

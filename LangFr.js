@@ -1575,6 +1575,7 @@ window.LANG_FR = {
     "notSynced": "Non synchro",
     "deleteLine": "Supprimer ligne",
     "loadedExistingSyncData": "Données de sync existantes chargées",
+    "providerMismatch": "Les données de sync existantes utilisent un fournisseur différent. Vous devez créer de nouvelles données pour le fournisseur de votre compte.",
     "back": "Fermer",
     "lrclib": {
       "registerLyrics": "Enregistrer sur LRCLIB",

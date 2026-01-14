@@ -1575,6 +1575,7 @@ window.LANG_KO = {
     "notSynced": "미등록",
     "deleteLine": "이 줄 삭제",
     "loadedExistingSyncData": "기존 싱크 데이터를 불러왔습니다",
+    "providerMismatch": "기존 싱크 데이터의 가사 제공자가 다릅니다. 현재 계정의 가사 제공자로 새로 생성해야 합니다.",
     "back": "닫기",
     "lrclib": {
       "registerLyrics": "LRCLIB에 가사 등록하기",

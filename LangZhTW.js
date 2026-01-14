@@ -1575,6 +1575,7 @@ window.LANG_ZH_TW = {
     "notSynced": "未登錄",
     "deleteLine": "刪除此行",
     "loadedExistingSyncData": "已載入現有同步資料",
+    "providerMismatch": "現有同步資料使用不同的歌詞提供者。您需要為當前帳戶的提供者建立新的同步資料。",
     "back": "關閉",
     "lrclib": {
       "registerLyrics": "在 LRCLIB 登錄歌詞",

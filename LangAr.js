@@ -1574,6 +1574,7 @@ window.LANG_AR = {
     "notSynced": "غير مسجل",
     "deleteLine": "حذف هذا السطر",
     "loadedExistingSyncData": "تم تحميل بيانات المزامنة الموجودة",
+    "providerMismatch": "بيانات المزامنة الحالية تستخدم مزوداً مختلفاً. يجب إنشاء بيانات جديدة لمزود حسابك.",
     "back": "إغلاق",
     "lrclib": {
       "registerLyrics": "تسجيل الكلمات في LRCLIB",

@@ -1575,6 +1575,7 @@ window.LANG_ZH_CN = {
     "notSynced": "未注册",
     "deleteLine": "删除此行",
     "loadedExistingSyncData": "已加载现有同步数据",
+    "providerMismatch": "现有同步数据使用不同的歌词提供者。您需要为当前账户的提供者创建新的同步数据。",
     "back": "关闭",
     "lrclib": {
       "registerLyrics": "在 LRCLIB 上注册歌词",

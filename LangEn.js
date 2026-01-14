@@ -1575,6 +1575,7 @@ window.LANG_EN = {
     "notSynced": "Unregistered",
     "deleteLine": "Delete This Line",
     "loadedExistingSyncData": "Loaded existing sync data",
+    "providerMismatch": "Existing sync data uses a different lyrics provider. You need to create new sync data for your account's provider.",
     "back": "Close",
     "lrclib": {
       "registerLyrics": "Register Lyrics to LRCLIB",

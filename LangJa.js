@@ -1575,6 +1575,7 @@ window.LANG_JA = {
     "notSynced": "未登録",
     "deleteLine": "この行を削除",
     "loadedExistingSyncData": "既存の同期データを読み込みました",
+    "providerMismatch": "既存の同期データは別の歌詞プロバイダーのものです。現在のアカウントのプロバイダーで新しく作成してください。",
     "back": "閉じる",
     "lrclib": {
       "registerLyrics": "LRCLIBに歌詞を登録する",

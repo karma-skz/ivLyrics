@@ -24,11 +24,51 @@ const NOTICE_URL = "https://ivlis.kr/ivLyrics/notice/";
  *       ],
  *       "icon": "info" | "update" | "warning" | "celebration",
  *       "dismissible": true,
+ *       "min_version": "3.4.0", // 선택사항: 이 버전 미만에서만 dismissible:false 적용
  *       "expiresAt": "2026-01-10" // 선택사항: 만료일
  *     }
  *   ]
  * }
+ * 
+ * dismissible 동작 규칙:
+ * - dismissible: true → 항상 닫기 가능
+ * - dismissible: false + min_version 없음 → 항상 닫기 불가
+ * - dismissible: false + min_version 설정 → 클라이언트 버전 >= min_version 이면 닫기 가능
+ *   (기존 클라이언트 호환성: min_version을 모르는 클라이언트는 dismissible:false로 동작)
  */
+
+/**
+ * 공지사항의 실제 dismissible 상태를 계산합니다.
+ * @param {Object} notice - 공지사항 객체
+ * @returns {boolean} - 닫기 가능 여부
+ */
+const calculateDismissible = (notice) => {
+    // dismissible이 true이면 항상 닫기 가능
+    if (notice.dismissible !== false) {
+        return true;
+    }
+
+    // dismissible이 false인 경우
+    // min_version이 없으면 닫기 불가
+    if (!notice.min_version) {
+        return false;
+    }
+
+    // min_version이 설정된 경우, 현재 버전과 비교
+    try {
+        const currentVersion = window.Utils?.currentVersion || "0.0.0";
+        const minVersion = notice.min_version;
+
+        // Utils.compareVersions: a > b면 1, a < b면 -1, 같으면 0
+        // 현재 버전 >= min_version 이면 닫기 가능
+        const comparison = window.Utils?.compareVersions(currentVersion, minVersion);
+        return comparison >= 0;
+    } catch (e) {
+        console.error("[NoticeSystem] Failed to compare versions:", e);
+        // 버전 비교 실패 시 안전하게 닫기 불가로 처리
+        return false;
+    }
+};
 
 const NoticeSystem = (() => {
     let cachedNotices = null;
@@ -158,6 +198,9 @@ const NoticeModal = ({ notices, onClose }) => {
 
     if (!currentNotice) return null;
 
+    // 실제 닫기 가능 여부 계산 (min_version 고려)
+    const isDismissible = calculateDismissible(currentNotice);
+
     // 아이콘 SVG 매핑
     const iconSVGs = {
         info: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>',
@@ -208,7 +251,7 @@ const NoticeModal = ({ notices, onClose }) => {
                 animation: "fadeIn 0.3s ease",
             },
             onClick: (e) => {
-                if (e.target === e.currentTarget && currentNotice.dismissible !== false) {
+                if (e.target === e.currentTarget && isDismissible) {
                     handleClose();
                 }
             },
@@ -408,7 +451,7 @@ const NoticeModal = ({ notices, onClose }) => {
                         "button",
                         {
                             onClick: handleClose,
-                            disabled: currentNotice.dismissible === false,
+                            disabled: !isDismissible,
                             style: {
                                 flex: 1,
                                 padding: "12px 20px",
@@ -427,8 +470,8 @@ const NoticeModal = ({ notices, onClose }) => {
                                 borderRadius: "10px",
                                 fontSize: "14px",
                                 fontWeight: "600",
-                                cursor: currentNotice.dismissible === false ? "not-allowed" : "pointer",
-                                opacity: currentNotice.dismissible === false ? 0.5 : 1,
+                                cursor: !isDismissible ? "not-allowed" : "pointer",
+                                opacity: !isDismissible ? 0.5 : 1,
                                 transition: "all 0.2s ease",
                             },
                         },

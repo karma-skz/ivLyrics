@@ -258,17 +258,64 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 	// 컴포넌트 마운트 시 자동 가사 로드 + 기존 싱크 데이터 불러오기
 	useEffect(() => {
 		const initWithExistingSyncData = async () => {
-			// 먼저 기존 싱크 데이터가 있는지 확인
+			// 1. 먼저 현재 유저의 Spotify provider를 확인 (가사를 로드해서 확인)
+			let currentUserProvider = null;
+
+			try {
+				const firstArtist = trackInfo?.artists?.[0]?.name ||
+					Spicetify.Player?.data?.item?.artists?.[0]?.name || '';
+
+				const info = {
+					uri: trackInfo?.uri || Spicetify.Player?.data?.item?.uri,
+					title: trackName,
+					name: trackName,
+					artist: firstArtist,
+					album: trackInfo?.album?.name || Spicetify.Player?.data?.item?.album?.name || '',
+					duration: Spicetify.Player?.data?.item?.duration?.milliseconds || 0
+				};
+
+				// Spotify에서 가사를 가져와서 현재 유저의 provider 확인
+				let spotifyResult = null;
+				if (typeof Providers !== 'undefined' && Providers.spotify) {
+					spotifyResult = await Providers.spotify(info);
+				} else if (typeof LyricsService !== 'undefined' && LyricsService.getLyrics) {
+					spotifyResult = await LyricsService.getLyrics(info, 'spotify');
+				}
+
+				if (spotifyResult && (spotifyResult.synced || spotifyResult.unsynced)) {
+					// 현재 유저의 provider 추출
+					currentUserProvider = spotifyResult.provider;
+					if ((currentUserProvider === 'Spotify' || currentUserProvider === 'spotify') && spotifyResult.spotifyLyricsProvider) {
+						currentUserProvider = `spotify-${spotifyResult.spotifyLyricsProvider}`;
+					}
+					console.log('[SyncDataCreator] Current user provider:', currentUserProvider);
+				}
+			} catch (e) {
+				console.warn('[SyncDataCreator] Failed to determine current user provider:', e);
+			}
+
+			// 2. 기존 싱크 데이터가 있는지 확인
 			if (window.SyncDataService && trackId) {
 				try {
 					const existingSyncData = await window.SyncDataService.getSyncData(trackId);
 					if (existingSyncData && existingSyncData.syncData && existingSyncData.syncData.lines) {
 						console.log('[SyncDataCreator] Found existing sync data, provider:', existingSyncData.provider);
 
-						// 기존 싱크 데이터의 provider로 가사 로드
-						await loadLyrics(existingSyncData.provider);
+						// 3. 현재 유저의 provider와 기존 싱크 데이터의 provider 비교
+						if (currentUserProvider && existingSyncData.provider !== currentUserProvider) {
+							// provider가 다르면 기존 싱크 데이터를 무시하고 현재 유저의 provider로 새로 시작
+							console.log('[SyncDataCreator] Provider mismatch! Existing:', existingSyncData.provider, 'Current:', currentUserProvider);
+							Toast.warning(
+								I18n.t('syncCreator.providerMismatch') ||
+								`기존 싱크 데이터는 ${existingSyncData.provider} 용입니다. 현재 계정은 ${currentUserProvider}를 사용하므로 새로 생성해야 합니다.`
+							);
+							// 현재 유저의 provider로 가사 로드
+							loadLyrics();
+							return;
+						}
 
-						// 싱크 데이터 적용
+						// provider가 일치하면 기존 싱크 데이터 적용
+						await loadLyrics(existingSyncData.provider);
 						setSyncData(existingSyncData.syncData);
 						setProvider(existingSyncData.provider);
 

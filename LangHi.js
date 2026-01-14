@@ -1574,6 +1574,7 @@ window.LANG_HI = {
     "notSynced": "सिंक नहीं",
     "deleteLine": "यह लाइन हटाएं",
     "loadedExistingSyncData": "मौजूदा सिंक डेटा लोड किया गया",
+    "providerMismatch": "मौजूदा सिंक डेटा अलग प्रदाता का उपयोग करता है। आपको अपने खाते के प्रदाता के लिए नया डेटा बनाना होगा।",
     "back": "बंद करें",
     "lrclib": {
       "registerLyrics": "LRCLIB पर लिरिक्स पंजीकृत करें",

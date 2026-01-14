@@ -1574,6 +1574,7 @@ window.LANG_FA = {
     "notSynced": "سینک نشده",
     "deleteLine": "حذف این خط",
     "loadedExistingSyncData": "داده‌های سینک موجود بارگذاری شد",
+    "providerMismatch": "داده‌های سینک موجود از ارائه‌دهنده دیگری استفاده می‌کند. باید داده‌های جدید برای ارائه‌دهنده حساب خود ایجاد کنید.",
     "back": "بستن",
     "lrclib": {
       "registerLyrics": "ثبت متن در LRCLIB",

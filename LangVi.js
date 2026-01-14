@@ -1575,6 +1575,7 @@ window.LANG_VI = {
     "notSynced": "Chưa ghi",
     "deleteLine": "Xóa dòng này",
     "loadedExistingSyncData": "Đã tải dữ liệu đồng bộ có sẵn",
+    "providerMismatch": "Dữ liệu đồng bộ hiện có sử dụng nhà cung cấp khác. Bạn cần tạo dữ liệu mới cho nhà cung cấp của tài khoản.",
     "back": "Đóng",
     "lrclib": {
       "registerLyrics": "Đăng ký lời bài hát lên LRCLIB",
