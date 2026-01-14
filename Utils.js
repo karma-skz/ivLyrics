@@ -744,28 +744,54 @@ const Utils = {
    */
   async checkForUpdates() {
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      // Try multiple CDN URLs to avoid CORS issues
+      const urls = [
+        "https://raw.githubusercontent.com/ivLis-Studio/ivLyrics/main/version.txt",
+        "https://cdn.jsdelivr.net/gh/ivLis-Studio/ivLyrics@main/version.txt",
+        //https://ghproxy.link/
+        "https://ghfast.top/https://raw.githubusercontent.com/ivLis-Studio/ivLyrics/main/version.txt",
+        "https://corsproxy.io/?url=https://raw.githubusercontent.com/ivLis-Studio/ivLyrics/main/version.txt",
+      ];
 
-      const response = await fetch("https://ivlis.kr/ivLyrics/proxy.php", {
-        signal: controller.signal,
-        cache: "no-cache",
-        headers: {
-          Accept: "application/json",
-        },
-      });
+      let latestVersion = null;
+      let lastError = null;
 
-      clearTimeout(timeoutId);
+      for (const url of urls) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout per attempt
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          const response = await fetch(url, {
+            signal: controller.signal,
+            cache: "no-cache",
+            headers: {
+              Accept: "text/plain, */*",
+            },
+          });
+
+          clearTimeout(timeoutId);
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+
+          latestVersion = (await response.text()).trim();
+
+          // If we successfully got a version, break the loop
+          if (latestVersion && /^\d+\.\d+\.\d+$/.test(latestVersion)) {
+            break;
+          }
+        } catch (error) {
+          lastError = error;
+          // Continue to next URL
+          continue;
+        }
       }
 
-      const data = await response.json();
-      const latestVersion = data.tag_name?.trim();
-
       if (!latestVersion) {
-        throw new Error(I18n.t("utils.allUrlsFailed"));
+        throw (
+          lastError || new Error(I18n.t("utils.allUrlsFailed"))
+        );
       }
 
       // Validate version format (should be like "1.2.3")
@@ -780,8 +806,6 @@ const Utils = {
         hasUpdate,
         currentVersion: this.currentVersion,
         latestVersion,
-        releaseNotes: data.body || null,
-        publishedAt: data.published_at || null,
       };
     } catch (error) {
       let errorMessage = I18n.t("utils.unknownError");
