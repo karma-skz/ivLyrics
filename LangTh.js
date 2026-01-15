@@ -1596,6 +1596,18 @@ window.LANG_TH = {
       "noLyricsInput": "โปรดป้อนเนื้อเพลง",
       "loadingAfterPublish": "กำลังโหลดเนื้อเพลงที่ลงทะเบียน...",
       "wrongLyricsWarning": "หากเนื้อเพลงไม่ถูกต้อง ให้ส่งด้วยตนเอง"
+    },
+    "shortcuts": {
+      "charForward": "1 ตัวอักษร",
+      "charBack": "ยกเลิก 1 ตัวอักษร",
+      "wordForward": "1 คำ",
+      "wordBack": "ยกเลิก 1 คำ",
+      "drag": "กดค้างเพื่อลาก",
+      "finish": "เสร็จสิ้นบรรทัด",
+      "cancel": "ยกเลิก",
+      "playPause": "เล่น/หยุด",
+      "seekBack": "-3 วิ",
+      "seekForward": "+3 วิ"
     }
   }
 };

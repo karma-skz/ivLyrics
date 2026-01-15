@@ -1596,6 +1596,18 @@ window.LANG_BN = {
       "noLyricsInput": "অনুগ্রহ করে লিরিক্স লিখুন",
       "loadingAfterPublish": "নিবন্ধিত লিরিক্স লোড হচ্ছে...",
       "wrongLyricsWarning": "গানের কথা ভুল হলে, ম্যানুয়ালি জমা দিন।"
+    },
+    "shortcuts": {
+      "charForward": "১টি অক্ষর",
+      "charBack": "১টি অক্ষর বাতিল",
+      "wordForward": "১টি শব্দ",
+      "wordBack": "১টি শব্দ বাতিল",
+      "drag": "ধরে টানুন",
+      "finish": "লাইন সম্পূর্ণ",
+      "cancel": "বাতিল",
+      "playPause": "চালান/থামান",
+      "seekBack": "-৩ সেকেন্ড",
+      "seekForward": "+৩ সেকেন্ড"
     }
   }
 };

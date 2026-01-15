@@ -1596,6 +1596,18 @@ window.LANG_FR = {
       "noLyricsInput": "Veuillez entrer des paroles",
       "loadingAfterPublish": "Chargement des paroles publiées...",
       "wrongLyricsWarning": "Si les paroles sont incorrectes, soumettez-les manuellement."
+    },
+    "shortcuts": {
+      "charForward": "1 Caract.",
+      "charBack": "Annuler 1 Caract.",
+      "wordForward": "1 Mot",
+      "wordBack": "Annuler 1 Mot",
+      "drag": "Maintenir pour glisser",
+      "finish": "Ligne terminée",
+      "cancel": "Annuler",
+      "playPause": "Lecture/Pause",
+      "seekBack": "-3 Sec",
+      "seekForward": "+3 Sec"
     }
   }
 };

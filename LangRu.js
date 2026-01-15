@@ -1596,6 +1596,18 @@ window.LANG_RU = {
       "noLyricsInput": "Введите текст песни",
       "loadingAfterPublish": "Загрузка добавленного текста...",
       "wrongLyricsWarning": "Если текст песни неверен, отправьте его вручную."
+    },
+    "shortcuts": {
+      "charForward": "1 Символ",
+      "charBack": "Отменить 1 символ",
+      "wordForward": "1 Слово",
+      "wordBack": "Отменить 1 слово",
+      "drag": "Удерживай для перетаскивания",
+      "finish": "Строка готова",
+      "cancel": "Отмена",
+      "playPause": "Воспроизвести/Пауза",
+      "seekBack": "-3 сек",
+      "seekForward": "+3 сек"
     }
   }
 };

@@ -1596,6 +1596,18 @@ window.LANG_ZH_CN = {
       "noLyricsInput": "请输入歌词",
       "loadingAfterPublish": "正在加载注册的歌词...",
       "wrongLyricsWarning": "如果歌词不正确，请手动提交。"
+    },
+    "shortcuts": {
+      "charForward": "1字",
+      "charBack": "撤销1字",
+      "wordForward": "1词",
+      "wordBack": "撤销1词",
+      "drag": "按住拖动",
+      "finish": "完成行",
+      "cancel": "取消",
+      "playPause": "播放/暂停",
+      "seekBack": "-3秒",
+      "seekForward": "+3秒"
     }
   }
 };

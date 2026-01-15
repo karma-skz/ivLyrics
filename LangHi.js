@@ -1595,6 +1595,18 @@ window.LANG_HI = {
       "noLyricsInput": "कृपया लिरिक्स दर्ज करें",
       "loadingAfterPublish": "पंजीकृत लिरिक्स लोड हो रहे हैं...",
       "wrongLyricsWarning": "यदि बोल गलत हैं, तो उन्हें मैन्युअल रूप से सबमिट करें।"
+    },
+    "shortcuts": {
+      "charForward": "1 अक्षर",
+      "charBack": "1 अक्षर वापस",
+      "wordForward": "1 शब्द",
+      "wordBack": "1 शब्द वापस",
+      "drag": "खींचने के लिए दबाएं",
+      "finish": "लाइन पूर्ण",
+      "cancel": "रद्द करें",
+      "playPause": "चलाएं/रोकें",
+      "seekBack": "-3 सेकंड",
+      "seekForward": "+3 सेकंड"
     }
   }
 };

@@ -1595,6 +1595,18 @@ window.LANG_FA = {
       "noLyricsInput": "لطفاً متن آهنگ را وارد کنید",
       "loadingAfterPublish": "در حال بارگذاری متن ثبت شده...",
       "wrongLyricsWarning": "اگر متن آهنگ نادرست است، آن را به صورت دستی ارسال کنید."
+    },
+    "shortcuts": {
+      "charForward": "۱ حرف",
+      "charBack": "لغو ۱ حرف",
+      "wordForward": "۱ کلمه",
+      "wordBack": "لغو ۱ کلمه",
+      "drag": "نگه دار و بکش",
+      "finish": "تمام کردن خط",
+      "cancel": "لغو",
+      "playPause": "پخش/توقف",
+      "seekBack": "-۳ ثانیه",
+      "seekForward": "+۳ ثانیه"
     }
   }
 };

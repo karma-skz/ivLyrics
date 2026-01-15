@@ -1597,6 +1597,18 @@ window.LANG_KO = {
       "noLyricsInput": "가사를 입력해주세요",
       "loadingAfterPublish": "등록된 가사를 불러오는 중...",
       "wrongLyricsWarning": "가사가 올바르지 않은 경우, 직접 등록하세요."
+    },
+    "shortcuts": {
+      "charForward": "한 글자",
+      "charBack": "한 글자 취소",
+      "wordForward": "한 단어",
+      "wordBack": "한 단어 취소",
+      "drag": "누르면 드래그",
+      "finish": "라인 완료",
+      "cancel": "취소",
+      "playPause": "재생/일시정지",
+      "seekBack": "-3초",
+      "seekForward": "+3초"
     }
   }
 };

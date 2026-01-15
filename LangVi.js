@@ -1596,6 +1596,18 @@ window.LANG_VI = {
       "noLyricsInput": "Vui lòng nhập lời bài hát",
       "loadingAfterPublish": "Đang tải lời bài hát đã đăng ký...",
       "wrongLyricsWarning": "Nếu lời bài hát không chính xác, vui lòng gửi thủ công."
+    },
+    "shortcuts": {
+      "charForward": "1 ký tự",
+      "charBack": "Hoàn tác 1 ký tự",
+      "wordForward": "1 từ",
+      "wordBack": "Hoàn tác 1 từ",
+      "drag": "Giữ để kéo",
+      "finish": "Hoàn thành dòng",
+      "cancel": "Hủy",
+      "playPause": "Phát/Dừng",
+      "seekBack": "-3 giây",
+      "seekForward": "+3 giây"
     }
   }
 };

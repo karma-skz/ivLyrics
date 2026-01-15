@@ -1596,6 +1596,18 @@ window.LANG_PT = {
       "noLyricsInput": "Por favor, insira a letra",
       "loadingAfterPublish": "Carregando a letra registrada...",
       "wrongLyricsWarning": "Se a letra estiver incorreta, envie-a manualmente."
+    },
+    "shortcuts": {
+      "charForward": "1 Caractere",
+      "charBack": "Desfazer 1 Caractere",
+      "wordForward": "1 Palavra",
+      "wordBack": "Desfazer 1 Palavra",
+      "drag": "Segure para arrastar",
+      "finish": "Linha completa",
+      "cancel": "Cancelar",
+      "playPause": "Reproduzir/Pausar",
+      "seekBack": "-3 Seg",
+      "seekForward": "+3 Seg"
     }
   }
 };

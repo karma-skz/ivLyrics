@@ -1595,6 +1595,18 @@ window.LANG_DE = {
       "noLyricsInput": "Bitte geben Sie einen Songtext ein",
       "loadingAfterPublish": "Lade registrierten Songtext...",
       "wrongLyricsWarning": "Wenn der Liedtext falsch ist, senden Sie ihn manuell."
+    },
+    "shortcuts": {
+      "charForward": "1 Zeichen",
+      "charBack": "1 Zeichen rückgängig",
+      "wordForward": "1 Wort",
+      "wordBack": "1 Wort rückgängig",
+      "drag": "Halten zum Ziehen",
+      "finish": "Zeile fertig",
+      "cancel": "Abbrechen",
+      "playPause": "Abspielen/Pause",
+      "seekBack": "-3 Sek",
+      "seekForward": "+3 Sek"
     }
   }
 };

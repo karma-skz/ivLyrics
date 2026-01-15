@@ -568,18 +568,39 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 	const isKeyboardSyncingRef = useRef(false);
 	const keyboardCharIndexRef = useRef(-1);
 
+	// 드래그 키(/) 연속 입력을 위한 인터벌 ref
+	const keyboardDragIntervalRef = useRef(null);
+	const isKeyboardDraggingRef = useRef(false);
+
+	// 이전 라인 인덱스 추적 (라인 변경 감지용)
+	const prevLineIndexRef = useRef(currentLineIndex);
+
 	// 키보드 이벤트 리스너 등록
 	useEffect(() => {
-		if (mode !== 'record') {
-			// record 모드가 아니면 키보드 싱크 상태 초기화
-			if (isKeyboardSyncingRef.current) {
-				isKeyboardSyncingRef.current = false;
-				keyboardCharIndexRef.current = -1;
-				charTimesRef.current = [];
-				setDragStartTime(null);
-				setRecordingCharIndex(-1);
+		// 라인이 변경되었는지 확인
+		const lineChanged = prevLineIndexRef.current !== currentLineIndex;
+		if (lineChanged) {
+			prevLineIndexRef.current = currentLineIndex;
+		}
+
+		// record 모드가 아니거나 라인이 변경되면 키보드 싱크 상태 초기화
+		const shouldReset = mode !== 'record' || lineChanged;
+		if (shouldReset && (isKeyboardSyncingRef.current || isKeyboardDraggingRef.current)) {
+			console.log('[SyncDataCreator] Resetting keyboard sync state, mode:', mode, 'lineChanged:', lineChanged);
+			// 진행 중인 키보드 싱크 초기화
+			isKeyboardSyncingRef.current = false;
+			keyboardCharIndexRef.current = -1;
+			charTimesRef.current = [];
+			setDragStartTime(null);
+			setRecordingCharIndex(-1);
+			// 드래그 모드도 초기화
+			if (isKeyboardDraggingRef.current) {
+				isKeyboardDraggingRef.current = false;
+				if (keyboardDragIntervalRef.current) {
+					clearInterval(keyboardDragIntervalRef.current);
+					keyboardDragIntervalRef.current = null;
+				}
 			}
-			return;
 		}
 
 		const finishKeyboardSync = () => {
@@ -647,33 +668,30 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		};
 
 		const handleKeyDown = (e) => {
-			// 방향키, Enter, Escape만 처리
-			const targetKeys = ['ArrowRight', 'ArrowLeft', 'Enter', 'Escape'];
+			// 방향키, Enter, Backspace, 단어 싱크(,.), 드래그(/), Seek(z,x)
+			const targetKeys = ['ArrowRight', 'ArrowLeft', 'Enter', 'Backspace', ',', '.', '/', 'z', 'x'];
 			if (!targetKeys.includes(e.key)) return;
+
+			// record 모드가 아니면 처리하지 않음
+			if (mode !== 'record') return;
 
 			console.log('[SyncDataCreator] KeyDown:', e.key, 'mode:', mode, 'lineIndex:', currentLineIndex);
 
 			if (currentLineIndex >= lyricsLines.length) return;
 
-			// 오른쪽 방향키: 한 글자 싱크
-			if (e.key === 'ArrowRight') {
-				e.preventDefault();
-				e.stopPropagation();
-				e.stopImmediatePropagation();
-				const currentTime = Spicetify.Player.getProgress() / 1000;
-				console.log('[SyncDataCreator] ArrowRight - syncing:', isKeyboardSyncingRef.current, 'charIndex:', keyboardCharIndexRef.current);
+			// 특수문자 패턴 헬퍼 함수들
+			const isTrailingChar = (ch) => /[\s!?\.,;:\)\]\}」』】〉》"''""]/i.test(ch);
+			const isLeadingChar = (ch) => /[\(\[\{「『【〈《"''""¿¡]/i.test(ch);
+			const isWordBoundary = (ch) => /[\s\-–—]/i.test(ch);
 
+			// 한 글자 앞으로 진행하는 헬퍼 함수
+			const advanceOneChar = (currentTime) => {
 				if (!isKeyboardSyncingRef.current) {
 					// 키보드 싱크 시작
 					isKeyboardSyncingRef.current = true;
 					let startIndex = 0;
 					charTimesRef.current = new Array(currentLineChars.length).fill(null);
 					charTimesRef.current[0] = currentTime;
-
-					// 특수문자 패턴: 공백, 구두점, 닫는 괄호
-					const isTrailingChar = (ch) => /[\s!?\.,;:\)\]\}」』】〉》"''""]/.test(ch);
-					// 여는 괄호 패턴
-					const isLeadingChar = (ch) => /[\(\[\{「『【〈《"''""¿¡]/.test(ch);
 
 					// 첫 글자가 여는 괄호면 다음 글자까지 포함
 					if (isLeadingChar(currentLineChars[0])) {
@@ -693,15 +711,12 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					setDragStartTime(currentTime);
 					setRecordingCharIndex(startIndex);
 					console.log('[SyncDataCreator] Started keyboard sync, chars:', currentLineChars.length, 'startIndex:', startIndex);
+					return startIndex;
 				} else {
 					// 다음 글자로 진행
 					let nextIndex = keyboardCharIndexRef.current + 1;
 					if (nextIndex < currentLineChars.length) {
 						charTimesRef.current[nextIndex] = currentTime;
-
-						// 특수문자 패턴
-						const isTrailingChar = (ch) => /[\s!?\.,;:\)\]\}」』】〉》"''""]/.test(ch);
-						const isLeadingChar = (ch) => /[\(\[\{「『【〈《"''""¿¡]/.test(ch);
 
 						// 현재 글자가 여는 괄호면 다음 글자까지 포함
 						while (nextIndex + 1 < currentLineChars.length && isLeadingChar(currentLineChars[nextIndex])) {
@@ -725,33 +740,201 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					if (keyboardCharIndexRef.current >= currentLineChars.length - 1) {
 						finishKeyboardSync();
 						console.log('[SyncDataCreator] Line completed');
+						return -1; // 완료됨
+					}
+					return keyboardCharIndexRef.current;
+				}
+			};
+
+			// 한 단어 앞으로 진행하는 헬퍼 함수
+			const advanceOneWord = (currentTime) => {
+				if (!isKeyboardSyncingRef.current) {
+					// 싱크 시작
+					advanceOneChar(currentTime);
+				}
+
+				// 현재 위치부터 다음 단어 경계까지 진행
+				const startIdx = keyboardCharIndexRef.current;
+				let endIdx = startIdx + 1;
+
+				// 먼저 현재 공백들 건너뛰기
+				while (endIdx < currentLineChars.length && isWordBoundary(currentLineChars[endIdx])) {
+					charTimesRef.current[endIdx] = currentTime;
+					endIdx++;
+				}
+
+				// 다음 단어 경계까지 진행
+				while (endIdx < currentLineChars.length && !isWordBoundary(currentLineChars[endIdx])) {
+					charTimesRef.current[endIdx] = currentTime;
+					endIdx++;
+
+					// trailing 문자들도 함께 처리
+					while (endIdx < currentLineChars.length && isTrailingChar(currentLineChars[endIdx]) && !isWordBoundary(currentLineChars[endIdx])) {
+						charTimesRef.current[endIdx] = currentTime;
+						endIdx++;
 					}
 				}
+
+				// 최소 한 글자는 진행했는지 확인
+				if (endIdx <= startIdx + 1) {
+					endIdx = Math.min(startIdx + 1, currentLineChars.length - 1);
+					charTimesRef.current[endIdx] = currentTime;
+				}
+
+				keyboardCharIndexRef.current = endIdx - 1;
+				if (keyboardCharIndexRef.current < 0) keyboardCharIndexRef.current = 0;
+				setRecordingCharIndex(keyboardCharIndexRef.current);
+				autoScroll(keyboardCharIndexRef.current);
+				console.log('[SyncDataCreator] Word advanced to char:', keyboardCharIndexRef.current);
+
+				// 마지막 글자면 라인 완료
+				if (keyboardCharIndexRef.current >= currentLineChars.length - 1) {
+					finishKeyboardSync();
+					console.log('[SyncDataCreator] Line completed by word');
+				}
+			};
+
+			// 한 단어 뒤로 취소하는 헬퍼 함수 (첫 글자도 취소 가능)
+			const revertOneWord = () => {
+				if (!isKeyboardSyncingRef.current || keyboardCharIndexRef.current < 0) return;
+
+				let targetIdx = keyboardCharIndexRef.current - 1;
+
+				// trailing 문자들 건너뛰기
+				while (targetIdx >= 0 && isTrailingChar(currentLineChars[targetIdx])) {
+					charTimesRef.current[targetIdx + 1] = null;
+					targetIdx--;
+				}
+
+				// 단어 경계까지 뒤로 가기
+				while (targetIdx >= 0 && !isWordBoundary(currentLineChars[targetIdx])) {
+					charTimesRef.current[targetIdx + 1] = null;
+					targetIdx--;
+				}
+
+				// 공백들 건너뛰기
+				while (targetIdx >= 0 && isWordBoundary(currentLineChars[targetIdx])) {
+					charTimesRef.current[targetIdx + 1] = null;
+					targetIdx--;
+				}
+
+				// 현재 위치부터 targetIdx+1까지의 타임 null 처리
+				for (let i = targetIdx + 1; i <= keyboardCharIndexRef.current; i++) {
+					charTimesRef.current[i] = null;
+				}
+
+				keyboardCharIndexRef.current = targetIdx;
+				setRecordingCharIndex(keyboardCharIndexRef.current);
+				console.log('[SyncDataCreator] Word reverted to char:', keyboardCharIndexRef.current);
+
+				// 모든 글자 취소시 싱크 상태 초기화
+				if (keyboardCharIndexRef.current < 0) {
+					isKeyboardSyncingRef.current = false;
+					setDragStartTime(null);
+					console.log('[SyncDataCreator] All chars reverted by word, sync reset');
+				}
+			};
+
+			// 오른쪽 방향키: 한 글자 싱크
+			if (e.key === 'ArrowRight') {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				const currentTime = Spicetify.Player.getProgress() / 1000;
+				advanceOneChar(currentTime);
 			}
 
-			// 왼쪽 방향키: 한 글자 취소
+			// 왼쪽 방향키: 한 글자 취소 (첫 글자도 취소 가능)
 			if (e.key === 'ArrowLeft') {
 				e.preventDefault();
 				e.stopPropagation();
 				e.stopImmediatePropagation();
-				if (isKeyboardSyncingRef.current && keyboardCharIndexRef.current > 0) {
+				if (isKeyboardSyncingRef.current && keyboardCharIndexRef.current >= 0) {
 					charTimesRef.current[keyboardCharIndexRef.current] = null;
 					keyboardCharIndexRef.current--;
 					setRecordingCharIndex(keyboardCharIndexRef.current);
 					console.log('[SyncDataCreator] Reverted to char:', keyboardCharIndexRef.current);
+					// 모든 글자 취소시 싱크 상태 초기화
+					if (keyboardCharIndexRef.current < 0) {
+						isKeyboardSyncingRef.current = false;
+						setDragStartTime(null);
+						console.log('[SyncDataCreator] All chars reverted, sync reset');
+					}
 				}
 			}
 
-			// Enter: 현재 라인 완료 (중간에서도 완료 가능)
-			if (e.key === 'Enter' && isKeyboardSyncingRef.current) {
+			// . (> 키): 한 단어 싱크
+			if (e.key === '.') {
 				e.preventDefault();
 				e.stopPropagation();
 				e.stopImmediatePropagation();
-				finishKeyboardSync();
+				const currentTime = Spicetify.Player.getProgress() / 1000;
+				advanceOneWord(currentTime);
 			}
 
-			// Escape: 현재 라인 싱크 취소
-			if (e.key === 'Escape' && isKeyboardSyncingRef.current) {
+			// , (< 키): 한 단어 취소
+			if (e.key === ',') {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				revertOneWord();
+			}
+
+			// / 키: 드래그 모드 시작 (누르고 있으면 연속으로 빠르게 진행)
+			if (e.key === '/' && !e.repeat) {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+
+				// 이미 드래그 중이면 무시
+				if (isKeyboardDraggingRef.current) return;
+
+				isKeyboardDraggingRef.current = true;
+
+				// 첫 번째 글자 즉시 처리
+				const currentTime = Spicetify.Player.getProgress() / 1000;
+				const result = advanceOneChar(currentTime);
+
+				// 라인이 완료되었으면 드래그 시작하지 않음
+				if (result === -1) {
+					isKeyboardDraggingRef.current = false;
+					return;
+				}
+
+				// 30ms 간격으로 연속 진행 (딜레이 없이 즉시 시작)
+				keyboardDragIntervalRef.current = setInterval(() => {
+					if (!isKeyboardDraggingRef.current) {
+						clearInterval(keyboardDragIntervalRef.current);
+						keyboardDragIntervalRef.current = null;
+						return;
+					}
+
+					const time = Spicetify.Player.getProgress() / 1000;
+					const res = advanceOneChar(time);
+
+					// 라인 완료시 드래그 종료
+					if (res === -1) {
+						isKeyboardDraggingRef.current = false;
+						clearInterval(keyboardDragIntervalRef.current);
+						keyboardDragIntervalRef.current = null;
+					}
+				}, 30);
+			}
+
+			// Enter: 현재 라인 완료 (중간에서도 완료 가능, 키보드 싱크 중일 때만)
+			if (e.key === 'Enter') {
+				// 키보드 싱크 중일 때만 처리 (글자를 하나라도 맞췄을 때)
+				if (isKeyboardSyncingRef.current && keyboardCharIndexRef.current >= 0) {
+					e.preventDefault();
+					e.stopPropagation();
+					e.stopImmediatePropagation();
+					finishKeyboardSync();
+				}
+				// 싱크 중이 아닐 때는 기본 동작 허용 (다른 버튼 클릭 등)
+			}
+
+			// Backspace: 현재 라인 싱크 취소
+			if (e.key === 'Backspace' && isKeyboardSyncingRef.current) {
 				e.preventDefault();
 				e.stopPropagation();
 				e.stopImmediatePropagation();
@@ -760,14 +943,65 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 				charTimesRef.current = [];
 				setDragStartTime(null);
 				setRecordingCharIndex(-1);
+
+				// 드래그 모드도 취소
+				if (isKeyboardDraggingRef.current) {
+					isKeyboardDraggingRef.current = false;
+					if (keyboardDragIntervalRef.current) {
+						clearInterval(keyboardDragIntervalRef.current);
+						keyboardDragIntervalRef.current = null;
+					}
+				}
+			}
+
+			// z: 3초 뒤로
+			if (e.key === 'z') {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				const currentPos = Spicetify.Player.getProgress();
+				Spicetify.Player.seek(Math.max(0, currentPos - 3000));
+			}
+
+			// x: 3초 앞으로
+			if (e.key === 'x') {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				const currentPos = Spicetify.Player.getProgress();
+				const duration = Spicetify.Player.getDuration();
+				Spicetify.Player.seek(Math.min(duration, currentPos + 3000));
 			}
 		};
 
-		console.log('[SyncDataCreator] Registering keydown listener, mode:', mode);
+		// / 키 keyup 이벤트 핸들러 (드래그 종료)
+		const handleKeyUp = (e) => {
+			if (e.key === '/') {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+
+				isKeyboardDraggingRef.current = false;
+				if (keyboardDragIntervalRef.current) {
+					clearInterval(keyboardDragIntervalRef.current);
+					keyboardDragIntervalRef.current = null;
+				}
+			}
+		};
+
+		console.log('[SyncDataCreator] Registering keydown/keyup listeners, mode:', mode);
 		document.addEventListener('keydown', handleKeyDown, true); // capture phase
+		document.addEventListener('keyup', handleKeyUp, true); // capture phase
 		return () => {
-			console.log('[SyncDataCreator] Removing keydown listener');
+			console.log('[SyncDataCreator] Removing keydown/keyup listeners');
 			document.removeEventListener('keydown', handleKeyDown, true);
+			document.removeEventListener('keyup', handleKeyUp, true);
+			// 정리시 드래그 인터벌도 정리
+			if (keyboardDragIntervalRef.current) {
+				clearInterval(keyboardDragIntervalRef.current);
+				keyboardDragIntervalRef.current = null;
+			}
+			isKeyboardDraggingRef.current = false;
 		};
 	}, [mode, currentLineIndex, lyricsLines.length, currentLineChars, lineCharOffsets, autoScroll]);
 
@@ -1264,6 +1498,11 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		publishBtn: { background: '#4caf50', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '13px', marginTop: '12px' },
 		wrongWarning: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 15px', background: 'rgba(255, 152, 0, 0.1)', border: '1px solid rgba(255, 152, 0, 0.3)', borderRadius: '8px', marginBottom: '15px', marginTop: '-5px', fontSize: '13px', gap: '10px' },
 		publishBtnSmall: { background: 'var(--spice-button)', color: 'var(--spice-button-text, #000)', border: 'none', padding: '6px 12px', borderRadius: '6px', fontWeight: '600', cursor: 'pointer', fontSize: '12px', flexShrink: 0 },
+		// 키보드 단축키 스타일
+		shortcutsContainer: { display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '12px', padding: '12px 16px', background: 'var(--spice-card)', borderRadius: '10px', marginTop: '12px' },
+		shortcutItem: { display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: 'var(--spice-subtext)' },
+		shortcutKey: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: '24px', height: '22px', padding: '0 6px', background: 'var(--spice-misc)', color: 'var(--spice-text)', borderRadius: '4px', fontSize: '10px', fontWeight: '700', fontFamily: 'monospace', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 2px 0 rgba(0,0,0,0.3)' },
+		shortcutDesc: { color: 'var(--spice-subtext)' },
 	};
 
 	return react.createElement('div', { style: s.overlay, ref: containerRef },
@@ -1396,7 +1635,56 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					react.createElement('div', { style: s.nextLineText }, lyricsLines[currentLineIndex + 1])
 				),
 
-				mode === 'record' && react.createElement('div', { style: s.hint }, I18n.t('syncCreator.dragHint'))
+				mode === 'record' && react.createElement('div', { style: s.hint }, I18n.t('syncCreator.dragHint')),
+
+				// 키보드 단축키 가이드 (record 모드일 때만 표시)
+				mode === 'record' && react.createElement('div', { style: s.shortcutsContainer },
+					// 한 글자
+					react.createElement('div', { style: s.shortcutItem },
+						react.createElement('span', { style: s.shortcutKey }, '→'),
+						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.charForward') || '한 글자')
+					),
+					react.createElement('div', { style: s.shortcutItem },
+						react.createElement('span', { style: s.shortcutKey }, '←'),
+						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.charBack') || '한 글자 취소')
+					),
+					// 한 단어
+					react.createElement('div', { style: s.shortcutItem },
+						react.createElement('span', { style: s.shortcutKey }, '.'),
+						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.wordForward') || '한 단어')
+					),
+					react.createElement('div', { style: s.shortcutItem },
+						react.createElement('span', { style: s.shortcutKey }, ','),
+						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.wordBack') || '한 단어 취소')
+					),
+					// 드래그
+					react.createElement('div', { style: s.shortcutItem },
+						react.createElement('span', { style: s.shortcutKey }, '/'),
+						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.drag') || '누르고 있으면 드래그')
+					),
+					// 완료/취소
+					react.createElement('div', { style: s.shortcutItem },
+						react.createElement('span', { style: s.shortcutKey }, 'Enter'),
+						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.finish') || '라인 완료')
+					),
+					react.createElement('div', { style: s.shortcutItem },
+						react.createElement('span', { style: s.shortcutKey }, '⌫'),
+						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.cancel') || '취소')
+					),
+					// 재생 컨트롤
+					react.createElement('div', { style: s.shortcutItem },
+						react.createElement('span', { style: s.shortcutKey }, 'Space'),
+						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.playPause') || '재생/일시정지')
+					),
+					react.createElement('div', { style: s.shortcutItem },
+						react.createElement('span', { style: s.shortcutKey }, 'Z'),
+						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.seekBack') || '-3초')
+					),
+					react.createElement('div', { style: s.shortcutItem },
+						react.createElement('span', { style: s.shortcutKey }, 'X'),
+						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.seekForward') || '+3초')
+					)
+				)
 			)
 		),
 

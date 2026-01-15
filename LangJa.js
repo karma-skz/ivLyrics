@@ -1596,6 +1596,18 @@ window.LANG_JA = {
       "noLyricsInput": "歌詞を入力してください",
       "loadingAfterPublish": "登録された歌詞を読み込み中...",
       "wrongLyricsWarning": "歌詞が間違っている場合は、手動で送信してください。"
+    },
+    "shortcuts": {
+      "charForward": "1文字",
+      "charBack": "1文字取消",
+      "wordForward": "1単語",
+      "wordBack": "1単語取消",
+      "drag": "押し続けてドラッグ",
+      "finish": "行完了",
+      "cancel": "キャンセル",
+      "playPause": "再生/一時停止",
+      "seekBack": "-3秒",
+      "seekForward": "+3秒"
     }
   }
 };

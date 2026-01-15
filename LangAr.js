@@ -1595,6 +1595,18 @@ window.LANG_AR = {
       "noLyricsInput": "يرجى إدخال الكلمات",
       "loadingAfterPublish": "جارٍ تحميل الكلمات المسجلة...",
       "wrongLyricsWarning": "إذا كانت الكلمات غير صحيحة، أرسلها يدوياً."
+    },
+    "shortcuts": {
+      "charForward": "حرف واحد",
+      "charBack": "تراجع حرف",
+      "wordForward": "كلمة واحدة",
+      "wordBack": "تراجع كلمة",
+      "drag": "اضغط للسحب",
+      "finish": "إنهاء السطر",
+      "cancel": "إلغاء",
+      "playPause": "تشغيل/إيقاف",
+      "seekBack": "-3 ثا",
+      "seekForward": "+3 ثا"
     }
   }
 };

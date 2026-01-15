@@ -3470,28 +3470,34 @@ function openSyncDataCreator(trackInfo) {
   const overlay = document.createElement("div");
   overlay.id = "ivLyrics-sync-creator-overlay";
 
+  // Render React component
+  const dom = window.Spicetify?.ReactDOM ?? window.ReactDOM ?? null;
+  if (!dom?.render) {
+    return;
+  }
+
   const closeModal = () => {
+    // React 컴포넌트 unmount (리스너 정리를 위해)
+    if (dom.unmountComponentAtNode) {
+      dom.unmountComponentAtNode(overlay);
+    }
     if (overlay.parentNode) {
       document.body.removeChild(overlay);
     }
     document.removeEventListener("keydown", handleEscape);
   };
 
-  // Close on escape key
+  // Close on escape key (only if not in recording mode - check global state)
   const handleEscape = (e) => {
-    if (e.key === "Escape") {
+    // record 모드에서는 Escape로 닫지 않음 (SyncDataCreator에서 Backspace로 취소)
+    // 키보드 싱크 단축키가 먼저 처리되도록 capture phase에서 처리됨
+    if (e.key === "Escape" && !e.defaultPrevented) {
       closeModal();
     }
   };
   document.addEventListener("keydown", handleEscape);
 
   document.body.appendChild(overlay);
-
-  // Render React component
-  const dom = window.Spicetify?.ReactDOM ?? window.ReactDOM ?? null;
-  if (!dom?.render) {
-    return;
-  }
 
   // SyncDataCreator 컴포넌트가 없으면 경고
   if (typeof SyncDataCreator === "undefined") {

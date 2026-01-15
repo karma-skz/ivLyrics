@@ -1595,6 +1595,18 @@ window.LANG_ID = {
       "noLyricsInput": "Silakan masukkan lirik",
       "loadingAfterPublish": "Memuat lirik yang terdaftar...",
       "wrongLyricsWarning": "Jika liriknya salah, kirimkan secara manual."
+    },
+    "shortcuts": {
+      "charForward": "1 Karakter",
+      "charBack": "Batalkan 1 Karakter",
+      "wordForward": "1 Kata",
+      "wordBack": "Batalkan 1 Kata",
+      "drag": "Tahan untuk seret",
+      "finish": "Selesai baris",
+      "cancel": "Batal",
+      "playPause": "Putar/Jeda",
+      "seekBack": "-3 Detik",
+      "seekForward": "+3 Detik"
     }
   }
 };

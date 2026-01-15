@@ -1596,6 +1596,18 @@ window.LANG_ZH_TW = {
       "noLyricsInput": "請輸入歌詞",
       "loadingAfterPublish": "正在載入已登錄的歌詞...",
       "wrongLyricsWarning": "如果歌詞不正確，請手動提交。"
+    },
+    "shortcuts": {
+      "charForward": "1字",
+      "charBack": "取消1字",
+      "wordForward": "1詞",
+      "wordBack": "取消1詞",
+      "drag": "按住拖曳",
+      "finish": "完成行",
+      "cancel": "取消",
+      "playPause": "播放/暫停",
+      "seekBack": "-3秒",
+      "seekForward": "+3秒"
     }
   }
 };

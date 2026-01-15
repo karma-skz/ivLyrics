@@ -1596,6 +1596,18 @@ window.LANG_IT = {
       "noLyricsInput": "Inserisci il testo",
       "loadingAfterPublish": "Caricamento testo registrato...",
       "wrongLyricsWarning": "Se il testo non è corretto, invialo manualmente."
+    },
+    "shortcuts": {
+      "charForward": "1 Carattere",
+      "charBack": "Annulla 1 Carattere",
+      "wordForward": "1 Parola",
+      "wordBack": "Annulla 1 Parola",
+      "drag": "Tieni premuto per trascinare",
+      "finish": "Riga completata",
+      "cancel": "Annulla",
+      "playPause": "Riproduci/Pausa",
+      "seekBack": "-3 Sec",
+      "seekForward": "+3 Sec"
     }
   }
 };

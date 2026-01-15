@@ -754,7 +754,6 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
         const [fontScale, setFontScale] = useState(parseInt(getStorageValue(FONT_SCALE_KEY, DEFAULT_FONT_SCALE), 10));
         const containerRef = useRef(null);
         const scrollRef = useRef(null);
-        const animationRef = useRef(null);
         const lastTrackUri = useRef(null);
         const loadingRef = useRef(false);
 
@@ -1254,56 +1253,67 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
         }, []);
 
         // 현재 재생 위치 추적 및 노래방 가사 타이밍 업데이트
-        // 최적화: 상태 업데이트 최소화, DOM 직접 조작으로 노래방 하이라이트
+        // 최적화: setInterval 사용 (30ms), LocalStorage 캐싱, 이진 탐색
         useEffect(() => {
             let lastIndex = currentIndex;
             let lastEventTime = 0;
-            const EVENT_THROTTLE = 50; // 이벤트 발생 간격 (ms) - 노래방 업데이트용
+            let intervalId = null;
+            let cachedDelay = null;
+            let lastTrackUri = null;
+            const UPDATE_INTERVAL = 30; // 업데이트 간격 (ms) - RAF보다 CPU 효율적
+            const EVENT_THROTTLE = 80; // 이벤트 발생 간격 (ms) - 노래방 업데이트용
+
+            // 이진 탐색으로 현재 라인 찾기 (O(log n))
+            const findCurrentLine = (time) => {
+                let left = 0;
+                let right = lyrics.length - 1;
+                let result = 0;
+
+                while (left <= right) {
+                    const mid = Math.floor((left + right) / 2);
+                    const startTime = lyrics[mid].startTime;
+
+                    if (startTime === undefined || startTime <= time) {
+                        result = mid;
+                        left = mid + 1;
+                    } else {
+                        right = mid - 1;
+                    }
+                }
+
+                return result;
+            };
 
             const updatePosition = () => {
                 if (!lyrics || lyrics.length === 0) {
-                    animationRef.current = requestAnimationFrame(updatePosition);
                     return;
                 }
 
                 const position = Spicetify.Player.getProgress();
 
-                // 곡별 딜레이: lyrics-delay:${uri} 에서 읽어옴 (ivLyrics 페이지와 동일)
+                // 곡별 딜레이: 트랙 변경 시에만 캐시 갱신
                 const currentTrackUri = Spicetify.Player.data?.item?.uri;
-                let lyricsDelay = 0;
-                if (currentTrackUri) {
-                    try {
-                        const delayValue = Spicetify.LocalStorage.get(`lyrics-delay:${currentTrackUri}`);
-                        if (delayValue) {
-                            lyricsDelay = parseInt(delayValue, 10) || 0;
+                if (currentTrackUri !== lastTrackUri) {
+                    lastTrackUri = currentTrackUri;
+                    cachedDelay = null;
+                    if (currentTrackUri) {
+                        try {
+                            const delayValue = Spicetify.LocalStorage.get(`lyrics-delay:${currentTrackUri}`);
+                            cachedDelay = delayValue ? parseInt(delayValue, 10) || 0 : 0;
+                        } catch (e) {
+                            cachedDelay = 0;
                         }
-                    } catch (e) {
-                        // 무시
                     }
                 }
 
                 // 곡별 딜레이 + 곡별 싱크 오프셋 적용
-                const adjustedPosition = position + lyricsDelay + trackOffset;
+                const adjustedPosition = position + (cachedDelay || 0) + trackOffset;
 
                 // 전역 변수에 현재 시간 저장 (KaraokeWord에서 읽음)
                 window._ivLyricsPanelCurrentTime = adjustedPosition;
 
-                // 노래방 가사 업데이트 이벤트 발생 (throttled)
-                const now = performance.now();
-                if (now - lastEventTime >= EVENT_THROTTLE) {
-                    lastEventTime = now;
-                    window.dispatchEvent(new Event('ivlyrics-panel-time-update'));
-                }
-
-                // 현재 라인 찾기
-                let newIndex = 0;
-                for (let i = 0; i < lyrics.length; i++) {
-                    if (lyrics[i].startTime !== undefined && lyrics[i].startTime <= adjustedPosition) {
-                        newIndex = i;
-                    } else if (lyrics[i].startTime > adjustedPosition) {
-                        break;
-                    }
-                }
+                // 현재 라인 찾기 (이진 탐색)
+                const newIndex = findCurrentLine(adjustedPosition);
 
                 // 라인이 변경될 때만 상태 업데이트 (리렌더링 최소화)
                 if (newIndex !== lastIndex) {
@@ -1311,16 +1321,24 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
                     setCurrentIndex(newIndex);
                 }
 
-                animationRef.current = requestAnimationFrame(updatePosition);
+                // 노래방 가사 업데이트 이벤트 발생 (throttled)
+                const now = performance.now();
+                if (now - lastEventTime >= EVENT_THROTTLE) {
+                    lastEventTime = now;
+                    window.dispatchEvent(new Event('ivlyrics-panel-time-update'));
+                }
             };
 
             if (isEnabled && lyrics.length > 0) {
-                animationRef.current = requestAnimationFrame(updatePosition);
+                // setInterval 사용 - RAF보다 CPU 사용량 낮음
+                intervalId = setInterval(updatePosition, UPDATE_INTERVAL);
+                // 초기 업데이트
+                updatePosition();
             }
 
             return () => {
-                if (animationRef.current) {
-                    cancelAnimationFrame(animationRef.current);
+                if (intervalId) {
+                    clearInterval(intervalId);
                 }
                 // 전역 변수 정리
                 window._ivLyricsPanelCurrentTime = 0;

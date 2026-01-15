@@ -1597,6 +1597,18 @@ window.LANG_EN = {
       "noLyricsInput": "Please enter lyrics",
       "loadingAfterPublish": "Loading registered lyrics...",
       "wrongLyricsWarning": "If the lyrics are incorrect, submit them manually."
+    },
+    "shortcuts": {
+      "charForward": "1 Char",
+      "charBack": "Undo 1 Char",
+      "wordForward": "1 Word",
+      "wordBack": "Undo 1 Word",
+      "drag": "Hold to Drag",
+      "finish": "Finish Line",
+      "cancel": "Cancel",
+      "playPause": "Play/Pause",
+      "seekBack": "-3 Sec",
+      "seekForward": "+3 Sec"
     }
   }
 };
