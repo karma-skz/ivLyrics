@@ -78,7 +78,7 @@ const SyncedVideoPreview = ({ videoId, startTime }) => {
   useEffect(() => {
     const helperEnabled = CONFIG?.visual?.["video-helper-enabled"] === true || CONFIG?.visual?.["video-helper-enabled"] === "true";
     setUseHelper(helperEnabled);
-    
+
     const handleHelperChange = (e) => {
       setUseHelper(e.detail?.enabled === true);
       setHelperVideoUrl(null);
@@ -168,11 +168,11 @@ const SyncedVideoPreview = ({ videoId, startTime }) => {
       const captionStartTime = startTime || 0;
       const offset = captionStartTime - lyricsStartTimeSec;
       const videoTime = Math.max(0, spotifyPositionSec + offset);
-      
+
       if (videoTime >= 0 && video.duration > 0) {
         video.currentTime = Math.min(videoTime, video.duration);
       }
-      
+
       setIsReady(true);
       if (Spicetify.Player.isPlaying()) {
         video.play().catch(() => { });
@@ -411,7 +411,7 @@ const SimpleVideoPreview = ({ videoId, startTime }) => {
   useEffect(() => {
     const helperEnabled = CONFIG?.visual?.["video-helper-enabled"] === true || CONFIG?.visual?.["video-helper-enabled"] === "true";
     setUseHelper(helperEnabled);
-    
+
     const handleHelperChange = (e) => {
       setUseHelper(e.detail?.enabled === true);
       setHelperVideoUrl(null);
@@ -692,7 +692,7 @@ const CommunityVideoSelector = ({
     const voteType = currentVote === newVote ? 0 : newVote;
 
     try {
-      const result = await Utils.voteCommunityVideo(videoEntryId, voteType);
+      const result = await Utils.voteCommunityVideo(videoEntryId, voteType, trackUri);
       if (result) {
         // 투표 결과로 목록 업데이트
         setVideos((prev) =>
@@ -821,7 +821,7 @@ const CommunityVideoSelector = ({
     setDeletingId(videoEntryId);
 
     try {
-      const result = await Utils.deleteCommunityVideo(videoEntryId);
+      const result = await Utils.deleteCommunityVideo(videoEntryId, trackUri);
       if (result) {
         Toast.success(I18n.t("communityVideo.deleted"));
         // 목록에서 제거
@@ -937,8 +937,8 @@ const CommunityVideoSelector = ({
                       "div",
                       {
                         className: `community-video-item ${video.youtubeVideoId === currentVideoId
-                            ? "active"
-                            : ""
+                          ? "active"
+                          : ""
                           } ${index === 0 ? "best" : ""}`,
                       },
                       // Rank badge
@@ -946,12 +946,12 @@ const CommunityVideoSelector = ({
                         "div",
                         {
                           className: `community-video-rank ${index === 0
-                              ? "gold"
-                              : index === 1
-                                ? "silver"
-                                : index === 2
-                                  ? "bronze"
-                                  : ""
+                            ? "gold"
+                            : index === 1
+                              ? "silver"
+                              : index === 2
+                                ? "bronze"
+                                : ""
                             }`,
                         },
                         index + 1
@@ -1006,8 +1006,8 @@ const CommunityVideoSelector = ({
                           "button",
                           {
                             className: `action-btn preview ${previewVideoId === video.youtubeVideoId
-                                ? "active"
-                                : ""
+                              ? "active"
+                              : ""
                               }`,
                             onClick: (e) => togglePreview(video, e),
                             title: I18n.t("communityVideo.preview"),

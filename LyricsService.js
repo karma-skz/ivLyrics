@@ -1179,53 +1179,25 @@
                 return _syncDataCache.get(cacheKey);
             }
 
-            // 진행 중인 요청이 있으면 대기
-            if (_inflightRequests.has(cacheKey)) {
-                try {
-                    return await _inflightRequests.get(cacheKey);
-                } catch (e) {
-                    return [];
-                }
+            // SongDataService 캐시 확인
+            const songDataCached = window.SongDataService?.getCachedData(trackId);
+            if (songDataCached?.syncData && Object.keys(songDataCached.syncData).length > 0) {
+                console.log(`[SyncDataService] Using SongDataService cached providers for ${trackId}`);
+                const providers = Object.keys(songDataCached.syncData).map(provider => ({
+                    provider,
+                    createdAt: null,
+                    updatedAt: null
+                }));
+                _syncDataCache.set(cacheKey, providers);
+                _fullyLoadedTracks.add(trackId);
+                return providers;
             }
 
-            // 새 요청 시작
-            const requestPromise = (async () => {
-                try {
-                    const url = `${API_BASE}/lyrics/sync-data?trackId=${trackId}`;
-
-                    const response = await fetch(url, {
-                        headers: {
-                            "User-Agent": `spicetify v${Spicetify.Config.version}`,
-                        },
-                        cache: "no-cache",
-                    });
-
-                    if (response.status === 404 || !response.ok) {
-                        _syncDataCache.set(cacheKey, []);
-                        return [];
-                    }
-
-                    const result = await response.json();
-
-                    if (result.success && result.providers && result.providers.length > 0) {
-                        _syncDataCache.set(cacheKey, result.providers);
-                        _fullyLoadedTracks.add(trackId);
-                        return result.providers;
-                    }
-
-                    _syncDataCache.set(cacheKey, []);
-                    return [];
-
-                } catch (e) {
-                    console.warn('[SyncDataService] Failed to get providers:', e);
-                    return [];
-                } finally {
-                    _inflightRequests.delete(cacheKey);
-                }
-            })();
-
-            _inflightRequests.set(cacheKey, requestPromise);
-            return requestPromise;
+            // SongDataService에 데이터가 없으면 별도 API 요청하지 않음
+            // (song-data 응답과 sync-data 응답은 동일한 DB를 조회하므로)
+            console.log(`[SyncDataService] No sync data in SongDataService cache for ${trackId}, returning empty`);
+            _syncDataCache.set(cacheKey, []);
+            return [];
         }
 
         /**
@@ -1249,43 +1221,25 @@
                 return _syncDataCache.get(specificKey);
             }
 
-            // 이미 provider 목록이 로드되어 있으면 해당 provider가 있는지 먼저 확인 (추가 요청 없이)
-            const providersKey = `${trackId}:providers`;
-            if (_syncDataCache.has(providersKey)) {
-                const providers = _syncDataCache.get(providersKey);
-                if (!providers.some(p => p.provider === provider)) {
-                    return null; // 목록에 없으면 요청하지 않음
-                }
+            // SongDataService 캐시 확인
+            const songDataCached = window.SongDataService?.getCachedData(trackId);
+            if (songDataCached?.syncData?.[provider]) {
+                console.log(`[SyncDataService] Using SongDataService cached sync data for ${trackId}:${provider}`);
+                const syncData = {
+                    trackId,
+                    provider,
+                    syncData: songDataCached.syncData[provider],
+                    createdAt: null,
+                    updatedAt: null
+                };
+                _syncDataCache.set(specificKey, syncData);
+                return syncData;
             }
 
-            // 특정 provider의 sync-data 조회 (서버에서 직접)
-            try {
-                const url = `${API_BASE}/lyrics/sync-data?trackId=${trackId}&provider=${encodeURIComponent(provider)}`;
-
-                const response = await fetch(url, {
-                    headers: {
-                        "User-Agent": `spicetify v${Spicetify.Config.version}`,
-                    },
-                    cache: "no-cache",
-                });
-
-                if (response.status === 404 || !response.ok) {
-                    return null;
-                }
-
-                const result = await response.json();
-
-                if (result.success && result.data) {
-                    _syncDataCache.set(specificKey, result.data);
-                    return result.data;
-                }
-
-                return null;
-
-            } catch (e) {
-                console.warn('[SyncDataService] Failed to get sync data:', e);
-                return null;
-            }
+            // SongDataService에 데이터가 없으면 별도 API 요청하지 않음
+            // (song-data 응답과 sync-data 응답은 동일한 DB를 조회하므로)
+            console.log(`[SyncDataService] No sync data for ${trackId}:${provider} in SongDataService cache, returning null`);
+            return null;
         }
 
         /**
@@ -1743,7 +1697,19 @@
         async getLyricsFromProviders(info, providerOrder = ['spotify', 'lrclib', 'local'], mode = 1) {
             const trackId = info.uri?.split(":")[2];
 
+            // *** 중요: 먼저 SongDataService에서 통합 데이터를 가져옴 ***
+            // 이렇게 하면 sync-data, translation, youtube 등 모든 데이터가 한 번에 캐시됨
+            // 이후 SyncDataService 등에서 개별 API 호출 없이 캐시된 데이터 사용
+            if (window.SongDataService && trackId) {
+                try {
+                    await window.SongDataService.getSongData(info.uri);
+                } catch (e) {
+                    console.warn('[LyricsService] SongDataService prefetch failed:', e);
+                }
+            }
+
             // 커뮤니티 싱크 데이터 확인 - provider 순서 조정을 위해 (목록만 확인)
+            // SongDataService가 이미 캐시를 채웠으므로 API 호출 없이 캐시에서 가져옴
             let syncDataProviders = [];
             if (window.SyncDataService && trackId) {
                 try {

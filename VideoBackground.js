@@ -121,6 +121,37 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
                 return;
             }
 
+            // 2.5. SongDataService에서 통합 데이터 가져오기 (캐시가 없으면 서버에서 fetch)
+            // 이렇게 하면 youtube 엔드포인트에 별도 요청하지 않아도 됨
+            let songDataCached = window.SongDataService?.getCachedData(trackId);
+            if (!songDataCached && window.SongDataService) {
+                try {
+                    songDataCached = await window.SongDataService.getSongData(trackUri);
+                } catch (e) {
+                    console.warn('[VideoBackground] SongDataService fetch failed:', e);
+                }
+            }
+
+            if (songDataCached?.youtube && isMounted) {
+                console.log(`[VideoBackground] Using SongDataService cached YouTube info for trackId: ${trackId}`);
+                // 캐시 히트 로깅
+                if (window.ApiTracker) {
+                    window.ApiTracker.logCacheHit('youtube', `songdata:${trackId}`, {
+                        videoId: songDataCached.youtube.videoId,
+                        hasCaption: songDataCached.youtube.captionStartTime != null
+                    });
+                }
+                setIsLoading(false);
+                setVideoInfo({
+                    youtubeVideoId: songDataCached.youtube.videoId,
+                    captionStartTime: songDataCached.youtube.captionStartTime,
+                    captionLanguage: songDataCached.youtube.captionLanguage,
+                    totalCaptions: songDataCached.youtube.totalCaptions
+                });
+                setStatusMessage("");
+                return;
+            }
+
             // 3. 로컬 캐시 확인 (IndexedDB)
             try {
                 const cachedYouTube = await LyricsCache.getYouTube(trackId);

@@ -59,7 +59,7 @@ const compareVersions = (a, b) => {
 };
 
 const getCurrentVersion = () => {
-    return "3.4.4";
+    return "3.4.5";
 };
 
 /**
