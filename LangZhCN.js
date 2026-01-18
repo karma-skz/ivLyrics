@@ -1608,6 +1608,15 @@ window.LANG_ZH_CN = {
       "playPause": "播放/暂停",
       "seekBack": "-3秒",
       "seekForward": "+3秒"
-    }
+    },
+    "copyLyrics": "复制歌词",
+    "lyricsCopied": "歌词已复制到剪贴板",
+    "copyError": "复制失败",
+    "export": "导出",
+    "exportSuccess": "同步数据已导出",
+    "import": "导入",
+    "importSuccess": "同步数据已导入",
+    "importError": "导入失败",
+    "importDifferentTrack": "这是另一首曲目的同步数据。是否仍要导入？"
   }
 };

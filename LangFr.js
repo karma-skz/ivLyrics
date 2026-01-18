@@ -1608,6 +1608,15 @@ window.LANG_FR = {
       "playPause": "Lecture/Pause",
       "seekBack": "-3 Sec",
       "seekForward": "+3 Sec"
-    }
+    },
+    "copyLyrics": "Copier les paroles",
+    "lyricsCopied": "Paroles copiées dans le presse-papiers",
+    "copyError": "Échec de la copie",
+    "export": "Exporter",
+    "exportSuccess": "Données de sync exportées",
+    "import": "Importer",
+    "importSuccess": "Données de sync importées",
+    "importError": "Échec de l'importation",
+    "importDifferentTrack": "Ces données de sync proviennent d'une autre piste. Voulez-vous importer quand même?"
   }
 };

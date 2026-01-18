@@ -1608,6 +1608,15 @@ window.LANG_TH = {
       "playPause": "เล่น/หยุด",
       "seekBack": "-3 วิ",
       "seekForward": "+3 วิ"
-    }
+    },
+    "copyLyrics": "คัดลอกเนื้อเพลง",
+    "lyricsCopied": "คัดลอกเนื้อเพลงไปยังคลิปบอร์ดแล้ว",
+    "copyError": "คัดลอกล้มเหลว",
+    "export": "ส่งออก",
+    "exportSuccess": "ส่งออกข้อมูลซิงค์แล้ว",
+    "import": "นำเข้า",
+    "importSuccess": "นำเข้าข้อมูลซิงค์แล้ว",
+    "importError": "นำเข้าล้มเหลว",
+    "importDifferentTrack": "นี่คือข้อมูลซิงค์จากเพลงอื่น ต้องการนำเข้าหรือไม่?"
   }
 };

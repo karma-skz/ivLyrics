@@ -1061,17 +1061,19 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 	}, [mode]);
 
 	const adjustGlobalOffset = useCallback((deltaMs) => {
-		if (!syncData || !syncData.lines) return;
 		const deltaSec = deltaMs / 1000;
 
-		setSyncData(prev => ({
-			lines: prev.lines.map(line => ({
-				...line,
-				chars: line.chars.map(t => t + deltaSec)
-			}))
-		}));
+		setSyncData(prev => {
+			if (!prev || !prev.lines) return prev;
+			return {
+				lines: prev.lines.map(line => ({
+					...line,
+					chars: line.chars.map(t => Math.round((t + deltaSec) * 1000) / 1000)
+				}))
+			};
+		});
 		setGlobalOffset(prev => prev + deltaMs);
-	}, [syncData]);
+	}, []);
 
 	const resetFromStart = useCallback(() => {
 		setCurrentLineIndex(0);
@@ -1178,6 +1180,72 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 
 		setIsSubmitting(false);
 	}, [syncData, lyricsLines.length, trackId, provider, onClose]);
+
+	// 싱크 데이터 내보내기 (JSON 파일로 저장)
+	const exportSyncData = useCallback(() => {
+		if (!syncData || !syncData.lines || syncData.lines.length === 0) {
+			Toast.error(I18n.t('syncCreator.noSyncData') || '내보낼 싱크 데이터가 없습니다');
+			return;
+		}
+
+		const blob = new Blob([JSON.stringify(syncData, null, 2)], { type: 'application/json' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `sync-${trackId}-${Date.now()}.json`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+
+		Toast.success(I18n.t('syncCreator.exportSuccess') || '싱크 데이터를 내보냈습니다');
+	}, [syncData, trackId]);
+
+	// 싱크 데이터 불러오기 (JSON 파일에서)
+	const importSyncData = useCallback(() => {
+		const input = document.createElement('input');
+		input.type = 'file';
+		input.accept = '.json';
+		input.onchange = async (e) => {
+			const file = e.target.files[0];
+			if (!file) return;
+
+			try {
+				const text = await file.text();
+				const importedData = JSON.parse(text);
+
+				// 형식 검증 - lines 배열이 있는지 확인
+				if (!importedData.lines || !Array.isArray(importedData.lines)) {
+					throw new Error('Invalid sync data format');
+				}
+
+				// 싱크 데이터 적용
+				setSyncData(importedData);
+
+				Toast.success(I18n.t('syncCreator.importSuccess') || '싱크 데이터를 불러왔습니다');
+			} catch (err) {
+				console.error('[SyncDataCreator] Import error:', err);
+				Toast.error((I18n.t('syncCreator.importError') || '불러오기 실패') + ': ' + err.message);
+			}
+		};
+		input.click();
+	}, []);
+
+	// 가사 전체 복사
+	const copyAllLyrics = useCallback(async () => {
+		if (!lyricsText) {
+			Toast.error(I18n.t('syncCreator.noLyrics') || '복사할 가사가 없습니다');
+			return;
+		}
+
+		try {
+			await navigator.clipboard.writeText(lyricsText);
+			Toast.success(I18n.t('syncCreator.lyricsCopied') || '가사를 클립보드에 복사했습니다');
+		} catch (err) {
+			console.error('[SyncDataCreator] Copy error:', err);
+			Toast.error((I18n.t('syncCreator.copyError') || '복사 실패') + ': ' + err.message);
+		}
+	}, [lyricsText]);
 
 	// LRCLIB 등록 취소
 	const cancelLrcLibPublish = useCallback(() => {
@@ -1717,7 +1785,20 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 				disabled: !syncData || syncData.lines.length === 0
 			}, mode === 'preview' ? I18n.t('syncCreator.stopPreview') : I18n.t('syncCreator.previewMode')),
 
+			// 가사 복사 버튼
+			react.createElement('button', { style: s.ctrlBtn, onClick: copyAllLyrics, disabled: !lyricsText },
+				I18n.t('syncCreator.copyLyrics') || '가사 복사'
+			),
 
+			// 싱크 데이터 내보내기
+			react.createElement('button', { style: s.ctrlBtn, onClick: exportSyncData, disabled: !syncData || !syncData.lines || syncData.lines.length === 0 },
+				I18n.t('syncCreator.export') || '내보내기'
+			),
+
+			// 싱크 데이터 불러오기
+			react.createElement('button', { style: s.ctrlBtn, onClick: importSyncData },
+				I18n.t('syncCreator.import') || '불러오기'
+			),
 
 			// 현재 줄 삭제
 			isCurrentLineSynced && react.createElement('button', { style: s.deleteBtn, onClick: deleteCurrentLineSync },

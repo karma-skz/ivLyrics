@@ -1608,6 +1608,15 @@ window.LANG_JA = {
       "playPause": "再生/一時停止",
       "seekBack": "-3秒",
       "seekForward": "+3秒"
-    }
+    },
+    "copyLyrics": "歌詞をコピー",
+    "lyricsCopied": "歌詞をクリップボードにコピーしました",
+    "copyError": "コピー失敗",
+    "export": "エクスポート",
+    "exportSuccess": "シンクデータをエクスポートしました",
+    "import": "インポート",
+    "importSuccess": "シンクデータをインポートしました",
+    "importError": "インポート失敗",
+    "importDifferentTrack": "別のトラックのシンクデータです。それでもインポートしますか？"
   }
 };

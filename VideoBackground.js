@@ -4,7 +4,13 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
     const [isPlayerReady, setIsPlayerReady] = useState(false);
     const [statusMessage, setStatusMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(Spicetify.Player.isPlaying());
+    const [isPlaying, setIsPlaying] = useState(() => {
+        try {
+            return Spicetify.Player?.isPlaying?.() ?? false;
+        } catch (e) {
+            return false;
+        }
+    });
     const [trackOffsetMs, setTrackOffsetMs] = useState(0);
     // 헬퍼 모드 관련 상태
     const [useHelper, setUseHelper] = useState(false);
@@ -57,9 +63,15 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
 
     // Monitor Spotify Playback State
     useEffect(() => {
-        const updateState = () => setIsPlaying(Spicetify.Player.isPlaying());
-        Spicetify.Player.addEventListener("onplaypause", updateState);
-        return () => Spicetify.Player.removeEventListener("onplaypause", updateState);
+        const updateState = () => {
+            try {
+                setIsPlaying(Spicetify.Player?.isPlaying?.() ?? false);
+            } catch (e) {
+                setIsPlaying(false);
+            }
+        };
+        Spicetify.Player?.addEventListener?.("onplaypause", updateState);
+        return () => Spicetify.Player?.removeEventListener?.("onplaypause", updateState);
     }, []);
 
     // Fetch Video Info & Manage Player Lifecycle

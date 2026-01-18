@@ -1608,6 +1608,15 @@ window.LANG_PT = {
       "playPause": "Reproduzir/Pausar",
       "seekBack": "-3 Seg",
       "seekForward": "+3 Seg"
-    }
+    },
+    "copyLyrics": "Copiar letra",
+    "lyricsCopied": "Letra copiada para a área de transferência",
+    "copyError": "Falha ao copiar",
+    "export": "Exportar",
+    "exportSuccess": "Dados de sincronização exportados",
+    "import": "Importar",
+    "importSuccess": "Dados de sincronização importados",
+    "importError": "Falha na importação",
+    "importDifferentTrack": "Estes são dados de sincronização de outra faixa. Deseja importar mesmo assim?"
   }
 };

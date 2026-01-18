@@ -1607,6 +1607,15 @@ window.LANG_AR = {
       "playPause": "تشغيل/إيقاف",
       "seekBack": "-3 ثا",
       "seekForward": "+3 ثا"
-    }
+    },
+    "copyLyrics": "نسخ الكلمات",
+    "lyricsCopied": "تم نسخ الكلمات إلى الحافظة",
+    "copyError": "فشل النسخ",
+    "export": "تصدير",
+    "exportSuccess": "تم تصدير بيانات المزامنة",
+    "import": "استيراد",
+    "importSuccess": "تم استيراد بيانات المزامنة",
+    "importError": "فشل الاستيراد",
+    "importDifferentTrack": "هذه بيانات مزامنة لمسار آخر. هل تريد الاستيراد على أي حال؟"
   }
 };

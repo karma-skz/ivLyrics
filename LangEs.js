@@ -1608,6 +1608,15 @@ window.LANG_ES = {
       "playPause": "Reproducir/Pausar",
       "seekBack": "-3 Seg",
       "seekForward": "+3 Seg"
-    }
+    },
+    "copyLyrics": "Copiar letra",
+    "lyricsCopied": "Letra copiada al portapapeles",
+    "copyError": "Error al copiar",
+    "export": "Exportar",
+    "exportSuccess": "Datos de sincronización exportados",
+    "import": "Importar",
+    "importSuccess": "Datos de sincronización importados",
+    "importError": "Error al importar",
+    "importDifferentTrack": "Estos son datos de sincronización de otra pista. ¿Desea importar de todos modos?"
   }
 };

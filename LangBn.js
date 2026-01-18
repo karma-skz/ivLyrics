@@ -1608,6 +1608,15 @@ window.LANG_BN = {
       "playPause": "চালান/থামান",
       "seekBack": "-৩ সেকেন্ড",
       "seekForward": "+৩ সেকেন্ড"
-    }
+    },
+    "copyLyrics": "গান কপি করুন",
+    "lyricsCopied": "গান ক্লিপবোর্ডে কপি হয়েছে",
+    "copyError": "কপি ব্যর্থ",
+    "export": "রপ্তানি",
+    "exportSuccess": "সিঙ্ক ডেটা রপ্তানি হয়েছে",
+    "import": "আমদানি",
+    "importSuccess": "সিঙ্ক ডেটা আমদানি হয়েছে",
+    "importError": "আমদানি ব্যর্থ",
+    "importDifferentTrack": "এটি অন্য ট্র্যাকের সিঙ্ক ডেটা। তাও কি আমদানি করতে চান?"
   }
 };

@@ -1607,6 +1607,15 @@ window.LANG_ID = {
       "playPause": "Putar/Jeda",
       "seekBack": "-3 Detik",
       "seekForward": "+3 Detik"
-    }
+    },
+    "copyLyrics": "Salin lirik",
+    "lyricsCopied": "Lirik disalin ke clipboard",
+    "copyError": "Gagal menyalin",
+    "export": "Ekspor",
+    "exportSuccess": "Data sinkronisasi diekspor",
+    "import": "Impor",
+    "importSuccess": "Data sinkronisasi diimpor",
+    "importError": "Gagal mengimpor",
+    "importDifferentTrack": "Ini adalah data sinkronisasi dari lagu lain. Tetap impor?"
   }
 };

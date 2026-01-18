@@ -1607,6 +1607,15 @@ window.LANG_FA = {
       "playPause": "پخش/توقف",
       "seekBack": "-۳ ثانیه",
       "seekForward": "+۳ ثانیه"
-    }
+    },
+    "copyLyrics": "کپی متن آهنگ",
+    "lyricsCopied": "متن آهنگ در کلیپ‌بورد کپی شد",
+    "copyError": "خطا در کپی",
+    "export": "خروجی",
+    "exportSuccess": "داده‌های همگام‌سازی صادر شد",
+    "import": "ورودی",
+    "importSuccess": "داده‌های همگام‌سازی وارد شد",
+    "importError": "خطا در وارد کردن",
+    "importDifferentTrack": "این داده‌های همگام‌سازی آهنگ دیگری است. آیا می‌خواهید وارد کنید؟"
   }
 };

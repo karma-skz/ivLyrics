@@ -1607,6 +1607,15 @@ window.LANG_DE = {
       "playPause": "Abspielen/Pause",
       "seekBack": "-3 Sek",
       "seekForward": "+3 Sek"
-    }
+    },
+    "copyLyrics": "Liedtext kopieren",
+    "lyricsCopied": "Liedtext in Zwischenablage kopiert",
+    "copyError": "Kopieren fehlgeschlagen",
+    "export": "Exportieren",
+    "exportSuccess": "Sync-Daten exportiert",
+    "import": "Importieren",
+    "importSuccess": "Sync-Daten importiert",
+    "importError": "Import fehlgeschlagen",
+    "importDifferentTrack": "Dies sind Sync-Daten eines anderen Titels. Trotzdem importieren?"
   }
 };

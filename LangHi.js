@@ -1607,6 +1607,15 @@ window.LANG_HI = {
       "playPause": "चलाएं/रोकें",
       "seekBack": "-3 सेकंड",
       "seekForward": "+3 सेकंड"
-    }
+    },
+    "copyLyrics": "गीत कॉपी करें",
+    "lyricsCopied": "गीत क्लिपबोर्ड पर कॉपी किए गए",
+    "copyError": "कॉपी विफल",
+    "export": "निर्यात",
+    "exportSuccess": "सिंक डेटा निर्यात किया गया",
+    "import": "आयात",
+    "importSuccess": "सिंक डेटा आयात किया गया",
+    "importError": "आयात विफल",
+    "importDifferentTrack": "यह दूसरे ट्रैक का सिंक डेटा है। क्या फिर भी आयात करना चाहते हैं?"
   }
 };

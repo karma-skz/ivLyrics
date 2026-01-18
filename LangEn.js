@@ -1609,6 +1609,15 @@ window.LANG_EN = {
       "playPause": "Play/Pause",
       "seekBack": "-3 Sec",
       "seekForward": "+3 Sec"
-    }
+    },
+    "copyLyrics": "Copy Lyrics",
+    "lyricsCopied": "Lyrics copied to clipboard",
+    "copyError": "Copy failed",
+    "export": "Export",
+    "exportSuccess": "Sync data exported",
+    "import": "Import",
+    "importSuccess": "Sync data imported",
+    "importError": "Import failed",
+    "importDifferentTrack": "This sync data is from a different track. Do you want to import anyway?"
   }
 };

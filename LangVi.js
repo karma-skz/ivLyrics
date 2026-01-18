@@ -1608,6 +1608,15 @@ window.LANG_VI = {
       "playPause": "Phát/Dừng",
       "seekBack": "-3 giây",
       "seekForward": "+3 giây"
-    }
+    },
+    "copyLyrics": "Sao chép lời bài hát",
+    "lyricsCopied": "Đã sao chép lời bài hát vào clipboard",
+    "copyError": "Sao chép thất bại",
+    "export": "Xuất",
+    "exportSuccess": "Đã xuất dữ liệu đồng bộ",
+    "import": "Nhập",
+    "importSuccess": "Đã nhập dữ liệu đồng bộ",
+    "importError": "Nhập thất bại",
+    "importDifferentTrack": "Đây là dữ liệu đồng bộ của bài hát khác. Vẫn muốn nhập?"
   }
 };

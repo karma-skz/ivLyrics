@@ -1609,6 +1609,15 @@ window.LANG_KO = {
       "playPause": "재생/일시정지",
       "seekBack": "-3초",
       "seekForward": "+3초"
-    }
+    },
+    "copyLyrics": "가사 복사",
+    "lyricsCopied": "가사를 클립보드에 복사했습니다",
+    "copyError": "복사 실패",
+    "export": "내보내기",
+    "exportSuccess": "싱크 데이터를 내보냈습니다",
+    "import": "불러오기",
+    "importSuccess": "싱크 데이터를 불러왔습니다",
+    "importError": "불러오기 실패",
+    "importDifferentTrack": "다른 트랙의 싱크 데이터입니다. 그래도 불러오시겠습니까?"
   }
 };
