@@ -114,11 +114,6 @@ body.ivlyrics-page-active .ivlyrics-panel-lyrics-section {
   display: none !important;
 }
 
-/* CSS :has() 셀렉터 폴백 (지원 브라우저용) */
-body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-container,
-body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
-  display: none !important;
-}
 
 /* Now Playing Panel Lyrics - 카드 스타일 */
 .ivlyrics-panel-lyrics-container {
@@ -396,7 +391,8 @@ body:has([data-testid="ivlyrics-page"]) .ivlyrics-panel-lyrics-section {
 }
 
 /* Starry Night 테마에서 Now Playing Bar에 flex-direction: column 적용 */
-body:has(.starrynight-bg-container) .Root__now-playing-bar {
+/* JavaScript에서 body에 클래스를 추가하는 방식으로 동작 */
+body.ivlyrics-starrynight-theme .Root__now-playing-bar {
   display: flex !important;
   flex-direction: column !important;
 }
@@ -1577,11 +1573,14 @@ body:has(.starrynight-bg-container) .Root__now-playing-bar {
         // Starry Night 테마 감지 - Root__now-playing-bar에 삽입
         // ========================================
         if (isStarryNightTheme()) {
+            document.body.classList.add('ivlyrics-starrynight-theme');
             console.log("[NowPlayingPanelLyrics] Starry Night theme detected - inserting to now-playing-bar");
             if (insertNowPlayingBarLyrics()) {
                 return; // 성공적으로 삽입됨
             }
             // 실패 시 기본 패널 삽입 시도
+        } else {
+            document.body.classList.remove('ivlyrics-starrynight-theme');
         }
 
         // ========================================

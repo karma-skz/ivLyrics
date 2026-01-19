@@ -4001,7 +4001,7 @@ const ConfigModal = () => {
     transition: all var(--transition-fast);
 }
 
-#${APP_NAME}-config-container .settings-search-wrapper:has(.settings-search-input:not(:placeholder-shown)) .settings-search-clear {
+#${APP_NAME}-config-container .settings-search-wrapper.has-query .settings-search-clear {
     opacity: 1;
 }
 
@@ -4265,7 +4265,7 @@ const ConfigModal = () => {
 }
 
 /* service-token-input-wrapper가 있는 경우 */
-#${APP_NAME}-config-container .service-list-wrapper > .setting-row:has(+ .service-token-input-wrapper) {
+#${APP_NAME}-config-container .service-list-wrapper > .setting-row.has-token-input {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
@@ -4289,7 +4289,7 @@ const ConfigModal = () => {
 }
 
 /* update-result-container가 있을 때 */
-#${APP_NAME}-config-container .setting-row:has(+ #update-result-container) {
+#${APP_NAME}-config-container .setting-row.has-update-result {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
     border-bottom: 1px solid var(--glass-border) !important;
@@ -4903,7 +4903,7 @@ const ConfigModal = () => {
       { className: "settings-search-container" },
       react.createElement(
         "div",
-        { className: "settings-search-wrapper" },
+        { className: `settings-search-wrapper${searchQuery ? " has-query" : ""}` },
         react.createElement(
           "svg",
           {
@@ -7706,6 +7706,8 @@ const ConfigModal = () => {
                     resultContainer,
                     settingRow.nextSibling
                   );
+                  // 이전 형제 요소에 클래스 추가 (CSS :has() 대체)
+                  settingRow?.classList.add("has-update-result");
                 }
 
                 if (resultContainer) resultContainer.innerHTML = "";
