@@ -2589,6 +2589,7 @@ class LyricsContainer extends react.Component {
       tw: null,
       uri: "",
       provider: "",
+      contributors: null,
       colors: {
         background: "",
         inactive: "",
@@ -5271,6 +5272,7 @@ class LyricsContainer extends react.Component {
             ? this.state.currentLyrics
             : this.state.karaoke,
           provider: this.state.provider,
+          contributors: this.state.contributors,
           copyright: this.state.copyright,
           isKara: true,
           reRenderLyricsPage: this.reRenderLyricsPage,
@@ -5286,6 +5288,7 @@ class LyricsContainer extends react.Component {
               ? this.state.currentLyrics
               : [],
             provider: this.state.provider,
+            contributors: this.state.contributors,
             copyright: this.state.copyright,
             reRenderLyricsPage: this.reRenderLyricsPage,
           }
@@ -5297,6 +5300,7 @@ class LyricsContainer extends react.Component {
             ? this.state.currentLyrics
             : [],
           provider: this.state.provider,
+          contributors: this.state.contributors,
           copyright: this.state.copyright,
           reRenderLyricsPage: this.reRenderLyricsPage,
         });
@@ -5682,7 +5686,11 @@ class LyricsContainer extends react.Component {
           })
         )
       ),
-      activeItem
+      activeItem,
+      react.createElement(CreditFooter, {
+        provider: this.state.provider,
+        contributors: this.state.contributors
+      })
     );
 
     const dom = ensureReactDOM();

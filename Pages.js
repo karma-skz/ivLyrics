@@ -1,5 +1,33 @@
-// CreditFooter removed - debug info is now available in Settings > Debug tab
-const CreditFooter = react.memo(() => null);
+// CreditFooter implementing provider and contributor display
+const CreditFooter = react.memo(({ provider, contributors }) => {
+	if (!provider) return null;
+
+	let text = `가사 제공자 : ${provider}`;
+	if (contributors && contributors.length > 0) {
+		text += ` | 싱크 제작자 : ${contributors.join(", ")}`;
+	}
+
+	return react.createElement(
+		"div",
+		{
+			className: "lyrics-credit-footer",
+			style: {
+				position: "absolute",
+				bottom: "40px",
+				width: "100%",
+				fontSize: "12px",
+				color: "var(--lyrics-color-inactive)",
+				opacity: 0.7,
+				textAlign: "center",
+				zIndex: 200,
+				pointerEvents: "none",
+				textShadow: "0 0 10px rgba(0,0,0,0.5)"
+			}
+		},
+		text
+	);
+});
+window.CreditFooter = CreditFooter;
 
 // Optimized IdlingIndicator with memoization and performance improvements
 const IdlingIndicator = react.memo(({ isActive = false, progress = 0, delay = 0 }) => {
@@ -605,7 +633,7 @@ const KaraokeLine = react.memo(({ line, position, isActive, globalCharOffset = 0
 	return react.createElement("span", { className: "lyrics-karaoke-line" }, elements);
 });
 
-const SyncedLyricsPage = react.memo(({ lyrics = [], provider, copyright, isKara }) => {
+const SyncedLyricsPage = react.memo(({ lyrics = [], provider, contributors, copyright, isKara }) => {
 	// 유효성 검사를 Hook 호출 전에 수행하지 않음 - Hook은 항상 같은 순서로 호출되어야 함
 	const [position, setPosition] = useState(0);
 	const [trackOffset, setTrackOffset] = useState(0);
@@ -997,11 +1025,7 @@ const SyncedLyricsPage = react.memo(({ lyrics = [], provider, copyright, isKara 
 					})()
 				);
 			})
-		),
-		react.createElement(CreditFooter, {
-			provider,
-			copyright,
-		})
+		)
 	);
 });
 
@@ -1230,7 +1254,7 @@ function isInViewport(element) {
 	);
 }
 
-const SyncedExpandedLyricsPage = react.memo(({ lyrics = [], provider, copyright, isKara }) => {
+const SyncedExpandedLyricsPage = react.memo(({ lyrics = [], provider, contributors, copyright, isKara }) => {
 	// Hook은 항상 먼저 호출되어야 함 - React 130 방지
 	const [position, setPosition] = useState(0);
 	const [trackOffset, setTrackOffset] = useState(0);
@@ -1489,15 +1513,11 @@ const SyncedExpandedLyricsPage = react.memo(({ lyrics = [], provider, copyright,
 		react.createElement("p", {
 			className: "lyrics-lyricsContainer-LyricsUnsyncedPadding",
 		}),
-		react.createElement(CreditFooter, {
-			provider,
-			copyright,
-		}),
 		react.createElement(SearchBar, null)
 	);
 });
 
-const UnsyncedLyricsPage = react.memo(({ lyrics = [], provider, copyright }) => {
+const UnsyncedLyricsPage = react.memo(({ lyrics = [], provider, contributors, copyright }) => {
 	// Hook은 항상 같은 순서로 호출되어야 함 - React 130 방지
 	const lyricsArray = useMemo(() => {
 		// React 31 방지: 안전한 배열 변환 및 유효성 검사
@@ -1625,10 +1645,6 @@ const UnsyncedLyricsPage = react.memo(({ lyrics = [], provider, copyright }) => 
 			className: "lyrics-lyricsContainer-LyricsUnsyncedPadding",
 		}),
 
-		react.createElement(CreditFooter, {
-			provider,
-			copyright,
-		}),
 		react.createElement(SearchBar, null)
 	);
 });
@@ -1737,9 +1753,16 @@ const LyricsPage = ({ lyricsContainer }) => {
 		: null;
 
 	return react.createElement(
-		react.Fragment,
-		null,
+		"div",
+		{
+			className: "lyrics-page-wrapper",
+			style: { width: "100%", height: "100%", position: "relative" }
+		},
 		topBarContent,
-		lyricsContainer.render()
+		lyricsContainer.render(),
+		react.createElement(CreditFooter, {
+			provider: lyricsContainer.state.provider,
+			contributors: lyricsContainer.state.contributors
+		})
 	);
 };

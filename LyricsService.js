@@ -1553,6 +1553,10 @@
                             if (syncedFromSyncData) {
                                 result.synced = syncedFromSyncData;
                             }
+                            // 기여자 정보 추가
+                            if (syncData.contributors || (syncData.syncData && syncData.syncData.contributors)) {
+                                result.contributors = syncData.contributors || syncData.syncData.contributors;
+                            }
                         }
                     }
                 } catch (e) {
@@ -1609,6 +1613,10 @@
                             const syncedFromSyncData = window.SyncDataService.convertKaraokeToSynced(karaoke);
                             if (syncedFromSyncData) {
                                 result.synced = syncedFromSyncData;
+                            }
+                            // 기여자 정보 추가
+                            if (syncData.contributors || (syncData.syncData && syncData.syncData.contributors)) {
+                                result.contributors = syncData.contributors || syncData.syncData.contributors;
                             }
                         }
                     }
@@ -2089,10 +2097,11 @@
                     trackInfo: info,
                     lyrics,
                     provider,
+                    contributors: lyricsResult.contributors || [],
                     hasTranslation: mode1 !== 'none' || mode2 !== 'none'
                 });
 
-                return { lyrics, provider, error: null };
+                return { lyrics, provider, contributors: lyricsResult.contributors || [], error: null };
             } catch (e) {
                 console.error('[LyricsService] getFullLyrics 실패:', e);
                 return { lyrics: [], provider: null, error: e.message };
