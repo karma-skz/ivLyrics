@@ -557,7 +557,9 @@ window.LANG_DE = {
     "no": "Nein",
     "items": "Elemente",
     "seconds": "Sek",
-    "minutes": "Min"
+    "minutes": "Min",
+    "lyricsProvider": "Songtext-Anbieter",
+    "syncContributor": "Sync-Mitwirkender"
   },
   "settingsAdvanced": {
     "patchNotes": {

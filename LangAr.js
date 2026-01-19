@@ -557,7 +557,9 @@ window.LANG_AR = {
     "no": "لا",
     "items": "عناصر",
     "seconds": "ثواني",
-    "minutes": "دقائق"
+    "minutes": "دقائق",
+    "lyricsProvider": "مقدم الكلمات",
+    "syncContributor": "مساهم المزامنة"
   },
   "settingsAdvanced": {
     "patchNotes": {

@@ -2,9 +2,9 @@
 const CreditFooter = react.memo(({ provider, contributors }) => {
 	if (!provider) return null;
 
-	let text = `가사 제공자 : ${provider}`;
+	let text = `${I18n.t("misc.lyricsProvider") || "Lyrics Provider"} : ${provider}`;
 	if (contributors && contributors.length > 0) {
-		text += ` | 싱크 제작자 : ${contributors.join(", ")}`;
+		text += ` | ${I18n.t("misc.syncContributor") || "Sync Contributor"} : ${contributors.join(", ")}`;
 	}
 
 	return react.createElement(

@@ -557,7 +557,9 @@ window.LANG_RU = {
     "no": "Нет",
     "items": "шт.",
     "seconds": "сек.",
-    "minutes": "мин."
+    "minutes": "мин.",
+    "lyricsProvider": "Поставщик текста",
+    "syncContributor": "Автор синхронизации"
   },
   "settingsAdvanced": {
     "patchNotes": {

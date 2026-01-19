@@ -558,7 +558,9 @@ window.LANG_EN = {
     "no": "No",
     "items": "items",
     "seconds": "sec",
-    "minutes": "min"
+    "minutes": "min",
+    "lyricsProvider": "Lyrics Provider",
+    "syncContributor": "Sync Contributor"
   },
   "settingsAdvanced": {
     "patchNotes": {

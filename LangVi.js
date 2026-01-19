@@ -557,7 +557,9 @@ window.LANG_VI = {
     "no": "Không",
     "items": "mục",
     "seconds": "giây",
-    "minutes": "phút"
+    "minutes": "phút",
+    "lyricsProvider": "Nhà cung cấp lời bài hát",
+    "syncContributor": "Người đóng góp đồng bộ"
   },
   "settingsAdvanced": {
     "patchNotes": {

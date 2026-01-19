@@ -557,7 +557,9 @@ window.LANG_ZH_TW = {
     "no": "否",
     "items": "個",
     "seconds": "秒",
-    "minutes": "分"
+    "minutes": "分",
+    "lyricsProvider": "歌詞提供者",
+    "syncContributor": "同步貢獻者"
   },
   "settingsAdvanced": {
     "patchNotes": {

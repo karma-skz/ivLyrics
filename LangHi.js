@@ -557,7 +557,9 @@ window.LANG_HI = {
     "no": "नहीं",
     "items": "आइटम",
     "seconds": "सेकंड",
-    "minutes": "मिनट"
+    "minutes": "मिनट",
+    "lyricsProvider": "गीत बोल प्रदाता",
+    "syncContributor": "सिंक योगदानकर्ता"
   },
   "settingsAdvanced": {
     "patchNotes": {

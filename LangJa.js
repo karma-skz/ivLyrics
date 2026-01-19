@@ -557,7 +557,9 @@ window.LANG_JA = {
     "no": "いいえ",
     "items": "個",
     "seconds": "秒",
-    "minutes": "分"
+    "minutes": "分",
+    "lyricsProvider": "歌詞提供者",
+    "syncContributor": "同期作成者"
   },
   "settingsAdvanced": {
     "patchNotes": {

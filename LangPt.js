@@ -557,7 +557,9 @@ window.LANG_PT = {
     "no": "Não",
     "items": "itens",
     "seconds": "s",
-    "minutes": "m"
+    "minutes": "m",
+    "lyricsProvider": "Provedor de letras",
+    "syncContributor": "Contribuidor de sincronia"
   },
   "settingsAdvanced": {
     "patchNotes": {

@@ -558,7 +558,9 @@ window.LANG_KO = {
     "no": "아니오",
     "items": "개",
     "seconds": "초",
-    "minutes": "분"
+    "minutes": "분",
+    "lyricsProvider": "가사 제공자",
+    "syncContributor": "싱크 제작자"
   },
   "settingsAdvanced": {
     "patchNotes": {

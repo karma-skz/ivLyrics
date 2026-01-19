@@ -557,7 +557,9 @@ window.LANG_ID = {
     "no": "Tidak",
     "items": "item",
     "seconds": "detik",
-    "minutes": "menit"
+    "minutes": "menit",
+    "lyricsProvider": "Penyedia Lirik",
+    "syncContributor": "Kontributor Sinkronisasi"
   },
   "settingsAdvanced": {
     "patchNotes": {

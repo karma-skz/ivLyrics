@@ -557,7 +557,9 @@ window.LANG_TH = {
     "no": "ไม่",
     "items": "รายการ",
     "seconds": "วินาที",
-    "minutes": "นาที"
+    "minutes": "นาที",
+    "lyricsProvider": "ผู้ให้บริการเนื้อเพลง",
+    "syncContributor": "ผู้มีส่วนร่วมในการซิงค์"
   },
   "settingsAdvanced": {
     "patchNotes": {

@@ -557,7 +557,9 @@ window.LANG_FA = {
     "no": "خیر",
     "items": "مورد",
     "seconds": "ثانیه",
-    "minutes": "دقیقه"
+    "minutes": "دقیقه",
+    "lyricsProvider": "ارائه‌دهنده متن",
+    "syncContributor": "مشارکت‌کننده هماهنگ‌سازی"
   },
   "settingsAdvanced": {
     "patchNotes": {

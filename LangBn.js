@@ -557,7 +557,9 @@ window.LANG_BN = {
     "no": "না",
     "items": "টি",
     "seconds": "সেকেন্ড",
-    "minutes": "মিনিট"
+    "minutes": "মিনিট",
+    "lyricsProvider": "লিরিক্স প্রদানকারী",
+    "syncContributor": "সিঙ্ক অবদানকারী"
   },
   "settingsAdvanced": {
     "patchNotes": {
