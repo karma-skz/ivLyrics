@@ -3220,7 +3220,7 @@ class LyricsContainer extends react.Component {
         (mode === -1 && CACHE[info.uri]) ||
         CACHE[info.uri]?.[CONFIG.modes?.[mode]]
       ) {
-        tempState = { ...CACHE[info.uri], isCached };
+        tempState = { provider: "", contributors: null, ...CACHE[info.uri], isCached };
         if (CACHE[info.uri]?.mode) {
           this.state.explicitMode = CACHE[info.uri]?.mode;
           tempState = { ...tempState, mode: CACHE[info.uri]?.mode };
@@ -3229,7 +3229,7 @@ class LyricsContainer extends react.Component {
         // Save current mode before loading to maintain UI consistency
         const currentMode = this.getCurrentMode();
         this.lastModeBeforeLoading = currentMode !== -1 ? currentMode : SYNCED;
-        this.setState({ ...emptyState, isLoading: true, isCached: false });
+        this.setState({ ...emptyState, provider: "", contributors: null, isLoading: true, isCached: false });
 
         // LyricsService Extension을 통해 가사 로드
         const providerOrder = ["spotify", "lrclib", "local"];
@@ -3247,7 +3247,7 @@ class LyricsContainer extends react.Component {
         // In case user skips tracks too fast and multiple callbacks
         // set wrong lyrics to current track.
         if (resp.uri === this.currentTrackUri) {
-          tempState = { ...resp, isLoading: false, isCached };
+          tempState = { provider: "", contributors: null, ...resp, isLoading: false, isCached };
         } else {
           return;
         }
