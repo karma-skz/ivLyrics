@@ -1607,7 +1607,8 @@ window.LANG_PT = {
       "cancel": "Cancelar",
       "playPause": "Reproduzir/Pausar",
       "seekBack": "-3 Seg",
-      "seekForward": "+3 Seg"
+      "seekForward": "+3 Seg",
+      "syllable": "Sílaba"
     },
     "copyLyrics": "Copiar letra",
     "lyricsCopied": "Letra copiada para a área de transferência",

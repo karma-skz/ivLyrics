@@ -575,6 +575,15 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 	// 이전 라인 인덱스 추적 (라인 변경 감지용)
 	const prevLineIndexRef = useRef(currentLineIndex);
 
+	// 동적 보간 모드를 위한 ref
+	// pendingWordSync: 이전 단어의 시작 시간과 인덱스 범위를 저장
+	// 다음 단어가 탭되면 이전 단어의 글자들에 보간된 시간 적용
+	const pendingWordSyncRef = useRef(null);
+	// 단어 간 최소 간격 (ms) - 단어가 즉시 전환되지 않도록
+	const WORD_GAP_MS = 80;
+	// 단어 내 보간 활성화 여부
+	const interpolationEnabledRef = useRef(true);
+
 	// 키보드 이벤트 리스너 등록
 	useEffect(() => {
 		// 라인이 변경되었는지 확인
@@ -591,6 +600,7 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 			isKeyboardSyncingRef.current = false;
 			keyboardCharIndexRef.current = -1;
 			charTimesRef.current = [];
+			pendingWordSyncRef.current = null; // 보간 대기 상태도 초기화
 			setDragStartTime(null);
 			setRecordingCharIndex(-1);
 			// 드래그 모드도 초기화
@@ -668,8 +678,8 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 		};
 
 		const handleKeyDown = (e) => {
-			// 방향키, Enter, Backspace, 단어 싱크(,.), 드래그(/), Seek(z,x)
-			const targetKeys = ['ArrowRight', 'ArrowLeft', 'Enter', 'Backspace', ',', '.', '/', 'z', 'x'];
+			// 방향키, Enter, Backspace, 단어 싱크(,.), 음절 싱크(;), 드래그(/), Seek(z,x)
+			const targetKeys = ['ArrowRight', 'ArrowLeft', 'Enter', 'Backspace', ',', '.', ';', '/', 'z', 'x'];
 			if (!targetKeys.includes(e.key)) return;
 
 			// record 모드가 아니면 처리하지 않음
@@ -746,33 +756,128 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 				}
 			};
 
-			// 한 단어 앞으로 진행하는 헬퍼 함수
-			const advanceOneWord = (currentTime) => {
-				if (!isKeyboardSyncingRef.current) {
-					// 싱크 시작
-					advanceOneChar(currentTime);
+			// 이전 단어에 보간 적용하는 헬퍼 함수
+			const applyInterpolationToPendingWord = (nextWordStartTime) => {
+				if (!pendingWordSyncRef.current || !interpolationEnabledRef.current) return;
+
+				const { startIdx, endIdx, startTime } = pendingWordSyncRef.current;
+				const charCount = endIdx - startIdx + 1;
+
+				if (charCount <= 1) {
+					// 한 글자 단어는 보간 불필요
+					pendingWordSyncRef.current = null;
+					return;
 				}
 
-				// 현재 위치부터 다음 단어 경계까지 진행
+				// 단어 간 최소 간격을 뺀 시간 내에서 보간
+				const wordEndTime = nextWordStartTime - (WORD_GAP_MS / 1000);
+				const duration = Math.max(0, wordEndTime - startTime);
+
+				// 각 글자에 균등하게 시간 분배
+				for (let i = startIdx; i <= endIdx; i++) {
+					const progress = (i - startIdx) / charCount;
+					const interpolatedTime = startTime + (duration * progress);
+					charTimesRef.current[i] = Math.round(interpolatedTime * 1000) / 1000;
+				}
+
+				console.log('[SyncDataCreator] Applied interpolation to word:', startIdx, '-', endIdx, 'duration:', duration.toFixed(3));
+				pendingWordSyncRef.current = null;
+			};
+
+			// 한 단어 앞으로 진행하는 헬퍼 함수
+			const advanceOneWord = (currentTime) => {
+				// 싱크가 시작되지 않은 경우: 첫 단어만 처리
+				if (!isKeyboardSyncingRef.current) {
+					isKeyboardSyncingRef.current = true;
+					charTimesRef.current = new Array(currentLineChars.length).fill(null);
+					setDragStartTime(currentTime);
+
+					let startIdx = 0;
+					charTimesRef.current[0] = currentTime;
+
+					// 첫 글자가 여는 괄호면 다음 글자까지 포함
+					while (startIdx + 1 < currentLineChars.length && isLeadingChar(currentLineChars[startIdx])) {
+						startIdx++;
+						charTimesRef.current[startIdx] = currentTime;
+					}
+
+					// 첫 단어의 끝까지 진행 (단어 경계 만나면 멈춤)
+					let endIdx = startIdx;
+					while (endIdx + 1 < currentLineChars.length &&
+						   !isWordBoundary(currentLineChars[endIdx + 1]) &&
+						   !isTrailingChar(currentLineChars[endIdx + 1])) {
+						endIdx++;
+						charTimesRef.current[endIdx] = currentTime;
+					}
+
+					// trailing 문자들(구두점 등) 포함
+					while (endIdx + 1 < currentLineChars.length &&
+						   isTrailingChar(currentLineChars[endIdx + 1]) &&
+						   !isWordBoundary(currentLineChars[endIdx + 1])) {
+						endIdx++;
+						charTimesRef.current[endIdx] = currentTime;
+					}
+
+					keyboardCharIndexRef.current = endIdx;
+					setRecordingCharIndex(endIdx);
+					autoScroll(endIdx);
+
+					console.log('[SyncDataCreator] Word sync started, first word ends at:', endIdx);
+
+					// 마지막 글자면 라인 완료 (보간 적용 후)
+					if (keyboardCharIndexRef.current >= currentLineChars.length - 1) {
+						// 첫 단어이자 마지막 단어인 경우에도 보간 적용
+						if (interpolationEnabledRef.current && endIdx > 0) {
+							const charCount = endIdx + 1;
+							const duration = Math.min(0.3, charCount * 0.05);
+							for (let i = 0; i <= endIdx; i++) {
+								const progress = i / charCount;
+								const interpolatedTime = currentTime + (duration * progress);
+								charTimesRef.current[i] = Math.round(interpolatedTime * 1000) / 1000;
+							}
+							console.log('[SyncDataCreator] Applied interpolation to single word line');
+						}
+						finishKeyboardSync();
+						console.log('[SyncDataCreator] Line completed by word');
+					} else {
+						// 보간을 위해 현재 단어 정보 저장 (보간 활성화 시)
+						if (interpolationEnabledRef.current) {
+							pendingWordSyncRef.current = {
+								startIdx: 0,
+								endIdx: endIdx,
+								startTime: currentTime
+							};
+						}
+					}
+					return;
+				}
+
+				// 이미 싱크 중인 경우: 이전 단어에 보간 적용 후 다음 단어로 진행
+				applyInterpolationToPendingWord(currentTime);
+
 				const startIdx = keyboardCharIndexRef.current;
 				let endIdx = startIdx + 1;
 
 				// 먼저 현재 공백들 건너뛰기
 				while (endIdx < currentLineChars.length && isWordBoundary(currentLineChars[endIdx])) {
+					// 공백에는 이전 단어 끝 시간 + 갭 적용
+					charTimesRef.current[endIdx] = currentTime - (WORD_GAP_MS / 2000);
+					endIdx++;
+				}
+
+				// 다음 단어의 시작 인덱스
+				const nextWordStartIdx = endIdx;
+
+				// 다음 단어 경계까지 진행
+				while (endIdx < currentLineChars.length && !isWordBoundary(currentLineChars[endIdx]) && !isTrailingChar(currentLineChars[endIdx])) {
 					charTimesRef.current[endIdx] = currentTime;
 					endIdx++;
 				}
 
-				// 다음 단어 경계까지 진행
-				while (endIdx < currentLineChars.length && !isWordBoundary(currentLineChars[endIdx])) {
+				// trailing 문자들도 함께 처리
+				while (endIdx < currentLineChars.length && isTrailingChar(currentLineChars[endIdx]) && !isWordBoundary(currentLineChars[endIdx])) {
 					charTimesRef.current[endIdx] = currentTime;
 					endIdx++;
-
-					// trailing 문자들도 함께 처리
-					while (endIdx < currentLineChars.length && isTrailingChar(currentLineChars[endIdx]) && !isWordBoundary(currentLineChars[endIdx])) {
-						charTimesRef.current[endIdx] = currentTime;
-						endIdx++;
-					}
 				}
 
 				// 최소 한 글자는 진행했는지 확인
@@ -781,14 +886,42 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					charTimesRef.current[endIdx] = currentTime;
 				}
 
-				keyboardCharIndexRef.current = endIdx - 1;
-				if (keyboardCharIndexRef.current < 0) keyboardCharIndexRef.current = 0;
+				// endIdx는 마지막으로 처리된 글자의 다음 인덱스이므로 -1
+				const finalEndIdx = endIdx - 1;
+				keyboardCharIndexRef.current = Math.max(0, finalEndIdx);
+
 				setRecordingCharIndex(keyboardCharIndexRef.current);
 				autoScroll(keyboardCharIndexRef.current);
+
+				// 보간을 위해 현재 단어 정보 저장
+				if (interpolationEnabledRef.current && nextWordStartIdx < currentLineChars.length) {
+					pendingWordSyncRef.current = {
+						startIdx: nextWordStartIdx,
+						endIdx: keyboardCharIndexRef.current,
+						startTime: currentTime
+					};
+				}
+
 				console.log('[SyncDataCreator] Word advanced to char:', keyboardCharIndexRef.current);
 
 				// 마지막 글자면 라인 완료
 				if (keyboardCharIndexRef.current >= currentLineChars.length - 1) {
+					// 마지막 단어에도 보간 적용 (현재 시간 기준으로 약간의 지속시간 부여)
+					if (pendingWordSyncRef.current && interpolationEnabledRef.current) {
+						const { startIdx, endIdx, startTime } = pendingWordSyncRef.current;
+						const charCount = endIdx - startIdx + 1;
+						if (charCount > 1) {
+							// 마지막 단어는 시작 시간으로부터 글자 수에 비례한 짧은 지속시간 부여
+							const duration = Math.min(0.3, charCount * 0.05); // 최대 300ms
+							for (let i = startIdx; i <= endIdx; i++) {
+								const progress = (i - startIdx) / charCount;
+								const interpolatedTime = startTime + (duration * progress);
+								charTimesRef.current[i] = Math.round(interpolatedTime * 1000) / 1000;
+							}
+							console.log('[SyncDataCreator] Applied interpolation to last word:', startIdx, '-', endIdx);
+						}
+					}
+					pendingWordSyncRef.current = null;
 					finishKeyboardSync();
 					console.log('[SyncDataCreator] Line completed by word');
 				}
@@ -797,6 +930,9 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 			// 한 단어 뒤로 취소하는 헬퍼 함수 (첫 글자도 취소 가능)
 			const revertOneWord = () => {
 				if (!isKeyboardSyncingRef.current || keyboardCharIndexRef.current < 0) return;
+
+				// 보간 대기 중인 단어 취소
+				pendingWordSyncRef.current = null;
 
 				let targetIdx = keyboardCharIndexRef.current - 1;
 
@@ -878,6 +1014,148 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 				e.stopPropagation();
 				e.stopImmediatePropagation();
 				revertOneWord();
+			}
+
+			// ; 키: 음절 단위 싱크 (다음 모음까지 진행)
+			if (e.key === ';') {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				const currentTime = Spicetify.Player.getProgress() / 1000;
+
+				// 모음 판별 함수 (영어 + 일부 다국어 지원)
+				const isVowel = (ch) => /[aeiouAEIOUàáâãäåæèéêëìíîïòóôõöùúûüýÿøœ]/i.test(ch);
+
+				if (!isKeyboardSyncingRef.current) {
+					// 싱크 시작
+					isKeyboardSyncingRef.current = true;
+					charTimesRef.current = new Array(currentLineChars.length).fill(null);
+					setDragStartTime(currentTime);
+
+					let startIdx = 0;
+					charTimesRef.current[0] = currentTime;
+
+					// 첫 글자가 여는 괄호면 다음 글자까지 포함
+					while (startIdx + 1 < currentLineChars.length && isLeadingChar(currentLineChars[startIdx])) {
+						startIdx++;
+						charTimesRef.current[startIdx] = currentTime;
+					}
+
+					// 첫 음절 끝까지 진행: 모음을 만나면 그 모음까지 포함하고 멈춤
+					let endIdx = startIdx;
+					let foundVowel = isVowel(currentLineChars[endIdx]);
+
+					// 모음을 찾을 때까지 진행
+					while (!foundVowel && endIdx + 1 < currentLineChars.length &&
+						   !isWordBoundary(currentLineChars[endIdx + 1])) {
+						endIdx++;
+						charTimesRef.current[endIdx] = currentTime;
+						if (isVowel(currentLineChars[endIdx])) {
+							foundVowel = true;
+						}
+					}
+
+					// 모음 뒤의 자음들도 포함 (다음 모음 전까지)
+					if (foundVowel) {
+						while (endIdx + 1 < currentLineChars.length &&
+							   !isWordBoundary(currentLineChars[endIdx + 1]) &&
+							   !isVowel(currentLineChars[endIdx + 1]) &&
+							   !isTrailingChar(currentLineChars[endIdx + 1])) {
+							endIdx++;
+							charTimesRef.current[endIdx] = currentTime;
+						}
+					}
+
+					// trailing 문자들(구두점 등) 포함 - 단어 끝인 경우만
+					if (endIdx + 1 >= currentLineChars.length || isWordBoundary(currentLineChars[endIdx + 1])) {
+						while (endIdx + 1 < currentLineChars.length &&
+							   isTrailingChar(currentLineChars[endIdx + 1]) &&
+							   !isWordBoundary(currentLineChars[endIdx + 1])) {
+							endIdx++;
+							charTimesRef.current[endIdx] = currentTime;
+						}
+					}
+
+					keyboardCharIndexRef.current = endIdx;
+					setRecordingCharIndex(endIdx);
+					autoScroll(endIdx);
+					console.log('[SyncDataCreator] Syllable sync started, ends at:', endIdx);
+
+					// 마지막 글자면 라인 완료
+					if (keyboardCharIndexRef.current >= currentLineChars.length - 1) {
+						finishKeyboardSync();
+						console.log('[SyncDataCreator] Line completed by syllable');
+					}
+				} else {
+					// 이미 싱크 중인 경우: 다음 음절로 진행
+					const startIdx = keyboardCharIndexRef.current;
+					let endIdx = startIdx + 1;
+
+					if (endIdx >= currentLineChars.length) {
+						// 이미 끝에 도달
+						finishKeyboardSync();
+						return;
+					}
+
+					// 공백이면 건너뛰기
+					while (endIdx < currentLineChars.length && isWordBoundary(currentLineChars[endIdx])) {
+						charTimesRef.current[endIdx] = currentTime;
+						endIdx++;
+					}
+
+					if (endIdx >= currentLineChars.length) {
+						keyboardCharIndexRef.current = currentLineChars.length - 1;
+						setRecordingCharIndex(keyboardCharIndexRef.current);
+						finishKeyboardSync();
+						return;
+					}
+
+					// 첫 글자 처리
+					charTimesRef.current[endIdx] = currentTime;
+					let foundVowel = isVowel(currentLineChars[endIdx]);
+
+					// 모음을 찾을 때까지 진행
+					while (!foundVowel && endIdx + 1 < currentLineChars.length &&
+						   !isWordBoundary(currentLineChars[endIdx + 1])) {
+						endIdx++;
+						charTimesRef.current[endIdx] = currentTime;
+						if (isVowel(currentLineChars[endIdx])) {
+							foundVowel = true;
+						}
+					}
+
+					// 모음 뒤의 자음들도 포함 (다음 모음 전까지)
+					if (foundVowel) {
+						while (endIdx + 1 < currentLineChars.length &&
+							   !isWordBoundary(currentLineChars[endIdx + 1]) &&
+							   !isVowel(currentLineChars[endIdx + 1]) &&
+							   !isTrailingChar(currentLineChars[endIdx + 1])) {
+							endIdx++;
+							charTimesRef.current[endIdx] = currentTime;
+						}
+					}
+
+					// trailing 문자들(구두점 등) 포함 - 단어 끝인 경우만
+					if (endIdx + 1 >= currentLineChars.length || isWordBoundary(currentLineChars[endIdx + 1])) {
+						while (endIdx + 1 < currentLineChars.length &&
+							   isTrailingChar(currentLineChars[endIdx + 1]) &&
+							   !isWordBoundary(currentLineChars[endIdx + 1])) {
+							endIdx++;
+							charTimesRef.current[endIdx] = currentTime;
+						}
+					}
+
+					keyboardCharIndexRef.current = endIdx;
+					setRecordingCharIndex(endIdx);
+					autoScroll(endIdx);
+					console.log('[SyncDataCreator] Syllable advanced to:', endIdx);
+
+					// 마지막 글자면 라인 완료
+					if (keyboardCharIndexRef.current >= currentLineChars.length - 1) {
+						finishKeyboardSync();
+						console.log('[SyncDataCreator] Line completed by syllable');
+					}
+				}
 			}
 
 			// / 키: 드래그 모드 시작 (누르고 있으면 연속으로 빠르게 진행)
@@ -1728,6 +2006,11 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					react.createElement('div', { style: s.shortcutItem },
 						react.createElement('span', { style: s.shortcutKey }, ','),
 						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.wordBack') || '한 단어 취소')
+					),
+					// 음절
+					react.createElement('div', { style: s.shortcutItem },
+						react.createElement('span', { style: s.shortcutKey }, ';'),
+						react.createElement('span', { style: s.shortcutDesc }, I18n.t('syncCreator.shortcuts.syllable') || '음절')
 					),
 					// 드래그
 					react.createElement('div', { style: s.shortcutItem },

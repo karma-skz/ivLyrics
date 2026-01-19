@@ -1606,7 +1606,8 @@ window.LANG_DE = {
       "cancel": "Abbrechen",
       "playPause": "Abspielen/Pause",
       "seekBack": "-3 Sek",
-      "seekForward": "+3 Sek"
+      "seekForward": "+3 Sek",
+      "syllable": "Silbe"
     },
     "copyLyrics": "Liedtext kopieren",
     "lyricsCopied": "Liedtext in Zwischenablage kopiert",

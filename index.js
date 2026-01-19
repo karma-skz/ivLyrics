@@ -331,7 +331,7 @@ const UpdateBanner = ({ updateInfo, onDismiss }) => {
           "0 8px 32px 0 rgba(0, 0, 0, 0.18), inset 0 1px 0 0 rgba(255, 255, 255, 0.05)",
         animation: "slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
         position: "relative",
-        zIndex: 100,
+        zIndex: 150,
         overflow: "hidden",
         transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
       },
@@ -2379,6 +2379,11 @@ const Prefetcher = {
     // 이미 캐시에 있으면 스킵
     if (this._prefetchCache.has(cacheKey)) {
       console.log(`[Prefetcher] Video info already cached for trackId: ${trackId}`);
+      // 헬퍼 프리로드는 별도 진행 (캐시된 데이터에서 videoId 사용)
+      const cached = this._prefetchCache.get(cacheKey);
+      if (cached?.data?.youtubeVideoId) {
+        this._prefetchVideoWithHelper(cached.data.youtubeVideoId);
+      }
       return;
     }
 
@@ -2395,6 +2400,8 @@ const Prefetcher = {
         },
         timestamp: Date.now(),
       });
+      // 헬퍼를 통한 영상 미리 다운로드
+      this._prefetchVideoWithHelper(songData.youtube.videoId);
       return;
     }
 
@@ -2418,6 +2425,10 @@ const Prefetcher = {
             timestamp: Date.now(),
           });
           console.log(`[Prefetcher] Video info cached for trackId: ${trackId}`);
+          // 헬퍼를 통한 영상 미리 다운로드
+          if (data.data?.youtubeVideoId) {
+            this._prefetchVideoWithHelper(data.data.youtubeVideoId);
+          }
         }
 
         return data;
@@ -2431,6 +2442,82 @@ const Prefetcher = {
 
     this._inflightRequests.set(cacheKey, prefetchPromise);
     return prefetchPromise;
+  },
+
+  /**
+   * 헬퍼 프로그램을 통한 영상 미리 다운로드
+   * @param {string} videoId - YouTube 비디오 ID
+   */
+  async _prefetchVideoWithHelper(videoId) {
+    // 헬퍼 프리페치 설정 확인
+    if (CONFIG.visual["prefetch-video-enabled"] === false) return;
+    if (CONFIG.visual["video-helper-enabled"] !== true && CONFIG.visual["video-helper-enabled"] !== "true") return;
+
+    // VideoHelperService 존재 확인
+    if (typeof VideoHelperService === "undefined") return;
+
+    const helperCacheKey = `prefetch:helper:${videoId}`;
+
+    // 이미 프리페치 요청 중이면 스킵
+    if (this._inflightRequests.has(helperCacheKey)) {
+      console.log(`[Prefetcher] Helper prefetch already in progress for: ${videoId}`);
+      return;
+    }
+
+    // 이미 다운로드 완료된 영상이면 스킵
+    if (this._prefetchCache.has(helperCacheKey)) {
+      console.log(`[Prefetcher] Video already prefetched via helper: ${videoId}`);
+      return;
+    }
+
+    try {
+      // 헬퍼 연결 상태 확인
+      const isAvailable = await VideoHelperService.isHelperAvailable();
+      if (!isAvailable) {
+        console.log(`[Prefetcher] Helper not available, skipping prefetch for: ${videoId}`);
+        return;
+      }
+
+      console.log(`[Prefetcher] Starting helper prefetch for video: ${videoId}`);
+
+      // 요청 중 표시
+      this._inflightRequests.set(helperCacheKey, true);
+
+      // 헬퍼에 영상 요청 (다운로드 시작)
+      const abortFn = VideoHelperService.requestVideo(videoId, {
+        onProgress: (percent, speed, eta, message, status) => {
+          if (percent > 0 && percent < 100) {
+            console.log(`[Prefetcher] Helper prefetch progress: ${percent}% for ${videoId}`);
+          }
+        },
+        onComplete: (url) => {
+          console.log(`[Prefetcher] Helper prefetch complete for: ${videoId}`);
+          this._prefetchCache.set(helperCacheKey, {
+            videoId: videoId,
+            url: url,
+            timestamp: Date.now(),
+          });
+          this._inflightRequests.delete(helperCacheKey);
+        },
+        onError: (message) => {
+          console.warn(`[Prefetcher] Helper prefetch failed for ${videoId}:`, message);
+          this._inflightRequests.delete(helperCacheKey);
+        },
+      });
+
+      // 30초 후 자동 중단 (너무 오래 걸리면)
+      setTimeout(() => {
+        if (this._inflightRequests.has(helperCacheKey)) {
+          console.log(`[Prefetcher] Helper prefetch timeout for: ${videoId}`);
+          abortFn();
+          this._inflightRequests.delete(helperCacheKey);
+        }
+      }, 30000);
+
+    } catch (error) {
+      console.warn(`[Prefetcher] Helper prefetch error:`, error.message);
+      this._inflightRequests.delete(helperCacheKey);
+    }
   },
 
   /**

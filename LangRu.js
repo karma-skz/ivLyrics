@@ -1607,7 +1607,8 @@ window.LANG_RU = {
       "cancel": "Отмена",
       "playPause": "Воспроизвести/Пауза",
       "seekBack": "-3 сек",
-      "seekForward": "+3 сек"
+      "seekForward": "+3 сек",
+      "syllable": "Слог"
     },
     "copyLyrics": "Копировать текст",
     "lyricsCopied": "Текст скопирован в буфер обмена",

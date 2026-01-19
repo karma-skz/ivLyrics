@@ -1607,7 +1607,8 @@ window.LANG_JA = {
       "cancel": "キャンセル",
       "playPause": "再生/一時停止",
       "seekBack": "-3秒",
-      "seekForward": "+3秒"
+      "seekForward": "+3秒",
+      "syllable": "音節"
     },
     "copyLyrics": "歌詞をコピー",
     "lyricsCopied": "歌詞をクリップボードにコピーしました",
