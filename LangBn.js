@@ -1135,6 +1135,51 @@ window.LANG_BN = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "অ্যাকাউন্ট লিঙ্কিং",
+        "subtitle": "আপনার ivLogin অ্যাকাউন্টের সাথে লিঙ্ক করুন",
+        "description": "ivLis STUDIO একীভূত অ্যাকাউন্ট সার্ভিস",
+        "info": "সেটিংস সিঙ্ক এর মতো ফিচার ব্যবহার করতে ivLogin এর সাথে লিঙ্ক করুন। লিঙ্ক করতে লগইন পেজে আপনার User Hash লিখুন।",
+        "loginButton": "ivLogin দিয়ে লিঙ্ক করুন",
+        "loading": "অ্যাকাউন্ট তথ্য লোড হচ্ছে...",
+        "linked": "লিঙ্ক করা হয়েছে",
+        "linkedAt": "লিঙ্কের তারিখ",
+        "lastSync": "শেষ সিঙ্ক",
+        "manageAccount": "অ্যাকাউন্ট পরিচালনা",
+        "refresh": "রিফ্রেশ",
+        "nickname": {
+          "label": "Nickname",
+          "enter": "Please enter a nickname.",
+          "changed": "Nickname changed.",
+          "failed": "Failed to change",
+          "error": "Error occurred",
+          "placeholder": "Enter nickname",
+          "none": "No nickname",
+          "saving": "Saving...",
+          "save": "Save",
+          "change": "Change"
+        },
+        "backup": {
+          "title": "Backup & Restore",
+          "enterName": "Please enter a backup name.",
+          "success": "Settings backed up.",
+          "fail": "Backup failed",
+          "error": "Error during backup",
+          "restoreSuccess": "Settings restored. Please restart the app to apply.",
+          "invalidFormat": "Invalid settings format.",
+          "downloadFail": "Failed to download settings",
+          "downloadError": "Error during download",
+          "deleteConfirm": "Are you sure you want to delete this backup?",
+          "deleted": "Backup deleted.",
+          "deleteFail": "Delete failed",
+          "deleteError": "Error during deletion",
+          "placeholder": "Backup name (e.g. PC Settings)",
+          "backupBtn": "Backup",
+          "restoreBtn": "Restore",
+          "deleteBtn": "Delete",
+          "noBackups": "No backups saved."
+        }
+      },
       "appInfo": {
         "title": "অ্যাপ তথ্য"
       },

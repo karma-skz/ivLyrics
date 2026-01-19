@@ -1136,6 +1136,51 @@ window.LANG_EN = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "Account Linking",
+        "subtitle": "Link with your ivLogin account",
+        "description": "ivLis STUDIO unified account service",
+        "info": "Link with ivLogin to access features like settings sync. Enter your User Hash on the login page to link your account.",
+        "loginButton": "Link with ivLogin",
+        "loading": "Loading account info...",
+        "linked": "Linked",
+        "linkedAt": "Linked on",
+        "lastSync": "Last sync",
+        "manageAccount": "Manage Account",
+        "refresh": "Refresh",
+        "nickname": {
+          "label": "Nickname",
+          "enter": "Please enter a nickname.",
+          "changed": "Nickname changed.",
+          "failed": "Failed to change",
+          "error": "Error occurred",
+          "placeholder": "Enter nickname",
+          "none": "No nickname",
+          "saving": "Saving...",
+          "save": "Save",
+          "change": "Change"
+        },
+        "backup": {
+          "title": "Backup & Restore",
+          "enterName": "Please enter a backup name.",
+          "success": "Settings backed up.",
+          "fail": "Backup failed",
+          "error": "Error during backup",
+          "restoreSuccess": "Settings restored. Please restart the app to apply.",
+          "invalidFormat": "Invalid settings format.",
+          "downloadFail": "Failed to download settings",
+          "downloadError": "Error during download",
+          "deleteConfirm": "Are you sure you want to delete this backup?",
+          "deleted": "Backup deleted.",
+          "deleteFail": "Delete failed",
+          "deleteError": "Error during deletion",
+          "placeholder": "Backup name (e.g. PC Settings)",
+          "backupBtn": "Backup",
+          "restoreBtn": "Restore",
+          "deleteBtn": "Delete",
+          "noBackups": "No backups saved."
+        }
+      },
       "appInfo": {
         "title": "App Info"
       },

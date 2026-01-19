@@ -1135,6 +1135,51 @@ window.LANG_ID = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "Penautan Akun",
+        "subtitle": "Tautkan dengan akun ivLogin Anda",
+        "description": "Layanan akun terpadu ivLis STUDIO",
+        "info": "Tautkan dengan ivLogin untuk menggunakan fitur seperti sinkronisasi pengaturan. Masukkan User Hash Anda di halaman login untuk menautkan.",
+        "loginButton": "Tautkan dengan ivLogin",
+        "loading": "Memuat info akun...",
+        "linked": "Tertaut",
+        "linkedAt": "Ditautkan pada",
+        "lastSync": "Sinkronisasi terakhir",
+        "manageAccount": "Kelola akun",
+        "refresh": "Muat ulang",
+        "nickname": {
+          "label": "Nickname",
+          "enter": "Please enter a nickname.",
+          "changed": "Nickname changed.",
+          "failed": "Failed to change",
+          "error": "Error occurred",
+          "placeholder": "Enter nickname",
+          "none": "No nickname",
+          "saving": "Saving...",
+          "save": "Save",
+          "change": "Change"
+        },
+        "backup": {
+          "title": "Backup & Restore",
+          "enterName": "Please enter a backup name.",
+          "success": "Settings backed up.",
+          "fail": "Backup failed",
+          "error": "Error during backup",
+          "restoreSuccess": "Settings restored. Please restart the app to apply.",
+          "invalidFormat": "Invalid settings format.",
+          "downloadFail": "Failed to download settings",
+          "downloadError": "Error during download",
+          "deleteConfirm": "Are you sure you want to delete this backup?",
+          "deleted": "Backup deleted.",
+          "deleteFail": "Delete failed",
+          "deleteError": "Error during deletion",
+          "placeholder": "Backup name (e.g. PC Settings)",
+          "backupBtn": "Backup",
+          "restoreBtn": "Restore",
+          "deleteBtn": "Delete",
+          "noBackups": "No backups saved."
+        }
+      },
       "appInfo": {
         "title": "Info Aplikasi"
       },

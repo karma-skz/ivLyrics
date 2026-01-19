@@ -1135,6 +1135,51 @@ window.LANG_FR = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "Liaison de compte",
+        "subtitle": "Lier avec votre compte ivLogin",
+        "description": "Service de compte unifié ivLis STUDIO",
+        "info": "Liez avec ivLogin pour la synchronisation des paramètres. Entrez votre User Hash sur la page de connexion.",
+        "loginButton": "Lier avec ivLogin",
+        "loading": "Chargement des infos du compte...",
+        "linked": "Lié",
+        "linkedAt": "Lié le",
+        "lastSync": "Dernière sync",
+        "manageAccount": "Gérer le compte",
+        "refresh": "Actualiser",
+        "nickname": {
+          "label": "Pseudo",
+          "enter": "Veuillez entrer un pseudo.",
+          "changed": "Pseudo modifié.",
+          "failed": "Échec de la modification",
+          "error": "Une erreur est survenue",
+          "placeholder": "Entrez un pseudo",
+          "none": "Aucun pseudo",
+          "saving": "Enregistrement...",
+          "save": "Enregistrer",
+          "change": "Modifier"
+        },
+        "backup": {
+          "title": "Sauvegarde et Restauration",
+          "enterName": "Veuillez entrer un nom de sauvegarde.",
+          "success": "Paramètres sauvegardés.",
+          "fail": "Échec de la sauvegarde",
+          "error": "Erreur lors de la sauvegarde",
+          "restoreSuccess": "Paramètres restaurés. Veuillez redémarrer l'application.",
+          "invalidFormat": "Format de paramètres invalide.",
+          "downloadFail": "Échec du téléchargement",
+          "downloadError": "Erreur lors du téléchargement",
+          "deleteConfirm": "Voulez-vous vraiment supprimer cette sauvegarde ?",
+          "deleted": "Sauvegarde supprimée.",
+          "deleteFail": "Suppression échouée",
+          "deleteError": "Erreur lors de la suppression",
+          "placeholder": "Nom (ex: Mon PC)",
+          "backupBtn": "Sauvegarder",
+          "restoreBtn": "Restaurer",
+          "deleteBtn": "Supprimer",
+          "noBackups": "Aucune sauvegarde."
+        }
+      },
       "appInfo": {
         "title": "Infos App"
       },

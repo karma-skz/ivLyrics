@@ -1135,6 +1135,51 @@ window.LANG_ES = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "Vinculación de cuenta",
+        "subtitle": "Vincular con tu cuenta ivLogin",
+        "description": "Servicio de cuenta unificada de ivLis STUDIO",
+        "info": "Vincula con ivLogin para sincronización de ajustes. Ingresa tu User Hash en la página de inicio de sesión.",
+        "loginButton": "Vincular con ivLogin",
+        "loading": "Cargando información de cuenta...",
+        "linked": "Vinculado",
+        "linkedAt": "Vinculado el",
+        "lastSync": "Última sincronización",
+        "manageAccount": "Gestionar cuenta",
+        "refresh": "Actualizar",
+        "nickname": {
+          "label": "Apodo",
+          "enter": "Por favor ingrese un apodo.",
+          "changed": "Apodo cambiado.",
+          "failed": "Error al cambiar",
+          "error": "Ocurrió un error",
+          "placeholder": "Ingrese apodo",
+          "none": "Sin apodo",
+          "saving": "Guardando...",
+          "save": "Guardar",
+          "change": "Cambiar"
+        },
+        "backup": {
+          "title": "Copia de Seguridad y Restauración",
+          "enterName": "Ingrese un nombre para la copia.",
+          "success": "Copia de seguridad guardada.",
+          "fail": "Error en la copia",
+          "error": "Error durante la copia",
+          "restoreSuccess": "Configuración restaurada. Reinicie la aplicación.",
+          "invalidFormat": "Formato inválido.",
+          "downloadFail": "Error al descargar",
+          "downloadError": "Error de descarga",
+          "deleteConfirm": "¿Está seguro de eliminar esta copia?",
+          "deleted": "Copia eliminada.",
+          "deleteFail": "Error al eliminar",
+          "deleteError": "Error de eliminación",
+          "placeholder": "Nombre (ej: PC Casa)",
+          "backupBtn": "Respaldar",
+          "restoreBtn": "Restaurar",
+          "deleteBtn": "Eliminar",
+          "noBackups": "No hay copias guardadas."
+        }
+      },
       "appInfo": {
         "title": "Info de App"
       },

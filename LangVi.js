@@ -1135,6 +1135,51 @@ window.LANG_VI = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "Liên kết tài khoản",
+        "subtitle": "Liên kết với tài khoản ivLogin",
+        "description": "Dịch vụ tài khoản hợp nhất ivLis STUDIO",
+        "info": "Liên kết với ivLogin để sử dụng các tính năng như đồng bộ cài đặt. Nhập User Hash trên trang đăng nhập để liên kết.",
+        "loginButton": "Liên kết với ivLogin",
+        "loading": "Đang tải thông tin tài khoản...",
+        "linked": "Đã liên kết",
+        "linkedAt": "Liên kết vào",
+        "lastSync": "Đồng bộ lần cuối",
+        "manageAccount": "Quản lý tài khoản",
+        "refresh": "Làm mới",
+        "nickname": {
+          "label": "Nickname",
+          "enter": "Please enter a nickname.",
+          "changed": "Nickname changed.",
+          "failed": "Failed to change",
+          "error": "Error occurred",
+          "placeholder": "Enter nickname",
+          "none": "No nickname",
+          "saving": "Saving...",
+          "save": "Save",
+          "change": "Change"
+        },
+        "backup": {
+          "title": "Backup & Restore",
+          "enterName": "Please enter a backup name.",
+          "success": "Settings backed up.",
+          "fail": "Backup failed",
+          "error": "Error during backup",
+          "restoreSuccess": "Settings restored. Please restart the app to apply.",
+          "invalidFormat": "Invalid settings format.",
+          "downloadFail": "Failed to download settings",
+          "downloadError": "Error during download",
+          "deleteConfirm": "Are you sure you want to delete this backup?",
+          "deleted": "Backup deleted.",
+          "deleteFail": "Delete failed",
+          "deleteError": "Error during deletion",
+          "placeholder": "Backup name (e.g. PC Settings)",
+          "backupBtn": "Backup",
+          "restoreBtn": "Restore",
+          "deleteBtn": "Delete",
+          "noBackups": "No backups saved."
+        }
+      },
       "appInfo": {
         "title": "Thông tin ứng dụng"
       },

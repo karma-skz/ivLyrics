@@ -1135,6 +1135,51 @@ window.LANG_HI = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "खाता लिंकिंग",
+        "subtitle": "अपने ivLogin खाते से लिंक करें",
+        "description": "ivLis STUDIO एकीकृत खाता सेवा",
+        "info": "सेटिंग्स सिंक जैसी सुविधाओं का उपयोग करने के लिए ivLogin से लिंक करें। लिंक करने के लिए लॉगिन पेज पर अपना User Hash दर्ज करें।",
+        "loginButton": "ivLogin से लिंक करें",
+        "loading": "खाता जानकारी लोड हो रही है...",
+        "linked": "लिंक किया गया",
+        "linkedAt": "लिंक की तारीख",
+        "lastSync": "अंतिम सिंक",
+        "manageAccount": "खाता प्रबंधन",
+        "refresh": "रीफ़्रेश",
+        "nickname": {
+          "label": "Nickname",
+          "enter": "Please enter a nickname.",
+          "changed": "Nickname changed.",
+          "failed": "Failed to change",
+          "error": "Error occurred",
+          "placeholder": "Enter nickname",
+          "none": "No nickname",
+          "saving": "Saving...",
+          "save": "Save",
+          "change": "Change"
+        },
+        "backup": {
+          "title": "Backup & Restore",
+          "enterName": "Please enter a backup name.",
+          "success": "Settings backed up.",
+          "fail": "Backup failed",
+          "error": "Error during backup",
+          "restoreSuccess": "Settings restored. Please restart the app to apply.",
+          "invalidFormat": "Invalid settings format.",
+          "downloadFail": "Failed to download settings",
+          "downloadError": "Error during download",
+          "deleteConfirm": "Are you sure you want to delete this backup?",
+          "deleted": "Backup deleted.",
+          "deleteFail": "Delete failed",
+          "deleteError": "Error during deletion",
+          "placeholder": "Backup name (e.g. PC Settings)",
+          "backupBtn": "Backup",
+          "restoreBtn": "Restore",
+          "deleteBtn": "Delete",
+          "noBackups": "No backups saved."
+        }
+      },
       "appInfo": {
         "title": "ऐप जानकारी"
       },

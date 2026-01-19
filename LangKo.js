@@ -1136,6 +1136,51 @@ window.LANG_KO = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "계정 연동",
+        "subtitle": "ivLogin 계정과 연동하세요",
+        "description": "ivLis STUDIO 통합 계정 서비스",
+        "info": "ivLogin 계정과 연동하면 설정 동기화 등 다양한 기능을 사용할 수 있습니다. 로그인 페이지에서 아래 User Hash를 입력하여 연동하세요.",
+        "loginButton": "ivLogin으로 연동하기",
+        "loading": "계정 정보를 불러오는 중...",
+        "linked": "연동됨",
+        "linkedAt": "연동일",
+        "lastSync": "마지막 동기화",
+        "manageAccount": "계정 관리",
+        "refresh": "새로고침",
+        "nickname": {
+          "label": "닉네임",
+          "enter": "닉네임을 입력해주세요.",
+          "changed": "닉네임이 변경되었습니다.",
+          "failed": "변경 실패",
+          "error": "오류 발생",
+          "placeholder": "닉네임 입력",
+          "none": "닉네임 없음",
+          "saving": "저장 중...",
+          "save": "저장",
+          "change": "변경"
+        },
+        "backup": {
+          "title": "설정 백업 및 복원",
+          "enterName": "설정 이름을 입력해주세요.",
+          "success": "설정이 백업되었습니다.",
+          "fail": "백업 실패",
+          "error": "백업 중 오류 발생",
+          "restoreSuccess": "설정이 복원되었습니다. 적용을 위해 앱을 재시작해주세요.",
+          "invalidFormat": "설정 파일 형식이 올바르지 않습니다.",
+          "downloadFail": "설정 다운로드 실패",
+          "downloadError": "다운로드 중 오류 발생",
+          "deleteConfirm": "정말 이 백업을 삭제하시겠습니까?",
+          "deleted": "백업이 삭제되었습니다.",
+          "deleteFail": "삭제 실패",
+          "deleteError": "삭제 중 오류 발생",
+          "placeholder": "백업 이름 (예: PC 설정)",
+          "backupBtn": "백업",
+          "restoreBtn": "복원",
+          "deleteBtn": "삭제",
+          "noBackups": "저장된 백업이 없습니다."
+        }
+      },
       "appInfo": {
         "title": "앱 정보"
       },

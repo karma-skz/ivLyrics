@@ -1135,6 +1135,51 @@ window.LANG_JA = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "アカウント連携",
+        "subtitle": "ivLoginアカウントと連携",
+        "description": "ivLis STUDIO統合アカウントサービス",
+        "info": "ivLoginと連携すると、設定同期などの機能が利用できます。ログインページでUser Hashを入力して連携してください。",
+        "loginButton": "ivLoginで連携",
+        "loading": "アカウント情報を読み込み中...",
+        "linked": "連携済み",
+        "linkedAt": "連携日",
+        "lastSync": "最終同期",
+        "manageAccount": "アカウント管理",
+        "refresh": "更新",
+        "nickname": {
+          "label": "ニックネーム",
+          "enter": "ニックネームを入力してください。",
+          "changed": "ニックネームを変更しました。",
+          "failed": "変更に失敗しました",
+          "error": "エラーが発生しました",
+          "placeholder": "ニックネーム入力",
+          "none": "ニックネームなし",
+          "saving": "保存中...",
+          "save": "保存",
+          "change": "変更"
+        },
+        "backup": {
+          "title": "設定のバックアップと復元",
+          "enterName": "バックアップ名を入力してください。",
+          "success": "設定をバックアップしました。",
+          "fail": "バックアップ失敗",
+          "error": "バックアップ中にエラーが発生しました",
+          "restoreSuccess": "設定を復元しました。適用するにはアプリを再起動してください。",
+          "invalidFormat": "設定ファイルの形式が正しくありません。",
+          "downloadFail": "設定のダウンロードに失敗しました",
+          "downloadError": "ダウンロード中にエラーが発生しました",
+          "deleteConfirm": "このバックアップを削除してもよろしいですか？",
+          "deleted": "バックアップを削除しました。",
+          "deleteFail": "削除失敗",
+          "deleteError": "削除中にエラーが発生しました",
+          "placeholder": "バックアップ名 (例: PC設定)",
+          "backupBtn": "バックアップ",
+          "restoreBtn": "復元",
+          "deleteBtn": "削除",
+          "noBackups": "バックアップがありません。"
+        }
+      },
       "appInfo": {
         "title": "アプリ情報"
       },

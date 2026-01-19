@@ -1135,6 +1135,51 @@ window.LANG_TH = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "เชื่อมต่อบัญชี",
+        "subtitle": "เชื่อมต่อกับบัญชี ivLogin",
+        "description": "บริการบัญชีรวม ivLis STUDIO",
+        "info": "เชื่อมต่อกับ ivLogin เพื่อใช้ฟีเจอร์ต่างๆ เช่น การซิงค์การตั้งค่า กรุณาใส่ User Hash ในหน้าเข้าสู่ระบบเพื่อเชื่อมต่อ",
+        "loginButton": "เชื่อมต่อกับ ivLogin",
+        "loading": "กำลังโหลดข้อมูลบัญชี...",
+        "linked": "เชื่อมต่อแล้ว",
+        "linkedAt": "เชื่อมต่อเมื่อ",
+        "lastSync": "ซิงค์ล่าสุด",
+        "manageAccount": "จัดการบัญชี",
+        "refresh": "รีเฟรช",
+        "nickname": {
+          "label": "Nickname",
+          "enter": "Please enter a nickname.",
+          "changed": "Nickname changed.",
+          "failed": "Failed to change",
+          "error": "Error occurred",
+          "placeholder": "Enter nickname",
+          "none": "No nickname",
+          "saving": "Saving...",
+          "save": "Save",
+          "change": "Change"
+        },
+        "backup": {
+          "title": "Backup & Restore",
+          "enterName": "Please enter a backup name.",
+          "success": "Settings backed up.",
+          "fail": "Backup failed",
+          "error": "Error during backup",
+          "restoreSuccess": "Settings restored. Please restart the app to apply.",
+          "invalidFormat": "Invalid settings format.",
+          "downloadFail": "Failed to download settings",
+          "downloadError": "Error during download",
+          "deleteConfirm": "Are you sure you want to delete this backup?",
+          "deleted": "Backup deleted.",
+          "deleteFail": "Delete failed",
+          "deleteError": "Error during deletion",
+          "placeholder": "Backup name (e.g. PC Settings)",
+          "backupBtn": "Backup",
+          "restoreBtn": "Restore",
+          "deleteBtn": "Delete",
+          "noBackups": "No backups saved."
+        }
+      },
       "appInfo": {
         "title": "ข้อมูลแอป"
       },

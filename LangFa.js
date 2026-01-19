@@ -1135,6 +1135,51 @@ window.LANG_FA = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "اتصال حساب",
+        "subtitle": "حساب ivLogin خود را متصل کنید",
+        "description": "سرویس حساب یکپارچه ivLis STUDIO",
+        "info": "برای استفاده از ویژگی‌هایی مانند همگام‌سازی تنظیمات، با ivLogin متصل شوید. User Hash خود را در صفحه ورود وارد کنید تا متصل شوید.",
+        "loginButton": "اتصال با ivLogin",
+        "loading": "در حال بارگذاری اطلاعات حساب...",
+        "linked": "متصل شده",
+        "linkedAt": "تاریخ اتصال",
+        "lastSync": "آخرین همگام‌سازی",
+        "manageAccount": "مدیریت حساب",
+        "refresh": "بازخوانی",
+        "nickname": {
+          "label": "Nickname",
+          "enter": "Please enter a nickname.",
+          "changed": "Nickname changed.",
+          "failed": "Failed to change",
+          "error": "Error occurred",
+          "placeholder": "Enter nickname",
+          "none": "No nickname",
+          "saving": "Saving...",
+          "save": "Save",
+          "change": "Change"
+        },
+        "backup": {
+          "title": "Backup & Restore",
+          "enterName": "Please enter a backup name.",
+          "success": "Settings backed up.",
+          "fail": "Backup failed",
+          "error": "Error during backup",
+          "restoreSuccess": "Settings restored. Please restart the app to apply.",
+          "invalidFormat": "Invalid settings format.",
+          "downloadFail": "Failed to download settings",
+          "downloadError": "Error during download",
+          "deleteConfirm": "Are you sure you want to delete this backup?",
+          "deleted": "Backup deleted.",
+          "deleteFail": "Delete failed",
+          "deleteError": "Error during deletion",
+          "placeholder": "Backup name (e.g. PC Settings)",
+          "backupBtn": "Backup",
+          "restoreBtn": "Restore",
+          "deleteBtn": "Delete",
+          "noBackups": "No backups saved."
+        }
+      },
       "appInfo": {
         "title": "اطلاعات برنامه"
       },

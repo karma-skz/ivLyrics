@@ -4,7 +4,24 @@ const CreditFooter = react.memo(({ provider, contributors }) => {
 
 	let text = `${I18n.t("misc.lyricsProvider") || "Lyrics Provider"} : ${provider}`;
 	if (contributors && contributors.length > 0) {
-		text += ` | ${I18n.t("misc.syncContributor") || "Sync Contributor"} : ${contributors.join(", ")}`;
+		let uniqueContributors = contributors;
+
+		// Merge multiple 'Anonymous' (case-insensitive)
+		const isAnonymous = c => c && c.toLowerCase() === 'anonymous';
+		if (contributors.some(isAnonymous)) {
+			const others = contributors.filter(c => !isAnonymous(c));
+			// Deduplicate others as well
+			uniqueContributors = [...new Set(others), "Anonymous"];
+		} else {
+			uniqueContributors = [...new Set(contributors)];
+		}
+
+		// Limit to max 3
+		if (uniqueContributors.length > 3) {
+			uniqueContributors = uniqueContributors.slice(0, 3);
+		}
+
+		text += ` | ${I18n.t("misc.syncContributor") || "Sync Contributor"} : ${uniqueContributors.join(", ")}`;
 	}
 
 	return react.createElement(

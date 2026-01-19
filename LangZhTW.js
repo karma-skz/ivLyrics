@@ -1135,6 +1135,51 @@ window.LANG_ZH_TW = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "帳戶連動",
+        "subtitle": "與ivLogin帳戶連動",
+        "description": "ivLis STUDIO統一帳戶服務",
+        "info": "與ivLogin連動後可使用設定同步等功能。請在登入頁面輸入User Hash進行連動。",
+        "loginButton": "透過ivLogin連動",
+        "loading": "正在載入帳戶資訊...",
+        "linked": "已連動",
+        "linkedAt": "連動日期",
+        "lastSync": "最後同步",
+        "manageAccount": "帳戶管理",
+        "refresh": "重新整理",
+        "nickname": {
+          "label": "暱稱",
+          "enter": "請輸入暱稱。",
+          "changed": "暱稱已變更。",
+          "failed": "變更失敗",
+          "error": "發生錯誤",
+          "placeholder": "輸入暱稱",
+          "none": "無暱稱",
+          "saving": "儲存中...",
+          "save": "儲存",
+          "change": "變更"
+        },
+        "backup": {
+          "title": "備份與還原",
+          "enterName": "請輸入備份名稱。",
+          "success": "設定已備份。",
+          "fail": "備份失敗",
+          "error": "備份時發生錯誤",
+          "restoreSuccess": "設定已還原。請重新啟動應用程式以套用變更。",
+          "invalidFormat": "設定格式無效。",
+          "downloadFail": "下載設定失敗",
+          "downloadError": "下載時發生錯誤",
+          "deleteConfirm": "確定要刪除此備份嗎？",
+          "deleted": "備份已刪除。",
+          "deleteFail": "刪除失敗",
+          "deleteError": "刪除時發生錯誤",
+          "placeholder": "備份名稱 (例如: PC設定)",
+          "backupBtn": "備份",
+          "restoreBtn": "還原",
+          "deleteBtn": "刪除",
+          "noBackups": "沒有儲存的備份。"
+        }
+      },
       "appInfo": {
         "title": "應用程式資訊"
       },

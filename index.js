@@ -969,34 +969,13 @@ const StorageManager = {
     return Spicetify.LocalStorage.get(key);
   },
 
-  // Generate or retrieve client ID
-  getClientId() {
-    const CLIENT_ID_KEY = `${APP_NAME}:client-id`;
-    let clientId = this.getItemRaw(CLIENT_ID_KEY);
-
-    if (!clientId) {
-      // Generate new UUID v4
-      clientId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = Math.random() * 16 | 0;
-        const v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-      });
-
-      // Save to both storages for persistence
-      this.setPersisted(CLIENT_ID_KEY, clientId);
-      console.log("[ivLyrics] Generated new Client ID:", clientId);
-    }
-
-    return clientId;
-  },
-
   async exportConfig() {
     const config = {};
-    const CLIENT_ID_KEY = `${APP_NAME}:client-id`;
+    const CLIENT_HASH_KEY = `${APP_NAME}:user-hash`;
 
     StorageKeys.forEach((key) => {
       // Client ID는 내보내기에서 제외
-      if (key === CLIENT_ID_KEY) return;
+      if (key === CLIENT_HASH_KEY) return;
 
       const val = StorageManager.getItem(key);
       if (val !== null) config[key] = val;
@@ -1016,7 +995,7 @@ const StorageManager = {
     return config;
   },
   async importConfig(config) {
-    const CLIENT_ID_KEY = `${APP_NAME}:client-id`;
+    const CLIENT_HASH_KEY = `${APP_NAME}:user-hash`;
 
     // track-sync-offsets를 IndexedDB로 가져오기
     if (config["ivLyrics:track-sync-offsets"]) {
@@ -1031,8 +1010,8 @@ const StorageManager = {
     }
 
     // Client ID가 있다면 삭제 (불러오기에서 제외)
-    if (config[CLIENT_ID_KEY]) {
-      delete config[CLIENT_ID_KEY];
+    if (config[CLIENT_HASH_KEY]) {
+      delete config[CLIENT_HASH_KEY];
       console.log("[ivLyrics] Client ID excluded from import");
     }
 
@@ -1984,7 +1963,7 @@ const SongDataService = {
   async _fetchSongData(trackId, uri, lang) {
     try {
       const userHash = Utils.getUserHash();
-      const userLang = lang || CONFIG.visual["translation-language"] || 'ko';
+      const userLang = lang || CONFIG.visual["language"] || 'ko';
       const spotifyData = this._extractSpotifyData(uri);
 
       console.log(`[SongDataService] Fetching song data for ${trackId}`);

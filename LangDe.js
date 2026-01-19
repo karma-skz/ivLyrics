@@ -1135,6 +1135,51 @@ window.LANG_DE = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "Kontoverknüpfung",
+        "subtitle": "Mit ivLogin-Konto verknüpfen",
+        "description": "ivLis STUDIO einheitlicher Kontodienst",
+        "info": "Mit ivLogin verknüpfen für Einstellungssynchronisierung. Geben Sie Ihren User Hash auf der Anmeldeseite ein.",
+        "loginButton": "Mit ivLogin verknüpfen",
+        "loading": "Kontoinformationen werden geladen...",
+        "linked": "Verknüpft",
+        "linkedAt": "Verknüpft am",
+        "lastSync": "Letzte Sync",
+        "manageAccount": "Konto verwalten",
+        "refresh": "Aktualisieren",
+        "nickname": {
+          "label": "Spitzname",
+          "enter": "Bitte geben Sie einen Spitznamen ein.",
+          "changed": "Spitzname geändert.",
+          "failed": "Änderung fehlgeschlagen",
+          "error": "Fehler aufgetreten",
+          "placeholder": "Spitznamen eingeben",
+          "none": "Kein Spitzname",
+          "saving": "Speichere...",
+          "save": "Speichern",
+          "change": "Ändern"
+        },
+        "backup": {
+          "title": "Sichern & Wiederherstellen",
+          "enterName": "Bitte geben Sie einen Sicherungsnamen ein.",
+          "success": "Einstellungen gesichert.",
+          "fail": "Sicherung fehlgeschlagen",
+          "error": "Fehler bei der Sicherung",
+          "restoreSuccess": "Einstellungen wiederhergestellt. Bitte starten Sie die App neu.",
+          "invalidFormat": "Ungültiges Einstellungsformat.",
+          "downloadFail": "Download fehlgeschlagen",
+          "downloadError": "Fehler beim Download",
+          "deleteConfirm": "Möchten Sie diese Sicherung wirklich löschen?",
+          "deleted": "Sicherung gelöscht.",
+          "deleteFail": "Löschen fehlgeschlagen",
+          "deleteError": "Fehler beim Löschen",
+          "placeholder": "Sicherungsname (z.B. PC-Einstellungen)",
+          "backupBtn": "Sichern",
+          "restoreBtn": "Wiederherstellen",
+          "deleteBtn": "Löschen",
+          "noBackups": "Keine Sicherungen gespeichert."
+        }
+      },
       "appInfo": {
         "title": "App-Info"
       },

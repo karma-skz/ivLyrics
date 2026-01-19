@@ -1135,6 +1135,51 @@ window.LANG_ZH_CN = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "账户关联",
+        "subtitle": "与ivLogin账户关联",
+        "description": "ivLis STUDIO统一账户服务",
+        "info": "与ivLogin关联后可使用设置同步等功能。请在登录页面输入User Hash进行关联。",
+        "loginButton": "通过ivLogin关联",
+        "loading": "正在加载账户信息...",
+        "linked": "已关联",
+        "linkedAt": "关联日期",
+        "lastSync": "最后同步",
+        "manageAccount": "账户管理",
+        "refresh": "刷新",
+        "nickname": {
+          "label": "昵称",
+          "enter": "请输入昵称。",
+          "changed": "昵称已更改。",
+          "failed": "更改失败",
+          "error": "发生错误",
+          "placeholder": "输入昵称",
+          "none": "无昵称",
+          "saving": "保存中...",
+          "save": "保存",
+          "change": "更改"
+        },
+        "backup": {
+          "title": "备份与恢复",
+          "enterName": "请输入备份名称。",
+          "success": "设置已备份。",
+          "fail": "备份失败",
+          "error": "备份时发生错误",
+          "restoreSuccess": "设置已恢复。请重启应用以应用更改。",
+          "invalidFormat": "设置格式无效。",
+          "downloadFail": "下载设置失败",
+          "downloadError": "下载时发生错误",
+          "deleteConfirm": "确定要删除此备份吗？",
+          "deleted": "备份已删除。",
+          "deleteFail": "删除失败",
+          "deleteError": "删除时发生错误",
+          "placeholder": "备份名称 (例如: PC设置)",
+          "backupBtn": "备份",
+          "restoreBtn": "恢复",
+          "deleteBtn": "删除",
+          "noBackups": "没有保存的备份。"
+        }
+      },
       "appInfo": {
         "title": "应用信息"
       },

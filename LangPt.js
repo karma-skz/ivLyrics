@@ -1135,6 +1135,51 @@ window.LANG_PT = {
       }
     },
     "aboutTab": {
+      "account": {
+        "title": "Vinculação de Conta",
+        "subtitle": "Vincule com sua conta ivLogin",
+        "description": "Serviço de conta unificada ivLis STUDIO",
+        "info": "Vincule com ivLogin para usar recursos como sincronização de configurações. Insira seu User Hash na página de login para vincular.",
+        "loginButton": "Vincular com ivLogin",
+        "loading": "Carregando informações da conta...",
+        "linked": "Vinculado",
+        "linkedAt": "Vinculado em",
+        "lastSync": "Última sincronização",
+        "manageAccount": "Gerenciar conta",
+        "refresh": "Atualizar",
+        "nickname": {
+          "label": "Apelido",
+          "enter": "Por favor, insira um apelido.",
+          "changed": "Apelido alterado.",
+          "failed": "Falha ao alterar",
+          "error": "Ocorreu um erro",
+          "placeholder": "Inserir apelido",
+          "none": "Sem apelido",
+          "saving": "Salvando...",
+          "save": "Salvar",
+          "change": "Alterar"
+        },
+        "backup": {
+          "title": "Backup e Restauração",
+          "enterName": "Insira um nome para o backup.",
+          "success": "Configurações salvas.",
+          "fail": "Falha no backup",
+          "error": "Erro durante o backup",
+          "restoreSuccess": "Configurações restauradas. Reinicie o aplicativo.",
+          "invalidFormat": "Formato inválido.",
+          "downloadFail": "Falha no download",
+          "downloadError": "Erro no download",
+          "deleteConfirm": "Tem certeza que deseja excluir este backup?",
+          "deleted": "Backup excluído.",
+          "deleteFail": "Falha ao excluir",
+          "deleteError": "Erro ao excluir",
+          "placeholder": "Nome (ex: PC)",
+          "backupBtn": "Backup",
+          "restoreBtn": "Restaurar",
+          "deleteBtn": "Excluir",
+          "noBackups": "Nenhum backup salvo."
+        }
+      },
       "appInfo": {
         "title": "Info do App"
       },
