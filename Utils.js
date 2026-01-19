@@ -1036,6 +1036,10 @@ const Utils = {
    * 사용자 해시 가져오기 (없으면 생성)
    */
   getUserHash() {
+    if (window.LyricsService && window.LyricsService.getUserHash) {
+      return window.LyricsService.getUserHash();
+    }
+    // Fallback logic in case LyricsService is not available (should not happen usually)
     let hash = StorageManager.getPersisted("ivLyrics:user-hash");
     if (!hash) {
       hash = crypto.randomUUID ? crypto.randomUUID() :

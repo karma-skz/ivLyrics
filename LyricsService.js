@@ -1277,7 +1277,7 @@
          * @returns {Promise<Object>} - 제출 결과
          */
         async function submitSyncData(trackId, provider, syncData) {
-            const userHash = Spicetify.LocalStorage.get("ivLyrics:userHash") || 'anonymous';
+            const userHash = Spicetify.LocalStorage.get("ivLyrics:user-hash") || 'anonymous';
 
             const response = await fetch(`${API_BASE}/lyrics/sync-data`, {
                 method: 'POST',
@@ -1672,6 +1672,26 @@
         // 언어 감지 (Extension 내 Utils에서 직접 참조)
         detectLanguage(lyrics) {
             return Utils.detectLanguage(lyrics);
+        },
+
+        /**
+         * 사용자 해시 가져오기 (없으면 생성)
+         * Utils에서 이동됨
+         */
+        getUserHash() {
+
+            let hash = Spicetify.LocalStorage.get("ivLyrics:user-hash");
+            if (!hash) {
+                // Generate UUID
+                hash = crypto.randomUUID ? crypto.randomUUID() :
+                    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+                        const r = Math.random() * 16 | 0;
+                        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                        return v.toString(16);
+                    });
+                Spicetify.LocalStorage.set("ivLyrics:user-hash", hash);
+            }
+            return hash;
         },
 
         /**
@@ -2123,15 +2143,7 @@
 
     // Utils가 없을 경우 대체
     function getUserHash() {
-        if (window.Utils && typeof window.Utils.getUserHash === 'function') {
-            return window.Utils.getUserHash();
-        }
-        let userHash = Spicetify.LocalStorage.get("ivLyrics:userHash");
-        if (!userHash) {
-            userHash = 'user_' + Math.random().toString(36).substring(2, 15);
-            Spicetify.LocalStorage.set("ivLyrics:userHash", userHash);
-        }
-        return userHash;
+        return LyricsService.getUserHash();
     }
 
     // 현재 언어 가져오기
