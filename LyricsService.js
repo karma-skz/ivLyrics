@@ -2270,6 +2270,42 @@
                 }
             }
 
+            // SongDataService 캐시 확인 (통합 데이터)
+            if (!ignoreCache && window.SongDataService) {
+                let songData = window.SongDataService.getCachedData(finalTrackId);
+
+                // 캐시에 없는데 요청 중이라면 기다려본다
+                if (!songData && window.SongDataService._inflightRequests && window.SongDataService._inflightRequests.has(finalTrackId)) {
+                    console.log(`[Translator] Waiting for inflight song-data request for ${finalTrackId}`);
+                    try {
+                        const result = await window.SongDataService._inflightRequests.get(finalTrackId);
+                        if (result && result.success) {
+                            songData = result;
+                        }
+                    } catch (e) {
+                        console.warn("[Translator] Inflight song-data request failed", e);
+                    }
+                }
+
+                const songDataResult = songData; // alias for clarity
+                const cachedMetadata = songDataResult?.metadata;
+
+                // song-data의 metadata 필드에 번역 데이터가 포함되어 있다고 가정
+                if (songDataResult && cachedMetadata) {
+                    // 유효한 데이터인지 확인 (하나라도 있으면 사용)
+                    if (cachedMetadata.translatedTitle || cachedMetadata.translatedArtist || cachedMetadata.romanizedTitle || cachedMetadata.romanizedArtist) {
+                        console.log(`[Translator] Using SongDataService cached metadata for ${finalTrackId}`);
+
+                        this._metadataCache.set(cacheKey, cachedMetadata);
+                        LyricsCache.setMetadata(finalTrackId, userLang, cachedMetadata).catch(() => { });
+
+                        return cachedMetadata;
+                    } else {
+                        console.log(`[Translator] SongDataService has metadata but no translations for ${finalTrackId}`);
+                    }
+                }
+            }
+
             if (this._metadataInflightRequests.has(cacheKey)) {
                 return this._metadataInflightRequests.get(cacheKey);
             }
@@ -2493,6 +2529,44 @@
                     }
                 } catch (e) {
                     console.warn('[Translator] Local cache check failed:', e);
+                }
+            }
+
+
+            // SongDataService 캐시 확인 (통합 데이터)
+            if (!ignoreCache && window.SongDataService) {
+                const songData = window.SongDataService.getCachedData(finalTrackId);
+
+                if (songData && songData.translations) {
+                    // 엄격한 Provider 체크: 요청한 provider와 저장된 번역의 provider가 일치해야 함
+                    let translationData = null;
+
+                    if (provider && songData.translations[provider]) {
+                        translationData = songData.translations[provider];
+                    }
+
+                    if (translationData) {
+                        const isPhonetic = wantSmartPhonetic;
+                        // 필요한 데이터가 있는지 확인 (phonetic 또는 translation/vi)
+                        // 백엔드 응답은 'translation' 또는 'vi' 필드를 사용할 수 있음
+                        const hasData = isPhonetic
+                            ? (translationData.phonetic && translationData.phonetic.length > 0)
+                            : ((translationData.translation && translationData.translation.length > 0) || (translationData.vi && translationData.vi.length > 0));
+
+                        if (hasData) {
+                            console.log(`[Translator] Using SongDataService cached translation for ${finalTrackId} (${isPhonetic ? 'phonetic' : 'translation'}) from provider: ${provider}`);
+
+                            // 데이터 포맷 표준화 (vi vs translation)
+                            if (!isPhonetic && !translationData.vi && translationData.translation) {
+                                translationData.vi = translationData.translation;
+                            }
+
+                            // LyricsCache에도 저장
+                            LyricsCache.setTranslation(finalTrackId, userLang, wantSmartPhonetic, translationData, provider).catch(() => { });
+
+                            return translationData;
+                        }
+                    }
                 }
             }
 
