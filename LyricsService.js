@@ -3341,6 +3341,10 @@
         },
 
         setupOffsetListener() {
+            // 중복 호출 방지
+            if (this._offsetListenerSetup) return;
+            this._offsetListenerSetup = true;
+
             // localStorage 변경 감지
             window.addEventListener('storage', (e) => {
                 if (e.key && e.key.startsWith('lyrics-delay:')) {
@@ -3660,6 +3664,10 @@
         },
         setupOffsetListener: {
             value: function () {
+                // 중복 호출 방지
+                if (this._offsetListenerSetup) return;
+                this._offsetListenerSetup = true;
+
                 // localStorage 변경 감지
                 window.addEventListener('storage', (e) => {
                     if (e.key && e.key.startsWith('lyrics-delay:')) {

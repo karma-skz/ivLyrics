@@ -1749,8 +1749,10 @@ body.ivlyrics-starrynight-theme .Root__now-playing-bar {
         }
 
         // MutationObserver로 DOM 변경 감지 (lyrics-lyricsContainer-LyricsContainer 클래스 포함)
+        let pageObserverTimeout = null;
         const pageObserver = new MutationObserver((mutations) => {
             // 클래스 변경이나 새 요소 추가 시 상태 업데이트
+            let shouldUpdate = false;
             for (const mutation of mutations) {
                 if (mutation.type === 'childList') {
                     // 새로 추가된 노드 중 lyrics 컨테이너가 있는지 확인
@@ -1758,24 +1760,35 @@ body.ivlyrics-starrynight-theme .Root__now-playing-bar {
                         if (node.nodeType === 1) { // Element node
                             if (node.classList?.contains('lyrics-lyricsContainer-LyricsContainer') ||
                                 node.querySelector?.('.lyrics-lyricsContainer-LyricsContainer')) {
-                                updateIvLyricsPageState();
-                                return;
+                                shouldUpdate = true;
+                                break;
                             }
                         }
                     }
+                    if (shouldUpdate) break;
                     // 제거된 노드 확인
                     for (const node of mutation.removedNodes) {
                         if (node.nodeType === 1) {
                             if (node.classList?.contains('lyrics-lyricsContainer-LyricsContainer') ||
                                 node.querySelector?.('.lyrics-lyricsContainer-LyricsContainer')) {
-                                updateIvLyricsPageState();
-                                return;
+                                shouldUpdate = true;
+                                break;
                             }
                         }
                     }
+                } else if (mutation.type === 'attributes') {
+                    // data-testid 또는 class 변경 시 업데이트
+                    if (mutation.attributeName === 'data-testid' || mutation.attributeName === 'class') {
+                        shouldUpdate = true;
+                    }
                 }
+                if (shouldUpdate) break;
             }
-            updateIvLyricsPageState();
+            // debounce로 빈번한 업데이트 방지
+            if (shouldUpdate) {
+                if (pageObserverTimeout) clearTimeout(pageObserverTimeout);
+                pageObserverTimeout = setTimeout(updateIvLyricsPageState, 50);
+            }
         });
 
         // main-view 영역 감시 (전체 body 감시로 확장)

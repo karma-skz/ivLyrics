@@ -107,12 +107,17 @@ const AnimationManager = {
 	callbacks: new Set(),
 	lastTime: 0,
 	targetFPS: 60,
+	boundAnimate: null,
 
 	start() {
 		if (this.active) return;
 		this.active = true;
 		this.frameInterval = 1000 / this.targetFPS;
-		this.animate();
+		// bind를 한 번만 수행하여 메모리 효율성 개선
+		if (!this.boundAnimate) {
+			this.boundAnimate = this.animate.bind(this);
+		}
+		this.frameId = requestAnimationFrame(this.boundAnimate);
 	},
 
 	stop() {
@@ -135,22 +140,20 @@ const AnimationManager = {
 		}
 	},
 
-	animate() {
+	animate(currentTime) {
 		if (!this.active) return;
 
-		this.frameId = requestAnimationFrame((currentTime) => {
-			if (currentTime - this.lastTime >= this.frameInterval) {
-				this.callbacks.forEach(callback => {
-					try {
-						callback();
-					} catch (error) {
-						// Error ignored
-					}
-				});
-				this.lastTime = currentTime;
-			}
-			this.animate();
-		});
+		if (currentTime - this.lastTime >= this.frameInterval) {
+			this.callbacks.forEach(callback => {
+				try {
+					callback();
+				} catch (error) {
+					// Error ignored
+				}
+			});
+			this.lastTime = currentTime;
+		}
+		this.frameId = requestAnimationFrame(this.boundAnimate);
 	}
 };
 

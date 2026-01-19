@@ -245,17 +245,26 @@ const FullscreenOverlay = (() => {
         useEffect(() => {
             if (!show) return;
 
-            const updateProgress = () => {
-                if (!isDragging.current) {
-                    setProgress(Spicetify.Player.getProgress() || 0);
+            let rafId = null;
+            let lastUpdate = 0;
+            const updateInterval = 200; // ms
+
+            const updateProgress = (timestamp) => {
+                if (timestamp - lastUpdate >= updateInterval) {
+                    if (!isDragging.current) {
+                        setProgress(Spicetify.Player.getProgress() || 0);
+                    }
+                    setDuration(Spicetify.Player.getDuration() || 0);
+                    lastUpdate = timestamp;
                 }
-                setDuration(Spicetify.Player.getDuration() || 0);
+                rafId = requestAnimationFrame(updateProgress);
             };
 
-            updateProgress();
-            const progressInterval = setInterval(updateProgress, 200);
+            rafId = requestAnimationFrame(updateProgress);
 
-            return () => clearInterval(progressInterval);
+            return () => {
+                if (rafId) cancelAnimationFrame(rafId);
+            };
         }, [show]);
 
         const handleProgressClick = useCallback((e) => {
@@ -351,10 +360,14 @@ const FullscreenOverlay = (() => {
             };
 
             // 볼륨 변경 감지 (Spotify 단축키로 변경 시에도 반영)
+            let lastVolume = -1;
             const updateVolume = () => {
                 const currentVolume = Spicetify.Player.getVolume?.() ?? 1;
-                setVolume(currentVolume);
-                setIsMuted(currentVolume === 0);
+                if (currentVolume !== lastVolume) {
+                    lastVolume = currentVolume;
+                    setVolume(currentVolume);
+                    setIsMuted(currentVolume === 0);
+                }
             };
 
             // 초기 상태 설정
@@ -364,14 +377,24 @@ const FullscreenOverlay = (() => {
             checkLiked();
             updateVolume();
 
-            // 볼륨 변경 감지를 위한 interval (200ms 간격으로 체크)
-            const volumeInterval = setInterval(updateVolume, 200);
+            // 볼륨 변경 감지를 위한 RAF 기반 폴링 (500ms 간격)
+            let rafId = null;
+            let lastVolumeCheck = 0;
+            const volumeCheckInterval = 500;
+            const volumeLoop = (timestamp) => {
+                if (timestamp - lastVolumeCheck >= volumeCheckInterval) {
+                    updateVolume();
+                    lastVolumeCheck = timestamp;
+                }
+                rafId = requestAnimationFrame(volumeLoop);
+            };
+            rafId = requestAnimationFrame(volumeLoop);
 
             Spicetify.Player.addEventListener("onplaypause", updatePlayState);
             Spicetify.Player.addEventListener("songchange", checkLiked);
 
             return () => {
-                clearInterval(volumeInterval);
+                if (rafId) cancelAnimationFrame(rafId);
                 Spicetify.Player.removeEventListener("onplaypause", updatePlayState);
                 Spicetify.Player.removeEventListener("songchange", checkLiked);
             };
@@ -723,9 +746,10 @@ const FullscreenOverlay = (() => {
             };
 
             updateQueue();
-            const interval = setInterval(updateQueue, 1000);
+            // 백업용 interval (이벤트 기반 업데이트가 주, interval은 보조)
+            const interval = setInterval(updateQueue, 5000);
 
-            // 곡 변경 이벤트 리스너
+            // 곡 변경 이벤트 리스너 (주요 업데이트 트리거)
             const songChangeHandler = () => updateQueue();
             Spicetify.Player.addEventListener("songchange", songChangeHandler);
 
@@ -886,12 +910,24 @@ const FullscreenOverlay = (() => {
 
             updatePlaybackState();
 
-            const interval = setInterval(updatePlaybackState, 500);
+            // RAF 기반 폴링 (500ms 간격)
+            let rafId = null;
+            let lastUpdate = 0;
+            const updateInterval = 500;
+            const loop = (timestamp) => {
+                if (timestamp - lastUpdate >= updateInterval) {
+                    updatePlaybackState();
+                    lastUpdate = timestamp;
+                }
+                rafId = requestAnimationFrame(loop);
+            };
+            rafId = requestAnimationFrame(loop);
+
             Spicetify.Player?.addEventListener?.("songchange", updatePlaybackState);
             Spicetify.Player?.addEventListener?.("onplaypause", updatePlaybackState);
 
             return () => {
-                clearInterval(interval);
+                if (rafId) cancelAnimationFrame(rafId);
                 Spicetify.Player?.removeEventListener?.("songchange", updatePlaybackState);
                 Spicetify.Player?.removeEventListener?.("onplaypause", updatePlaybackState);
             };
