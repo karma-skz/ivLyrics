@@ -2707,6 +2707,11 @@ class LyricsContainer extends react.Component {
       // 현재 트랙이 여전히 같은지 확인
       if (this.currentTrackUri === uri && result) {
         this.setState({ translatedMetadata: result });
+
+        // 오버레이로 번역된 메타데이터 전송
+        if (window.OverlaySender?.sendTranslatedMetadata) {
+          window.OverlaySender.sendTranslatedMetadata(result);
+        }
       }
     } catch (error) {
       console.warn('[ivLyrics] Metadata translation failed:', error);

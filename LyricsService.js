@@ -3191,15 +3191,21 @@
             });
 
             // 현재 트랙 정보 가져오기 (Spicetify.Player.data에서 최신 정보 사용)
-            const currentTitle = trackInfo.title || Spicetify.Player.data?.item?.metadata?.title || '';
-            const currentArtist = trackInfo.artist || Spicetify.Player.data?.item?.metadata?.artist_name || '';
+            const originalTitle = trackInfo.title || Spicetify.Player.data?.item?.metadata?.title || '';
+            const originalArtist = trackInfo.artist || Spicetify.Player.data?.item?.metadata?.artist_name || '';
             const currentAlbum = Spicetify.Player.data?.item?.metadata?.album_title || '';
+
+            // 번역된 메타데이터가 있으면 대체
+            const translatedMetadata = trackInfo.translatedMetadata || null;
+            const currentTitle = translatedMetadata?.translated?.title || originalTitle;
+            const currentArtist = translatedMetadata?.translated?.artist || originalArtist;
 
             console.log('[OverlaySender] 가사 전송:', {
                 lines: mappedLines.length,
                 offset,
                 title: currentTitle,
-                artist: currentArtist
+                artist: currentArtist,
+                translated: !!translatedMetadata
             });
 
             await this.sendToEndpoint('/lyrics', {
@@ -3222,6 +3228,16 @@
                 console.log('[OverlaySender] 가사 재전송 (싱크 반영)');
                 await this.sendLyrics(this._lastTrackInfo, this._lastLyrics, true);
             }
+        },
+
+        async sendTranslatedMetadata(translatedMetadata) {
+            if (!this.enabled || !translatedMetadata) return;
+            if (!this._lastTrackInfo || !this._lastLyrics) return;
+
+            // 번역된 메타데이터를 포함하여 가사 재전송
+            this._lastTrackInfo.translatedMetadata = translatedMetadata;
+            console.log('[OverlaySender] 번역된 메타데이터로 재전송');
+            await this.sendLyrics(this._lastTrackInfo, this._lastLyrics, true);
         },
 
         startProgressSync() {
