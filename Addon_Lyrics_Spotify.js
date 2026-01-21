@@ -71,10 +71,10 @@
                     React.createElement('div', { className: 'ai-addon-setting', style: { marginTop: '20px' } },
                         React.createElement('div', { className: 'ai-addon-info-box' },
                             React.createElement('p', { style: { fontWeight: 'bold', marginBottom: '8px' } }, 'Spotify Premium Features'),
-                            React.createElement('p', null, 'This addon retrieves lyrics directly from Spotify\'s internal servers.'),
+                            React.createElement('p', null, 'This addon retrieves lyrics directly from Spotify.'),
                             React.createElement('ul', { style: { paddingLeft: '20px', marginTop: '8px', opacity: 0.8 } },
                                 React.createElement('li', null, 'Requires Spotify Premium'),
-                                React.createElement('li', null, 'Supports multiple providers (Musixmatch, PetitLyrics, etc.)'),
+                                React.createElement('li', null, 'Supports multiple providers'),
                                 React.createElement('li', null, 'High accuracy & sync quality')
                             )
                         )

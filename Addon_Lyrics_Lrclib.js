@@ -107,16 +107,7 @@
             const React = Spicetify.React;
 
             return function LrclibLyricsSettings() {
-                return React.createElement('div', { className: 'lyrics-addon-settings lrclib-settings' },
-                    React.createElement('div', { className: 'lyrics-addon-info' },
-                        React.createElement('p', null, 'LRCLIB는 커뮤니티 기반 오픈소스 가사 데이터베이스입니다.'),
-                        React.createElement('p', { className: 'lyrics-addon-note' },
-                            '가사가 없는 경우 ',
-                            React.createElement('a', { href: 'https://lrclib.net', target: '_blank', rel: 'noopener noreferrer' }, 'lrclib.net'),
-                            '에서 직접 기여할 수 있습니다.'
-                        )
-                    )
-                );
+                return React.createElement('div', { className: 'lyrics-addon-settings lrclib-settings' });
             };
         },
 
