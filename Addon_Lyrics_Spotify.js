@@ -66,34 +66,6 @@
         getSettingsUI() {
             const React = Spicetify.React;
 
-            // AddonUI 사용 가능 여부 확인
-            if (window.AddonUI) {
-                const UI = window.AddonUI;
-
-                return function SpotifyLyricsSettingsUI() {
-                    return React.createElement(UI.SettingsContainer, { addonId: 'spotify' },
-                        React.createElement(UI.AddonHeader, {
-                            name: ADDON_INFO.name,
-                            version: ADDON_INFO.version,
-                            description: typeof ADDON_INFO.description === 'string'
-                                ? ADDON_INFO.description
-                                : ADDON_INFO.description[Spicetify.Locale?.getLocale()?.split('-')[0]] || ADDON_INFO.description['en']
-                        }),
-                        React.createElement(UI.InfoBox, {
-                            title: 'Spotify Premium Features',
-                            content: 'This addon retrieves lyrics directly from Spotify\'s internal servers.',
-                            items: [
-                                'Requires Spotify Premium',
-                                'Supports multiple providers (Musixmatch, PetitLyrics, etc.)',
-                                'High accuracy & sync quality'
-                            ],
-                            type: 'info'
-                        })
-                    );
-                };
-            }
-
-            // Fallback: 기존 방식
             return function SpotifyLyricsSettings() {
                 return React.createElement('div', { className: 'ai-addon-settings spotify-settings' },
                     React.createElement('div', { className: 'ai-addon-setting', style: { marginTop: '20px' } },

@@ -106,42 +106,6 @@
         getSettingsUI() {
             const React = Spicetify.React;
 
-            // AddonUI 사용 가능 여부 확인
-            if (window.AddonUI) {
-                const UI = window.AddonUI;
-
-                return function LrclibLyricsSettingsUI() {
-                    return React.createElement(UI.SettingsContainer, { addonId: 'lrclib' },
-                        React.createElement(UI.AddonHeader, {
-                            name: ADDON_INFO.name,
-                            version: ADDON_INFO.version,
-                            description: typeof ADDON_INFO.description === 'string'
-                                ? ADDON_INFO.description
-                                : ADDON_INFO.description[Spicetify.Locale?.getLocale()?.split('-')[0]] || ADDON_INFO.description['en']
-                        }),
-                        React.createElement(UI.InfoBox, {
-                            title: 'Community Database',
-                            content: 'LRCLIB는 커뮤니티 기반 오픈소스 가사 데이터베이스입니다.',
-                            items: [
-                                'Synced lyrics (LRC format) supported',
-                                'Plain lyrics supported',
-                                'Contribute at lrclib.net'
-                            ],
-                            type: 'info'
-                        }),
-                        React.createElement('p', { className: 'addon-ui-note', style: { marginTop: '12px', opacity: 0.8 } },
-                            '가사가 없는 경우 ',
-                            React.createElement('a', {
-                                href: 'https://lrclib.net',
-                                target: '_blank',
-                                rel: 'noopener noreferrer',
-                                style: { color: 'var(--spice-button)' }
-                            }, 'lrclib.net'),
-                            '에서 직접 기여할 수 있습니다.'
-                        )
-                    );
-                };
-            }
 
             // Fallback: 기존 방식
             return function LrclibLyricsSettings() {

@@ -340,300 +340,7 @@ const LanguageStep = ({ selectedLanguage, onLanguageChange, onNext, onBack }) =>
   );
 };
 
-// API Key step
-const ApiKeyStep = ({ apiKey, onApiKeyChange, onNext, onBack, onSkip }) => {
-  const [showGuide, setShowGuide] = useState(false);
 
-  return react.createElement(
-    "div",
-    {
-      className: "wizard-step apikey-step",
-      style: {
-        display: "flex",
-        flexDirection: "column",
-        padding: "24px",
-        minHeight: "420px",
-      },
-    },
-    react.createElement(
-      "h2",
-      {
-        style: {
-          fontSize: "20px",
-          fontWeight: "600",
-          color: "#fff",
-          marginBottom: "4px",
-          textAlign: "center",
-        },
-      },
-      I18n.t("setupWizard.apiKey.title")
-    ),
-    react.createElement(
-      "p",
-      {
-        style: {
-          fontSize: "13px",
-          color: "rgba(255, 255, 255, 0.5)",
-          marginBottom: "24px",
-          textAlign: "center",
-        },
-      },
-      I18n.t("setupWizard.apiKey.subtitle")
-    ),
-    // API Key input container
-    react.createElement(
-      "div",
-      {
-        className: "option-list-wrapper",
-        style: {
-          background: "rgba(255, 255, 255, 0.03)",
-          borderRadius: "12px",
-          padding: "20px",
-          marginBottom: "16px",
-          border: "1px solid rgba(255, 255, 255, 0.08)",
-        },
-      },
-      // Input field
-      react.createElement("input", {
-        type: "password",
-        value: apiKey,
-        onChange: (e) => onApiKeyChange(e.target.value),
-        placeholder: I18n.t("setupWizard.apiKey.placeholder"),
-        style: {
-          width: "100%",
-          padding: "12px 14px",
-          fontSize: "13px",
-          color: "#fff",
-          background: "rgba(0, 0, 0, 0.2)",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
-          borderRadius: "6px",
-          outline: "none",
-          marginBottom: "14px",
-          boxSizing: "border-box",
-        },
-      }),
-      // Get API Key button
-      react.createElement(
-        "button",
-        {
-          onClick: () => window.open("https://aistudio.google.com/apikey", "_blank"),
-          style: {
-            width: "100%",
-            padding: "11px",
-            fontSize: "13px",
-            fontWeight: "600",
-            color: "#fff",
-            background: "linear-gradient(135deg, #4285f4 0%, #34a853 100%)",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px",
-          },
-        },
-        react.createElement("svg", {
-          width: 16,
-          height: 16,
-          viewBox: "0 0 24 24",
-          fill: "currentColor",
-          dangerouslySetInnerHTML: { __html: WizardIcons.externalLink },
-        }),
-        I18n.t("setupWizard.apiKey.getKey")
-      )
-    ),
-    // Guide section (collapsible)
-    react.createElement(
-      "div",
-      {
-        style: {
-          background: "rgba(255, 255, 255, 0.02)",
-          borderRadius: "10px",
-          overflow: "hidden",
-          marginBottom: "16px",
-          border: "1px solid rgba(255, 255, 255, 0.06)",
-        },
-      },
-      react.createElement(
-        "button",
-        {
-          onClick: () => setShowGuide(!showGuide),
-          style: {
-            width: "100%",
-            padding: "14px 16px",
-            fontSize: "13px",
-            fontWeight: "500",
-            color: "rgba(255, 255, 255, 0.7)",
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          },
-        },
-        I18n.t("setupWizard.apiKey.guide.title"),
-        react.createElement("svg", {
-          width: 16,
-          height: 16,
-          viewBox: "0 0 24 24",
-          fill: "currentColor",
-          style: {
-            transform: showGuide ? "rotate(180deg)" : "rotate(0deg)",
-            transition: "transform 0.2s ease",
-          },
-          dangerouslySetInnerHTML: { __html: WizardIcons.chevronDown },
-        })
-      ),
-      showGuide &&
-      react.createElement(
-        "div",
-        {
-          style: {
-            padding: "0 16px 14px",
-          },
-        },
-        [
-          { num: "1", text: I18n.t("setupWizard.apiKey.guide.step1") },
-          { num: "2", text: I18n.t("setupWizard.apiKey.guide.step2") },
-          { num: "3", text: I18n.t("setupWizard.apiKey.guide.step3") },
-          { num: "4", text: I18n.t("setupWizard.apiKey.guide.step4") },
-        ].map((step, i) =>
-          react.createElement(
-            "div",
-            {
-              key: i,
-              style: {
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                padding: "8px 0",
-                borderBottom:
-                  i < 3 ? "1px solid rgba(255, 255, 255, 0.04)" : "none",
-              },
-            },
-            react.createElement(
-              "div",
-              {
-                style: {
-                  width: "22px",
-                  height: "22px",
-                  borderRadius: "50%",
-                  background: "rgba(29, 185, 84, 0.15)",
-                  color: "#1db954",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "11px",
-                  fontWeight: "600",
-                  flexShrink: 0,
-                },
-              },
-              step.num
-            ),
-            react.createElement(
-              "span",
-              {
-                style: {
-                  fontSize: "12px",
-                  color: "rgba(255, 255, 255, 0.6)",
-                },
-              },
-              step.text
-            )
-          )
-        )
-      )
-    ),
-    // Multiple keys hint
-    react.createElement(
-      "div",
-      {
-        style: {
-          fontSize: "11px",
-          color: "rgba(255, 255, 255, 0.4)",
-          textAlign: "center",
-          marginBottom: "8px",
-        },
-      },
-      I18n.t("setupWizard.apiKey.multipleKeysHint")
-    ),
-    // Spacer
-    react.createElement("div", { style: { flex: 1 } }),
-    // Navigation buttons
-    react.createElement(
-      "div",
-      {
-        style: {
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "16px",
-          paddingTop: "16px",
-          borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-        },
-      },
-      react.createElement(
-        "button",
-        {
-          onClick: onBack,
-          style: {
-            padding: "10px 20px",
-            fontSize: "13px",
-            fontWeight: "500",
-            color: "rgba(255, 255, 255, 0.7)",
-            background: "transparent",
-            border: "1px solid rgba(255, 255, 255, 0.15)",
-            borderRadius: "6px",
-            cursor: "pointer",
-          },
-        },
-        I18n.t("setupWizard.navigation.back")
-      ),
-      react.createElement(
-        "div",
-        { style: { display: "flex", gap: "10px" } },
-        react.createElement(
-          "button",
-          {
-            onClick: onSkip,
-            style: {
-              padding: "10px 16px",
-              fontSize: "12px",
-              fontWeight: "500",
-              color: "rgba(255, 255, 255, 0.4)",
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-            },
-          },
-          I18n.t("setupWizard.apiKey.skip")
-        ),
-        react.createElement(
-          "button",
-          {
-            onClick: onNext,
-            disabled: !apiKey.trim(),
-            style: {
-              padding: "10px 28px",
-              fontSize: "13px",
-              fontWeight: "600",
-              color: apiKey.trim() ? "#000" : "rgba(255, 255, 255, 0.3)",
-              background: apiKey.trim()
-                ? "linear-gradient(135deg, #1db954 0%, #1ed760 100%)"
-                : "rgba(255, 255, 255, 0.08)",
-              border: "none",
-              borderRadius: "6px",
-              cursor: apiKey.trim() ? "pointer" : "not-allowed",
-            },
-          },
-          I18n.t("setupWizard.navigation.next")
-        )
-      )
-    )
-  );
-};
 
 // Option button component for theme selection
 const OptionButton = ({ icon, label, selected, onClick }) => {
@@ -2789,18 +2496,7 @@ const SetupWizard = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedLanguage, setSelectedLanguage] = useState(I18n.getCurrentLanguage());
 
-  // Load existing API key if available
-  const getExistingApiKey = () => {
-    if (typeof StorageManager !== "undefined") {
-      return StorageManager.getPersisted("ivLyrics:visual:gemini-api-key") || "";
-    }
-    if (typeof CONFIG !== "undefined" && CONFIG.visual) {
-      return CONFIG.visual["gemini-api-key"] || "";
-    }
-    return "";
-  };
 
-  const [apiKey, setApiKey] = useState(getExistingApiKey);
   const [themeSettings, setThemeSettings] = useState({
     alignment: "center",
     background: "gradient", // Default to album cover background
@@ -2833,7 +2529,7 @@ const SetupWizard = ({ onComplete }) => {
       }
     }
 
-    baseSteps.push("overlay", "nowPlaying", "apiKey", "translationTip", "complete");
+    baseSteps.push("overlay", "nowPlaying", "translationTip", "complete");
     return baseSteps;
   };
 
@@ -2858,13 +2554,7 @@ const SetupWizard = ({ onComplete }) => {
   };
 
   const saveSettings = () => {
-    // Save API key if provided
-    if (apiKey.trim() && typeof StorageManager !== "undefined") {
-      StorageManager.saveConfig("gemini-api-key", apiKey.trim());
-      if (typeof CONFIG !== "undefined") {
-        CONFIG.visual["gemini-api-key"] = apiKey.trim();
-      }
-    }
+
 
     // Save theme settings
     if (typeof StorageManager !== "undefined" && typeof CONFIG !== "undefined") {
@@ -3019,14 +2709,7 @@ const SetupWizard = ({ onComplete }) => {
           onNext: goNext,
           onBack: goBack,
         });
-      case "apiKey":
-        return react.createElement(ApiKeyStep, {
-          apiKey,
-          onApiKeyChange: setApiKey,
-          onNext: goNext,
-          onBack: goBack,
-          onSkip: goNext,
-        });
+
       case "translationTip":
         return react.createElement(TranslationTipStep, {
           onNext: goNext,

@@ -26,11 +26,10 @@
         version: '1.0.0',
         apiKeyUrl: 'https://aistudio.google.com/apikey',
         models: [
-            { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash', default: true },
+            { id: 'gemini-3-flash-preview', name: 'Gemini 3 Flash Preview', default: true },
+            { id: 'gemini-3-pro-preview', name: 'Gemini 3 Pro Preview' },
             { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash' },
-            { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro' },
-            { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash' },
-            { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro' },
+            { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro' }
         ]
     };
 
@@ -366,81 +365,6 @@ OUTPUT (${lineCount} lines):`;
             const React = Spicetify.React;
             const { useState, useCallback } = React;
 
-            // AddonUI 사용 가능 여부 확인
-            if (window.AddonUI) {
-                const UI = window.AddonUI;
-
-                return function GeminiSettingsUI() {
-                    const [apiKeys, setApiKeys] = useState(getSetting('api-keys', ''));
-                    const [model, setModel] = useState(getSelectedModel());
-                    const [testStatus, setTestStatus] = useState('');
-                    const [testing, setTesting] = useState(false);
-
-                    const handleApiKeyChange = useCallback((value) => {
-                        setApiKeys(value);
-                        setSetting('api-keys', value);
-                    }, []);
-
-                    const handleModelChange = useCallback((value) => {
-                        setModel(value);
-                        setSetting('model', value);
-                    }, []);
-
-                    const handleTest = useCallback(async () => {
-                        setTesting(true);
-                        setTestStatus('');
-                        try {
-                            await callGeminiAPIRaw('Reply with just "OK" if you receive this.');
-                            setTestStatus('✓ Connection successful!');
-                        } catch (e) {
-                            setTestStatus(`✗ Error: ${e.message}`);
-                        } finally {
-                            setTesting(false);
-                        }
-                    }, []);
-
-                    return React.createElement(UI.SettingsContainer, { addonId: 'gemini' },
-                        // Header
-                        React.createElement(UI.AddonHeader, {
-                            name: ADDON_INFO.name,
-                            version: ADDON_INFO.version,
-                            description: getLocalizedText(ADDON_INFO.description, Spicetify.Locale?.getLocale()?.split('-')[0] || 'en')
-                        }),
-
-                        // API Key
-                        React.createElement(UI.PasswordInput, {
-                            label: 'API Key(s)',
-                            value: apiKeys,
-                            onChange: handleApiKeyChange,
-                            placeholder: 'AIza... (multiple keys: ["key1", "key2"])',
-                            description: 'Enter a single key or JSON array for rotation',
-                            externalUrl: ADDON_INFO.apiKeyUrl,
-                            externalLabel: 'Get API Key'
-                        }),
-
-                        // Model Selection
-                        React.createElement(UI.Select, {
-                            label: 'Model',
-                            value: model,
-                            onChange: handleModelChange,
-                            options: ADDON_INFO.models
-                        }),
-
-                        // Test Button
-                        React.createElement('div', { className: 'addon-ui-test-section' },
-                            React.createElement(UI.Button, {
-                                label: 'Test Connection',
-                                onClick: handleTest,
-                                primary: true,
-                                loading: testing
-                            }),
-                            testStatus && React.createElement('span', {
-                                className: `addon-ui-test-status ${testStatus.startsWith('✓') ? 'success' : testStatus.startsWith('✗') ? 'error' : ''}`
-                            }, testStatus)
-                        )
-                    );
-                };
-            }
 
             // Fallback: 기존 방식
             return function GeminiSettings() {

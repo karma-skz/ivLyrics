@@ -26,11 +26,9 @@
         version: '1.0.0',
         apiKeyUrl: 'https://platform.openai.com/api-keys',
         models: [
-            { id: 'gpt-4o', name: 'GPT-4o', default: true },
-            { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
-            { id: 'gpt-4-turbo', name: 'GPT-4 Turbo' },
-            { id: 'gpt-4', name: 'GPT-4' },
-            { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo' },
+            { id: 'gpt-5.2-2025-12-11', name: 'GPT-5.2', default: true },
+            { id: 'gpt-5-mini-2025-08-07', name: 'GPT-5 Mini' },
+            { id: 'gpt-5-nano-2025-08-07', name: 'GPT-5 Nano' }
         ]
     };
 
@@ -336,117 +334,6 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
             const React = Spicetify.React;
             const { useState, useCallback } = React;
 
-            // AddonUI 사용 가능 여부 확인
-            if (window.AddonUI) {
-                const UI = window.AddonUI;
-
-                return function ChatGPTSettingsUI() {
-                    const [apiKey, setApiKey] = useState(getSetting('api-key', ''));
-                    const [baseUrl, setBaseUrl] = useState(getSetting('base-url', 'https://api.openai.com/v1'));
-                    const [model, setModel] = useState(getSelectedModel());
-                    const [customModel, setCustomModel] = useState(getSetting('custom-model', ''));
-                    const [testStatus, setTestStatus] = useState('');
-                    const [testing, setTesting] = useState(false);
-
-                    const handleApiKeyChange = useCallback((value) => {
-                        setApiKey(value);
-                        setSetting('api-key', value);
-                    }, []);
-
-                    const handleBaseUrlChange = useCallback((value) => {
-                        setBaseUrl(value);
-                        setSetting('base-url', value);
-                    }, []);
-
-                    const handleModelChange = useCallback((value) => {
-                        setModel(value);
-                        setSetting('model', value);
-                    }, []);
-
-                    const handleCustomModelChange = useCallback((value) => {
-                        setCustomModel(value);
-                        setSetting('custom-model', value);
-                        if (value) {
-                            setSetting('model', value);
-                            setModel(value);
-                        }
-                    }, []);
-
-                    const handleTest = useCallback(async () => {
-                        setTesting(true);
-                        setTestStatus('');
-                        try {
-                            await callChatGPTAPIRaw('Reply with just "OK" if you receive this.');
-                            setTestStatus('✓ Connection successful!');
-                        } catch (e) {
-                            setTestStatus(`✗ Error: ${e.message}`);
-                        } finally {
-                            setTesting(false);
-                        }
-                    }, []);
-
-                    // 모델 옵션 (Custom 포함)
-                    const modelOptions = [...ADDON_INFO.models, { id: '', name: 'Custom...' }];
-                    const isCustomModel = !ADDON_INFO.models.find(m => m.id === model);
-
-                    return React.createElement(UI.SettingsContainer, { addonId: 'chatgpt' },
-                        // Header
-                        React.createElement(UI.AddonHeader, {
-                            name: ADDON_INFO.name,
-                            version: ADDON_INFO.version,
-                            description: getLocalizedText(ADDON_INFO.description, Spicetify.Locale?.getLocale()?.split('-')[0] || 'en')
-                        }),
-
-                        // API Key
-                        React.createElement(UI.PasswordInput, {
-                            label: 'API Key',
-                            value: apiKey,
-                            onChange: handleApiKeyChange,
-                            placeholder: 'sk-...',
-                            externalUrl: ADDON_INFO.apiKeyUrl,
-                            externalLabel: 'Get API Key'
-                        }),
-
-                        // Base URL
-                        React.createElement(UI.TextInput, {
-                            label: 'Base URL',
-                            value: baseUrl,
-                            onChange: handleBaseUrlChange,
-                            placeholder: 'https://api.openai.com/v1',
-                            description: 'Change this to use OpenAI-compatible APIs (e.g., Azure, local models)'
-                        }),
-
-                        // Model Selection
-                        React.createElement(UI.Select, {
-                            label: 'Model',
-                            value: isCustomModel ? '' : model,
-                            onChange: handleModelChange,
-                            options: modelOptions
-                        }),
-
-                        // Custom Model Input (조건부)
-                        (isCustomModel || customModel) && React.createElement(UI.TextInput, {
-                            label: 'Custom Model ID',
-                            value: customModel,
-                            onChange: handleCustomModelChange,
-                            placeholder: 'e.g., claude-3-opus'
-                        }),
-
-                        // Test Button
-                        React.createElement('div', { className: 'addon-ui-test-section' },
-                            React.createElement(UI.Button, {
-                                label: 'Test Connection',
-                                onClick: handleTest,
-                                primary: true,
-                                loading: testing
-                            }),
-                            testStatus && React.createElement('span', {
-                                className: `addon-ui-test-status ${testStatus.startsWith('✓') ? 'success' : testStatus.startsWith('✗') ? 'error' : ''}`
-                            }, testStatus)
-                        )
-                    );
-                };
-            }
 
             // Fallback: 기존 방식
             return function ChatGPTSettings() {
