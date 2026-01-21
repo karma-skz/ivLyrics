@@ -1030,7 +1030,7 @@ const UNSYNCED = 2;
 const CONFIG = {
   visual: {
     language:
-      StorageManager.getItem("ivLyrics:visual:language") || "ko",
+      StorageManager.getItem("ivLyrics:visual:language") || StorageManager.getItem("ivLyrics:visual:language"),
     "playbar-button": StorageManager.get(
       "ivLyrics:visual:playbar-button",
       false
@@ -2260,8 +2260,8 @@ const Prefetcher = {
               ignoreCache: false,
             });
 
-            if (translationResponse.vi) {
-              const mapped = processTranslationResult(translationResponse.vi);
+            if (translationResponse.translation) {
+              const mapped = processTranslationResult(translationResponse.translation);
               if (mapped) {
                 // mode1, mode2 중 번역이 필요한 것에 캐시 저장
                 if (displayMode1 && displayMode1 !== "none" && displayMode1 !== "gemini_romaji") {
@@ -2921,17 +2921,18 @@ class LyricsContainer extends react.Component {
       let translatedLyrics2 = null;
 
       // mode1 처리
+      // mode1 처리
       if (mode1 === "gemini_romaji" && phoneticResponse?.phonetic) {
         translatedLyrics1 = processTranslationResult(phoneticResponse.phonetic, originalLyrics);
-      } else if (mode1 === "gemini_ko" && translationResponse?.vi) {
-        translatedLyrics1 = processTranslationResult(translationResponse.vi, originalLyrics);
+      } else if (mode1 === "gemini_ko" && translationResponse?.translation) {
+        translatedLyrics1 = processTranslationResult(translationResponse.translation, originalLyrics);
       }
 
       // mode2 처리 (mode1과 독립적으로)
       if (mode2 === "gemini_romaji" && phoneticResponse?.phonetic) {
         translatedLyrics2 = processTranslationResult(phoneticResponse.phonetic, originalLyrics);
-      } else if (mode2 === "gemini_ko" && translationResponse?.vi) {
-        translatedLyrics2 = processTranslationResult(translationResponse.vi, originalLyrics);
+      } else if (mode2 === "gemini_ko" && translationResponse?.translation) {
+        translatedLyrics2 = processTranslationResult(translationResponse.translation, originalLyrics);
       }
 
       // _dmResults에 번역 결과 저장
@@ -2960,7 +2961,6 @@ class LyricsContainer extends react.Component {
       }
 
       // lyricsSource를 다시 호출하여 기존 로직으로 화면 업데이트
-      // 이렇게 하면 optimizeTranslations이 호출되어 사용자 설정에 따라 번역이 표시됨
       this.lyricsSource(this.state, currentMode);
       Toast.success(I18n.t("notifications.translationRegenerated"));
     } catch (error) {
@@ -2985,39 +2985,6 @@ class LyricsContainer extends react.Component {
     };
   }
 
-  async fetchMetadataTranslation(trackUri, title, artist) {
-    // 번역 기능이 활성화되어 있는지 확인
-    const provider = CONFIG.visual["translate:translated-lyrics-source"];
-    if (!provider || provider === "none") return;
-
-    // 이미 번역된 메타데이터가 있으면 스킵 (단, 곡이 변경되었으면 재요청)
-    if (this.state.translatedMetadata && this.state.uri === trackUri) return;
-
-    try {
-      // AIAddonManager를 통해 메타데이터 번역 요청 (get_metadata: true)
-      // Translator.callGemini 내부에서 AIAddonManager.callProvider(..., 'translateMetadata') 호출됨
-      const result = await window.Translator.callGemini({
-        title,
-        artist,
-        get_metadata: true,
-        provider: this.state.provider, // 현재 가사 프로바이더 전달
-        trackId: trackUri.split(':').pop()
-      });
-
-      if (result) {
-        console.log("[ivLyrics] Metadata translated:", result);
-        // Addon_AI_Gemini.js의 응답 키: translatedTitle, translatedArtist
-        this.setState({
-          translatedMetadata: {
-            title: result.translatedTitle || result.title || title,
-            artist: result.translatedArtist || result.artist || artist
-          }
-        });
-      }
-    } catch (e) {
-      console.warn("[ivLyrics] Failed to translate metadata:", e);
-    }
-  }
 
   async fetchColors(uri) {
     let vibrant = 0;
@@ -3877,7 +3844,7 @@ class LyricsContainer extends react.Component {
       if (cached) {
         // Fix cached items if they have double-encoded JSON structure
         let fixNeeded = false;
-        let targetField = wantSmartPhonetic ? 'phonetic' : 'vi';
+        let targetField = wantSmartPhonetic ? 'phonetic' : 'translation';
 
         if (cached[targetField] && Array.isArray(cached[targetField]) &&
           cached[targetField].length === 1 && typeof cached[targetField][0] === 'string' &&
@@ -3887,12 +3854,12 @@ class LyricsContainer extends react.Component {
             if (wantSmartPhonetic && Array.isArray(parsed.phonetic)) {
               cached.phonetic = parsed.phonetic;
               fixNeeded = true;
-            } else if (!wantSmartPhonetic && Array.isArray(parsed.vi)) {
-              cached.vi = parsed.vi;
+            } else if (!wantSmartPhonetic && Array.isArray(parsed.translation)) {
+              cached.translation = parsed.translation;
               fixNeeded = true;
-            } else if (parsed.vi && Array.isArray(parsed.vi)) {
+            } else if (parsed.translation && Array.isArray(parsed.translation)) {
               // Fallback
-              cached[targetField] = parsed.vi;
+              cached[targetField] = parsed.translation;
               fixNeeded = true;
             }
           } catch (e) { }
@@ -3949,7 +3916,7 @@ class LyricsContainer extends react.Component {
           if (wantSmartPhonetic) {
             outText = response.phonetic;
           } else {
-            outText = response.vi;
+            outText = response.translation || response.vi;
           }
 
           if (!outText) throw new Error("Empty result from Gemini.");
@@ -3961,12 +3928,12 @@ class LyricsContainer extends react.Component {
                 const parsed = JSON.parse(outText[0]);
                 if (wantSmartPhonetic && Array.isArray(parsed.phonetic)) {
                   outText = parsed.phonetic;
-                } else if (!wantSmartPhonetic && Array.isArray(parsed.vi)) {
-                  outText = parsed.vi;
-                } else if (parsed.vi && Array.isArray(parsed.vi)) {
-                  // Fallback: request was phonetic but response came as vi?
+                } else if (!wantSmartPhonetic && Array.isArray(parsed.translation)) {
+                  outText = parsed.translation;
+                } else if (parsed.translation && Array.isArray(parsed.translation)) {
+                  // Fallback: request was phonetic but response came as translation?
                   // or just general structure match
-                  outText = parsed.vi;
+                  outText = parsed.translation;
                 }
               }
             } catch (e) {

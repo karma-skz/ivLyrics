@@ -40,7 +40,7 @@
  * }
  *
  * translateLyrics 반환 형식:
- * - 번역: { vi: string[] }     // 번역된 줄들의 배열
+ * - 번역: { translation: string[] }     // 번역된 줄들의 배열
  * - 발음: { phonetic: string[] } // 발음 줄들의 배열
  *
  * translateMetadata params:
@@ -682,7 +682,7 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
             if (wantSmartPhonetic) {
                 return { phonetic: lines };
             } else {
-                return { vi: lines };
+                return { translation: lines };
             }
         },
 

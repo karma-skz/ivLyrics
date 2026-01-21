@@ -551,7 +551,7 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
             if (wantSmartPhonetic) {
                 return { phonetic: lines };
             } else {
-                return { vi: lines };
+                return { translation: lines };
             }
         },
 
@@ -561,7 +561,19 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
             }
 
             const prompt = buildMetadataPrompt(title, artist, lang);
-            return await callChatGPTAPI(prompt);
+            const result = await callChatGPTAPI(prompt);
+
+            // Normalize result to match expected format in FullscreenOverlay.js
+            return {
+                translated: {
+                    title: result.translatedTitle || result.title || title,
+                    artist: result.translatedArtist || result.artist || artist
+                },
+                romanized: {
+                    title: result.romanizedTitle || title,
+                    artist: result.romanizedArtist || artist
+                }
+            };
         },
 
         async generateTMI({ title, artist, lang }) {

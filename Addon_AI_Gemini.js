@@ -528,7 +528,7 @@ OUTPUT (${lineCount} lines):`;
             if (wantSmartPhonetic) {
                 return { phonetic: lines };
             } else {
-                return { vi: lines };
+                return { translation: lines };
             }
         },
 
@@ -538,7 +538,19 @@ OUTPUT (${lineCount} lines):`;
             }
 
             const prompt = buildMetadataPrompt(title, artist, lang);
-            return await callGeminiAPI(prompt);
+            const result = await callGeminiAPI(prompt);
+
+            // Normalize result to match expected format in FullscreenOverlay.js
+            return {
+                translated: {
+                    title: result.translatedTitle || result.title || title,
+                    artist: result.translatedArtist || result.artist || artist
+                },
+                romanized: {
+                    title: result.romanizedTitle || title,
+                    artist: result.romanizedArtist || artist
+                }
+            };
         },
 
         async generateTMI({ title, artist, lang }) {

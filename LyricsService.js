@@ -2058,7 +2058,7 @@
                                 wantSmartPhonetic: wantPhonetic,
                                 provider: provider
                             });
-                            pronResult = wantPhonetic ? response.phonetic : response.vi;
+                            pronResult = wantPhonetic ? response.phonetic : response.translation;
                         }
 
                         // 번역 요청 (mode2 = gemini_ko 등)
@@ -2073,7 +2073,7 @@
                                 wantSmartPhonetic: wantPhonetic,
                                 provider: provider
                             });
-                            transResult = wantPhonetic ? response.phonetic : response.vi;
+                            transResult = wantPhonetic ? response.phonetic : response.translation;
                         }
 
                         // 결과 병합
@@ -2086,13 +2086,19 @@
                                 const pronText = pronLines[idx]?.trim() || null;
                                 const transText = transLines[idx]?.trim() || null;
 
+                                // Determine the final original text.
+                                // If pronText exists, the current 'text' is the original.
+                                // If pronText doesn't exist, but line.originalText exists, use that.
+                                // Otherwise, the current 'text' is the original.
+                                const finalOriginal = pronText ? originalText : (line.originalText || originalText);
+
                                 return {
                                     ...line,
-                                    originalText: pronText ? originalText : (line.originalText || originalText),
-                                    text: pronText || originalText,
-                                    text2: transText,
-                                    translation: transText,
-                                    translationText: transText
+                                    originalText: finalOriginal, // The original text before any phonetic/translation
+                                    text: pronText || originalText, // The primary displayed text (phonetic or original)
+                                    text2: transText, // The secondary displayed text (translation)
+                                    translation: transText, // For compatibility
+                                    translationText: transText // For compatibility
                                 };
                             });
 
@@ -2528,7 +2534,7 @@
                             });
 
                             if (result) {
-                                LyricsCache.setTranslation(finalTrackId, userLang, wantSmartPhonetic, result, lyricsProvider).catch(() => { });
+                                LyricsCache.setTranslation(finalTrackId, userLang, wantSmartPhonetic, result, provider).catch(() => { });
                                 return result;
                             }
                         } catch (e) {
