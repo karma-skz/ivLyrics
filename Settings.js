@@ -4096,15 +4096,6 @@ const ConfigModal = () => {
       keywords: ["초기화", "reset", "기본값", "default"]
     },
 
-    {
-      section: I18n.t("tabs.advanced"),
-      sectionKey: "advanced",
-      settingKey: "gemini-api",
-      name: "Gemini API",
-      desc: I18n.t("menu.apiSettings"),
-      keywords: ["gemini", "api", "키", "key", "번역", "translation", "ai"]
-    },
-
     // 전체화면 탭
     {
       section: I18n.t("tabs.fullscreen"),
@@ -8266,41 +8257,7 @@ const ConfigModal = () => {
             );
           },
         }),
-        react.createElement(SectionTitle, {
-          title: I18n.t("settingsAdvanced.api.title"),
-          subtitle: I18n.t("settingsAdvanced.apiKeys.subtitle"),
-        }),
-        react.createElement(OptionList, {
-          items: [
-            {
-              desc: I18n.t("settingsAdvanced.api.getApiKey.desc"),
-              info: I18n.t("settingsAdvanced.api.getApiKey.info"),
-              key: "get-api-key",
-              text: I18n.t("settingsAdvanced.api.getApiKey.button"),
-              type: ConfigButton,
-              onChange: () => {
-                window.open("https://aistudio.google.com/apikey", "_blank");
-              },
-            },
-            {
-              desc: I18n.t("settingsAdvanced.api.geminiKey.desc"),
-              info: I18n.t("settingsAdvanced.api.geminiKey.info"),
-              key: "gemini-api-key",
-              type: ConfigKeyList,
-            },
 
-          ],
-          onChange: (name, value) => {
-            CONFIG.visual[name] = value;
-            StorageManager.saveConfig(name, value);
-            lyricContainerUpdate?.();
-            window.dispatchEvent(
-              new CustomEvent("ivLyrics", {
-                detail: { type: "config", name, value },
-              })
-            );
-          },
-        }),
         react.createElement(SectionTitle, {
           title: I18n.t("settingsAdvanced.exportImport.title"),
           subtitle: I18n.t("settingsAdvanced.exportImport.subtitle"),
