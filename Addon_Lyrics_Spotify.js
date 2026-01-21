@@ -68,16 +68,7 @@
                 const { React } = Spicetify;
 
                 return React.createElement('div', { className: 'ai-addon-settings spotify-settings' },
-                    // Header
-                    React.createElement('div', { className: 'ai-addon-header' },
-                        React.createElement('h3', null, ADDON_INFO.name),
-                        React.createElement('span', { className: 'ai-addon-version' }, `v${ADDON_INFO.version}`)
-                    ),
-
-                    // Description
-                    React.createElement('p', { className: 'ai-addon-description' },
-                        ADDON_INFO.description[Spicetify.Locale?.getLocale()?.split('-')[0]] || ADDON_INFO.description.en
-                    ),
+                    // Info Box
 
                     // Info Box
                     React.createElement('div', { className: 'ai-addon-setting', style: { marginTop: '20px' } },

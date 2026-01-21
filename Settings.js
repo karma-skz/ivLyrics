@@ -1019,19 +1019,19 @@ const AddonSettingsCard = ({ addon, isExpanded, onToggle }) => {
         react.createElement("div", { className: "addon-card-icon" },
           addon.id === 'gemini'
             ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
-                react.createElement("path", {
-                  d: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
-                  stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"
-                })
-              )
+              react.createElement("path", {
+                d: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
+                stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"
+              })
+            )
             : addon.id === 'chatgpt'
-            ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
+              ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
                 react.createElement("path", {
                   d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z",
                   stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"
                 })
               )
-            : react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
+              : react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
                 react.createElement("path", {
                   d: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z",
                   stroke: "currentColor", strokeWidth: "2"
@@ -1092,8 +1092,41 @@ const LyricsProviderCard = ({ provider, isEnabled, onToggle, isExpanded, onExpan
     if (provider.supports?.unsynced) {
       badges.push(react.createElement("span", { key: "unsynced", className: "support-badge unsynced" }, "일반"));
     }
+    if (provider.useIvLyricsSync) {
+      badges.push(react.createElement("span", { key: "ivsync", className: "support-badge ivsync" }, "ivLyrics Sync"));
+    }
     return badges;
   };
+
+  // 상세 설정 상태 (가사 유형별 활성화 여부)
+  const [enableKaraoke, setEnableKaraoke] = useState(() =>
+    window.LyricsAddonManager?.getAddonSetting(provider.id, 'enable_karaoke', true) ?? true
+  );
+  const [enableSynced, setEnableSynced] = useState(() =>
+    window.LyricsAddonManager?.getAddonSetting(provider.id, 'enable_synced', true) ?? true
+  );
+  const [enableUnsynced, setEnableUnsynced] = useState(() =>
+    window.LyricsAddonManager?.getAddonSetting(provider.id, 'enable_unsynced', true) ?? true
+  );
+
+  const handleTypeToggle = (type, value) => {
+    if (!window.LyricsAddonManager) return;
+
+    if (type === 'karaoke') {
+      setEnableKaraoke(value);
+      window.LyricsAddonManager.setAddonSetting(provider.id, 'enable_karaoke', value);
+    } else if (type === 'synced') {
+      setEnableSynced(value);
+      window.LyricsAddonManager.setAddonSetting(provider.id, 'enable_synced', value);
+    } else if (type === 'unsynced') {
+      setEnableUnsynced(value);
+      window.LyricsAddonManager.setAddonSetting(provider.id, 'enable_unsynced', value);
+    }
+  };
+
+  const showKaraokeToggle = provider.supports?.karaoke || provider.useIvLyricsSync;
+  const showSyncedToggle = provider.supports?.synced;
+  const showUnsyncedToggle = provider.supports?.unsynced;
 
   return react.createElement("div", {
     className: `lyrics-provider-card ${isExpanded ? 'expanded' : ''} ${isEnabled ? '' : 'disabled'}`
@@ -1116,18 +1149,18 @@ const LyricsProviderCard = ({ provider, isEnabled, onToggle, isExpanded, onExpan
         react.createElement("div", { className: "lyrics-provider-icon" },
           provider.id === 'spotify'
             ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "currentColor" },
-                react.createElement("path", {
-                  d: "M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"
-                })
-              )
+              react.createElement("path", {
+                d: "M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"
+              })
+            )
             : provider.id === 'lrclib'
-            ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
+              ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
                 react.createElement("path", { d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" }),
                 react.createElement("polyline", { points: "14 2 14 8 20 8" }),
                 react.createElement("line", { x1: "16", y1: "13", x2: "8", y2: "13" }),
                 react.createElement("line", { x1: "16", y1: "17", x2: "8", y2: "17" })
               )
-            : react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
+              : react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
                 react.createElement("circle", { cx: "12", cy: "12", r: "10" })
               )
         ),
@@ -1153,8 +1186,53 @@ const LyricsProviderCard = ({ provider, isEnabled, onToggle, isExpanded, onExpan
       getLocalizedDescription(provider.description)
     ),
     // 확장 영역 (설정 UI)
-    isExpanded && SettingsUI && react.createElement("div", { className: "lyrics-provider-card-body" },
-      react.createElement(SettingsUI)
+    isExpanded && react.createElement("div", { className: "lyrics-provider-card-body" },
+      // 가사 유형별 필터 토글 영역
+      react.createElement("div", { className: "lyrics-type-toggles-container", style: { marginBottom: "20px", paddingBottom: "16px", borderBottom: "1px solid rgba(255, 255, 255, 0.05)" } },
+        react.createElement("div", { style: { fontSize: "11px", fontWeight: "600", color: "var(--spice-subtext)", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "0.5px" } }, "Allowed Lyrics Types"),
+        react.createElement("div", { className: "lyrics-type-toggles", style: { display: "flex", gap: "8px", flexWrap: "wrap" } },
+          showKaraokeToggle && react.createElement("div", {
+            onClick: () => handleTypeToggle('karaoke', !enableKaraoke),
+            style: {
+              display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", borderRadius: "16px", cursor: "pointer", fontSize: "12px", fontWeight: "500", transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+              background: enableKaraoke ? "rgba(99, 102, 241, 0.15)" : "rgba(255, 255, 255, 0.05)",
+              border: enableKaraoke ? "1px solid rgba(99, 102, 241, 0.5)" : "1px solid rgba(255, 255, 255, 0.1)",
+              color: enableKaraoke ? "#818cf8" : "var(--spice-text)",
+              opacity: enableKaraoke ? 1 : 0.7
+            }
+          },
+            enableKaraoke && react.createElement("svg", { width: 14, height: 14, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 3, strokeLinecap: "round", strokeLinejoin: "round" }, react.createElement("polyline", { points: "20 6 9 17 4 12" })),
+            "노래방 가사 (Karaoke)"
+          ),
+          showSyncedToggle && react.createElement("div", {
+            onClick: () => handleTypeToggle('synced', !enableSynced),
+            style: {
+              display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", borderRadius: "16px", cursor: "pointer", fontSize: "12px", fontWeight: "500", transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+              background: enableSynced ? "rgba(34, 197, 94, 0.15)" : "rgba(255, 255, 255, 0.05)",
+              border: enableSynced ? "1px solid rgba(34, 197, 94, 0.5)" : "1px solid rgba(255, 255, 255, 0.1)",
+              color: enableSynced ? "#4ade80" : "var(--spice-text)",
+              opacity: enableSynced ? 1 : 0.7
+            }
+          },
+            enableSynced && react.createElement("svg", { width: 14, height: 14, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 3, strokeLinecap: "round", strokeLinejoin: "round" }, react.createElement("polyline", { points: "20 6 9 17 4 12" })),
+            "싱크 가사 (Synced)"
+          ),
+          showUnsyncedToggle && react.createElement("div", {
+            onClick: () => handleTypeToggle('unsynced', !enableUnsynced),
+            style: {
+              display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", borderRadius: "16px", cursor: "pointer", fontSize: "12px", fontWeight: "500", transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+              background: enableUnsynced ? "rgba(255, 255, 255, 0.15)" : "rgba(255, 255, 255, 0.05)",
+              border: enableUnsynced ? "1px solid rgba(255, 255, 255, 0.3)" : "1px solid rgba(255, 255, 255, 0.1)",
+              color: enableUnsynced ? "#ffffff" : "var(--spice-text)",
+              opacity: enableUnsynced ? 1 : 0.7
+            }
+          },
+            enableUnsynced && react.createElement("svg", { width: 14, height: 14, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 3, strokeLinecap: "round", strokeLinejoin: "round" }, react.createElement("polyline", { points: "20 6 9 17 4 12" })),
+            "일반 가사 (Unsynced)"
+          )
+        )
+      ),
+      SettingsUI && react.createElement(SettingsUI)
     )
   );
 };
@@ -1237,56 +1315,57 @@ const LyricsProvidersTab = () => {
   });
 
   return react.createElement("div", { className: "settings-section lyrics-providers-section" },
-    // 섹션 제목
-    react.createElement("div", { className: "section-title" },
-      react.createElement("div", { className: "section-text" },
+    // 통합 컨테이너
+    react.createElement("div", { className: "lyrics-providers-container" },
+      // 헤더
+      react.createElement("div", { className: "lyrics-providers-header" },
         react.createElement("h3", null, I18n.t("settings.lyricsProviders.title") || "가사 제공자"),
         react.createElement("p", null, I18n.t("settings.lyricsProviders.description") || "가사를 가져올 제공자를 선택하고 우선순위를 설정합니다.")
-      )
-    ),
+      ),
 
-    // Provider 목록
-    providers.length > 0 && react.createElement("div", { className: "lyrics-providers-list" },
-      sortedProviders.map((provider, index) =>
-        react.createElement("div", { key: provider.id, className: "lyrics-provider-item" },
-          // 순서 변경 버튼
-          react.createElement("div", { className: "lyrics-provider-order-buttons" },
-            react.createElement("button", {
-              className: "order-btn",
-              disabled: index === 0,
-              onClick: () => moveProvider(provider.id, 'up'),
-              title: "위로 이동"
-            },
-              react.createElement("svg", { width: 12, height: 12, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
-                react.createElement("polyline", { points: "18 15 12 9 6 15" })
+      // Provider 목록
+      providers.length > 0 && react.createElement("div", { className: "lyrics-providers-list" },
+        sortedProviders.map((provider, index) =>
+          react.createElement("div", { key: provider.id, className: "lyrics-provider-item" },
+            // 순서 변경 버튼
+            react.createElement("div", { className: "lyrics-provider-order-buttons" },
+              react.createElement("button", {
+                className: "order-btn",
+                disabled: index === 0,
+                onClick: () => moveProvider(provider.id, 'up'),
+                title: "위로 이동"
+              },
+                react.createElement("svg", { width: 12, height: 12, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
+                  react.createElement("polyline", { points: "18 15 12 9 6 15" })
+                )
+              ),
+              react.createElement("button", {
+                className: "order-btn",
+                disabled: index === sortedProviders.length - 1,
+                onClick: () => moveProvider(provider.id, 'down'),
+                title: "아래로 이동"
+              },
+                react.createElement("svg", { width: 12, height: 12, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
+                  react.createElement("polyline", { points: "6 9 12 15 18 9" })
+                )
               )
             ),
-            react.createElement("button", {
-              className: "order-btn",
-              disabled: index === sortedProviders.length - 1,
-              onClick: () => moveProvider(provider.id, 'down'),
-              title: "아래로 이동"
-            },
-              react.createElement("svg", { width: 12, height: 12, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
-                react.createElement("polyline", { points: "6 9 12 15 18 9" })
-              )
-            )
-          ),
-          // Provider 카드
-          react.createElement(LyricsProviderCard, {
-            provider: provider,
-            isEnabled: enabledProviders[provider.id] !== false,
-            onToggle: (enabled) => handleToggleEnabled(provider.id, enabled),
-            isExpanded: expandedProviders.has(provider.id),
-            onExpandToggle: () => toggleExpanded(provider.id)
-          })
+            // Provider 카드
+            react.createElement(LyricsProviderCard, {
+              provider: provider,
+              isEnabled: enabledProviders[provider.id] !== false,
+              onToggle: (enabled) => handleToggleEnabled(provider.id, enabled),
+              isExpanded: expandedProviders.has(provider.id),
+              onExpandToggle: () => toggleExpanded(provider.id)
+            })
+          )
         )
-      )
-    ),
+      ),
 
-    // Provider가 없을 때
-    providers.length === 0 && react.createElement("div", { className: "no-providers-message" },
-      react.createElement("p", null, I18n.t("settings.lyricsProviders.noProviders") || "등록된 가사 제공자가 없습니다.")
+      // Provider가 없을 때
+      providers.length === 0 && react.createElement("div", { className: "no-providers-message" },
+        react.createElement("p", null, I18n.t("settings.lyricsProviders.noProviders") || "등록된 가사 제공자가 없습니다.")
+      )
     )
   );
 };

@@ -2985,6 +2985,40 @@ class LyricsContainer extends react.Component {
     };
   }
 
+  async fetchMetadataTranslation(trackUri, title, artist) {
+    // 번역 기능이 활성화되어 있는지 확인
+    const provider = CONFIG.visual["translate:translated-lyrics-source"];
+    if (!provider || provider === "none") return;
+
+    // 이미 번역된 메타데이터가 있으면 스킵 (단, 곡이 변경되었으면 재요청)
+    if (this.state.translatedMetadata && this.state.uri === trackUri) return;
+
+    try {
+      // AIAddonManager를 통해 메타데이터 번역 요청 (get_metadata: true)
+      // Translator.callGemini 내부에서 AIAddonManager.callProvider(..., 'translateMetadata') 호출됨
+      const result = await window.Translator.callGemini({
+        title,
+        artist,
+        get_metadata: true,
+        provider: this.state.provider, // 현재 가사 프로바이더 전달
+        trackId: trackUri.split(':').pop()
+      });
+
+      if (result) {
+        console.log("[ivLyrics] Metadata translated:", result);
+        // Addon_AI_Gemini.js의 응답 키: translatedTitle, translatedArtist
+        this.setState({
+          translatedMetadata: {
+            title: result.translatedTitle || result.title || title,
+            artist: result.translatedArtist || result.artist || artist
+          }
+        });
+      }
+    } catch (e) {
+      console.warn("[ivLyrics] Failed to translate metadata:", e);
+    }
+  }
+
   async fetchColors(uri) {
     let vibrant = 0;
     let dynamicColors = null;
@@ -3137,6 +3171,11 @@ class LyricsContainer extends react.Component {
       // 메타데이터 번역 요청 (백그라운드에서 비동기로)
       this.fetchMetadataTranslation(info.uri, info.title, info.artist);
 
+      // Refresh: Clear memory cache for this track to force re-fetch from providers
+      if (refresh && CACHE[info.uri]) {
+        delete CACHE[info.uri];
+      }
+
       let isCached = this.lyricsSaved(info.uri);
 
       if (CONFIG.visual.colorful || CONFIG.visual["gradient-background"] || CONFIG.visual["blur-gradient-background"]) {
@@ -3164,7 +3203,14 @@ class LyricsContainer extends react.Component {
         this.setState({ ...emptyState, provider: "", contributors: null, isLoading: true, isCached: false });
 
         // LyricsService Extension을 통해 가사 로드
-        const providerOrder = ["spotify", "lrclib", "local"];
+        let providerOrder = ["spotify", "lrclib", "local"];
+        if (window.LyricsAddonManager && typeof window.LyricsAddonManager.getProviderOrder === 'function') {
+          const order = window.LyricsAddonManager.getProviderOrder();
+          if (order && order.length > 0) {
+            providerOrder = order;
+          }
+        }
+        console.log("[fetchLyrics] Using provider order:", providerOrder);
         const resp = await window.LyricsService.getLyricsFromProviders(info, providerOrder, mode);
         if (!resp.uri) resp.uri = info.uri;
 
@@ -5615,7 +5661,9 @@ class LyricsContainer extends react.Component {
               artists: Spicetify.Player.data?.item?.artists || [],
               album: Spicetify.Player.data?.item?.album || {},
             },
-            showHint: true
+            showHint: true,
+            provider: this.state.provider,
+            initialLyrics: this.state.currentLyrics
           })
         )
       ),

@@ -1236,10 +1236,64 @@
                 return syncData;
             }
 
-            // SongDataService에 데이터가 없으면 별도 API 요청하지 않음
-            // (song-data 응답과 sync-data 응답은 동일한 DB를 조회하므로)
-            console.log(`[SyncDataService] No sync data for ${trackId}:${provider} in SongDataService cache, returning null`);
-            return null;
+            // SongDataService에 데이터가 없으면 API 직접 요청
+            try {
+                // In-flight request check
+                if (_inflightRequests.has(specificKey)) {
+                    return _inflightRequests.get(specificKey);
+                }
+
+                const fetchPromise = (async () => {
+                    // provider가 legacy인 경우 (Spicetify-custom-apps 호환)
+                    const queryProvider = provider === 'legacy' ? 'spotify' : provider;
+                    const response = await fetch(`${API_BASE}/lyrics/sync-data?trackId=${trackId}&provider=${queryProvider}`);
+
+                    if (!response.ok) {
+                        if (response.status === 404) return null;
+                        throw new Error(`API Error: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+
+                    // 결과가 있고 success가 true이거나 데이터가 직접 반환된 경우
+                    const data = result.data || result;
+
+                    if (data) {
+                        // 결과 구조 정규화 - API 응답 구조: data.syncData.lines
+                        let lines = null;
+
+                        if (Array.isArray(data)) {
+                            lines = data;
+                        } else if (Array.isArray(data.lines)) {
+                            lines = data.lines;
+                        } else if (data.syncData && Array.isArray(data.syncData.lines)) {
+                            lines = data.syncData.lines;
+                        }
+
+                        if (!lines) return null;
+
+                        const syncData = {
+                            trackId,
+                            provider,
+                            syncData: { lines },
+                            createdAt: data.createdAt || null,
+                            updatedAt: data.updatedAt || null
+                        };
+                        _syncDataCache.set(specificKey, syncData);
+                        return syncData;
+                    }
+                    return null;
+                })();
+
+                _inflightRequests.set(specificKey, fetchPromise);
+                const result = await fetchPromise;
+                _inflightRequests.delete(specificKey);
+                return result;
+            } catch (e) {
+                console.warn(`[SyncDataService] Failed to fetch sync data for ${trackId}:${provider}`, e);
+                _inflightRequests.delete(specificKey);
+                return null;
+            }
         }
 
         /**

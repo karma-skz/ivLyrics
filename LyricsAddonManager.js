@@ -171,6 +171,23 @@
         setProviderOrder(order) {
             Spicetify.LocalStorage.set(STORAGE_PREFIX + 'provider-order', JSON.stringify(order));
             console.log('[LyricsAddonManager] Provider order saved:', order);
+
+            // Trigger immediate lyrics refresh if possible
+            if (window.lyricContainer && typeof window.lyricContainer.fetchLyrics === 'function') {
+                console.log('[LyricsAddonManager] Triggering lyrics refresh for provider order change');
+                // Force cache clear for current track if needed, or rely on fetchLyrics logic
+                // fetchLyrics calls getLyricsFromProviders which might use cache.
+                // We should probably clear the memory cache in index.js for the current track to ensure re-fetch.
+                if (window.lyricContainer.clearCacheForCurrentTrack) {
+                    // Assuming such method doesn't exist yet, we can manually clear CACHE if exposed, or rely on refresh=true param if we add it
+                }
+
+                // Using refresh=true argument for fetchLyrics (track, mode, refresh)
+                const currentTrack = Spicetify.Player.data?.item;
+                if (currentTrack) {
+                    window.lyricContainer.fetchLyrics(currentTrack, -1, true);
+                }
+            }
         }
 
         /**
@@ -302,18 +319,32 @@
                             if (window.LyricsService?.applyIvLyricsSyncData) {
                                 console.log(`[LyricsAddonManager] Applying sync data for ${provider.id}...`);
                                 try {
-                                    return await window.LyricsService.applyIvLyricsSyncData(result);
+                                    const syncResult = await window.LyricsService.applyIvLyricsSyncData(result);
+                                    if (syncResult) Object.assign(result, syncResult);
                                 } catch (e) {
                                     console.warn(`[LyricsAddonManager] Failed to apply sync data for ${provider.id}:`, e);
                                 }
                             } else {
                                 console.warn(`[LyricsAddonManager] Provider ${provider.id} requests sync data, but window.LyricsService.applyIvLyricsSyncData is missing!`);
                             }
-                        } else {
-                            // console.log(`[LyricsAddonManager] Sync data auto-apply disabled for ${provider.id}`);
                         }
 
-                        return result;
+                        // Filter based on user settings
+                        const allowKaraoke = this.getAddonSetting(provider.id, 'enable_karaoke', true);
+                        const allowSynced = this.getAddonSetting(provider.id, 'enable_synced', true);
+                        const allowUnsynced = this.getAddonSetting(provider.id, 'enable_unsynced', true);
+
+                        if (!allowKaraoke) result.karaoke = null;
+                        if (!allowSynced) result.synced = null;
+                        if (!allowUnsynced) result.unsynced = null;
+
+                        // Check if specific types are allowed but missing, don't necessarily filter out unless ALL are missing/filtered
+                        // If result has lyrics that are allowed, return it.
+                        if (result.karaoke || result.synced || result.unsynced) {
+                            return result;
+                        } else {
+                            console.log(`[LyricsAddonManager] Lyrics from ${provider.id} filtered out by user settings or empty`);
+                        }
                     }
 
                     // 에러가 있으면 다음 provider 시도

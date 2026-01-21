@@ -2,7 +2,7 @@
  * SyncDataCreator - 노래방 싱크 데이터 생성 UI
  */
 
-const SyncDataCreator = ({ trackInfo, onClose }) => {
+const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 	const { useState, useEffect, useRef, useCallback, useMemo } = react;
 
 	// 상태 관리
@@ -258,6 +258,74 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 	// 컴포넌트 마운트 시 자동 가사 로드 + 기존 싱크 데이터 불러오기
 	useEffect(() => {
 		const initWithExistingSyncData = async () => {
+			// 0. initialData가 있으면 그것을 우선 사용
+			if (initialData && initialData.provider && initialData.lyrics) {
+				console.log('[SyncDataCreator] Using initial data:', initialData.provider);
+				let finalProvider = initialData.provider;
+				const inputLyrics = initialData.lyrics;
+
+				// Spotify provider normalization
+				if ((finalProvider === 'Spotify' || finalProvider === 'spotify') && inputLyrics.spotifyLyricsProvider) {
+					finalProvider = `spotify-${inputLyrics.spotifyLyricsProvider}`;
+				}
+
+				let lyricsSource;
+
+				// inputLyrics가 배열이면(LyricsContainer에서 직접 넘긴 경우) 객체로 감쌈
+				if (Array.isArray(inputLyrics)) {
+					setLyrics({
+						provider: finalProvider,
+						synced: inputLyrics,
+						unsynced: inputLyrics
+					});
+					lyricsSource = inputLyrics;
+				} else {
+					setLyrics(inputLyrics);
+					lyricsSource = inputLyrics.synced || inputLyrics.unsynced;
+				}
+
+				setProvider(finalProvider);
+
+				let text = '';
+
+				if (Array.isArray(lyricsSource)) {
+					text = lyricsSource.map(line => {
+						if (typeof line === 'string') return line;
+						if (line.text) return typeof line.text === 'string' ? line.text : '';
+						if (line.originalText) return typeof line.originalText === 'string' ? line.originalText : '';
+						return '';
+					}).filter(t => t.trim().length > 0).join('\n');
+				} else if (typeof lyricsSource === 'string') {
+					text = lyricsSource;
+				}
+
+				// NFC 정규화 적용
+				text = text ? text.normalize('NFC') : '';
+
+				if (text.trim().length > 0) {
+					setLyricsText(text);
+				} else {
+					setError(I18n.t('syncCreator.noLyrics'));
+				}
+
+				// 기존 싱크 데이터가 있는지 확인 (현재 provider와 일치하는 것만)
+				if (window.SyncDataService && trackId) {
+					try {
+						const existingSyncData = await window.SyncDataService.getSyncData(trackId);
+						if (existingSyncData && existingSyncData.syncData && existingSyncData.syncData.lines) {
+							if (existingSyncData.provider === finalProvider) {
+								console.log('[SyncDataCreator] Found matching existing sync data');
+								setSyncData(existingSyncData.syncData);
+								Toast.success(I18n.t('syncCreator.loadedExistingSyncData') || '기존 싱크 데이터를 불러왔습니다');
+							}
+						}
+					} catch (e) {
+						console.warn('[SyncDataCreator] Failed to load existing sync data:', e);
+					}
+				}
+				return;
+			}
+
 			// 1. 먼저 현재 유저의 Spotify provider를 확인 (가사를 로드해서 확인)
 			let currentUserProvider = null;
 
@@ -804,16 +872,16 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					// 첫 단어의 끝까지 진행 (단어 경계 만나면 멈춤)
 					let endIdx = startIdx;
 					while (endIdx + 1 < currentLineChars.length &&
-						   !isWordBoundary(currentLineChars[endIdx + 1]) &&
-						   !isTrailingChar(currentLineChars[endIdx + 1])) {
+						!isWordBoundary(currentLineChars[endIdx + 1]) &&
+						!isTrailingChar(currentLineChars[endIdx + 1])) {
 						endIdx++;
 						charTimesRef.current[endIdx] = currentTime;
 					}
 
 					// trailing 문자들(구두점 등) 포함
 					while (endIdx + 1 < currentLineChars.length &&
-						   isTrailingChar(currentLineChars[endIdx + 1]) &&
-						   !isWordBoundary(currentLineChars[endIdx + 1])) {
+						isTrailingChar(currentLineChars[endIdx + 1]) &&
+						!isWordBoundary(currentLineChars[endIdx + 1])) {
 						endIdx++;
 						charTimesRef.current[endIdx] = currentTime;
 					}
@@ -1047,7 +1115,7 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 
 					// 모음을 찾을 때까지 진행
 					while (!foundVowel && endIdx + 1 < currentLineChars.length &&
-						   !isWordBoundary(currentLineChars[endIdx + 1])) {
+						!isWordBoundary(currentLineChars[endIdx + 1])) {
 						endIdx++;
 						charTimesRef.current[endIdx] = currentTime;
 						if (isVowel(currentLineChars[endIdx])) {
@@ -1058,9 +1126,9 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					// 모음 뒤의 자음들도 포함 (다음 모음 전까지)
 					if (foundVowel) {
 						while (endIdx + 1 < currentLineChars.length &&
-							   !isWordBoundary(currentLineChars[endIdx + 1]) &&
-							   !isVowel(currentLineChars[endIdx + 1]) &&
-							   !isTrailingChar(currentLineChars[endIdx + 1])) {
+							!isWordBoundary(currentLineChars[endIdx + 1]) &&
+							!isVowel(currentLineChars[endIdx + 1]) &&
+							!isTrailingChar(currentLineChars[endIdx + 1])) {
 							endIdx++;
 							charTimesRef.current[endIdx] = currentTime;
 						}
@@ -1069,8 +1137,8 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					// trailing 문자들(구두점 등) 포함 - 단어 끝인 경우만
 					if (endIdx + 1 >= currentLineChars.length || isWordBoundary(currentLineChars[endIdx + 1])) {
 						while (endIdx + 1 < currentLineChars.length &&
-							   isTrailingChar(currentLineChars[endIdx + 1]) &&
-							   !isWordBoundary(currentLineChars[endIdx + 1])) {
+							isTrailingChar(currentLineChars[endIdx + 1]) &&
+							!isWordBoundary(currentLineChars[endIdx + 1])) {
 							endIdx++;
 							charTimesRef.current[endIdx] = currentTime;
 						}
@@ -1116,7 +1184,7 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 
 					// 모음을 찾을 때까지 진행
 					while (!foundVowel && endIdx + 1 < currentLineChars.length &&
-						   !isWordBoundary(currentLineChars[endIdx + 1])) {
+						!isWordBoundary(currentLineChars[endIdx + 1])) {
 						endIdx++;
 						charTimesRef.current[endIdx] = currentTime;
 						if (isVowel(currentLineChars[endIdx])) {
@@ -1127,9 +1195,9 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					// 모음 뒤의 자음들도 포함 (다음 모음 전까지)
 					if (foundVowel) {
 						while (endIdx + 1 < currentLineChars.length &&
-							   !isWordBoundary(currentLineChars[endIdx + 1]) &&
-							   !isVowel(currentLineChars[endIdx + 1]) &&
-							   !isTrailingChar(currentLineChars[endIdx + 1])) {
+							!isWordBoundary(currentLineChars[endIdx + 1]) &&
+							!isVowel(currentLineChars[endIdx + 1]) &&
+							!isTrailingChar(currentLineChars[endIdx + 1])) {
 							endIdx++;
 							charTimesRef.current[endIdx] = currentTime;
 						}
@@ -1138,8 +1206,8 @@ const SyncDataCreator = ({ trackInfo, onClose }) => {
 					// trailing 문자들(구두점 등) 포함 - 단어 끝인 경우만
 					if (endIdx + 1 >= currentLineChars.length || isWordBoundary(currentLineChars[endIdx + 1])) {
 						while (endIdx + 1 < currentLineChars.length &&
-							   isTrailingChar(currentLineChars[endIdx + 1]) &&
-							   !isWordBoundary(currentLineChars[endIdx + 1])) {
+							isTrailingChar(currentLineChars[endIdx + 1]) &&
+							!isWordBoundary(currentLineChars[endIdx + 1])) {
 							endIdx++;
 							charTimesRef.current[endIdx] = currentTime;
 						}

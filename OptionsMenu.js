@@ -3461,7 +3461,7 @@ const ShareImageButton = react.memo(({ lyrics, trackInfo }) => {
 });
 
 // Sync Data Creator - 노래방 싱크 데이터 생성 (전체화면)
-function openSyncDataCreator(trackInfo) {
+function openSyncDataCreator(trackInfo, initialData = null) {
   // 이미 열려있으면 무시
   if (document.getElementById("ivLyrics-sync-creator-overlay")) {
     return;
@@ -3509,6 +3509,7 @@ function openSyncDataCreator(trackInfo) {
 
   const creatorComponent = react.createElement(SyncDataCreator, {
     trackInfo: trackInfo,
+    initialData: initialData,
     onClose: closeModal
   });
 
@@ -3516,9 +3517,16 @@ function openSyncDataCreator(trackInfo) {
 }
 
 // Sync Data Creator Button
-const SyncDataCreatorButton = react.memo(({ trackInfo, showHint }) => {
+const SyncDataCreatorButton = react.memo(({ trackInfo, showHint, provider, initialLyrics }) => {
   const handleClick = () => {
-    openSyncDataCreator(trackInfo);
+    let initialData = null;
+    if (provider && initialLyrics) {
+      initialData = {
+        provider: provider,
+        lyrics: initialLyrics
+      };
+    }
+    openSyncDataCreator(trackInfo, initialData);
   };
 
   return react.createElement(
