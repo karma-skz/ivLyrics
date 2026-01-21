@@ -1276,6 +1276,7 @@
                             trackId,
                             provider,
                             syncData: { lines },
+                            contributors: data.contributors || [],
                             createdAt: data.createdAt || null,
                             updatedAt: data.updatedAt || null
                         };
