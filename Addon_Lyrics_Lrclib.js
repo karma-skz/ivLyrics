@@ -1,24 +1,25 @@
 /**
- * LRCLIB Lyrics Provider Addon
- * LRCLIB 오픈소스 가사 데이터베이스에서 가사를 제공합니다.
- *
+ * LRCLIB Lyrics Provider Addon (Reference for Community Database Lyrics)
+ * 
+ * [English]
+ * This file demonstrates a lyrics provider addon using a public API (LRCLIB).
+ * It shows how to fetch LRC data and parse it into ivLyrics format.
+ * 
+ * [Korean]
+ * 이 파일은 공개 API(LRCLIB)를 사용하는 가사 제공자 애드온의 예시입니다.
+ * LRC 데이터를 가져와 ivLyrics 형식으로 파싱하는 방법을 보여줍니다.
+ * 
  * @addon-type lyrics
  * @id lrclib
- * @name LRCLIB
  * @version 1.0.0
- * @author ivLis STUDIO
- * @supports karaoke: false (커뮤니티 sync-data를 통해 지원 가능)
- * @supports synced: true
- * @supports unsynced: true
  */
 
 (() => {
     'use strict';
 
     // ============================================
-    // Addon Metadata
+    // 1. Addon Metadata
     // ============================================
-
     const ADDON_INFO = {
         id: 'lrclib',
         name: 'LRCLIB',
@@ -28,32 +29,25 @@
             en: 'Get lyrics from LRCLIB open-source lyrics database',
             ko: 'LRCLIB 오픈소스 가사 데이터베이스에서 가사를 가져옵니다'
         },
-        // 지원하는 가사 유형
         supports: {
-            karaoke: false,   // 기본적으로 노래방 가사 미지원 (sync-data로 확장 가능)
-            synced: true,     // 싱크 가사 지원
-            unsynced: true    // 일반 가사 지원
+            karaoke: false,
+            synced: true,
+            unsynced: true
         },
-        // ivLyrics Sync 데이터 자동 적용 여부
         useIvLyricsSync: true,
-        // 아이콘 (SVG path) - LRC 파일 아이콘
+        // [English] Simple SVG icon
         icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 12h8v2H8v-2zm0 4h8v2H8v-2zm0-8h3v2H8V8z'
     };
-
-    // ============================================
-    // API Endpoints
-    // ============================================
 
     const LRCLIB_API_BASE = 'https://lrclib.net/api';
 
     // ============================================
-    // Helper Functions
+    // 2. Helper Functions (LRC Parser)
     // ============================================
 
     /**
-     * LRC 형식 파싱
-     * @param {string} lrc - LRC 형식 가사
-     * @returns {{ synced: Array|null, unsynced: Array }}
+     * [English] Parse standard LRC text
+     * [Korean] 표준 LRC 텍스트 파싱
      */
     function parseLRC(lrc) {
         const lines = lrc.split('\n');
@@ -61,7 +55,7 @@
         const unsynced = [];
 
         for (const line of lines) {
-            // [mm:ss.xx] 또는 [mm:ss.xxx] 형식 매칭
+            // [mm:ss.xx] or [mm:ss.xxx]
             const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)/);
             if (match) {
                 const minutes = parseInt(match[1], 10);
@@ -75,7 +69,6 @@
                 synced.push({ startTime, text });
                 unsynced.push({ text });
             } else if (line.trim() && !line.startsWith('[')) {
-                // 메타데이터가 아닌 일반 텍스트
                 unsynced.push({ text: line.trim() });
             }
         }
@@ -87,28 +80,20 @@
     }
 
     // ============================================
-    // Addon Implementation
+    // 3. Addon Implementation
     // ============================================
-
     const LrclibLyricsAddon = {
         ...ADDON_INFO,
 
-        /**
-         * 초기화
-         */
         async init() {
             console.log(`[LRCLIB Lyrics Addon] Initialized (v${ADDON_INFO.version})`);
         },
 
-        /**
-         * 설정 UI
-         */
         getSettingsUI() {
             const React = Spicetify.React;
 
-
-            // Fallback: 기존 방식
             return function LrclibLyricsSettings() {
+                // [English] Simple info UI
                 return React.createElement('div', { className: 'lyrics-addon-settings lrclib-settings' },
                     React.createElement('div', { className: 'lyrics-addon-info' },
                         React.createElement('p', null, 'LRCLIB는 커뮤니티 기반 오픈소스 가사 데이터베이스입니다.'),
@@ -122,11 +107,6 @@
             };
         },
 
-        /**
-         * 가사 가져오기
-         * @param {Object} info - 트랙 정보 { uri, title, artist, album, duration }
-         * @returns {Promise<LyricsResult>}
-         */
         async getLyrics(info) {
             const result = {
                 uri: info.uri,
@@ -138,9 +118,8 @@
                 error: null
             };
 
-            const trackId = info.uri.split(':')[2];
-
-            // LRCLIB API 호출
+            // [English] Prepare parameters for API call
+            // [Korean] API 호출을 위한 파라미터 준비
             const params = {
                 track_name: info.title,
                 artist_name: info.artist,
@@ -159,6 +138,7 @@
             try {
                 const response = await fetch(url, {
                     headers: {
+                        // [English] Use a polite User-Agent
                         'x-user-agent': `spicetify v${Spicetify.Config?.version || 'unknown'} (https://github.com/spicetify/cli)`
                     }
                 });
@@ -174,14 +154,16 @@
                 return result;
             }
 
-            // Instrumental 체크
+            // [English] Handle Instrumental tracks
+            // [Korean] 연주곡 처리
             if (body.instrumental) {
                 result.synced = [{ startTime: 0, text: '♪ Instrumental ♪' }];
                 result.unsynced = [{ text: '♪ Instrumental ♪' }];
                 return result;
             }
 
-            // 싱크 가사 파싱
+            // [English] Parse lyrics from response
+            // [Korean] 응답에서 가사 파싱
             if (body.syncedLyrics) {
                 const parsed = parseLRC(body.syncedLyrics);
                 result.synced = parsed.synced;
@@ -190,13 +172,11 @@
                 }
             }
 
-            // 일반 가사 파싱
             if (body.plainLyrics) {
                 const parsed = parseLRC(body.plainLyrics);
                 result.unsynced = parsed.unsynced;
             }
 
-            // 가사가 없는 경우
             if (!result.synced && !result.unsynced) {
                 result.error = 'No lyrics';
                 return result;
@@ -207,9 +187,8 @@
     };
 
     // ============================================
-    // Registration
+    // 4. Registration
     // ============================================
-
     const registerAddon = () => {
         if (window.LyricsAddonManager) {
             window.LyricsAddonManager.register(LrclibLyricsAddon);

@@ -1,8 +1,21 @@
 /**
- * ChatGPT AI Addon for ivLyrics
- * OpenAI ChatGPT를 사용한 번역, 발음, TMI 생성
+ * ChatGPT AI Addon (Reference for AI Provider Addon)
  * 
- * @author ivLis STUDIO
+ * [English]
+ * This file serves as a reference for creating an AI Provider Addon.
+ * AI Addons are used for three main features:
+ * 1. Translation (translateLyrics): Translate lyrics line-by-line.
+ * 2. Metadata Translation (translateMetadata): Translate/Romanize song title and artist.
+ * 3. TMI Generation (generateTMI): Generate interesting facts about the song.
+ * 
+ * [Korean]
+ * 이 파일은 AI 제공자(AI Provider) 애드온을 만들기 위한 레퍼런스입니다.
+ * AI 애드온은 크게 세 가지 기능에 사용됩니다:
+ * 1. 번역 (translateLyrics): 가사를 줄 단위로 번역.
+ * 2. 메타데이터 번역 (translateMetadata): 노래 제목과 아티스트명을 번역/로마자 표기.
+ * 3. TMI 생성 (generateTMI): 노래에 대한 흥미로운 사실 생성.
+ * 
+ * @id chatgpt
  * @version 1.0.0
  */
 
@@ -10,9 +23,8 @@
     'use strict';
 
     // ============================================
-    // Addon Metadata
+    // 1. Addon Metadata
     // ============================================
-
     const ADDON_INFO = {
         id: 'chatgpt',
         name: 'OpenAI ChatGPT',
@@ -32,40 +44,22 @@
         ]
     };
 
-    // ============================================
-    // Language Data
-    // ============================================
-
+    // [English] Map language codes to detailed info used in prompts
+    // [Korean] 프롬프트에 사용될 언어 코드와 상세 정보 매핑
     const LANGUAGE_DATA = {
-        'ko': { name: 'Korean', native: '한국어', phoneticDesc: 'Korean Hangul pronunciation (e.g., こんにちは → 콘니치와)' },
-        'en': { name: 'English', native: 'English', phoneticDesc: 'English romanization (e.g., こんにちは → konnichiwa)' },
-        'zh-CN': { name: 'Simplified Chinese', native: '简体中文', phoneticDesc: 'Chinese characters for pronunciation' },
-        'zh-TW': { name: 'Traditional Chinese', native: '繁體中文', phoneticDesc: 'Chinese characters for pronunciation' },
+        'ko': { name: 'Korean', native: '한국어', phoneticDesc: 'Korean Hangul pronunciation' },
+        'en': { name: 'English', native: 'English', phoneticDesc: 'English romanization' },
         'ja': { name: 'Japanese', native: '日本語', phoneticDesc: 'Japanese Katakana pronunciation' },
-        'hi': { name: 'Hindi', native: 'हिन्दी', phoneticDesc: 'Hindi Devanagari pronunciation' },
-        'es': { name: 'Spanish', native: 'Español', phoneticDesc: 'Spanish phonetic spelling' },
-        'fr': { name: 'French', native: 'Français', phoneticDesc: 'French phonetic spelling' },
-        'ar': { name: 'Arabic', native: 'العربية', phoneticDesc: 'Arabic script pronunciation' },
-        'fa': { name: 'Persian', native: 'فارسی', phoneticDesc: 'Persian script pronunciation' },
-        'de': { name: 'German', native: 'Deutsch', phoneticDesc: 'German phonetic spelling' },
-        'ru': { name: 'Russian', native: 'Русский', phoneticDesc: 'Russian Cyrillic pronunciation' },
-        'pt': { name: 'Portuguese', native: 'Português', phoneticDesc: 'Portuguese phonetic spelling' },
-        'bn': { name: 'Bengali', native: 'বাংলা', phoneticDesc: 'Bengali script pronunciation' },
-        'it': { name: 'Italian', native: 'Italiano', phoneticDesc: 'Italian phonetic spelling' },
-        'th': { name: 'Thai', native: 'ไทย', phoneticDesc: 'Thai script pronunciation' },
-        'vi': { name: 'Vietnamese', native: 'Tiếng Việt', phoneticDesc: 'Vietnamese phonetic spelling' },
-        'id': { name: 'Indonesian', native: 'Bahasa Indonesia', phoneticDesc: 'Indonesian phonetic spelling' }
+        'zh-CN': { name: 'Simplified Chinese', native: '简体中文', phoneticDesc: 'Chinese characters' },
+        // ... add more languages as needed
     };
 
     // ============================================
-    // Helper Functions
+    // 2. Helper Functions (Prompts & API)
     // ============================================
 
-    function getLocalizedText(textObj, lang) {
-        if (typeof textObj === 'string') return textObj;
-        return textObj[lang] || textObj['en'] || Object.values(textObj)[0] || '';
-    }
-
+    // [English] Helpers for accessing settings via AIAddonManager
+    // [Korean] AIAddonManager를 통해 설정에 접근하기 위한 헬퍼들
     function getSetting(key, defaultValue = null) {
         return window.AIAddonManager?.getAddonSetting(ADDON_INFO.id, key, defaultValue) ?? defaultValue;
     }
@@ -90,114 +84,61 @@
         return LANGUAGE_DATA[lang] || LANGUAGE_DATA['en'];
     }
 
-    // ============================================
-    // Prompt Builders (Plain Text Output - Simplified)
-    // ============================================
+    // --- Prompt Builders ---
 
     function buildTranslationPrompt(text, lang) {
         const langInfo = getLangInfo(lang);
         const lineCount = text.split('\n').length;
-
         return `Translate these ${lineCount} lines of song lyrics to ${langInfo.name} (${langInfo.native}).
-
 RULES:
 - Output EXACTLY ${lineCount} lines, one translation per line
 - Keep empty lines as empty
-- Keep ♪ symbols and markers like [Chorus], (Yeah) as-is
-- Do NOT add line numbers or prefixes
+- Keep ♪ symbols and markers like [Chorus] as-is
+- Do NOT add line numbers
 - Do NOT use JSON or code blocks
-- Just output the translated lines, nothing else
-
 INPUT:
 ${text}
-
-OUTPUT (${lineCount} lines):`;
-    }
-
-    function buildPhoneticPrompt(text, lang) {
-        const langInfo = getLangInfo(lang);
-        const lineCount = text.split('\n').length;
-        const isEnglish = lang === 'en';
-        const scriptInstruction = isEnglish
-            ? 'Use Latin alphabet only (romanization).'
-            : `Use ${langInfo.native} script.`;
-
-        return `Convert these ${lineCount} lines of lyrics to pronunciation for ${langInfo.name} speakers.
-${scriptInstruction}
-
-RULES:
-- Output EXACTLY ${lineCount} lines, one pronunciation per line
-- Keep empty lines as empty
-- Keep ♪ symbols and markers like [Chorus], (Yeah) as-is
-- Do NOT add line numbers or prefixes
-- Do NOT use JSON or code blocks
-- Just output the pronunciations, nothing else
-
-INPUT:
-${text}
-
-OUTPUT (${lineCount} lines):`;
+OUTPUT:`;
     }
 
     function buildMetadataPrompt(title, artist, lang) {
         const langInfo = getLangInfo(lang);
-
-        return `Translate the song title and artist name to ${langInfo.name} (${langInfo.native}).
-
-**Input**:
-- Title: ${title}
-- Artist: ${artist}
-
-**Output valid JSON**:
+        return `Translate song metadata to ${langInfo.name} (${langInfo.native}).
+Input: Title: ${title}, Artist: ${artist}
+Output valid JSON:
 {
   "translatedTitle": "translated title",
   "translatedArtist": "translated artist",
-  "romanizedTitle": "romanized in Latin alphabet",
-  "romanizedArtist": "romanized in Latin alphabet"
+  "romanizedTitle": "romanized title",
+  "romanizedArtist": "romanized artist"
 }`;
     }
 
     function buildTMIPrompt(title, artist, lang) {
         const langInfo = getLangInfo(lang);
-
-        return `Generate interesting facts about the song "${title}" by "${artist}".
-
-**Output language**: ${langInfo.name} (${langInfo.native})
-
-**Output valid JSON**:
+        return `Generate facts about song "${title}" by "${artist}" in ${langInfo.native}.
+Output valid JSON:
 {
   "track": {
-    "description": "2-3 sentence description",
+    "description": "Short description",
     "trivia": ["fact 1", "fact 2", "fact 3"],
     "sources": {"verified": [], "related": [], "other": []},
-    "reliability": {"confidence": "medium", "has_verified_sources": false, "verified_source_count": 0, "related_source_count": 0, "total_source_count": 0}
+    "reliability": {"confidence": "medium"}
   }
-}
-
-Write in ${langInfo.native}. Include 3-5 interesting facts.`;
+}`;
     }
 
-    // ============================================
-    // API Call Functions
-    // ============================================
+    // --- API Call Implementation ---
 
-    /**
-     * Call ChatGPT API and return raw text response
-     */
     async function callChatGPTAPIRaw(prompt, maxRetries = 3) {
         const apiKey = getApiKey();
-        if (!apiKey) {
-            throw new Error('API key is required. Please configure your API key in settings.');
-        }
-
+        if (!apiKey) throw new Error('API key is required.');
         const baseUrl = getBaseUrl();
         const model = getSelectedModel();
-        let lastError = null;
 
         for (let attempt = 0; attempt < maxRetries; attempt++) {
             try {
                 const endpoint = `${baseUrl.replace(/\/$/, '')}/chat/completions`;
-
                 const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: {
@@ -206,116 +147,46 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                     },
                     body: JSON.stringify({
                         model: model,
-                        messages: [
-                            { role: 'user', content: prompt }
-                        ],
-                        temperature: 0.3,
-                        max_tokens: 16000
+                        messages: [{ role: 'user', content: prompt }],
+                        temperature: 0.3
                     })
                 });
 
-                if (response.status === 429) {
-                    throw new Error('Rate limit exceeded. Please try again later.');
-                }
-
-                if (response.status === 401 || response.status === 403) {
-                    throw new Error('Invalid API key or permission denied.');
-                }
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                const rawText = data.choices?.[0]?.message?.content || '';
-
-                if (!rawText) {
-                    throw new Error('Empty response from API');
-                }
-
-                return rawText;
+                return data.choices?.[0]?.message?.content || '';
 
             } catch (e) {
-                lastError = e;
-                console.warn(`[ChatGPT Addon] Attempt ${attempt + 1} failed:`, e.message);
-
-                // Don't retry on auth errors
-                if (e.message.includes('Invalid API key') || e.message.includes('permission denied')) {
-                    throw e;
-                }
-
-                if (attempt < maxRetries - 1) {
-                    await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
-                }
+                if (attempt === maxRetries - 1) throw e;
+                await new Promise(r => setTimeout(r, 1000));
             }
         }
-
-        throw lastError || new Error('All retries exhausted');
     }
 
-    /**
-     * Call ChatGPT API and parse JSON response (for metadata, TMI, etc.)
-     */
-    async function callChatGPTAPI(prompt, maxRetries = 3) {
-        const rawText = await callChatGPTAPIRaw(prompt, maxRetries);
-        return extractJSON(rawText);
+    async function callChatGPTAPI(prompt) {
+        const raw = await callChatGPTAPIRaw(prompt);
+        // [English] Simple JSON extraction logic
+        try {
+            return JSON.parse(raw.replace(/```json\s*|```/g, '').trim());
+        } catch {
+            const match = raw.match(/\{[\s\S]*\}/);
+            if (match) return JSON.parse(match[0]);
+            throw new Error('Failed to parse JSON response');
+        }
     }
 
-    /**
-     * Parse plain text lines from API response
-     */
     function parseTextLines(text, expectedLineCount) {
-        // Remove markdown code blocks if present
-        let cleaned = text.replace(/```[a-z]*\s*/gi, '').replace(/```\s*/g, '').trim();
-
-        // Split by newlines
-        const lines = cleaned.split('\n');
-
-        // If line count matches, return as-is
-        if (lines.length === expectedLineCount) {
-            return lines;
-        }
-
-        // If we have more lines, try to find the correct block
-        if (lines.length > expectedLineCount) {
-            console.warn(`[ChatGPT Addon] Got ${lines.length} lines, expected ${expectedLineCount}. Trimming...`);
-            return lines.slice(-expectedLineCount);
-        }
-
-        // If we have fewer lines, pad with empty strings
-        console.warn(`[ChatGPT Addon] Got ${lines.length} lines, expected ${expectedLineCount}. Padding...`);
-        while (lines.length < expectedLineCount) {
-            lines.push('');
-        }
-
+        // [English] Clean up result and ensure line count matches
+        let lines = text.replace(/```\s*/g, '').trim().split('\n');
+        // Simple logic to match line count:
+        if (lines.length > expectedLineCount) lines = lines.slice(-expectedLineCount);
+        while (lines.length < expectedLineCount) lines.push('');
         return lines;
     }
 
-    function extractJSON(text) {
-        // Remove markdown code blocks
-        let cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-
-        // Try direct parse
-        try {
-            return JSON.parse(cleaned);
-        } catch {
-            // Find JSON object in text
-            const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-                try {
-                    return JSON.parse(jsonMatch[0]);
-                } catch {
-                    throw new Error('Failed to parse JSON response');
-                }
-            }
-            throw new Error('No valid JSON found in response');
-        }
-    }
-
     // ============================================
-    // Addon Implementation
+    // 3. Addon Implementation
     // ============================================
-
     const ChatGPTAddon = {
         ...ADDON_INFO,
 
@@ -323,138 +194,97 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
             console.log(`[ChatGPT Addon] Initialized (v${ADDON_INFO.version})`);
         },
 
-        /**
-         * 연결 테스트
-         */
         async testConnection() {
-            await callChatGPTAPIRaw('Reply with just "OK" if you receive this.');
+            await callChatGPTAPIRaw('Reply with "OK".');
         },
 
+        // [English] Settings UI Component
+        // [Korean] 설정 UI 컴포넌트
         getSettingsUI() {
             const React = Spicetify.React;
             const { useState, useCallback } = React;
 
-
-            // Fallback: 기존 방식
             return function ChatGPTSettings() {
                 const [apiKey, setApiKey] = useState(getSetting('api-key', ''));
                 const [baseUrl, setBaseUrl] = useState(getSetting('base-url', 'https://api.openai.com/v1'));
                 const [model, setModel] = useState(getSelectedModel());
-                const [customModel, setCustomModel] = useState(getSetting('custom-model', ''));
                 const [testStatus, setTestStatus] = useState('');
 
-                const handleApiKeyChange = useCallback((e) => {
-                    setApiKey(e.target.value);
-                    setSetting('api-key', e.target.value);
-                }, []);
-
-                const handleBaseUrlChange = useCallback((e) => {
-                    setBaseUrl(e.target.value);
-                    setSetting('base-url', e.target.value);
-                }, []);
-
-                const handleModelChange = useCallback((e) => {
-                    setModel(e.target.value);
-                    setSetting('model', e.target.value);
-                }, []);
-
-                const handleCustomModelChange = useCallback((e) => {
-                    const value = e.target.value;
-                    setCustomModel(value);
-                    setSetting('custom-model', value);
-                    if (value) {
-                        setSetting('model', value);
-                        setModel(value);
-                    }
-                }, []);
+                const handleSave = (key, val) => {
+                    if (key === 'api-key') setApiKey(val);
+                    if (key === 'base-url') setBaseUrl(val);
+                    if (key === 'model') setModel(val);
+                    setSetting(key, val);
+                };
 
                 const handleTest = useCallback(async () => {
                     setTestStatus('Testing...');
                     try {
-                        await callChatGPTAPIRaw('Reply with just "OK" if you receive this.');
-                        setTestStatus('✓ Connection successful!');
+                        await callChatGPTAPIRaw('Reply "OK"');
+                        setTestStatus('Success!');
                     } catch (e) {
-                        setTestStatus(`✗ Error: ${e.message}`);
+                        setTestStatus(`Error: ${e.message}`);
                     }
                 }, []);
 
-                return React.createElement('div', { className: 'ai-addon-settings chatgpt-settings' },
-                    React.createElement('div', { className: 'ai-addon-header' },
-                        React.createElement('h3', null, ADDON_INFO.name),
-                        React.createElement('span', { className: 'ai-addon-version' }, `v${ADDON_INFO.version}`)
-                    ),
-                    React.createElement('p', { className: 'ai-addon-description' },
-                        getLocalizedText(ADDON_INFO.description, Spicetify.Locale?.getLocale()?.split('-')[0] || 'en')
-                    ),
-                    React.createElement('div', { className: 'ai-addon-setting' },
+                return React.createElement('div', { className: 'ai-addon-settings' },
+                    React.createElement('h3', null, 'ChatGPT Settings'),
+                    React.createElement('div', { className: 'setting-row' },
                         React.createElement('label', null, 'API Key'),
-                        React.createElement('div', { className: 'ai-addon-input-group' },
-                            React.createElement('input', { type: 'password', value: apiKey, onChange: handleApiKeyChange, placeholder: 'sk-...' }),
-                            React.createElement('button', { onClick: () => window.open(ADDON_INFO.apiKeyUrl, '_blank'), className: 'ai-addon-btn-secondary' }, 'Get API Key')
-                        )
+                        React.createElement('input', {
+                            type: 'password',
+                            value: apiKey,
+                            onChange: (e) => handleSave('api-key', e.target.value)
+                        })
                     ),
-                    React.createElement('div', { className: 'ai-addon-setting' },
-                        React.createElement('label', null, 'Base URL'),
-                        React.createElement('input', { type: 'text', value: baseUrl, onChange: handleBaseUrlChange, placeholder: 'https://api.openai.com/v1' }),
-                        React.createElement('small', null, 'Change this to use OpenAI-compatible APIs')
-                    ),
-                    React.createElement('div', { className: 'ai-addon-setting' },
+                    React.createElement('div', { className: 'setting-row' },
                         React.createElement('label', null, 'Model'),
-                        React.createElement('select', { value: ADDON_INFO.models.find(m => m.id === model) ? model : '', onChange: handleModelChange },
-                            ADDON_INFO.models.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name)),
-                            React.createElement('option', { value: '' }, 'Custom...')
-                        )
+                        React.createElement('select', {
+                            value: model,
+                            onChange: (e) => handleSave('model', e.target.value)
+                        }, ADDON_INFO.models.map(m =>
+                            React.createElement('option', { key: m.id, value: m.id }, m.name)
+                        ))
                     ),
-                    (!ADDON_INFO.models.find(m => m.id === model) || customModel) &&
-                    React.createElement('div', { className: 'ai-addon-setting' },
-                        React.createElement('label', null, 'Custom Model ID'),
-                        React.createElement('input', { type: 'text', value: customModel, onChange: handleCustomModelChange, placeholder: 'e.g., claude-3-opus' })
-                    ),
-                    React.createElement('div', { className: 'ai-addon-setting' },
-                        React.createElement('button', { onClick: handleTest, className: 'ai-addon-btn-primary' }, 'Test Connection'),
-                        testStatus && React.createElement('span', {
-                            className: `ai-addon-test-status ${testStatus.startsWith('✓') ? 'success' : testStatus.startsWith('✗') ? 'error' : ''}`
-                        }, testStatus)
-                    )
+                    React.createElement('button', { onClick: handleTest }, 'Test Connection'),
+                    React.createElement('div', null, testStatus)
                 );
             };
         },
 
-        async translateLyrics({ text, lang, wantSmartPhonetic }) {
-            if (!text?.trim()) {
-                throw new Error('No text provided');
-            }
+        // --- Core Features ---
 
+        /**
+         * [English] Translate lyrics
+         * [Korean] 가사 번역
+         */
+        async translateLyrics({ text, lang, wantSmartPhonetic }) {
+            if (!text?.trim()) throw new Error('No text');
             const expectedLineCount = text.split('\n').length;
+
+            // [English] Build prompt differently for translation vs phonetic
             const prompt = wantSmartPhonetic
-                ? buildPhoneticPrompt(text, lang)
+                ? `Convert to phonetic (romanized/script) for ${lang}. Input:\n${text}`
                 : buildTranslationPrompt(text, lang);
 
-            // Get raw text response and parse lines
             const rawResponse = await callChatGPTAPIRaw(prompt);
             const lines = parseTextLines(rawResponse, expectedLineCount);
 
-            // Return in the format expected by LyricsService
-            if (wantSmartPhonetic) {
-                return { phonetic: lines };
-            } else {
-                return { translation: lines };
-            }
+            if (wantSmartPhonetic) return { phonetic: lines };
+            return { translation: lines };
         },
 
+        /**
+         * [English] Translate metadata (Title/Artist)
+         * [Korean] 메타데이터 번역 (제목/아티스트)
+         */
         async translateMetadata({ title, artist, lang }) {
-            if (!title || !artist) {
-                throw new Error('Title and artist are required');
-            }
-
             const prompt = buildMetadataPrompt(title, artist, lang);
             const result = await callChatGPTAPI(prompt);
-
-            // Normalize result to match expected format in FullscreenOverlay.js
             return {
                 translated: {
-                    title: result.translatedTitle || result.title || title,
-                    artist: result.translatedArtist || result.artist || artist
+                    title: result.translatedTitle || title,
+                    artist: result.translatedArtist || artist
                 },
                 romanized: {
                     title: result.romanizedTitle || title,
@@ -463,20 +293,19 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
             };
         },
 
+        /**
+         * [English] Generate TMI (Trivia)
+         * [Korean] TMI (트리비아) 생성
+         */
         async generateTMI({ title, artist, lang }) {
-            if (!title || !artist) {
-                throw new Error('Title and artist are required');
-            }
-
             const prompt = buildTMIPrompt(title, artist, lang);
             return await callChatGPTAPI(prompt);
         }
     };
 
     // ============================================
-    // Registration
+    // 4. Registration
     // ============================================
-
     const registerAddon = () => {
         if (window.AIAddonManager) {
             window.AIAddonManager.register(ChatGPTAddon);
@@ -486,6 +315,5 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
     };
 
     registerAddon();
-
     console.log('[ChatGPT Addon] Module loaded');
 })();
