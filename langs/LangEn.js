@@ -1,0 +1,1703 @@
+// English language file for ivLyrics
+window.LANG_EN = {
+  "meta": {
+    "language": "English",
+    "code": "en",
+    "author": "ivLyrics"
+  },
+  "tabs": {
+    "general": "General",
+    "appearance": "Appearance",
+    "behavior": "Behavior",
+    "advanced": "Advanced",
+    "lyricsProviders": "Lyrics Providers",
+    "aiProviders": "AI Providers",
+    "fullscreen": "Fullscreen",
+    "nowplaying": "Panel Lyrics",
+    "debug": "Debug",
+    "about": "About",
+    "searchResults": "Search Results"
+  },
+  "search": {
+    "placeholder": "Search settings...",
+    "noResults": "No results found",
+    "noResultsDesc": "Try different keywords",
+    "resultCount": "{count} results",
+    "clear": "Clear",
+    "inSection": "in {section}"
+  },
+  "sections": {
+    "language": "Language",
+    "visualEffects": "Visual Effects",
+    "visualEffectsSubtitle": "Customize the visual elements of the lyrics screen",
+    "syncMode": "Sync Mode",
+    "syncModeSubtitle": "Configure how lyrics synchronization works",
+    "typography": "Typography",
+    "typographySubtitle": "Adjust the style of the lyrics text",
+    "textShadow": "Text Shadow",
+    "textShadowSubtitle": "Add shadow effects to the lyrics text",
+    "updateCheck": "Update Check",
+    "backgroundOpacity": "Background Opacity",
+    "contentWidth": "Content Width",
+    "japaneseConversion": "Japanese Conversion",
+    "displayContent": "Display Content",
+    "autoTranslation": "Auto Translation",
+    "lyrics": "Lyrics",
+    "playBar": "Playbar Button",
+    "autoScroll": "Auto Scroll",
+    "animation": "Animation",
+    "karaoke": "Karaoke",
+    "syncedLyricsContent": "Synced Lyrics Content",
+    "unsyncedLyricsContent": "Plain Text Lyrics Content",
+    "customPreview": "Custom Preview",
+    "trackSyncInfo": "Track Sync Info",
+    "customDatabase": "Custom Database",
+    "debug": "Debug",
+    "github": "GitHub",
+    "maintainers": "Maintainers",
+    "contributors": "Contributors",
+    "fadWarningTitle": "⚠️ Full Screen Extension Detected",
+    "fadWarningDesc": "Not supported while using a Full Screen extension.",
+    "fadWarningTip": "Please change the alignment settings within the Full Screen extension itself.",
+    "desktopOverlay": "Desktop Overlay",
+    "desktopOverlaySubtitle": "Display lyrics as an overlay on your desktop"
+  },
+  "overlay": {
+    "enabled": {
+      "label": "Enable Desktop Overlay",
+      "desc": "Send lyrics to the desktop overlay app"
+    },
+    "port": {
+      "label": "Connection Port",
+      "desc": "Port number to connect with the overlay app (1024-65535)"
+    },
+    "portSaved": "Port saved",
+    "portInvalid": "Invalid port number (1024-65535)",
+    "status": {
+      "connected": "✓ Connected",
+      "disconnected": "Disconnected",
+      "checking": "Checking..."
+    },
+    "openApp": "Open App",
+    "download": "Download App",
+    "downloadDesc": "Download the overlay app if it is not installed"
+  },
+  "settings": {
+    "language": {
+      "label": "Language",
+      "desc": "Select the language for the extension"
+    },
+    "alignment": {
+      "label": "Alignment",
+      "desc": "Select the alignment of the lyrics text",
+      "options": {
+        "left": "Left",
+        "center": "Center",
+        "right": "Right"
+      }
+    },
+    "noise": {
+      "label": "Noise Overlay",
+      "desc": "Add a film grain effect to the background"
+    },
+    "albumBgBlur": {
+      "label": "Album Background Blur",
+      "desc": "Adjust the blur intensity of the album background"
+    },
+    "blurGradientBackground": {
+      "label": "Blur Gradient Background",
+      "desc": "Apply a blur gradient background by extracting colors from the album art"
+    },
+    "colorful": {
+      "label": "Colorful Background",
+      "desc": "Enable a dynamic background based on album colors"
+    },
+    "gradientBackground": {
+      "label": "Album Cover Background",
+      "desc": "Use the current album cover as the background (May not work properly in fullscreen mode)"
+    },
+    "solidBackground": {
+      "label": "Solid Background",
+      "desc": "Use a custom solid color as the background"
+    },
+    "solidBackgroundColor": {
+      "label": "Solid Background Color",
+      "desc": "Select the color for the solid background"
+    },
+    "videoBackground": {
+      "label": "Video Background",
+      "desc": "Use a YouTube video as the background (Beta)"
+    },
+    "videoHelper": {
+      "label": "Use Helper Program",
+      "desc": "Download and play YouTube videos locally. Allows viewing videos without logging in.",
+      "info": "💡 YouTube video not loading?\n\nGoogle restricts some users from playing YouTube videos without logging in.\nUsing the Helper Program allows you to load them normally.",
+      "download": "Download Helper",
+      "checkConnection": "Check Connection",
+      "connected": "Connected to Helper Program",
+      "disconnected": "Cannot connect to Helper Program",
+      "status": {
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "checking": "Checking..."
+      }
+    },
+    "lyricsHelper": {
+      "label": "Use Lyrics Helper",
+      "desc": "Send track and lyrics info to the Helper. Allows external programs to access via API.",
+      "sectionTitle": "Helper Integration",
+      "sectionSubtitle": "Send lyrics to external Helper app",
+      "info": "You can display synced lyrics in external programs via the Helper app",
+      "download": "Download Helper",
+      "connected": "Helper Connected",
+      "disconnected": "Helper Disconnected",
+      "status": {
+        "checking": "Checking...",
+        "connected": "Connected",
+        "disconnected": "Disconnected"
+      }
+    },
+    "videoBlur": {
+      "label": "Video Blur",
+      "desc": "Adjust the blur intensity applied to the video background (0-40px)"
+    },
+    "videoCover": {
+      "label": "Video Fill Screen",
+      "desc": "Zoom the video to fill the screen (Top/bottom or sides may be cropped)"
+    },
+    "backgroundBrightness": {
+      "label": "Background Brightness",
+      "desc": "Adjust the brightness level of the background (0-100%)"
+    },
+    "solidBackgroundWarning": "Background brightness adjustment does not apply when using Solid Background.",
+    "updateCheck": {
+      "label": "Update Check",
+      "desc": "Automatically check for new updates",
+      "info": "Updates are checked every 24 hours at most."
+    },
+    "backgroundOpacity": {
+      "label": "Cover Background Opacity",
+      "desc": "Set the opacity of the cover"
+    },
+    "contentWidth": {
+      "label": "Content Width",
+      "desc": "Set the width of the content in fullscreen and non-fullscreen modes"
+    },
+    "japaneseConversion": {
+      "label": "Japanese Conversion",
+      "desc": "Set the conversion format for Japanese lyrics",
+      "info": "This setting applies only to Synced and Unsynced lyrics. It does not work for Karaoke lyrics.",
+      "options": {
+        "disabled": "Disabled",
+        "romaji": "Romaji",
+        "furigana": "Furigana",
+        "hiragana": "Hiragana",
+        "katakana": "Katakana"
+      }
+    },
+    "displayContent": {
+      "label": "Display Content",
+      "desc": "Display other content along with the lyrics",
+      "options": {
+        "disabled": "Disabled",
+        "romanization": "Pronunciation (Romanization)",
+        "translation": "Translation"
+      }
+    },
+    "autoTranslation": {
+      "label": "Auto Translation",
+      "desc": "Automatically provide translations if none are available",
+      "options": {
+        "disabled": "Disabled (Default)",
+        "google": "Google Translate",
+        "microsoft": "Microsoft Translator"
+      }
+    },
+    "lyricsMode": {
+      "label": "Lyrics Mode",
+      "options": {
+        "karaoke": "Karaoke",
+        "synced": "Synced",
+        "unsynced": "Plain Text",
+        "genius": "Genius"
+      }
+    },
+    "playBarButton": {
+      "label": "Playbar Button",
+      "desc": "Display a lyrics button on the playbar",
+      "options": {
+        "disabled": "Disabled",
+        "normal": "Normal",
+        "fullscreen": "Fullscreen"
+      }
+    },
+    "autoScroll": {
+      "label": "Auto Scroll",
+      "desc": "Enable auto-scroll. Resumes auto-scroll 5 seconds after manual scrolling."
+    },
+    "animation": {
+      "label": "Animation",
+      "desc": "Display animations for lines other than the karaoke highlight"
+    },
+    "karaoke": {
+      "label": "Karaoke Lead-in Countdown",
+      "desc": "Display the lead-in countdown as numbers. If disabled, dots will be shown."
+    },
+    "blurInactive": {
+      "label": "Blur Inactive Lines",
+      "desc": "Blur inactive lines in synced lyrics",
+      "info": "Performance issues may occur when this option is enabled."
+    },
+    "fade": {
+      "label": "Blur & Gradient",
+      "desc": "Display blur and gradient at the top and bottom of the lyrics",
+      "info": "Performance issues may occur when this option is enabled."
+    },
+    "syncedAsFallback": {
+      "label": "Fallback to Synced Lyrics",
+      "desc": "Use synced lyrics if karaoke lyrics are not available"
+    },
+    "unsyncedAsFallback": {
+      "label": "Fallback to Plain Text",
+      "desc": "Use plain text if synced lyrics are not available"
+    },
+    "preferUnsynced": {
+      "label": "Prefer Plain Text over Synced",
+      "desc": "Prioritize plain text when both synced and plain text are available.",
+      "info": "* Some plain text lyrics may contain lines not present in synced lyrics."
+    },
+    "customPreview": {
+      "label": "Custom Preview",
+      "desc": "Customize the lyrics screen preview image. Image will be displayed at 300x150px.",
+      "placeholder": "Enter image URL"
+    },
+    "trackSyncInfo": {
+      "label": "Track Sync Info",
+      "desc": "Manage sync information connected to tracks"
+    },
+    "customDatabase": {
+      "label": "Custom Database",
+      "desc": "Set a custom database URL",
+      "placeholder": "Enter custom database URL"
+    },
+    "debugVerbose": {
+      "label": "Verbose Debug Info",
+      "desc": "Output more detailed information to the console"
+    },
+    "cache": {
+      "deleteAll": "Delete all cached lyrics",
+      "noCache": "No cached lyrics"
+    },
+    "colors": {
+      "customColor": "Custom",
+      "showMore": "Show More ▼",
+      "showLess": "Show Less ▲",
+      "black": "Black",
+      "charcoal": "Charcoal",
+      "darkSlate": "Dark Slate",
+      "gray": "Gray",
+      "darkNavy": "Dark Navy",
+      "navy": "Navy",
+      "royalBlue": "Royal Blue",
+      "sky": "Sky",
+      "indigo": "Indigo",
+      "purple": "Purple",
+      "fuchsia": "Fuchsia",
+      "pink": "Pink",
+      "wine": "Wine",
+      "red": "Red",
+      "orange": "Orange",
+      "amber": "Amber",
+      "gold": "Gold",
+      "lime": "Lime",
+      "green": "Green",
+      "emerald": "Emerald",
+      "teal": "Teal",
+      "cyan": "Cyan",
+      "brown": "Brown",
+      "chocolate": "Chocolate"
+    },
+    "solidBackgroundInUse": "ℹ️ Solid Background in use",
+    "fontPlaceholder": "Enter font name (e.g., Arial, Roboto)",
+    "aiProviders": {
+      "providerSelection": "AI Provider Selection",
+      "providerSelectionDesc": "Select AI providers for translation, pronunciation, and TMI generation",
+      "metadataProvider": "Metadata Translation",
+      "lyricsProvider": "Lyrics Translation/Pronunciation",
+      "tmiProvider": "TMI Generation",
+      "selectProvider": "Select provider...",
+      "addonSettings": "Addon Settings",
+      "addonSettingsDesc": "Configure settings for each AI Addon",
+      "noAddons": "No AI Addons registered. Please check your Addon files."
+    },
+    "lyricsProviders": {
+      "title": "Lyrics Providers",
+      "description": "Select and prioritize lyrics providers. Providers at the top are tried first.",
+      "noProviders": "No lyrics providers registered.",
+      "allowedTypes": "Allowed Lyrics Types",
+      "moveUp": "Move Up",
+      "moveDown": "Move Down",
+      "types": {
+        "karaoke": "Karaoke Lyrics",
+        "synced": "Synced Lyrics",
+        "unsynced": "Plain Text Lyrics"
+      },
+      "supports": {
+        "karaoke": "Karaoke",
+        "synced": "Synced",
+        "unsynced": "Plain",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
+  },
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "reset": "Reset",
+    "import": "Import",
+    "export": "Export",
+    "open": "Open",
+    "close": "Close",
+    "apply": "Apply",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "remove": "Remove",
+    "clear": "Clear",
+    "refresh": "Refresh",
+    "settings": "Settings",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen"
+  },
+  "menu": {
+    "translation": "Convert",
+    "settings": "Settings",
+    "syncAdjust": "Adjust Sync",
+    "syncAdjustTitle": "Adjust Lyrics Sync",
+    "copyLyrics": "Copy Lyrics",
+    "searchLyrics": "Search Lyrics",
+    "editLyrics": "Edit Lyrics",
+    "shareImage": "Share Lyrics Image",
+    "translationOptions": "Conversion Options",
+    "translationOptionsSubtitle": "Configure pronunciation and translation display",
+    "detectedLanguage": "Detected Language",
+    "detectedLanguageInfo": "The language of the current track. Conversion options apply differently based on the language.",
+    "unknownLanguage": "Unknown",
+    "autoDetect": "Auto Detect",
+    "overrideLanguage": "Manual Language Override",
+    "overrideLanguageInfo": "Manually set the language for this track. Translations will use this language instead of auto-detection.",
+    "pronunciation": "Pronunciation",
+    "pronunciationInfo": "Display pronunciation (Romanization) of the original lyrics",
+    "translationLabel": "Translation",
+    "translationInfo": "Translate and display original lyrics in your language",
+    "apiSettings": "API Settings",
+    "apiSettingsSubtitle": "Configure Gemini API",
+    "apiKeySettings": "API Key Settings",
+    "apiKeySettingsInfo": "Click here to set up your Gemini API key",
+    "openSettings": "Open Settings",
+    "translationSettings": "Conversion Settings",
+    "regenerateTranslation": "Regenerate Translation",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen"
+  },
+  "messages": {
+    "noLyrics": "No lyrics available",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "saved": "Saved",
+    "copied": "Copied",
+    "deleted": "Deleted",
+    "updated": "Updated",
+    "applied": "Applied",
+    "noTrackInfo": "No track information",
+    "syncedLyricsCopied": "Synced lyrics copied to clipboard.",
+    "unsyncedLyricsCopied": "Plain text lyrics copied to clipboard."
+  },
+  "update": {
+    "newVersion": "New update version",
+    "available": "is available!",
+    "notes": "Update Notes",
+    "update": "Update",
+    "dismiss": "Later",
+    "alreadyLatest": "Already on the latest version",
+    "checkFailed": "Failed to check for updates",
+    "versionChange": "Version",
+    "copyCommand": "Copy Command",
+    "releaseNotes": "Release Notes",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "copied": "Copied"
+  },
+  "fullscreen": {
+    "title": "Fullscreen",
+    "background": "Background",
+    "backgroundOptions": {
+      "albumArt": "Album Art",
+      "animatedCanvas": "Animated Canvas",
+      "artistArt": "Artist Art",
+      "staticColor": "Solid Color"
+    },
+    "showExtraControls": {
+      "label": "Show Extra Controls",
+      "desc": "Display additional controls in fullscreen mode"
+    },
+    "contextDisplay": {
+      "label": "Context Display",
+      "desc": "Display current playing context in fullscreen mode"
+    },
+    "upcomingLyrics": {
+      "label": "Show Next Lyrics",
+      "desc": "Preview the upcoming lyrics lines in fullscreen mode"
+    },
+    "volumeDisplay": {
+      "label": "Show Volume",
+      "desc": "Display volume controls in fullscreen mode"
+    },
+    "controls": {
+      "like": "Like",
+      "unlike": "Remove Like",
+      "shuffle": "Shuffle",
+      "previous": "Previous",
+      "next": "Next",
+      "nextTrackLabel": "Next Track",
+      "play": "Play",
+      "pause": "Pause",
+      "repeatOff": "Repeat Off",
+      "repeatAll": "Repeat All",
+      "repeatOne": "Repeat One",
+      "mute": "Mute",
+      "unmute": "Unmute",
+      "share": "Copy Share Link",
+      "shareCopied": "🔗 Share link copied"
+    },
+    "queue": {
+      "title": "Queue",
+      "recentlyPlayed": "Recently Played",
+      "nowPlaying": "Now Playing",
+      "upNext": "Up Next",
+      "empty": "Queue is empty",
+      "noRecent": "No recent playback history"
+    },
+    "contextType": {
+      "playlist": "Playlist",
+      "album": "Album",
+      "artist": "Artist",
+      "collection": "Liked Songs",
+      "station": "Station"
+    }
+  },
+  "about": {
+    "version": "Version",
+    "sourceCode": "Source Code",
+    "reportIssue": "Report Issue",
+    "changelog": "Changelog",
+    "license": "License",
+    "credits": "Credits"
+  },
+  "translationMenu": {
+    "none": "None",
+    "disabled": "Disabled",
+    "romaji": "Romaji",
+    "hiragana": "Hiragana",
+    "katakana": "Katakana",
+    "furigana": "Furigana",
+    "romanization": "Pronunciation",
+    "translation": "Translation",
+    "google": "Google Translate",
+    "microsoft": "Microsoft Translate",
+    "geminiRomaji": "Pronunciation",
+    "geminiKo": "Translation",
+    "romajiGemini": "Romaji (Gemini)",
+    "koGemini": "English (Gemini)",
+    "simplifiedChinese": "Simplified Chinese",
+    "traditionalChineseHK": "Traditional Chinese (HK)",
+    "traditionalChineseTW": "Traditional Chinese (TW)",
+    "pinyin": "Pinyin"
+  },
+  "notifications": {
+    "languageChanged": "Language changed. Will be applied after refresh.",
+    "settingsSaved": "Settings saved",
+    "settingsReset": "Settings reset",
+    "exportSuccess": "Export successful",
+    "importSuccess": "Import successful",
+    "importFailed": "Failed to import settings",
+    "syncDataCleared": "Sync data cleared",
+    "syncDataClearFailed": "Failed to clear sync data",
+    "lyricsCopied": "Lyrics copied to clipboard",
+    "lyricsCopyFailed": "Failed to copy lyrics",
+    "translationCopied": "Translation copied to clipboard",
+    "translationCopyFailed": "Failed to copy translation",
+    "secondTranslationCopied": "Second translation copied to clipboard",
+    "secondTranslationCopyFailed": "Failed to copy second translation",
+    "installCommandCopied": "Install command copied",
+    "copyFailed": "Copy failed",
+    "memoryCacheCleared": "Memory cache cleared",
+    "localCacheCleared": "All local cache cleared",
+    "localCacheTrackCleared": "Local cache for current track cleared",
+    "exportSuccessDesc": "Settings file saved to Downloads folder.",
+    "exportFailed": "Export failed",
+    "importSuccessDesc": "Page will refresh shortly...",
+    "resetSuccess": "Reset complete",
+    "resetSuccessDesc": "Page will refresh shortly...",
+    "resetFailed": "Reset failed",
+    "updateCheckFailed": "Update check failed",
+    "checkNetworkConnection": "Please check your network connection",
+    "updateAvailable": "Update available",
+    "latestVersion": "You are on the latest version",
+    "noLyricsLoaded": "Lyrics not loaded.",
+    "translationRegenerateGeminiOnly": "Translation regeneration is only available with Gemini translation.",
+    "regeneratingTranslation": "Regenerating translation...",
+    "translationRegenerated": "Translation regenerated",
+    "translationRegenerateFailed": "Failed to regenerate translation",
+    "translationCacheRemoved": "Translation cache removed and reloaded!",
+    "translationCacheReset": "{count} translation cache items reset",
+    "tooManyTranslationRequests": "Too many translation requests. Please try again in a minute.",
+    "requestingPronunciation": "Requesting pronunciation. This may take about 30 seconds.",
+    "requestingTranslation": "Requesting translation. This may take about 30 seconds.",
+    "shareImageCopied": "Image copied to clipboard",
+    "shareImageDownloaded": "Image downloaded",
+    "shareImageShared": "Shared successfully",
+    "shareImageFailed": "Failed to create image",
+    "shareImageNoLyrics": "Please select lyrics to share",
+    "noTrackPlaying": "No track is playing",
+    "overlayConnected": "Overlay Connected",
+    "romajiTranslationFailed": "Romaji/Pronunciation conversion failed",
+    "koreanTranslationFailed": "Translation failed",
+    "pinyinLibraryUnavailable": "Pinyin library unavailable. Showing original. Please allow jsDelivr or unpkg.",
+    "conversionSkippedSimplified": "Conversion skipped: Already Simplified Chinese",
+    "conversionCompleted": "Conversion completed",
+    "conversionFailed": "Conversion failed",
+    "fileTooLarge": "File too large: Max size is 1MB",
+    "noValidLyricsInFile": "No valid lyrics found in file",
+    "lyricsLoadedFromFile": "Successfully loaded {types} lyrics from file",
+    "lyricsLoadFailed": "Failed to load lyrics: Invalid file format",
+    "fileReadFailed": "Failed to read file: File may be corrupted"
+  },
+  "misc": {
+    "and": "and",
+    "or": "or",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "default": "Default",
+    "custom": "Custom",
+    "none": "None",
+    "auto": "Auto",
+    "manual": "Manual",
+    "on": "On",
+    "off": "Off",
+    "yes": "Yes",
+    "no": "No",
+    "items": "items",
+    "seconds": "sec",
+    "minutes": "min",
+    "lyricsProvider": "Lyrics Provider",
+    "syncContributor": "Sync Contributor"
+  },
+  "settingsAdvanced": {
+    "patchNotes": {
+      "empty": "No patch notes available."
+    },
+    "donate": {
+      "title": "Buy the developer a coffee",
+      "button": "Donate"
+    },
+    "syncMode": {
+      "title": "Sync Mode",
+      "subtitle": "Display options for compact sync mode",
+      "linesBefore": {
+        "label": "Lines Displayed (Before)",
+        "desc": "Number of lines to show before the current active line"
+      },
+      "linesAfter": {
+        "label": "Lines Displayed (After)",
+        "desc": "Number of lines to show after the current active line"
+      },
+      "fadeoutBlur": {
+        "label": "Fadeout Blur Effect",
+        "desc": "Apply blur effect to inactive lyrics"
+      },
+      "highlightMode": {
+        "label": "Highlight Mode",
+        "desc": "Brightly highlight only the current singing lyrics and dim the rest"
+      },
+      "highlightIntensity": {
+        "label": "Highlight Intensity",
+        "desc": "Adjust transparency of inactive lyrics (Lower is dimmer)"
+      }
+    },
+    "livePreview": {
+      "title": "Live Preview",
+      "subtitle": "Instantly see your style changes",
+      "sampleText": "Here are the lyrics",
+      "sampleTextMixed": "Here Lyric あります",
+      "sampleTextPhonetic": "Hie Ririk Arimasu"
+    },
+    "originalStyle": {
+      "title": "Original Text Style",
+      "subtitle": "Font settings for original lyrics",
+      "fontFamily": "Font Family",
+      "fontFamilyDesc": "Select the font for original lyrics. You can enter multiple fonts separated by commas to apply them in order.",
+      "fontSize": {
+        "label": "Font Size",
+        "desc": "Font size for original lyrics (px)"
+      },
+      "fontWeight": {
+        "label": "Font Weight",
+        "desc": "Font weight for original lyrics"
+      },
+      "opacity": {
+        "label": "Opacity",
+        "desc": "Opacity of original lyrics (0-100%)"
+      },
+      "letterSpacing": {
+        "label": "Letter Spacing",
+        "desc": "Spacing between characters for original lyrics (px)"
+      }
+    },
+    "pronunciationStyle": {
+      "title": "Pronunciation Style",
+      "subtitle": "Font settings for pronunciation (Romaji, Romaja, Pinyin)",
+      "fontFamily": "Font Family",
+      "fontFamilyDesc": "Select the font for pronunciation. You can enter multiple fonts separated by commas to apply them in order.",
+      "fontSize": {
+        "label": "Font Size",
+        "desc": "Font size for pronunciation (px)"
+      },
+      "fontWeight": {
+        "label": "Font Weight",
+        "desc": "Font weight for pronunciation"
+      },
+      "opacity": {
+        "label": "Opacity",
+        "desc": "Opacity of pronunciation (0-100%)"
+      },
+      "gap": {
+        "label": "Gap from Original",
+        "desc": "Margin between original text and pronunciation"
+      },
+      "letterSpacing": {
+        "label": "Letter Spacing",
+        "desc": "Spacing between characters for pronunciation (px)"
+      },
+      "hyphenReplace": {
+        "label": "Hyphen (-) Handling",
+        "desc": "Choose how to display hyphens in pronunciation (e.g., Tah-shee-kah → Tah shee kah or Tahsheekah)",
+        "options": {
+          "keep": "Keep (Tah-shee-kah)",
+          "space": "Replace with space (Tah shee kah)",
+          "remove": "Remove (Tahsheekah)"
+        }
+      }
+    },
+    "translationStyle": {
+      "title": "Translation Style",
+      "subtitle": "Font settings for translated lyrics",
+      "fontFamily": "Font Family",
+      "fontFamilyDesc": "Select the font for translated lyrics. You can enter multiple fonts separated by commas to apply them in order.",
+      "fontSize": {
+        "label": "Font Size",
+        "desc": "Font size for translated lyrics (px)"
+      },
+      "fontWeight": {
+        "label": "Font Weight",
+        "desc": "Font weight for translated lyrics"
+      },
+      "opacity": {
+        "label": "Opacity",
+        "desc": "Opacity of translated lyrics (0-100%)"
+      },
+      "gap": {
+        "label": "Gap from Pronunciation",
+        "desc": "Margin between pronunciation and translation (px)"
+      },
+      "letterSpacing": {
+        "label": "Letter Spacing",
+        "desc": "Spacing between characters for translated lyrics (px)"
+      }
+    },
+    "furiganaStyle": {
+      "title": "Furigana Style",
+      "subtitle": "Settings for reading aid (Furigana) displayed above Kanji",
+      "fontSize": {
+        "label": "Font Size",
+        "desc": "Font size for Furigana (px)"
+      },
+      "fontWeight": {
+        "label": "Font Weight",
+        "desc": "Font weight for Furigana"
+      },
+      "opacity": {
+        "label": "Opacity",
+        "desc": "Opacity of Furigana (0-100%)"
+      },
+      "spacing": {
+        "label": "Spacing",
+        "desc": "Margin between Furigana and Kanji (px)"
+      }
+    },
+    "textShadow": {
+      "title": "Text Shadow",
+      "subtitle": "Shadow effects to improve readability",
+      "enabled": {
+        "label": "Shadow Effect",
+        "desc": "Apply shadow effect to lyrics text"
+      },
+      "color": {
+        "label": "Shadow Color",
+        "desc": "Color of the shadow (HEX code)"
+      },
+      "opacity": {
+        "label": "Shadow Opacity",
+        "desc": "Opacity of the shadow (0-100%)"
+      },
+      "blur": {
+        "label": "Blur Radius",
+        "desc": "Blurriness of the shadow"
+      }
+    },
+    "playback": {
+      "title": "Playback Behavior",
+      "subtitle": "Settings for playback related features",
+      "replaceButton": {
+        "label": "Replace Lyrics Button",
+        "info": "Replaces Spotify's default lyrics button with ivLyrics"
+      },
+      "replaceFullscreenButton": {
+        "label": "Replace Fullscreen Button",
+        "info": "Replaces Spotify's default fullscreen button with ivLyrics fullscreen"
+      },
+      "fullscreenShortcut": {
+        "label": "Fullscreen Shortcut",
+        "desc": "Keyboard shortcut for lyrics fullscreen mode"
+      }
+    },
+    "nowPlayingPanel": {
+      "title": "NowPlaying Panel Lyrics",
+      "subtitle": "Lyrics display settings for the right side 'Now Playing' panel",
+      "enabled": {
+        "label": "Enable Panel Lyrics",
+        "desc": "Display current lyrics in the Now Playing panel"
+      },
+      "lines": {
+        "label": "Number of Lines",
+        "desc": "Number of lyrics lines to display in the panel (Default: 5)"
+      },
+      "fontScale": {
+        "label": "Global Font Scale",
+        "desc": "Scale ratio for panel lyrics text (50%-200%)"
+      },
+      "fontFamily": {
+        "label": "Default Font",
+        "desc": "Default font for panel lyrics (Used if individual fonts are not set)"
+      },
+      "originalFont": {
+        "label": "Original Font",
+        "desc": "Font for original lyrics (Uses default if empty, comma-separated allowed)"
+      },
+      "phoneticFont": {
+        "label": "Pronunciation Font",
+        "desc": "Font for pronunciation (Uses default if empty, comma-separated allowed)"
+      },
+      "translationFont": {
+        "label": "Translation Font",
+        "desc": "Font for translated lyrics (Uses default if empty, comma-separated allowed)"
+      },
+      "originalSize": {
+        "label": "Original Font Size",
+        "desc": "Base font size for original lyrics (px)"
+      },
+      "phoneticSize": {
+        "label": "Pronunciation Font Size",
+        "desc": "Base font size for pronunciation (px)"
+      },
+      "translationSize": {
+        "label": "Translation Font Size",
+        "desc": "Base font size for translated lyrics (px)"
+      },
+      "preview": "Preview",
+      "background": {
+        "title": "Background",
+        "subtitle": "Panel background style settings",
+        "type": {
+          "label": "Background Type",
+          "desc": "Select background style",
+          "album": "Album Color",
+          "custom": "Custom Color",
+          "gradient": "Album-based Gradient"
+        },
+        "color": {
+          "label": "Background Color",
+          "desc": "Custom background color"
+        },
+        "gradient1": {
+          "label": "Gradient Color 1",
+          "desc": "First gradient color"
+        },
+        "gradient2": {
+          "label": "Gradient Color 2",
+          "desc": "Second gradient color"
+        },
+        "opacity": {
+          "label": "Background Opacity",
+          "desc": "Background opacity (0%=Transparent, 100%=Opaque)"
+        }
+      },
+      "border": {
+        "title": "Border",
+        "subtitle": "Panel border style settings",
+        "enabled": {
+          "label": "Enable Border",
+          "desc": "Show border around the panel"
+        },
+        "color": {
+          "label": "Border Color",
+          "desc": "Border color"
+        },
+        "opacity": {
+          "label": "Border Opacity",
+          "desc": "Border opacity (0%=Transparent, 100%=Opaque)"
+        }
+      }
+    },
+    "karaokeMode": {
+      "title": "Karaoke Mode",
+      "subtitle": "Karaoke style lyrics display",
+      "enabled": {
+        "label": "Use Karaoke Mode",
+        "desc": "Use Karaoke tab for supported songs. If disabled, defaults to Synced tab."
+      },
+      "bounce": {
+        "label": "Character Bounce Effect",
+        "desc": "Apply a bounce animation to the current singing characters in Karaoke mode"
+      }
+    },
+    "prefetch": {
+      "title": "Preload Next Song",
+      "subtitle": "Preload elements of the next song to reduce delay during transitions",
+      "enabled": {
+        "label": "Preload Translation/Pronunciation",
+        "desc": "Request translation and pronunciation conversion for the next song in advance"
+      },
+      "videoEnabled": {
+        "label": "Preload Video Background",
+        "desc": "Fetch video background info for the next song in advance"
+      }
+    },
+    "communitySync": {
+      "title": "Community Sync",
+      "subtitle": "Share lyrics sync offsets with other users",
+      "enabled": {
+        "label": "Use Community Sync",
+        "desc": "Use sync offsets shared by the community"
+      },
+      "autoApply": {
+        "label": "Auto Apply",
+        "desc": "Automatically apply community offsets if confidence is high enough"
+      },
+      "autoSubmit": {
+        "label": "Auto Submit",
+        "desc": "Automatically share sync offsets with the community when you change them"
+      },
+      "minConfidence": {
+        "label": "Minimum Confidence",
+        "desc": "Minimum confidence required for auto-apply (0.0 ~ 1.0). Confidence is calculated based on submission count and consistency. Higher value means more users submitted similar offsets."
+      }
+    },
+    "cacheManagement": {
+      "title": "Cache Management",
+      "subtitle": "Manage stored data",
+      "memoryCache": {
+        "label": "Clear Memory Cache",
+        "desc": "Loaded lyrics are temporarily stored in memory for quick reloading. Clear memory cache without restarting Spotify.",
+        "button": "Clear Cache"
+      },
+      "localCache": {
+        "label": "Manage Local Cache (IndexedDB)",
+        "desc": "Lyrics, translations, and pronunciations are stored locally to reduce API calls on repeated listening.",
+        "clearAll": "Delete All",
+        "clearCurrent": "Delete Current Track",
+        "stats": "Lyrics: {lyrics}, Translations: {translations}, Metadata: {metadata}"
+      }
+    },
+    "languageDetection": {
+      "title": "Language Detection",
+      "subtitle": "Settings for language detection used in text conversion",
+      "furigana": {
+        "label": "Show Furigana on Japanese Kanji",
+        "desc": "Display Hiragana readings above Kanji in Japanese lyrics"
+      },
+      "japaneseThreshold": {
+        "label": "Japanese Detection Threshold",
+        "desc": "Detects Japanese based on the ratio of Kana characters. Higher values mean stricter detection (Percentage)"
+      },
+      "chineseThreshold": {
+        "label": "Chinese Detection Threshold",
+        "desc": "Detects Chinese variants based on the ratio of Traditional/Simplified characters. Higher values mean stricter detection (Percentage)"
+      }
+    },
+    "apiKeys": {
+      "subtitle": "API Keys for external services"
+    },
+    "exportImport": {
+      "title": "Export/Import Settings",
+      "subtitle": "Transfer settings to another device",
+      "export": {
+        "label": "Export Settings",
+        "button": "Export",
+        "processing": "Exporting..."
+      },
+      "import": {
+        "label": "Import Settings",
+        "button": "Import",
+        "processing": "Importing..."
+      }
+    },
+    "resetSettings": {
+      "title": "Reset Settings",
+      "subtitle": "Restore all settings to default",
+      "reset": {
+        "label": "Reset All Settings",
+        "desc": "Restore all settings to their default values. This action cannot be undone.",
+        "button": "Reset",
+        "confirm": "Are you sure you want to reset all settings?\n\nThis action cannot be undone and all settings will be reverted to default.\n\nClick 'Confirm' to proceed.",
+        "processing": "Resetting..."
+      }
+    },
+    "fullscreenMode": {
+      "title": "Fullscreen Defaults",
+      "subtitle": "Set default behavior for fullscreen mode",
+      "shortcut": {
+        "desc": "Fullscreen Shortcut",
+        "info": "Set keyboard shortcut to toggle fullscreen mode"
+      },
+      "toggleTvModeKey": {
+        "desc": "TV Mode Toggle Shortcut",
+        "info": "Works only in fullscreen mode. Toggles between TV mode and Normal mode."
+      },
+      "tvMode": {
+        "desc": "Use TV Mode",
+        "info": "Displays album art and track info on bottom left, maximizing lyrics space"
+      },
+      "tvModeAlbumSize": {
+        "desc": "Album Size",
+        "info": "Set the size of album art in TV mode (px)"
+      },
+      "splitView": {
+        "desc": "Split Layout",
+        "info": "Displays album art on the left and lyrics on the right in fullscreen"
+      },
+      "invertPosition": {
+        "desc": "Invert Album/Lyrics Position",
+        "info": "Swaps the position of album and lyrics (Left/Right ↔ Right/Left, or Top/Bottom in portrait)"
+      },
+      "showAlbumArt": {
+        "desc": "Show Album Art",
+        "info": "Display album art on the left panel in fullscreen"
+      },
+      "showTrackInfo": {
+        "desc": "Show Track Info",
+        "info": "Display song title and artist in fullscreen"
+      },
+      "trimTitle": {
+        "desc": "Shorten Titles",
+        "info": "Removes extra info like (Remaster), [feat. xxx] to keep titles concise"
+      },
+      "translateMetadata": {
+        "desc": "Translate Title/Artist",
+        "info": "Translate foreign song titles and artist names (Requires Gemini API Key)"
+      },
+      "translateMetadataMode": {
+        "desc": "Translation Display Mode",
+        "info": "Choose how to display title and artist",
+        "options": {
+          "all": "Show All (Original + Translation + Pronunciation)",
+          "translated": "Show Translation Only (Original if missing)",
+          "romanized": "Show Pronunciation Only (Original if missing)",
+          "originalTranslated": "Original + Translation",
+          "originalRomanized": "Original + Pronunciation"
+        }
+      },
+      "infoGap": {
+        "desc": "Album Art Gap",
+        "info": "Adjust gap between album art and controls/info (px)"
+      },
+      "centerWhenNoLyrics": {
+        "desc": "Center Album if No Lyrics",
+        "info": "Place album art in the center when lyrics are missing or loading"
+      },
+      "twoColumnLayout": {
+        "desc": "Use 2-Column Layout"
+      },
+      "browserFullscreen": {
+        "desc": "Use Browser Fullscreen",
+        "info": "Switch browser to fullscreen mode to fill the entire monitor when entering lyrics fullscreen"
+      }
+    },
+    "normalMode": {
+      "title": "Normal Mode Layout",
+      "subtitle": "Set layout for normal fullscreen mode (Non-TV mode)",
+      "showAlbumName": {
+        "desc": "Show Album Name",
+        "info": "Display album name below song title and artist"
+      }
+    },
+    "tvMode": {
+      "title": "TV Mode Settings",
+      "subtitle": "Display options for TV mode",
+      "showAlbumName": {
+        "desc": "Show Album Name",
+        "info": "Display album name below artist in TV mode"
+      },
+      "showControls": {
+        "desc": "Show Controls",
+        "info": "Display play/pause, prev/next buttons in TV mode"
+      },
+      "showProgress": {
+        "desc": "Show Progress Bar",
+        "info": "Display progress bar showing playback position and time in TV mode"
+      }
+    },
+    "metadataDisplay": {
+      "title": "Title/Artist Display",
+      "subtitle": "Configure how song title and artist are displayed"
+    },
+    "fullscreenStyle": {
+      "title": "Fullscreen Style",
+      "subtitle": "Visual settings for fullscreen mode",
+      "albumSize": {
+        "desc": "Album Art Max Size",
+        "info": "Set maximum size for album art in fullscreen (100-500px)"
+      },
+      "albumRadius": {
+        "desc": "Album Art Radius",
+        "info": "Set corner rounding for album art (0-50px)"
+      },
+      "titleFontSize": {
+        "desc": "Title Font Size",
+        "info": "Set font size for song title in fullscreen (24-72px)"
+      },
+      "artistFontSize": {
+        "desc": "Artist Font Size",
+        "info": "Set font size for artist name in fullscreen (14-36px)"
+      },
+      "lyricsRightMargin": {
+        "desc": "Lyrics Right Margin",
+        "info": "Set right margin for lyrics area. Prevents lyrics from looking too far right when centered (0-300px)"
+      }
+    },
+    "fullscreenUI": {
+      "title": "Fullscreen UI Elements",
+      "subtitle": "Configure additional UI elements shown in fullscreen",
+      "showClock": {
+        "desc": "Show Clock",
+        "info": "Display current time in the top right corner"
+      },
+      "clockSize": {
+        "desc": "Clock Size",
+        "info": "Set font size for the clock (24-72px)"
+      },
+      "showContext": {
+        "desc": "Show Playback Context",
+        "info": "Display current playlist/album info in bottom left"
+      },
+      "showContextImage": {
+        "desc": "Show Context Image",
+        "info": "Display playlist/album thumbnail image"
+      },
+      "showNextTrack": {
+        "desc": "Preview Next Track",
+        "info": "Display next track info in top right before the song ends (Broadcast style)"
+      },
+      "nextTrackTime": {
+        "desc": "Next Track Display Time",
+        "info": "Seconds before end of song to show next track info (5-30s)",
+        "unit": "sec"
+      },
+      "showControls": {
+        "desc": "Show Player Controls",
+        "info": "Display play/pause, prev/next, shuffle, repeat, and like buttons"
+      },
+      "showVolume": {
+        "desc": "Show Volume Control",
+        "info": "Display volume slider in player controls"
+      },
+      "showProgressBar": {
+        "desc": "Show Progress Bar",
+        "info": "Display progress bar showing playback position and total time"
+      },
+      "showLyricsProgress": {
+        "desc": "Show Lyrics Progress",
+        "info": "Display current lyrics line number and total lines"
+      },
+      "showQueue": {
+        "desc": "Show Queue Panel",
+        "info": "Show playback queue when hovering over the right side of the screen"
+      }
+    },
+    "controllerStyle": {
+      "title": "Controller Style",
+      "subtitle": "Configure the appearance of player controls",
+      "buttonSize": {
+        "desc": "Control Button Size",
+        "info": "Set size for play, prev/next buttons (28-48px)"
+      },
+      "background": {
+        "desc": "Controller Background",
+        "info": "Add semi-transparent background to the controller"
+      }
+    },
+    "autoHide": {
+      "title": "Auto Hide",
+      "subtitle": "Auto hide UI when mouse is inactive",
+      "enabled": {
+        "info": "Automatically hide controller and info when mouse stops moving",
+        "desc": "Auto Hide UI"
+      },
+      "delay": {
+        "desc": "Auto Hide Delay",
+        "info": "Time to wait before hiding UI after mouse inactivity (1-10s)"
+      }
+    },
+    "tmiStyle": {
+      "title": "Trivia Style",
+      "subtitle": "Style settings for the Trivia modal shown when clicking album art",
+      "fontSize": {
+        "desc": "Trivia Font Size",
+        "info": "Adjust global font size for the Trivia modal (80-150%)"
+      }
+    },
+    "aboutTab": {
+      "account": {
+        "title": "Account Linking",
+        "subtitle": "Link with your ivLogin account",
+        "description": "ivLis STUDIO unified account service",
+        "info": "Link with ivLogin to access features like settings sync. Enter your User Hash on the login page to link your account.",
+        "loginButton": "Link with ivLogin",
+        "loading": "Loading account info...",
+        "linked": "Linked",
+        "linkedAt": "Linked on",
+        "lastSync": "Last sync",
+        "manageAccount": "Manage Account",
+        "refresh": "Refresh",
+        "nickname": {
+          "label": "Nickname",
+          "enter": "Please enter a nickname.",
+          "changed": "Nickname changed.",
+          "failed": "Failed to change",
+          "error": "Error occurred",
+          "placeholder": "Enter nickname",
+          "none": "No nickname",
+          "saving": "Saving...",
+          "save": "Save",
+          "change": "Change"
+        },
+        "backup": {
+          "title": "Backup & Restore",
+          "enterName": "Please enter a backup name.",
+          "success": "Settings backed up.",
+          "fail": "Backup failed",
+          "error": "Error during backup",
+          "restoreSuccess": "Settings restored. Please restart the app to apply.",
+          "invalidFormat": "Invalid settings format.",
+          "downloadFail": "Failed to download settings",
+          "downloadError": "Error during download",
+          "deleteConfirm": "Are you sure you want to delete this backup?",
+          "deleted": "Backup deleted.",
+          "deleteFail": "Delete failed",
+          "deleteError": "Error during deletion",
+          "placeholder": "Backup name (e.g. PC Settings)",
+          "backupBtn": "Backup",
+          "restoreBtn": "Restore",
+          "deleteBtn": "Delete",
+          "noBackups": "No backups saved."
+        }
+      },
+      "appInfo": {
+        "title": "App Info"
+      },
+      "developer": "Developed by:",
+      "originalProject": "Original Project:",
+      "thanks": "Special thanks to everyone who contributed to this open-source project.",
+      "clientInfo": {
+        "title": "Client Info",
+        "subtitle": "Unique identifier for this client",
+        "description": "This is a unique identifier automatically generated for account linking. This value cannot be modified and is unique to each client. Please keep this value private.",
+        "copied": "Client ID copied",
+        "copyFailed": "Copy failed",
+        "copy": "Copy"
+      },
+      "update": {
+        "title": "Update",
+        "subtitle": "Check for latest version",
+        "checkUpdate": {
+          "desc": "Check Latest Version",
+          "button": "Check for Updates",
+          "checking": "Checking..."
+        },
+        "copied": "Copied",
+        "installCopied": "Install command copied",
+        "copyFailed": "Copy failed"
+      },
+      "patchNotes": {
+        "title": "Patch Notes",
+        "subtitle": "Recent update history",
+        "loading": "Loading patch notes..."
+      },
+      "subtitle": "About ivLyrics",
+      "appDescription": "Lyrics Extension with various features",
+      "versionPrefix": "Version",
+      "viewOnGithub": "View on GitHub",
+      "patchNotesLoadFailed": "Failed to load patch notes",
+      "checkGithubReleases": "Please check GitHub releases page",
+      "visitGithub": "Visit GitHub Repository",
+      "joinDiscord": "Join Discord Server"
+    },
+    "debugTab": {
+      "title": "Debug Info",
+      "subtitle": "Information to send to developer when reporting bugs",
+      "currentTrack": "Current Track Info",
+      "trackInfo": "Track Info",
+      "lyricsInfo": "Lyrics Info",
+      "settingsInfo": "Settings Info",
+      "noLyrics": "No lyrics info",
+      "loading": "Loading info...",
+      "refresh": "Refresh",
+      "copyToClipboard": "Copy to Clipboard",
+      "copied": "Copied!",
+      "copyFailed": "Copy failed",
+      "sendToDiscord": "Report to Discord",
+      "rawJson": "JSON Data"
+    },
+    "api": {
+      "title": "API Settings",
+      "getApiKey": {
+        "desc": "Get API Key",
+        "info": "You can get a Gemini API key for free at Google AI Studio",
+        "button": "Open API Key Page"
+      },
+      "geminiKey": {
+        "desc": "Gemini API Key",
+        "info": "API key is required to use lyrics translation with Google Gemini AI"
+      }
+    },
+    "update": {
+      "title": "Update",
+      "subtitle": "Check for latest version",
+      "checkUpdate": {
+        "desc": "Check Latest Version",
+        "button": "Check for Updates",
+        "checking": "Checking..."
+      },
+      "copied": "Copied",
+      "installCopied": "Install command copied",
+      "copyFailed": "Copy failed",
+      "currentVersionInfo": "Current Version: v{version}. Checking GitHub for new updates",
+      "checkFailedWithError": "Update check failed: {error}"
+    }
+  },
+  "syncAdjust": {
+    "info": "Moving slider to the right makes lyrics appear faster.",
+    "reset": "Reset",
+    "communityTitle": "Community Sync",
+    "communityOffset": "Offset",
+    "submissions": "Submissions",
+    "confidenceHigh": "High Confidence",
+    "confidenceMedium": "Medium Confidence",
+    "confidenceLow": "Low Confidence",
+    "applyCommunity": "Apply",
+    "submitMine": "Submit My Offset",
+    "submitting": "Submitting...",
+    "submitSuccess": "Submitted to community",
+    "submitFailed": "Submission failed",
+    "noData": "No community data available",
+    "loading": "Loading...",
+    "feedbackGood": "Offset is accurate",
+    "feedbackBad": "Offset is inaccurate",
+    "cannotFeedbackOwnSubmission": "You cannot vote on your own submission",
+    "feedbackPositiveSuccess": "Thanks for the positive feedback!",
+    "feedbackNegativeSuccess": "Thanks for the feedback. We'll improve!",
+    "feedbackFailed": "Failed to submit feedback",
+    "autoSubmitEnabled": "⚡ Auto-submit is enabled"
+  },
+  "playbarButton": {
+    "label": "Lyrics Plus"
+  },
+  "videoBackground": {
+    "loading": "Loading video info...",
+    "notFound": "Video not found.",
+    "error": "An error occurred.",
+    "loadingMessage": "Loading video background... This takes about 30 seconds.",
+    "downloadingVideo": "Downloading video...",
+    "downloading": "Downloading: {percent}%",
+    "processing": "Processing video...",
+    "checking": "Checking video...",
+    "preparing": "Preparing video download...",
+    "downloadComplete": "Video download complete!",
+    "helperNotConnected": "Cannot connect to Helper Program. Please make sure it is running.",
+    "helperError": "Error occurred in Helper Program.",
+    "tryingCookiesFile": "Trying with cookies.txt file...",
+    "tryingBrowserCookies": "Trying with {browser} cookies...",
+    "checkingWithCookiesFile": "Checking video with cookies.txt...",
+    "checkingWithBrowserCookies": "Checking video with {browser} cookies...",
+    "checkingAvailability": "Checking video availability...",
+    "ageRestrictedNoCookies": "Age-restricted video. No cookies.txt or supported browser found. Please set up cookies.txt in settings.",
+    "ageRestrictedFailed": "Age-restricted video. Please set up a valid cookies.txt in settings.",
+    "videoAlreadyDownloaded": "Video already downloaded",
+    "videoAvailable": "Video available",
+    "videoNotDownloaded": "Video not downloaded"
+  },
+  "translator": {
+    "missingApiKey": "Gemini API key is not set. Please enter API key in settings.",
+    "invalidApiKeyFormat": "Invalid API key format. Gemini API key must start with 'AIza'.",
+    "invalidRequestFormat": "Invalid request format. Please check your API key.",
+    "invalidApiKey": "Invalid API key. Please check Gemini API key in settings.",
+    "accessForbidden": "API access forbidden. Please check API key permissions.",
+    "rateLimitExceeded": "Request limit exceeded. Please try again later.",
+    "serviceUnavailable": "Translation service is temporarily unavailable. Please try again later.",
+    "requestFailed": "API request failed",
+    "apiKeyError": "Gemini API key error. Please check your API key in settings.",
+    "translationFailed": "Translation failed",
+    "requestTimeout": "Translation request timed out. Please try again.",
+    "failedPrefix": "Translation Failed"
+  },
+  "utils": {
+    "allUrlsFailed": "Failed to get version info from all URLs",
+    "invalidVersionFormat": "Invalid version format",
+    "unknownError": "Unknown error",
+    "requestTimeout": "Request timed out",
+    "networkError": "Network connection failed",
+    "securityRestriction": "Restricted by browser security policy",
+    "serverError": "Server response error",
+    "terminalMac": "Terminal"
+  },
+  "modes": {
+    "karaoke": "Karaoke",
+    "synced": "Synced",
+    "unsynced": "Plain Text"
+  },
+  "communityVideo": {
+    "title": "Community Video Recommendations",
+    "loading": "Loading video list...",
+    "loadError": "Failed to load video list",
+    "noVideos": "No community videos registered",
+    "autoDetected": "Auto Detected",
+    "startTime": "Start",
+    "submittedBy": "Submitted by",
+    "addVideo": "Add Video",
+    "addVideoNoEmoji": "Add Video",
+    "youtubeUrl": "YouTube URL",
+    "startTimeSeconds": "Start Time (sec)",
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "submitted": "Video successfully submitted!",
+    "updated": "Video info updated!",
+    "submitError": "Failed to submit video",
+    "invalidUrl": "Invalid YouTube URL",
+    "videoNotFound": "YouTube video does not exist",
+    "videoPrivate": "Video is private or deleted",
+    "validationError": "Cannot verify video. Please try again.",
+    "selectVideo": "Select Video",
+    "preview": "Preview",
+    "apply": "Apply",
+    "applyShort": "Apply",
+    "applied": "Video applied",
+    "videoTitle": "Video Title",
+    "loadingTitle": "Getting title...",
+    "startTimeLabel": "First Lyrics Start Time (sec)",
+    "startTimeHint": "Enter the time when the first lyrics line starts in the YouTube video",
+    "delete": "Delete",
+    "deleteConfirm": "Do you want to delete this video?",
+    "deleted": "Video deleted",
+    "deleteError": "Failed to delete video",
+    "downloading": "Downloading video..."
+  },
+  "close": "Close",
+  "cancel": "Cancel",
+  "shareImage": {
+    "title": "Share Lyrics Image",
+    "subtitle": "Create and share images of your favorite lyrics",
+    "selectLyrics": "Select Lyrics",
+    "selectLyricsHint": "Click lyrics lines to include (Max 6 lines)",
+    "template": "Presets",
+    "templates": {
+      "cover": "Cover Blur",
+      "gradient": "Gradient",
+      "minimal": "Minimal",
+      "glass": "Glass",
+      "story": "Story"
+    },
+    "advancedSettings": "Advanced Settings",
+    "sections": {
+      "background": "Background",
+      "cover": "Album Cover",
+      "lyrics": "Lyrics",
+      "layout": "Layout",
+      "other": "Other"
+    },
+    "copyrightWarning": "⚠️ Copyright Notice\n\nThis lyrics image may contain copyrighted content.\n\n• Please use for personal use only\n• Do not use for commercial purposes\n• Respect original creators when sharing on social media\n\nDo you want to continue?",
+    "copyrightTitle": "Copyright Notice",
+    "copyrightDesc": "This lyrics image may contain copyrighted content.",
+    "copyrightPoint1": "Please use for personal use only",
+    "copyrightPoint2": "Do not use for commercial purposes",
+    "copyrightPoint3": "Respect original creators when sharing on social media",
+    "copyrightConfirm": "Agree and Continue",
+    "settings": {
+      "backgroundType": "Background Style",
+      "coverBlur": "Blur",
+      "gradient": "Gradient",
+      "solid": "Solid Color",
+      "backgroundBlur": "Background Blur",
+      "backgroundOpacity": "Background Dimming",
+      "showCover": "Album Cover",
+      "showTrackInfo": "Track Info",
+      "coverPosition": "Cover Position",
+      "posLeft": "Left",
+      "posCenter": "Center",
+      "coverSize": "Cover Size",
+      "coverRadius": "Cover Radius",
+      "coverBlur": "Cover Blur",
+      "showPronunciation": "Pronunciation",
+      "showTranslation": "Translation",
+      "lyricsAlign": "Lyrics Alignment",
+      "alignLeft": "Left",
+      "alignCenter": "Center",
+      "fontSize": "Font Size",
+      "blockGap": "Line Gap",
+      "aspectRatio": "Image Ratio",
+      "imageWidth": "Image Width",
+      "padding": "Padding",
+      "showWatermark": "Show Watermark"
+    },
+    "preview": "Preview",
+    "actions": {
+      "copy": "Copy to Clipboard",
+      "download": "Download",
+      "share": "Share"
+    },
+    "copied": "✓ Copied to clipboard",
+    "downloaded": "✓ Downloaded",
+    "shared": "✓ Shared",
+    "maxLinesReached": "You can select up to 3 lines",
+    "noSelection": "Please select lyrics"
+  },
+  "setupWizard": {
+    "welcome": {
+      "title": "Welcome to ivLyrics!",
+      "subtitle": "Enjoy beautiful lyrics on Spotify",
+      "features": {
+        "lyrics": "Real-time Synced Lyrics",
+        "translation": "AI Translation Support",
+        "customization": "Various Customizations"
+      },
+      "start": "Get Started"
+    },
+    "language": {
+      "title": "Select Language",
+      "subtitle": "Choose your preferred language"
+    },
+    "apiKey": {
+      "title": "Gemini API Key Setup",
+      "subtitle": "API key is required to use AI translation",
+      "guide": {
+        "title": "How to get API Key",
+        "step1": "Visit Google AI Studio",
+        "step2": "Click Get API Key",
+        "step3": "Create new API key",
+        "step4": "Copy generated key"
+      },
+      "getKey": "Get API Key",
+      "skip": "Set up later",
+      "placeholder": "Enter API Key...",
+      "multipleKeysHint": "You can register multiple API keys in settings"
+    },
+    "theme": {
+      "title": "Basic Settings",
+      "subtitle": "Choose how lyrics are displayed",
+      "alignment": "Alignment",
+      "background": "Background Effect",
+      "backgrounds": {
+        "colorful": "Colorful",
+        "gradient": "Album Cover",
+        "blurGradient": "Blur Gradient",
+        "solid": "Solid Color",
+        "video": "Video"
+      }
+    },
+    "translationTip": {
+      "title": "Translation Guide",
+      "subtitle": "Translation features are configured per language",
+      "pronunciation": "Pronunciation",
+      "translation": "Translation",
+      "description": "Enabling translation for K-POP does not apply to J-POP. Click the Convert button at the bottom to set 'Pronunciation' and 'Translation' options separately for each language."
+    },
+    "overlayTip": {
+      "title": "Desktop Overlay",
+      "subtitle": "View lyrics anywhere on your desktop",
+      "description": "Install the overlay app to see lyrics while using other applications. You can enable it anytime in settings.",
+      "requiresApp": "Requires separate overlay app installation to use this feature.",
+      "enabled": "Enable Overlay",
+      "downloadApp": "Download Overlay App"
+    },
+    "nowPlayingTip": {
+      "title": "NowPlaying Panel Lyrics",
+      "subtitle": "Check current lyrics in right panel",
+      "description": "Displays current lyrics in Spotify's 'Now Playing' panel. You can see lyrics without using fullscreen mode.",
+      "enabled": "Show Panel Lyrics",
+      "linesCount": "Lines to Show"
+    },
+    "complete": {
+      "title": "Ready!",
+      "subtitle": "You are now ready to use ivLyrics",
+      "startNow": "Start Now",
+      "openSettings": "More Settings"
+    },
+    "navigation": {
+      "next": "Next",
+      "back": "Back",
+      "skip": "Skip"
+    }
+  },
+  "videoTest": {
+    "title": "Video Background Test",
+    "subtitle": "Please check if the YouTube video below plays correctly",
+    "question": "Does it say login is required to play the video?",
+    "yes": "Yes",
+    "no": "No",
+    "helperRequired": "If so, you need to install the Helper Program.",
+    "helperDesc": "The Helper Program allows playing YouTube videos without logging in.",
+    "installHelper": "Install Helper Program",
+    "skip": "Skip"
+  },
+  "videoHelperTest": {
+    "title": "Helper Program Test",
+    "subtitle": "Checking if Helper Program works correctly",
+    "enableHelper": "Enable Helper Program",
+    "testVideo": "Play Test Video",
+    "testing": "Testing...",
+    "success": "Helper Program is working correctly!",
+    "failed": "Cannot connect to Helper Program. Please check if it is running.",
+    "downloading": "Downloading video: {percent}%",
+    "skip": "Skip"
+  },
+  "tmi": {
+    "getApiKeyDesc": "Get Gemini API Key",
+    "getApiKeyInfo": "Used to fetch Trivia. You can get it for free at Google AI Studio.",
+    "viewInfo": "Click to see various info about this song",
+    "requireKey": "Gemini API Key needs to be set in settings",
+    "settingTitle": "Gemini API Key",
+    "settingDesc": "Required to fetch song Trivia/Info.",
+    "title": "Trivia",
+    "didYouKnow": "Did you know?",
+    "close": "Close",
+    "cancel": "Cancel",
+    "loading": "Finding interesting facts...",
+    "noData": "No Trivia available for this song yet.",
+    "clickForTMI": "View Trivia",
+    "clickToClose": "✕ or Click album art to close",
+    "regenerate": "Regenerate Trivia.",
+    "errorFetch": "Error occurred while fetching Trivia.",
+    "errorQuota": "API quota exceeded.",
+    "errorQuotaHint": "Please try again later or enter a different API key in settings.",
+    "disclaimer": "This content is processed by AI from internet information and may contain inaccuracies.",
+    "verified": "Verified",
+    "unverified": "Unverified",
+    "verifiedCount": "Verified",
+    "sources": "Sources",
+    "verifiedSources": "Verified Sources",
+    "relatedSources": "Related Sources",
+    "otherSources": "Other Sources",
+    "confidenceVeryHigh": "Very High Confidence",
+    "confidenceHigh": "High Confidence",
+    "confidenceMedium": "Medium Confidence",
+    "confidenceLow": "Low Confidence",
+    "confidenceNone": "No Sources"
+  },
+  "notice": {
+    "confirm": "Confirm",
+    "next": "Next",
+    "dismissAll": "Close All"
+  },
+  "syncCreator": {
+    "title": "Create Karaoke Sync",
+    "buttonTooltip": "Create Karaoke Sync",
+    "clickHereHint": "Click here to sync the lyrics!",
+    "loading": "Loading...",
+    "loadLyrics": "Load Lyrics",
+    "reload": "Reload",
+    "loadingLyrics": "Loading lyrics...",
+    "selectProvider": "Automatically loading lyrics (Spotify → LRCLIB)",
+    "noLyrics": "Lyrics not found",
+    "loadError": "Error loading lyrics",
+    "currentLine": "Current Line",
+    "nextLine": "Next Line",
+    "progress": "Progress",
+    "linesCompleted": "Lines Completed",
+    "chars": "Chars",
+    "reset": "Reset",
+    "firstLine": "To First Line",
+    "prevLine": "Previous Line",
+    "nextLineBtn": "Next Line",
+    "recordMode": "Record Mode",
+    "stopRecord": "Stop Record",
+    "previewMode": "Preview Mode",
+    "stopPreview": "Stop Preview",
+    "idleMode": "Idle",
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "noSyncData": "No sync data registered",
+    "incompleteConfirm": "Some lines are not synced yet. Do you want to submit anyway?",
+    "submitSuccess": "Sync data submitted! It will be applied after admin approval.",
+    "submitError": "Failed to submit sync data",
+    "dragHint": "Drag to record character timing. Drag left to cancel.",
+    "globalOffset": "Global Offset",
+    "synced": "Registered",
+    "notSynced": "Unregistered",
+    "deleteLine": "Delete This Line",
+    "loadedExistingSyncData": "Loaded existing sync data",
+    "providerMismatch": "Existing sync data uses a different lyrics provider. You need to create new sync data for your account's provider.",
+    "back": "Close",
+    "lrclib": {
+      "registerLyrics": "Register Lyrics to LRCLIB",
+      "title": "Register to LRCLIB",
+      "description": "No lyrics available for this song. You can manually enter and register lyrics to LRCLIB for other users. Modification is not possible after registration, so please enter carefully.",
+      "trackInfo": "Track Info",
+      "placeholder": "Enter lyrics here...\n\nSeparate each line with a new line.\nEmpty lines will be automatically removed.",
+      "publishToLrcLib": "Publish to LRCLIB",
+      "publishing": "Publishing...",
+      "cancelPublish": "Cancel Publish",
+      "publishCancelled": "Publish cancelled",
+      "timeWarning": "⚠️ LRCLIB requires cryptographic token processing to prevent spam. This process may take about 5 minutes depending on computer performance.",
+      "requestingChallenge": "Requesting auth...",
+      "solvingChallenge": "Processing auth...",
+      "solving": "Processing auth... (Attempt {nonce})",
+      "publishSuccess": "Lyrics successfully registered to LRCLIB!",
+      "publishError": "Failed to register lyrics",
+      "noLyricsInput": "Please enter lyrics",
+      "loadingAfterPublish": "Loading registered lyrics...",
+      "wrongLyricsWarning": "If the lyrics are incorrect, submit them manually."
+    },
+    "shortcuts": {
+      "charForward": "1 Char",
+      "charBack": "Undo 1 Char",
+      "wordForward": "1 Word",
+      "wordBack": "Undo 1 Word",
+      "drag": "Hold to Drag",
+      "finish": "Finish Line",
+      "cancel": "Cancel",
+      "playPause": "Play/Pause",
+      "seekBack": "-3 Sec",
+      "seekForward": "+3 Sec",
+      "syllable": "Syllable"
+    },
+    "copyLyrics": "Copy Lyrics",
+    "lyricsCopied": "Lyrics copied to clipboard",
+    "copyError": "Copy failed",
+    "export": "Export",
+    "exportSuccess": "Sync data exported",
+    "import": "Import",
+    "importSuccess": "Sync data imported",
+    "importError": "Import failed",
+    "importDifferentTrack": "This sync data is from a different track. Do you want to import anyway?"
+  }
+};
