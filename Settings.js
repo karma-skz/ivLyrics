@@ -1065,6 +1065,232 @@ const AddonSettingsCard = ({ addon, isExpanded, onToggle }) => {
   );
 };
 
+// 가사 제공자 카드 컴포넌트
+const LyricsProviderCard = ({ provider, isEnabled, onToggle, isExpanded, onExpandToggle }) => {
+  const SettingsUI = provider.getSettingsUI ? provider.getSettingsUI() : null;
+
+  const getLocalizedDescription = (desc) => {
+    if (typeof desc === 'string') return desc;
+    const lang = Spicetify.Locale?.getLocale()?.split('-')[0] || 'en';
+    return desc[lang] || desc['en'] || Object.values(desc)[0] || '';
+  };
+
+  const handleHeaderClick = (e) => {
+    if (e.target.closest('button') || e.target.closest('input[type="checkbox"]')) return;
+    onExpandToggle();
+  };
+
+  // 지원 유형 뱃지 렌더링
+  const renderSupportBadges = () => {
+    const badges = [];
+    if (provider.supports?.karaoke) {
+      badges.push(react.createElement("span", { key: "karaoke", className: "support-badge karaoke" }, "노래방"));
+    }
+    if (provider.supports?.synced) {
+      badges.push(react.createElement("span", { key: "synced", className: "support-badge synced" }, "싱크"));
+    }
+    if (provider.supports?.unsynced) {
+      badges.push(react.createElement("span", { key: "unsynced", className: "support-badge unsynced" }, "일반"));
+    }
+    return badges;
+  };
+
+  return react.createElement("div", {
+    className: `lyrics-provider-card ${isExpanded ? 'expanded' : ''} ${isEnabled ? '' : 'disabled'}`
+  },
+    // 카드 헤더
+    react.createElement("div", {
+      className: "lyrics-provider-card-header",
+      onClick: handleHeaderClick
+    },
+      // 왼쪽: 활성화 토글, 아이콘, 이름
+      react.createElement("div", { className: "lyrics-provider-card-header-left" },
+        react.createElement("label", { className: "lyrics-provider-toggle" },
+          react.createElement("input", {
+            type: "checkbox",
+            checked: isEnabled,
+            onChange: (e) => onToggle(e.target.checked)
+          }),
+          react.createElement("span", { className: "toggle-slider" })
+        ),
+        react.createElement("div", { className: "lyrics-provider-icon" },
+          provider.id === 'spotify'
+            ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "currentColor" },
+                react.createElement("path", {
+                  d: "M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"
+                })
+              )
+            : provider.id === 'lrclib'
+            ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
+                react.createElement("path", { d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" }),
+                react.createElement("polyline", { points: "14 2 14 8 20 8" }),
+                react.createElement("line", { x1: "16", y1: "13", x2: "8", y2: "13" }),
+                react.createElement("line", { x1: "16", y1: "17", x2: "8", y2: "17" })
+              )
+            : react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
+                react.createElement("circle", { cx: "12", cy: "12", r: "10" })
+              )
+        ),
+        react.createElement("div", { className: "lyrics-provider-title-group" },
+          react.createElement("span", { className: "lyrics-provider-name" }, provider.name),
+          react.createElement("span", { className: "lyrics-provider-version" }, `v${provider.version}`)
+        )
+      ),
+      // 오른쪽: 지원 뱃지, 확장 아이콘
+      react.createElement("div", { className: "lyrics-provider-card-header-right" },
+        react.createElement("div", { className: "support-badges" }, renderSupportBadges()),
+        react.createElement("svg", {
+          className: `lyrics-provider-expand-icon ${isExpanded ? 'expanded' : ''}`,
+          width: 16, height: 16, viewBox: "0 0 24 24", fill: "none",
+          stroke: "currentColor", strokeWidth: "2"
+        },
+          react.createElement("polyline", { points: "6 9 12 15 18 9" })
+        )
+      )
+    ),
+    // 설명
+    react.createElement("div", { className: "lyrics-provider-card-description" },
+      getLocalizedDescription(provider.description)
+    ),
+    // 확장 영역 (설정 UI)
+    isExpanded && SettingsUI && react.createElement("div", { className: "lyrics-provider-card-body" },
+      react.createElement(SettingsUI)
+    )
+  );
+};
+
+// 가사 제공자 설정 탭 컴포넌트
+const LyricsProvidersTab = () => {
+  const [providers, setProviders] = useState([]);
+  const [providerOrder, setProviderOrder] = useState([]);
+  const [enabledProviders, setEnabledProviders] = useState({});
+  const [expandedProviders, setExpandedProviders] = useState(new Set());
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    const loadProviders = () => {
+      if (window.LyricsAddonManager) {
+        const providerList = window.LyricsAddonManager.getAddons();
+        setProviders(providerList);
+
+        const order = window.LyricsAddonManager.getProviderOrder();
+        setProviderOrder(order);
+
+        const enabled = {};
+        providerList.forEach(p => {
+          enabled[p.id] = window.LyricsAddonManager.isProviderEnabled(p.id);
+        });
+        setEnabledProviders(enabled);
+      } else {
+        setTimeout(loadProviders, 100);
+      }
+    };
+    loadProviders();
+  }, [refreshKey]);
+
+  const handleToggleEnabled = (providerId, enabled) => {
+    if (window.LyricsAddonManager) {
+      window.LyricsAddonManager.setProviderEnabled(providerId, enabled);
+      setEnabledProviders(prev => ({ ...prev, [providerId]: enabled }));
+    }
+  };
+
+  const toggleExpanded = (providerId) => {
+    setExpandedProviders(prev => {
+      const next = new Set(prev);
+      if (next.has(providerId)) {
+        next.delete(providerId);
+      } else {
+        next.add(providerId);
+      }
+      return next;
+    });
+  };
+
+  // 드래그 앤 드롭으로 순서 변경 (간단한 위/아래 버튼으로 대체)
+  const moveProvider = (providerId, direction) => {
+    const currentIndex = providerOrder.indexOf(providerId);
+    if (currentIndex === -1) return;
+
+    const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (newIndex < 0 || newIndex >= providerOrder.length) return;
+
+    const newOrder = [...providerOrder];
+    [newOrder[currentIndex], newOrder[newIndex]] = [newOrder[newIndex], newOrder[currentIndex]];
+
+    setProviderOrder(newOrder);
+    if (window.LyricsAddonManager) {
+      window.LyricsAddonManager.setProviderOrder(newOrder);
+    }
+  };
+
+  // 정렬된 provider 목록
+  const sortedProviders = providerOrder
+    .map(id => providers.find(p => p.id === id))
+    .filter(Boolean);
+
+  // 등록되었지만 순서에 없는 provider 추가
+  providers.forEach(p => {
+    if (!providerOrder.includes(p.id)) {
+      sortedProviders.push(p);
+    }
+  });
+
+  return react.createElement("div", { className: "settings-section lyrics-providers-section" },
+    // 섹션 제목
+    react.createElement("div", { className: "section-title" },
+      react.createElement("div", { className: "section-text" },
+        react.createElement("h3", null, I18n.t("settings.lyricsProviders.title") || "가사 제공자"),
+        react.createElement("p", null, I18n.t("settings.lyricsProviders.description") || "가사를 가져올 제공자를 선택하고 우선순위를 설정합니다.")
+      )
+    ),
+
+    // Provider 목록
+    providers.length > 0 && react.createElement("div", { className: "lyrics-providers-list" },
+      sortedProviders.map((provider, index) =>
+        react.createElement("div", { key: provider.id, className: "lyrics-provider-item" },
+          // 순서 변경 버튼
+          react.createElement("div", { className: "lyrics-provider-order-buttons" },
+            react.createElement("button", {
+              className: "order-btn",
+              disabled: index === 0,
+              onClick: () => moveProvider(provider.id, 'up'),
+              title: "위로 이동"
+            },
+              react.createElement("svg", { width: 12, height: 12, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
+                react.createElement("polyline", { points: "18 15 12 9 6 15" })
+              )
+            ),
+            react.createElement("button", {
+              className: "order-btn",
+              disabled: index === sortedProviders.length - 1,
+              onClick: () => moveProvider(provider.id, 'down'),
+              title: "아래로 이동"
+            },
+              react.createElement("svg", { width: 12, height: 12, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
+                react.createElement("polyline", { points: "6 9 12 15 18 9" })
+              )
+            )
+          ),
+          // Provider 카드
+          react.createElement(LyricsProviderCard, {
+            provider: provider,
+            isEnabled: enabledProviders[provider.id] !== false,
+            onToggle: (enabled) => handleToggleEnabled(provider.id, enabled),
+            isExpanded: expandedProviders.has(provider.id),
+            onExpandToggle: () => toggleExpanded(provider.id)
+          })
+        )
+      )
+    ),
+
+    // Provider가 없을 때
+    providers.length === 0 && react.createElement("div", { className: "no-providers-message" },
+      react.createElement("p", null, I18n.t("settings.lyricsProviders.noProviders") || "등록된 가사 제공자가 없습니다.")
+    )
+  );
+};
+
 // AI 제공자 설정 탭 컴포넌트
 const AIProvidersTab = () => {
   const [addons, setAddons] = useState([]);
@@ -6185,6 +6411,264 @@ const ConfigModal = () => {
     color: #ef4444;
 }
 
+/* ============================================
+   Lyrics Provider Cards
+   ============================================ */
+
+#${APP_NAME}-config-container .lyrics-providers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-order-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 16px;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-order-buttons .order-btn {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-order-buttons .order-btn:hover:not(:disabled) {
+    background: var(--glass-bg-hover);
+    color: var(--text-primary);
+    border-color: var(--accent-primary);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-order-buttons .order-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card {
+    flex: 1;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card:hover {
+    border-color: rgba(124, 58, 237, 0.3);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card.expanded {
+    border-color: var(--accent-primary);
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card.disabled {
+    opacity: 0.6;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    cursor: pointer;
+    background: var(--glass-bg);
+    transition: background var(--transition-fast);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card-header:hover {
+    background: var(--glass-bg-hover);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Toggle Switch */
+#${APP_NAME}-config-container .lyrics-provider-toggle {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-toggle .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--glass-bg-active);
+    transition: all var(--transition-fast);
+    border-radius: 20px;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-toggle .toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: all var(--transition-fast);
+    border-radius: 50%;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-toggle input:checked + .toggle-slider {
+    background: var(--accent-gradient);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-toggle input:checked + .toggle-slider:before {
+    transform: translateX(16px);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(139, 92, 246, 0.1));
+    border-radius: var(--radius-md);
+    color: var(--accent-primary);
+    flex-shrink: 0;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-version {
+    font-size: 11px;
+    color: var(--text-tertiary);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#${APP_NAME}-config-container .support-badges {
+    display: flex;
+    gap: 6px;
+}
+
+#${APP_NAME}-config-container .support-badge {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 10px;
+    background: var(--glass-bg);
+    color: var(--text-secondary);
+}
+
+#${APP_NAME}-config-container .support-badge.karaoke {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+}
+
+#${APP_NAME}-config-container .support-badge.synced {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+#${APP_NAME}-config-container .support-badge.unsynced {
+    background: rgba(156, 163, 175, 0.15);
+    color: #9ca3af;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-expand-icon {
+    color: var(--text-tertiary);
+    transition: transform var(--transition-fast);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-expand-icon.expanded {
+    transform: rotate(180deg);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card-description {
+    padding: 10px 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    background: rgba(0, 0, 0, 0.08);
+    border-top: 1px solid var(--glass-border);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card:not(.expanded) .lyrics-provider-card-description {
+    border-bottom: none;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card.expanded .lyrics-provider-card-description {
+    border-bottom: 1px solid var(--glass-border);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card-body {
+    padding: 16px;
+    animation: slideDown 0.2s ease-out;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card-body .lyrics-addon-info p {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card-body .lyrics-addon-note {
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card-body .lyrics-addon-note a {
+    color: var(--accent-primary);
+    text-decoration: none;
+}
+
+#${APP_NAME}-config-container .lyrics-provider-card-body .lyrics-addon-note a:hover {
+    text-decoration: underline;
+}
+
+#${APP_NAME}-config-container .no-providers-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
 /* 프라이머리 버튼 */
 #${APP_NAME}-config-container .btn-primary {
     background: var(--accent-gradient) !important;
@@ -6297,6 +6781,13 @@ const ConfigModal = () => {
         label: I18n.t("tabs.advanced"),
         icon: "",
         isActive: activeTab === "advanced",
+        onClick: setActiveTab,
+      }),
+      react.createElement(TabButton, {
+        id: "lyrics-providers",
+        label: I18n.t("tabs.lyricsProviders") || "가사 제공자",
+        icon: "",
+        isActive: activeTab === "lyrics-providers",
         onClick: setActiveTab,
       }),
       react.createElement(TabButton, {
@@ -8169,6 +8660,14 @@ const ConfigModal = () => {
           ],
           onChange: () => { },
         })
+      ),
+      // 가사 제공자 탭
+      react.createElement(
+        "div",
+        {
+          className: `tab-content ${activeTab === "lyrics-providers" ? "active" : ""}`,
+        },
+        react.createElement(LyricsProvidersTab)
       ),
       // AI 제공자 탭
       react.createElement(

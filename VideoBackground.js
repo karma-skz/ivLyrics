@@ -28,7 +28,7 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
     useEffect(() => {
         const helperEnabled = CONFIG?.visual?.["video-helper-enabled"] === true || CONFIG?.visual?.["video-helper-enabled"] === "true";
         setUseHelper(helperEnabled);
-        
+
         // 설정 변경 이벤트 리스너
         const handleHelperChange = (e) => {
             setUseHelper(e.detail?.enabled === true);
@@ -133,36 +133,7 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
                 return;
             }
 
-            // 2.5. SongDataService에서 통합 데이터 가져오기 (캐시가 없으면 서버에서 fetch)
-            // 이렇게 하면 youtube 엔드포인트에 별도 요청하지 않아도 됨
-            let songDataCached = window.SongDataService?.getCachedData(trackId);
-            if (!songDataCached && window.SongDataService) {
-                try {
-                    songDataCached = await window.SongDataService.getSongData(trackUri);
-                } catch (e) {
-                    console.warn('[VideoBackground] SongDataService fetch failed:', e);
-                }
-            }
-
-            if (songDataCached?.youtube && isMounted) {
-                console.log(`[VideoBackground] Using SongDataService cached YouTube info for trackId: ${trackId}`);
-                // 캐시 히트 로깅
-                if (window.ApiTracker) {
-                    window.ApiTracker.logCacheHit('youtube', `songdata:${trackId}`, {
-                        videoId: songDataCached.youtube.videoId,
-                        hasCaption: songDataCached.youtube.captionStartTime != null
-                    });
-                }
-                setIsLoading(false);
-                setVideoInfo({
-                    youtubeVideoId: songDataCached.youtube.videoId,
-                    captionStartTime: songDataCached.youtube.captionStartTime,
-                    captionLanguage: songDataCached.youtube.captionLanguage,
-                    totalCaptions: songDataCached.youtube.totalCaptions
-                });
-                setStatusMessage("");
-                return;
-            }
+            // 2.5. SongDataService 제거 - 이 단계는 생략됨
 
             // 3. 로컬 캐시 확인 (IndexedDB)
             try {
@@ -188,6 +159,7 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
             // 4. 캐시가 없으면 API 호출 (커뮤니티 우선)
             try {
                 const userHash = Utils.getUserHash();
+                // 백엔드 엔드포인트 수정됨: /lyrics/youtube
                 const youtubeUrl = `https://lyrics.api.ivl.is/lyrics/youtube?trackId=${trackId}&userHash=${userHash}&useCommunity=true`;
 
                 // API 요청 로깅
@@ -443,7 +415,7 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
         if (!useHelper || !helperVideoUrl || !videoRef.current) return;
 
         console.log(`[VideoBackground] Loading helper video from: ${helperVideoUrl}`);
-        
+
         const video = videoRef.current;
         video.src = helperVideoUrl;
         video.muted = true;
@@ -461,18 +433,18 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
                 const globalDelayMs = typeof CONFIG !== "undefined" && CONFIG.visual ? Number(CONFIG.visual.delay || 0) : 0;
                 const additionalDelaySeconds = (trackOffsetMs + globalDelayMs) / 1000;
                 let targetVideoTime = spotifyTime + offset + additionalDelaySeconds;
-                
+
                 if (targetVideoTime >= 0 && video.duration > 0) {
                     if (targetVideoTime >= video.duration) {
                         targetVideoTime = targetVideoTime % video.duration;
                     }
                 }
-                
+
                 if (targetVideoTime >= 0) {
                     video.currentTime = targetVideoTime;
                 }
             }
-            
+
             setIsPlayerReady(true);
             if (Spicetify.Player.isPlaying()) {
                 video.play().catch(() => { });

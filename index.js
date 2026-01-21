@@ -1961,49 +1961,8 @@ const SongDataService = {
    * 백엔드에서 통합 데이터 가져오기
    */
   async _fetchSongData(trackId, uri, lang) {
-    try {
-      const userHash = Utils.getUserHash();
-      const userLang = lang || CONFIG.visual["language"] || 'ko';
-      const spotifyData = this._extractSpotifyData(uri);
-
-      console.log(`[SongDataService] Fetching song data for ${trackId}`);
-
-      const response = await fetch('https://lyrics.api.ivl.is/lyrics/song-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          trackId,
-          userHash,
-          lang: userLang,
-          spotifyData // 백엔드가 Spotify API에 접근할 수 없으므로 클라이언트가 전송
-        })
-      });
-
-      if (!response.ok) {
-        console.warn(`[SongDataService] API error: ${response.status}`);
-        return null;
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        // 캐시에 저장
-        this._cache.set(trackId, {
-          data,
-          timestamp: Date.now()
-        });
-
-        console.log(`[SongDataService] Song data cached for ${trackId}`);
-        return data;
-      }
-
-      return null;
-    } catch (error) {
-      console.error('[SongDataService] Fetch error:', error);
-      return null;
-    }
+    // song-data 엔드포인트 사용 중지 (Addon_Lyrics_Spotify.js에서 직접 sync-data 호출)
+    return null;
   },
 
   /**
@@ -2080,13 +2039,7 @@ const Prefetcher = {
       console.log(`[Prefetcher] Starting prefetch for: ${trackInfo.title}`);
 
       try {
-        // 0단계: 통합 데이터 먼저 가져오기 (백엔드에 캐시된 모든 데이터)
-        // 이렇게 하면 Spotify 트랙 데이터도 백엔드에 캐싱됨
-        // isNextTrack=true로 표시하여 캐시 정리 시 유지되도록 함
-        const songData = await SongDataService.getSongData(trackInfo.uri, null, true);
-        if (songData) {
-          console.log(`[Prefetcher] Song data prefetched for: ${trackInfo.title}`);
-        }
+        // 0단계: 통합 데이터 프리페치 제거됨 (SongDataService 미사용)
 
         // 1단계: 가사 먼저 프리페치 (필수)
         const lyrics = await this._prefetchLyrics(trackInfo, mode);

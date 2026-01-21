@@ -10,6 +10,7 @@ window.LANG_KO = {
     "appearance": "외관",
     "behavior": "동작",
     "advanced": "고급",
+    "lyricsProviders": "가사 제공자",
     "aiProviders": "AI 제공자",
     "fullscreen": "전체화면",
     "nowplaying": "패널 가사",
@@ -328,6 +329,16 @@ window.LANG_KO = {
       "addonSettings": "Addon 설정",
       "addonSettingsDesc": "각 AI Addon의 개별 설정을 구성하세요",
       "noAddons": "등록된 AI Addon이 없습니다. Addon 파일을 확인해 주세요."
+    },
+    "lyricsProviders": {
+      "title": "가사 제공자",
+      "description": "가사를 가져올 제공자를 선택하고 우선순위를 설정합니다. 위에 있는 제공자부터 먼저 시도합니다.",
+      "noProviders": "등록된 가사 제공자가 없습니다.",
+      "supports": {
+        "karaoke": "노래방",
+        "synced": "싱크",
+        "unsynced": "일반"
+      }
     }
   },
   "buttons": {

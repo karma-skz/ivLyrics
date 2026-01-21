@@ -10,6 +10,7 @@ window.LANG_EN = {
     "appearance": "Appearance",
     "behavior": "Behavior",
     "advanced": "Advanced",
+    "lyricsProviders": "Lyrics Providers",
     "aiProviders": "AI Providers",
     "fullscreen": "Fullscreen",
     "nowplaying": "Panel Lyrics",
@@ -328,6 +329,16 @@ window.LANG_EN = {
       "addonSettings": "Addon Settings",
       "addonSettingsDesc": "Configure settings for each AI Addon",
       "noAddons": "No AI Addons registered. Please check your Addon files."
+    },
+    "lyricsProviders": {
+      "title": "Lyrics Providers",
+      "description": "Select and prioritize lyrics providers. Providers at the top are tried first.",
+      "noProviders": "No lyrics providers registered.",
+      "supports": {
+        "karaoke": "Karaoke",
+        "synced": "Synced",
+        "unsynced": "Plain"
+      }
     }
   },
   "buttons": {

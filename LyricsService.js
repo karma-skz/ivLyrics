@@ -1725,34 +1725,8 @@
         async getLyricsFromProviders(info, providerOrder = ['spotify', 'lrclib', 'local'], mode = 1) {
             const trackId = info.uri?.split(":")[2];
 
-            // *** 중요: 먼저 SongDataService에서 통합 데이터를 가져옴 ***
-            // 이렇게 하면 sync-data, translation, youtube 등 모든 데이터가 한 번에 캐시됨
-            // 이후 SyncDataService 등에서 개별 API 호출 없이 캐시된 데이터 사용
-            if (window.SongDataService && trackId) {
-                try {
-                    await window.SongDataService.getSongData(info.uri);
-                } catch (e) {
-                    console.warn('[LyricsService] SongDataService prefetch failed:', e);
-                }
-            }
-
-            // 커뮤니티 싱크 데이터 확인 - provider 순서 조정을 위해 (목록만 확인)
-            // SongDataService가 이미 캐시를 채웠으므로 API 호출 없이 캐시에서 가져옴
-            let syncDataProviders = [];
-            if (window.SyncDataService && trackId) {
-                try {
-                    syncDataProviders = await window.SyncDataService.getAvailableProviders(trackId);
-                    if (syncDataProviders.length > 0) {
-                        console.log('[LyricsService] Found sync data providers:', syncDataProviders.map(p => p.provider));
-                    }
-                } catch (e) {
-                    console.warn('[LyricsService] SyncDataService check failed:', e);
-                }
-            }
-
-            // sync-data의 provider를 우선으로 하도록 순서 조정
-            // syncDataProviders에 있는 provider 중 현재 사용자가 사용 가능한 provider를 찾음
-            // (실제 가사 로드 시 Providers.spotify/lrclib에서 자동으로 해당 provider의 sync-data 적용)
+            // sync-data의 provider를 우선으로 하도록 순서 조정 제거됨
+            // 사용자의 설정된 순서를 그대로 따름
             let adjustedProviderOrder = [...providerOrder];
 
             for (const providerName of adjustedProviderOrder) {
@@ -2106,6 +2080,115 @@
                 console.error('[LyricsService] getFullLyrics 실패:', e);
                 return { lyrics: [], provider: null, error: e.message };
             }
+        },
+
+        /**
+         * 커뮤니티 싱크 데이터 가져오기 (ivLyrics Sync)
+         * @param {string} trackId - Spotify 트랙 ID
+         * @param {string} provider - 가사 제공자 (예: spotify-musixmatch, lrclib)
+         * @returns {Promise<Object|null>}
+         */
+        async getIvLyricsSyncData(trackId, provider) {
+            if (!trackId || !provider) return null;
+
+            try {
+                // provider가 spotify인 경우 내부 provider(musixmatch 등)가 붙어있지 않다면 붙여준다
+                // 하지만 호출하는 쪽에서 이미 처리가 되어있어야 함.
+                // 여기서는 있는 그대로 호출.
+
+                const response = await fetch(`https://lyrics.api.ivl.is/sync-data?id=${trackId}&provider=${provider}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.provider === provider) {
+                        return data;
+                    }
+                }
+            } catch (e) {
+                console.warn(`[LyricsService] Failed to fetch sync data for ${trackId} (${provider}):`, e);
+            }
+            return null;
+        },
+
+        /**
+         * 가사 결과에 ivLyrics Sync 데이터 적용
+         * @param {Object} result - 가사 결과 객체 (uri, provider, synced, unsynced 등 포함)
+         * @returns {Promise<Object>} - Sync 데이터가 적용된 결과
+         */
+        async applyIvLyricsSyncData(result) {
+            if (!result || !result.uri || !result.provider || !window.SyncDataService) {
+                return result;
+            }
+
+            const trackId = result.uri.split(':')[2];
+            const syncData = await this.getIvLyricsSyncData(trackId, result.provider);
+
+            if (syncData && syncData.provider === result.provider) {
+                const baseLyrics = result.synced || result.unsynced;
+                const karaoke = window.SyncDataService.applySyncDataToLyrics(baseLyrics, syncData);
+
+                if (karaoke) {
+                    result.karaoke = karaoke;
+                    result.syncDataApplied = true;
+                    result.syncDataProvider = result.provider;
+
+                    // sync-data가 있으면 synced도 오버라이드
+                    const syncedFromSyncData = window.SyncDataService.convertKaraokeToSynced(karaoke);
+                    if (syncedFromSyncData) {
+                        result.synced = syncedFromSyncData;
+                    }
+
+                    // 기여자 정보 추가
+                    if (syncData.contributors || syncData.syncData?.contributors) {
+                        result.contributors = syncData.contributors || syncData.syncData.contributors;
+                    }
+                }
+            }
+
+            return result;
+        },
+
+        /**
+         * TMI(Trivia) 가져오기
+         * @param {Object} info - 트랙 정보 { trackId, title, artist, lang }
+         * @returns {Promise<Object|null>}
+         */
+        async getTMI(info) {
+            const { trackId, title, artist, lang } = info;
+            if (!trackId) return null;
+
+            const userLang = lang || Spicetify.Locale?.getLocale()?.split('-')[0] || 'en';
+
+            try {
+                // 1. 로컬 캐시 확인
+                const cached = await LyricsCache.getTMI(trackId, userLang);
+                if (cached) {
+                    console.log(`[LyricsService] getTMI: Using cached data for ${trackId}`);
+                    return cached;
+                }
+
+                // 2. Addon_AI 요청
+                if (window.AIAddonManager) {
+                    const tmiProvider = window.AIAddonManager.getProvider('tmi');
+                    if (tmiProvider) {
+                        console.log(`[LyricsService] getTMI: Requesting from AIAddonManager (${tmiProvider})`);
+                        const result = await window.AIAddonManager.generateTMI({
+                            trackId,
+                            title,
+                            artist,
+                            lang: userLang
+                        });
+
+                        if (result) {
+                            // 캐시 저장
+                            await LyricsCache.setTMI(trackId, userLang, result);
+                            return result;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('[LyricsService] getTMI failed:', e);
+            }
+            return null;
         }
     };
 
@@ -2243,37 +2326,7 @@
                 }
             }
 
-            // SongDataService 캐시 확인 (통합 데이터)
-            if (!ignoreCache && window.SongDataService) {
-                let songData = window.SongDataService.getCachedData(finalTrackId);
-
-                // 캐시에 없는데 요청 중이라면 기다려본다
-                if (!songData && window.SongDataService._inflightRequests && window.SongDataService._inflightRequests.has(finalTrackId)) {
-                    console.log(`[Translator] Waiting for inflight song-data request for ${finalTrackId}`);
-                    try {
-                        const result = await window.SongDataService._inflightRequests.get(finalTrackId);
-                        if (result && result.success) {
-                            songData = result;
-                        }
-                    } catch (e) {
-                        console.warn("[Translator] Inflight song-data request failed", e);
-                    }
-                }
-
-                const songDataResult = songData;
-                const cachedMetadata = songDataResult?.metadata;
-
-                if (songDataResult && cachedMetadata) {
-                    if (cachedMetadata.translatedTitle || cachedMetadata.translatedArtist || cachedMetadata.romanizedTitle || cachedMetadata.romanizedArtist) {
-                        console.log(`[Translator] Using SongDataService cached metadata for ${finalTrackId}`);
-
-                        this._metadataCache.set(cacheKey, cachedMetadata);
-                        LyricsCache.setMetadata(finalTrackId, userLang, cachedMetadata).catch(() => { });
-
-                        return cachedMetadata;
-                    }
-                }
-            }
+            // SongDataService 캐시 확인 (제거됨 - 통합 데이터 의존성 제거)
 
             // AIAddonManager를 통한 번역 시도
             if (window.AIAddonManager) {
@@ -2394,33 +2447,7 @@
                 }
             }
 
-            // SongDataService 캐시 확인
-            if (!ignoreCache && window.SongDataService) {
-                const songData = window.SongDataService.getCachedData(finalTrackId);
-
-                if (songData && songData.translations) {
-                    let translationData = null;
-                    if (provider && songData.translations[provider]) {
-                        translationData = songData.translations[provider];
-                    }
-
-                    if (translationData) {
-                        const isPhonetic = wantSmartPhonetic;
-                        const hasData = isPhonetic
-                            ? (translationData.phonetic && translationData.phonetic.length > 0)
-                            : ((translationData.translation && translationData.translation.length > 0) || (translationData.vi && translationData.vi.length > 0));
-
-                        if (hasData) {
-                            console.log(`[Translator] Using SongDataService cached translation for ${finalTrackId}`);
-                            if (!isPhonetic && !translationData.vi && translationData.translation) {
-                                translationData.vi = translationData.translation;
-                            }
-                            LyricsCache.setTranslation(finalTrackId, userLang, wantSmartPhonetic, translationData, provider).catch(() => { });
-                            return translationData;
-                        }
-                    }
-                }
-            }
+            // SongDataService 캐시 확인 (제거됨 - 통합 데이터 의존성 제거)
 
             // AIAddonManager를 통한 번역 시도
             if (window.AIAddonManager) {
@@ -3723,6 +3750,9 @@
             }
         }
     });
+
+
+    window.LyricsService = LyricsService;
 
     // OverlaySender 초기화 및 전역 등록
     OverlaySender.init();
