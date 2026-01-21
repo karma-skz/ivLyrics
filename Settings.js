@@ -1318,7 +1318,7 @@ const LyricsProvidersTab = () => {
     // 통합 컨테이너
     react.createElement("div", { className: "lyrics-providers-container" },
       // 헤더
-      react.createElement("div", { className: "lyrics-providers-header" },
+      react.createElement("div", { className: "lyrics-providers-header", style: { marginBottom: "16px" } },
         react.createElement("h3", null, I18n.t("settings.lyricsProviders.title") || "가사 제공자"),
         react.createElement("p", null, I18n.t("settings.lyricsProviders.description") || "가사를 가져올 제공자를 선택하고 우선순위를 설정합니다.")
       ),
@@ -1452,30 +1452,29 @@ const AIProvidersTab = () => {
       renderProviderSelect('tmi', tmiProvider, I18n.t("settings.aiProviders.tmiProvider"))
     ),
 
-    // Addon 설정 섹션
-    addons.length > 0 && react.createElement("div", { className: "section-title" },
-      react.createElement("div", { className: "section-text" },
+    // Addon 설정 섹션 (통합 컨테이너)
+    react.createElement("div", { style: { marginTop: "30px", background: "transparent", border: "none", boxShadow: "none", padding: 0 } },
+      // 헤더
+      react.createElement("div", { className: "addon-settings-header", style: { marginBottom: "16px" } },
         react.createElement("h3", null, I18n.t("settings.aiProviders.addonSettings")),
-        react.createElement("p", null, I18n.t("settings.aiProviders.addonSettingsDesc"))
-      )
-    ),
-    addons.length > 0 && react.createElement("div", { className: "addon-cards-container" },
-      addons.map(addon => {
-        if (!addon.getSettingsUI) return null;
-        return react.createElement(AddonSettingsCard, {
-          key: addon.id,
-          addon: addon,
-          isExpanded: expandedAddons.has(addon.id),
-          onToggle: () => toggleAddon(addon.id)
-        });
-      })
-    ),
+        react.createElement("p", null,
+          addons.length > 0
+            ? I18n.t("settings.aiProviders.addonSettingsDesc")
+            : I18n.t("settings.aiProviders.noAddons")
+        )
+      ),
 
-    // 등록된 Addon이 없을 때
-    addons.length === 0 && react.createElement("div", { className: "section-title" },
-      react.createElement("div", { className: "section-text" },
-        react.createElement("h3", null, I18n.t("settings.aiProviders.addonSettings")),
-        react.createElement("p", null, I18n.t("settings.aiProviders.noAddons"))
+      // Addon 카드 목록
+      addons.length > 0 && react.createElement("div", { className: "addon-cards-container" },
+        addons.map(addon => {
+          if (!addon.getSettingsUI) return null;
+          return react.createElement(AddonSettingsCard, {
+            key: addon.id,
+            addon: addon,
+            isExpanded: expandedAddons.has(addon.id),
+            onToggle: () => toggleAddon(addon.id)
+          });
+        })
       )
     )
   );
