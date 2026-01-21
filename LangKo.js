@@ -10,6 +10,7 @@ window.LANG_KO = {
     "appearance": "외관",
     "behavior": "동작",
     "advanced": "고급",
+    "aiProviders": "AI 제공자",
     "fullscreen": "전체화면",
     "nowplaying": "패널 가사",
     "debug": "디버그",
@@ -316,7 +317,18 @@ window.LANG_KO = {
       "chocolate": "초콜릿"
     },
     "solidBackgroundInUse": "ℹ️ 단색 배경 사용 중",
-    "fontPlaceholder": "폰트명 입력 (예: Arial, 맑은 고딕)"
+    "fontPlaceholder": "폰트명 입력 (예: Arial, 맑은 고딕)",
+    "aiProviders": {
+      "providerSelection": "AI 제공자 선택",
+      "providerSelectionDesc": "번역, 발음 표기, TMI 생성에 사용할 AI 제공자를 선택하세요",
+      "metadataProvider": "메타데이터 번역",
+      "lyricsProvider": "가사 번역/발음",
+      "tmiProvider": "TMI 생성",
+      "selectProvider": "제공자 선택...",
+      "addonSettings": "Addon 설정",
+      "addonSettingsDesc": "각 AI Addon의 개별 설정을 구성하세요",
+      "noAddons": "등록된 AI Addon이 없습니다. Addon 파일을 확인해 주세요."
+    }
   },
   "buttons": {
     "save": "저장",

@@ -989,6 +989,193 @@ const AccountSection = () => {
   );
 };
 
+// AI Addon 개별 카드 컴포넌트 (아코디언 스타일)
+const AddonSettingsCard = ({ addon, isExpanded, onToggle }) => {
+  const SettingsUI = addon.getSettingsUI ? addon.getSettingsUI() : null;
+
+  const getLocalizedDescription = (desc) => {
+    if (typeof desc === 'string') return desc;
+    const lang = Spicetify.Locale?.getLocale()?.split('-')[0] || 'en';
+    return desc[lang] || desc['en'] || Object.values(desc)[0] || '';
+  };
+
+  // 아코디언 헤더 클릭 핸들러
+  const handleHeaderClick = (e) => {
+    // 버튼 클릭은 무시
+    if (e.target.closest('button')) return;
+    onToggle();
+  };
+
+  return react.createElement("div", {
+    className: `addon-card ${isExpanded ? 'expanded' : ''}`
+  },
+    // 카드 헤더 (항상 보임)
+    react.createElement("div", {
+      className: "addon-card-header",
+      onClick: handleHeaderClick
+    },
+      // 왼쪽: 아이콘, 이름, 버전
+      react.createElement("div", { className: "addon-card-header-left" },
+        react.createElement("div", { className: "addon-card-icon" },
+          addon.id === 'gemini'
+            ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
+                react.createElement("path", {
+                  d: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
+                  stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"
+                })
+              )
+            : addon.id === 'chatgpt'
+            ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
+                react.createElement("path", {
+                  d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z",
+                  stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"
+                })
+              )
+            : react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
+                react.createElement("path", {
+                  d: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z",
+                  stroke: "currentColor", strokeWidth: "2"
+                })
+              )
+        ),
+        react.createElement("div", { className: "addon-card-title-group" },
+          react.createElement("span", { className: "addon-card-name" }, addon.name),
+          react.createElement("span", { className: "addon-card-version" }, `v${addon.version}`)
+        )
+      ),
+      // 오른쪽: 확장 아이콘
+      react.createElement("div", { className: "addon-card-header-right" },
+        react.createElement("svg", {
+          className: `addon-expand-icon ${isExpanded ? 'expanded' : ''}`,
+          width: 16, height: 16, viewBox: "0 0 24 24", fill: "none",
+          stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"
+        },
+          react.createElement("polyline", { points: "6 9 12 15 18 9" })
+        )
+      )
+    ),
+    // 카드 설명 (항상 보임)
+    react.createElement("div", { className: "addon-card-description" },
+      getLocalizedDescription(addon.description)
+    ),
+    // 카드 바디 (확장 시에만 보임)
+    isExpanded && SettingsUI && react.createElement("div", { className: "addon-card-body" },
+      react.createElement(SettingsUI)
+    )
+  );
+};
+
+// AI 제공자 설정 탭 컴포넌트
+const AIProvidersTab = () => {
+  const [addons, setAddons] = useState([]);
+  const [metadataProvider, setMetadataProvider] = useState('');
+  const [lyricsProvider, setLyricsProvider] = useState('');
+  const [tmiProvider, setTmiProvider] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [expandedAddons, setExpandedAddons] = useState(new Set());
+
+  useEffect(() => {
+    const loadAddons = () => {
+      if (window.AIAddonManager) {
+        const addonList = window.AIAddonManager.getAddons();
+        setAddons(addonList);
+        setMetadataProvider(window.AIAddonManager.getProvider('metadata') || '');
+        setLyricsProvider(window.AIAddonManager.getProvider('lyrics') || '');
+        setTmiProvider(window.AIAddonManager.getProvider('tmi') || '');
+      } else {
+        setTimeout(loadAddons, 100);
+      }
+    };
+    loadAddons();
+  }, [refreshKey]);
+
+  const toggleAddon = (addonId) => {
+    setExpandedAddons(prev => {
+      const next = new Set(prev);
+      if (next.has(addonId)) {
+        next.delete(addonId);
+      } else {
+        next.add(addonId);
+      }
+      return next;
+    });
+  };
+
+  const handleProviderChange = (type, value) => {
+    if (window.AIAddonManager) {
+      window.AIAddonManager.setProvider(type, value);
+      if (type === 'metadata') setMetadataProvider(value);
+      if (type === 'lyrics') setLyricsProvider(value);
+      if (type === 'tmi') setTmiProvider(value);
+    }
+  };
+
+  const renderProviderSelect = (type, currentValue, label) => {
+    return react.createElement("div", { className: "setting-row" },
+      react.createElement("div", { className: "setting-row-content" },
+        react.createElement("div", { className: "setting-row-left" },
+          react.createElement("div", { className: "setting-name" }, label)
+        ),
+        react.createElement("div", { className: "setting-row-right" },
+          react.createElement("select", {
+            value: currentValue,
+            onChange: (e) => handleProviderChange(type, e.target.value),
+            className: "config-select",
+            style: { minWidth: "180px" }
+          },
+            react.createElement("option", { value: "" }, I18n.t("settings.aiProviders.selectProvider")),
+            addons.map(addon =>
+              react.createElement("option", { key: addon.id, value: addon.id }, addon.name)
+            )
+          )
+        )
+      )
+    );
+  };
+
+  return react.createElement(react.Fragment, null,
+    // Provider 선택 섹션
+    react.createElement("div", { className: "section-title" },
+      react.createElement("div", { className: "section-text" },
+        react.createElement("h3", null, I18n.t("settings.aiProviders.providerSelection")),
+        react.createElement("p", null, I18n.t("settings.aiProviders.providerSelectionDesc"))
+      )
+    ),
+    react.createElement("div", { className: "option-list-wrapper" },
+      renderProviderSelect('metadata', metadataProvider, I18n.t("settings.aiProviders.metadataProvider")),
+      renderProviderSelect('lyrics', lyricsProvider, I18n.t("settings.aiProviders.lyricsProvider")),
+      renderProviderSelect('tmi', tmiProvider, I18n.t("settings.aiProviders.tmiProvider"))
+    ),
+
+    // Addon 설정 섹션
+    addons.length > 0 && react.createElement("div", { className: "section-title" },
+      react.createElement("div", { className: "section-text" },
+        react.createElement("h3", null, I18n.t("settings.aiProviders.addonSettings")),
+        react.createElement("p", null, I18n.t("settings.aiProviders.addonSettingsDesc"))
+      )
+    ),
+    addons.length > 0 && react.createElement("div", { className: "addon-cards-container" },
+      addons.map(addon => {
+        if (!addon.getSettingsUI) return null;
+        return react.createElement(AddonSettingsCard, {
+          key: addon.id,
+          addon: addon,
+          isExpanded: expandedAddons.has(addon.id),
+          onToggle: () => toggleAddon(addon.id)
+        });
+      })
+    ),
+
+    // 등록된 Addon이 없을 때
+    addons.length === 0 && react.createElement("div", { className: "section-title" },
+      react.createElement("div", { className: "section-text" },
+        react.createElement("h3", null, I18n.t("settings.aiProviders.addonSettings")),
+        react.createElement("p", null, I18n.t("settings.aiProviders.noAddons"))
+      )
+    )
+  );
+};
+
 // 로컬 캐시 관리 컴포넌트 (IndexedDB)
 const LocalCacheManager = () => {
   const [stats, setStats] = useState(null);
@@ -5486,6 +5673,518 @@ const ConfigModal = () => {
     cursor: not-allowed;
 }
 
+/* AI Addon Settings Styles */
+#${APP_NAME}-config-container .ai-addon-container {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+#${APP_NAME}-config-container .ai-addon-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+#${APP_NAME}-config-container .ai-addon-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+#${APP_NAME}-config-container .ai-addon-version {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+#${APP_NAME}-config-container .ai-addon-description {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+#${APP_NAME}-config-container .ai-addon-setting {
+    margin-bottom: 16px;
+}
+
+#${APP_NAME}-config-container .ai-addon-setting label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+#${APP_NAME}-config-container .ai-addon-setting input,
+#${APP_NAME}-config-container .ai-addon-setting select {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 13px;
+    transition: all var(--transition-fast);
+}
+
+#${APP_NAME}-config-container .ai-addon-setting input:focus,
+#${APP_NAME}-config-container .ai-addon-setting select:focus {
+    border-color: var(--accent-primary);
+    outline: none;
+}
+
+#${APP_NAME}-config-container .ai-addon-setting small {
+    display: block;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 4px;
+}
+
+#${APP_NAME}-config-container .ai-addon-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+#${APP_NAME}-config-container .ai-addon-input-group input {
+    flex: 1;
+}
+
+#${APP_NAME}-config-container .ai-addon-btn-primary,
+#${APP_NAME}-config-container .ai-addon-btn-secondary {
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: none;
+    white-space: nowrap;
+}
+
+#${APP_NAME}-config-container .ai-addon-btn-primary {
+    background: var(--accent-gradient);
+    color: white;
+}
+
+#${APP_NAME}-config-container .ai-addon-btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+#${APP_NAME}-config-container .ai-addon-btn-secondary {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+}
+
+#${APP_NAME}-config-container .ai-addon-btn-secondary:hover {
+    background: var(--glass-bg-active);
+    border-color: var(--accent-primary);
+}
+
+#${APP_NAME}-config-container .ai-addon-test-status {
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 13px;
+}
+
+#${APP_NAME}-config-container .ai-addon-test-status.success {
+    color: #22c55e;
+}
+
+#${APP_NAME}-config-container .ai-addon-test-status.error {
+    color: #ef4444;
+}
+
+/* Addon 리스트 래퍼 */
+#${APP_NAME}-config-container .addon-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Addon 설정 컨테이너 - 섹션처럼 표시 */
+#${APP_NAME}-config-container .addon-settings-container {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--glass-bg-hover);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-header h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-version {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-description {
+    color: var(--text-secondary);
+    font-size: 12px;
+    padding: 12px 20px;
+    margin: 0;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-setting {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-setting:last-child {
+    border-bottom: none;
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-setting label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-setting input,
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-setting select {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 13px;
+    transition: all var(--transition-fast);
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-setting input:focus,
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-setting select:focus {
+    border-color: var(--accent-primary);
+    outline: none;
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-setting small {
+    display: block;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-input-group input {
+    flex: 1;
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-btn-primary,
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-btn-secondary {
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: none;
+    white-space: nowrap;
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-btn-primary {
+    background: var(--accent-gradient);
+    color: white;
+}
+
+#${APP_NAME}-config-container .addon-settings-container .ai-addon-btn-secondary {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+}
+
+/* ============================================
+   NEW: Addon Cards Container (Accordion Style)
+   ============================================ */
+
+#${APP_NAME}-config-container .addon-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Addon Card Base */
+#${APP_NAME}-config-container .addon-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+}
+
+#${APP_NAME}-config-container .addon-card:hover {
+    border-color: rgba(124, 58, 237, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+#${APP_NAME}-config-container .addon-card.expanded {
+    border-color: var(--accent-primary);
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.2);
+}
+
+/* Addon Card Header */
+#${APP_NAME}-config-container .addon-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    cursor: pointer;
+    background: var(--glass-bg);
+    transition: background var(--transition-fast);
+}
+
+#${APP_NAME}-config-container .addon-card-header:hover {
+    background: var(--glass-bg-hover);
+}
+
+#${APP_NAME}-config-container .addon-card.expanded .addon-card-header {
+    background: var(--glass-bg-hover);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+#${APP_NAME}-config-container .addon-card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+#${APP_NAME}-config-container .addon-card-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(139, 92, 246, 0.1));
+    border-radius: var(--radius-md);
+    color: var(--accent-primary);
+    flex-shrink: 0;
+}
+
+#${APP_NAME}-config-container .addon-card-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+#${APP_NAME}-config-container .addon-card-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+#${APP_NAME}-config-container .addon-card-version {
+    font-size: 11px;
+    color: var(--text-tertiary);
+}
+
+#${APP_NAME}-config-container .addon-card-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#${APP_NAME}-config-container .addon-status-badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+#${APP_NAME}-config-container .addon-status-badge.success {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+}
+
+#${APP_NAME}-config-container .addon-status-badge.error {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+#${APP_NAME}-config-container .addon-expand-icon {
+    color: var(--text-tertiary);
+    transition: transform var(--transition-fast);
+}
+
+#${APP_NAME}-config-container .addon-expand-icon.expanded {
+    transform: rotate(180deg);
+}
+
+/* Addon Card Description */
+#${APP_NAME}-config-container .addon-card-description {
+    padding: 12px 20px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    background: rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+#${APP_NAME}-config-container .addon-card:not(.expanded) .addon-card-description {
+    border-bottom: none;
+}
+
+/* Addon Card Body (Settings) */
+#${APP_NAME}-config-container .addon-card-body {
+    padding: 0;
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Addon Settings inside Card Body */
+#${APP_NAME}-config-container .addon-card-body .ai-addon-settings {
+    padding: 0;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-header,
+#${APP_NAME}-config-container .addon-card-body .ai-addon-description {
+    display: none;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-setting {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--glass-border);
+    margin: 0;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-setting:last-child {
+    border-bottom: none;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-setting label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-setting input,
+#${APP_NAME}-config-container .addon-card-body .ai-addon-setting select {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 13px;
+    transition: all var(--transition-fast);
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-setting input:focus,
+#${APP_NAME}-config-container .addon-card-body .ai-addon-setting select:focus {
+    border-color: var(--accent-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-setting small {
+    display: block;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-input-group input {
+    flex: 1;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-btn-primary,
+#${APP_NAME}-config-container .addon-card-body .ai-addon-btn-secondary {
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: none;
+    white-space: nowrap;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-btn-primary {
+    background: var(--accent-gradient);
+    color: white;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-btn-secondary {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-btn-secondary:hover {
+    background: var(--glass-bg-active);
+    border-color: var(--accent-primary);
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-test-status {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 12px;
+    font-size: 13px;
+    gap: 6px;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-test-status.success {
+    color: #22c55e;
+}
+
+#${APP_NAME}-config-container .addon-card-body .ai-addon-test-status.error {
+    color: #ef4444;
+}
+
 /* 프라이머리 버튼 */
 #${APP_NAME}-config-container .btn-primary {
     background: var(--accent-gradient) !important;
@@ -5598,6 +6297,13 @@ const ConfigModal = () => {
         label: I18n.t("tabs.advanced"),
         icon: "",
         isActive: activeTab === "advanced",
+        onClick: setActiveTab,
+      }),
+      react.createElement(TabButton, {
+        id: "ai-providers",
+        label: I18n.t("tabs.aiProviders"),
+        icon: "",
+        isActive: activeTab === "ai-providers",
         onClick: setActiveTab,
       }),
       react.createElement(TabButton, {
@@ -7463,6 +8169,14 @@ const ConfigModal = () => {
           ],
           onChange: () => { },
         })
+      ),
+      // AI 제공자 탭
+      react.createElement(
+        "div",
+        {
+          className: `tab-content ${activeTab === "ai-providers" ? "active" : ""}`,
+        },
+        react.createElement(AIProvidersTab)
       ),
       // 전체화면 탭
       react.createElement(

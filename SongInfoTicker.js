@@ -56,114 +56,43 @@ const SongInfoTMI = (() => {
             }
         }
 
-        const userHash = Utils.getUserHash();
-        let baseUrl = `https://lyrics.api.ivl.is/lyrics/song_info?trackId=${trackId}&userHash=${userHash}&lang=${lang}`;
+        // AIAddonManager를 통한 TMI 생성
+        if (window.AIAddonManager) {
+            const tmiProvider = window.AIAddonManager.getProvider('tmi');
+            if (tmiProvider) {
+                console.log(`[SongInfoTMI] Using AIAddonManager for TMI (provider: ${tmiProvider})`);
 
-        if (regenerate) {
-            baseUrl += `&regenerate=true&_ts=${Date.now()}`;
-        }
+                try {
+                    // 현재 트랙 정보 가져오기
+                    const trackData = Spicetify.Player.data?.item;
+                    const title = trackData?.name || '';
+                    const artist = trackData?.artists?.map(a => a.name).join(', ') || '';
+                    const album = trackData?.album?.name || '';
 
-        // API 키 배열 파싱
-        let apiKeys = [];
-        const apiKeyConfig = CONFIG.visual?.["gemini-api-key"];
-        if (apiKeyConfig && apiKeyConfig.trim().startsWith('[')) {
-            try {
-                const keys = JSON.parse(apiKeyConfig);
-                apiKeys = Array.isArray(keys)
-                    ? keys.filter(k => k && typeof k === 'string' && k.trim().length > 0)
-                    : [];
-            } catch (e) { }
-        } else if (apiKeyConfig && apiKeyConfig.trim().length > 0) {
-            apiKeys = [apiKeyConfig.trim()];
-        }
+                    const result = await window.AIAddonManager.generateTMI({
+                        trackId,
+                        title,
+                        artist,
+                        album,
+                        lang
+                    });
 
-        // API 키가 없으면 빈 키로 시도
-        if (apiKeys.length === 0) {
-            apiKeys = [''];
-        }
-
-        // 단일 요청 실행 함수
-        const executeRequest = async (apiKey) => {
-            const fetchOptions = {
-                headers: {
-                    "User-Agent": `spicetify v${Spicetify.Config.version}`,
-                    "X-IvLyrics-Gemini-Key": apiKey || ""
+                    if (result && result.track) {
+                        const cacheKey = `${trackId}:${lang}`;
+                        tmiCache.set(cacheKey, result);
+                        LyricsCache.setTMI(trackId, lang, result).catch(() => { });
+                        return result;
+                    }
+                } catch (e) {
+                    console.warn('[SongInfoTMI] AIAddonManager TMI generation failed:', e);
+                    return { error: true, message: e.message || 'TMI generation failed' };
                 }
-            };
-
-            if (regenerate) {
-                fetchOptions.cache = 'no-store';
-                fetchOptions.headers['Pragma'] = 'no-cache';
-                fetchOptions.headers['Cache-Control'] = 'no-cache';
-            }
-
-            const response = await fetch(baseUrl, fetchOptions);
-            const data = await response.json();
-
-            // HTTP 상태 코드로 429/403 감지
-            if (response.status === 429 || response.status === 403) {
-                throw new Error(`HTTP ${response.status}`);
-            }
-
-            // 응답 본문에서 429/403/RESOURCE_EXHAUSTED 감지 (서버가 200으로 응답하지만 에러를 포함하는 경우)
-            if (data?.error) {
-                const errorStr = typeof data.error === 'string' ? data.error : JSON.stringify(data.error);
-                const isRateLimitError = errorStr.includes('429') ||
-                    errorStr.includes('RESOURCE_EXHAUSTED') ||
-                    errorStr.includes('quota') ||
-                    errorStr.includes('rate limit');
-                const isForbiddenError = errorStr.includes('403') ||
-                    errorStr.includes('Forbidden') ||
-                    errorStr.includes('API key not valid');
-
-                if (isRateLimitError || isForbiddenError) {
-                    throw new Error(errorStr);
-                }
-
-                // 그 외 에러는 에러 객체 반환 (재시도 안 함)
-                return { error: true, message: errorStr };
-            }
-
-            // 그 외 HTTP 에러
-            if (response.status !== 200) {
-                return { error: true, message: `HTTP ${response.status}` };
-            }
-
-            // 성공 - 캐시 저장
-            if (data?.track) {
-                const cacheKey = `${trackId}:${lang}`;
-                tmiCache.set(cacheKey, data);
-                LyricsCache.setTMI(trackId, lang, data).catch(() => { });
-            }
-            return data;
-        };
-
-        // API 키 로테이션 실행
-        let lastError = null;
-        for (let i = 0; i < apiKeys.length; i++) {
-            const key = apiKeys[i];
-            try {
-                return await executeRequest(key);
-            } catch (error) {
-                lastError = error;
-                const is429 = error.message.includes('429');
-                const is403 = error.message.includes('403');
-
-                if (is429 || is403) {
-                    const keyPreview = key ? key.substring(0, 8) + '...' : '(empty)';
-                    console.warn(`[SongInfoTMI] API Key ${keyPreview} failed (${is429 ? 'Rate Limit' : 'Forbidden'}). ${i < apiKeys.length - 1 ? 'Trying next key...' : 'No more keys.'}`);
-                    continue; // 다음 키 시도
-                }
-
-                // 그 외 네트워크 에러는 즉시 반환
-                console.error('[SongInfoTMI] Fetch failed:', error);
-                return { error: true, message: error.message || 'Network error' };
             }
         }
 
-        // 모든 키 실패
-        console.error('[SongInfoTMI] All API keys failed');
-        return { error: true, message: lastError?.message || 'All API keys exhausted (Rate Limit)' };
+        // AI 제공자가 설정되지 않았으면 에러 반환
+        console.log('[SongInfoTMI] No AI provider configured for TMI generation');
+        return { error: true, message: 'AI 제공자가 설정되지 않았습니다. 설정에서 TMI 제공자를 선택해주세요.' };
     }
 
     // Source link renderer helper - supports new {title, uri} format

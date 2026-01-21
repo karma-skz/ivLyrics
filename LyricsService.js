@@ -2222,42 +2222,15 @@
                 return null;
             }
 
-            const apiKeyRaw = getStorageItem("ivLyrics:visual:gemini-api-key");
-            if (!apiKeyRaw || apiKeyRaw.trim() === "") {
-                return null;
-            }
-
-            let apiKeys = [];
-            try {
-                const trimmed = apiKeyRaw.trim();
-                if (trimmed.startsWith('[')) {
-                    const parsed = JSON.parse(trimmed);
-                    if (Array.isArray(parsed)) {
-                        apiKeys = parsed;
-                    } else {
-                        apiKeys = [trimmed];
-                    }
-                } else {
-                    apiKeys = [trimmed];
-                }
-            } catch (e) {
-                console.warn("[Translator] Failed to parse API keys:", e);
-                apiKeys = [apiKeyRaw];
-            }
-
-            apiKeys = apiKeys.filter(k => k && k.trim().length > 0);
-
-            if (apiKeys.length === 0) {
-                return null;
-            }
-
             const userLang = getCurrentLanguage();
             const cacheKey = `${finalTrackId}:${userLang}`;
 
+            // 메모리 캐시 확인
             if (!ignoreCache && this._metadataCache.has(cacheKey)) {
                 return this._metadataCache.get(cacheKey);
             }
 
+            // 로컬 캐시 확인
             if (!ignoreCache) {
                 try {
                     const localCached = await LyricsCache.getMetadata(finalTrackId, userLang);
@@ -2287,12 +2260,10 @@
                     }
                 }
 
-                const songDataResult = songData; // alias for clarity
+                const songDataResult = songData;
                 const cachedMetadata = songDataResult?.metadata;
 
-                // song-data의 metadata 필드에 번역 데이터가 포함되어 있다고 가정
                 if (songDataResult && cachedMetadata) {
-                    // 유효한 데이터인지 확인 (하나라도 있으면 사용)
                     if (cachedMetadata.translatedTitle || cachedMetadata.translatedArtist || cachedMetadata.romanizedTitle || cachedMetadata.romanizedArtist) {
                         console.log(`[Translator] Using SongDataService cached metadata for ${finalTrackId}`);
 
@@ -2300,132 +2271,50 @@
                         LyricsCache.setMetadata(finalTrackId, userLang, cachedMetadata).catch(() => { });
 
                         return cachedMetadata;
-                    } else {
-                        console.log(`[Translator] SongDataService has metadata but no translations for ${finalTrackId}`);
                     }
                 }
             }
 
-            if (this._metadataInflightRequests.has(cacheKey)) {
-                return this._metadataInflightRequests.get(cacheKey);
-            }
+            // AIAddonManager를 통한 번역 시도
+            if (window.AIAddonManager) {
+                const metadataProvider = window.AIAddonManager.getProvider('metadata');
+                if (metadataProvider) {
+                    console.log(`[Translator] Using AIAddonManager for metadata (provider: ${metadataProvider})`);
 
-            const executeWithKey = async (apiKey, keyIndex) => {
-                const url = "https://lyrics.api.ivl.is/lyrics/translate/metadata";
-
-                let logId = null;
-                if (window.ApiTracker) {
-                    logId = window.ApiTracker.logRequest('metadata', url, {
-                        trackId: finalTrackId,
-                        title,
-                        artist,
-                        lang: userLang,
-                        keyIndex: keyIndex + 1,
-                        totalKeys: apiKeys.length
-                    });
-                }
-
-                const response = await fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                    },
-                    body: JSON.stringify({
-                        trackId: finalTrackId,
-                        title,
-                        artist,
-                        lang: userLang,
-                        apiKey,
-                        ignore_cache: ignoreCache,
-                    }),
-                });
-
-                if (response.status === 429 || response.status === 403) {
-                    if (window.ApiTracker && logId) {
-                        window.ApiTracker.logResponse(logId, { status: response.status }, 'error', `HTTP ${response.status}`);
+                    if (this._metadataInflightRequests.has(cacheKey)) {
+                        return this._metadataInflightRequests.get(cacheKey);
                     }
-                    throw new Error(`${response.status} ${response.status === 429 ? 'Rate Limit' : 'Forbidden'}`);
-                }
 
-                if (!response.ok) {
-                    if (window.ApiTracker && logId) {
-                        window.ApiTracker.logResponse(logId, { status: response.status }, 'error', `HTTP ${response.status}`);
-                    }
-                    throw new Error(`HTTP ${response.status}`);
-                }
+                    const addonPromise = (async () => {
+                        try {
+                            const result = await window.AIAddonManager.translateMetadata({
+                                trackId: finalTrackId,
+                                title,
+                                artist,
+                                lang: userLang
+                            });
 
-                const data = await response.json();
-
-                if (data.error) {
-                    const errorStr = typeof data.error === 'string' ? data.error : (data.message || JSON.stringify(data.error));
-                    const isRateLimitError = errorStr.includes('429') || errorStr.includes('RESOURCE_EXHAUSTED') || errorStr.includes('quota');
-                    const isForbiddenError = errorStr.includes('403') || errorStr.includes('Forbidden');
-
-                    if (isRateLimitError || isForbiddenError) {
-                        if (window.ApiTracker && logId) {
-                            window.ApiTracker.logResponse(logId, data, 'error', errorStr);
+                            if (result) {
+                                this._metadataCache.set(cacheKey, result);
+                                LyricsCache.setMetadata(finalTrackId, userLang, result).catch(() => { });
+                                return result;
+                            }
+                        } catch (e) {
+                            console.warn('[Translator] AIAddonManager metadata translation failed:', e);
                         }
-                        throw new Error(errorStr);
-                    }
-
-                    if (window.ApiTracker && logId) {
-                        window.ApiTracker.logResponse(logId, data, 'error', data.message || "Translation failed");
-                    }
-                    throw new Error(data.message || "Translation failed");
-                }
-
-                if (data.success && data.data) {
-                    if (window.ApiTracker && logId) {
-                        window.ApiTracker.logResponse(logId, data.data, 'success');
-                    }
-                    return data.data;
-                }
-
-                if (window.ApiTracker && logId) {
-                    window.ApiTracker.logResponse(logId, data, 'error', "No data returned");
-                }
-                return null;
-            };
-
-            const runWithRotation = async () => {
-                let lastError = null;
-
-                for (let i = 0; i < apiKeys.length; i++) {
-                    const key = apiKeys[i];
-                    try {
-                        const result = await executeWithKey(key, i);
-                        if (result) {
-                            this._metadataCache.set(cacheKey, result);
-                            LyricsCache.setMetadata(finalTrackId, userLang, result).catch(() => { });
-                            return result;
-                        }
-                    } catch (error) {
-                        lastError = error;
-                        const isRateLimit = error.message.includes("429") || error.message.includes("Rate Limit");
-                        const isForbidden = error.message.includes("403") || error.message.includes("Forbidden");
-
-                        if (isRateLimit || isForbidden) {
-                            console.warn(`[Translator] Metadata API Key ${key.substring(0, 8)}... failed. Rotating...`);
-                            if (i === apiKeys.length - 1) break;
-                            continue;
-                        }
-
-                        console.warn(`[Translator] Metadata translation failed:`, error.message);
                         return null;
-                    }
+                    })().finally(() => {
+                        this._metadataInflightRequests.delete(cacheKey);
+                    });
+
+                    this._metadataInflightRequests.set(cacheKey, addonPromise);
+                    return addonPromise;
                 }
+            }
 
-                console.warn(`[Translator] All API keys exhausted:`, lastError?.message);
-                return null;
-            };
-
-            const requestPromise = runWithRotation().finally(() => {
-                this._metadataInflightRequests.delete(cacheKey);
-            });
-
-            this._metadataInflightRequests.set(cacheKey, requestPromise);
-            return requestPromise;
+            // AI 제공자가 설정되지 않았으면 null 반환
+            console.log('[Translator] No AI provider configured for metadata translation');
+            return null;
         }
 
         static getMetadataFromCache(trackId) {
@@ -2476,34 +2365,6 @@
         }) {
             if (!text?.trim()) throw new Error("No text provided for translation");
 
-            const apiKeyRaw = getStorageItem("ivLyrics:visual:gemini-api-key");
-            let apiKeys = [];
-
-            try {
-                if (apiKeyRaw) {
-                    const trimmed = apiKeyRaw.trim();
-                    if (trimmed.startsWith('[')) {
-                        const parsed = JSON.parse(trimmed);
-                        if (Array.isArray(parsed)) {
-                            apiKeys = parsed;
-                        } else {
-                            apiKeys = [trimmed];
-                        }
-                    } else {
-                        apiKeys = [trimmed];
-                    }
-                }
-            } catch (e) {
-                console.warn("Failed to parse API keys:", e);
-                apiKeys = [apiKeyRaw];
-            }
-
-            apiKeys = apiKeys.filter(k => k && k.trim().length > 0);
-
-            if (apiKeys.length === 0) {
-                throw new Error(getTranslatorErrorMessage("translator.missingApiKey", "API key is required"));
-            }
-
             let finalTrackId = trackId;
             if (!finalTrackId) {
                 finalTrackId = Spicetify.Player.data?.item?.uri?.split(':')[2];
@@ -2514,6 +2375,7 @@
 
             const userLang = getCurrentLanguage();
 
+            // 로컬 캐시 확인
             if (!ignoreCache) {
                 try {
                     const localCached = await LyricsCache.getTranslation(finalTrackId, userLang, wantSmartPhonetic, provider);
@@ -2532,253 +2394,78 @@
                 }
             }
 
-
-            // SongDataService 캐시 확인 (통합 데이터)
+            // SongDataService 캐시 확인
             if (!ignoreCache && window.SongDataService) {
                 const songData = window.SongDataService.getCachedData(finalTrackId);
 
                 if (songData && songData.translations) {
-                    // 엄격한 Provider 체크: 요청한 provider와 저장된 번역의 provider가 일치해야 함
                     let translationData = null;
-
                     if (provider && songData.translations[provider]) {
                         translationData = songData.translations[provider];
                     }
 
                     if (translationData) {
                         const isPhonetic = wantSmartPhonetic;
-                        // 필요한 데이터가 있는지 확인 (phonetic 또는 translation/vi)
-                        // 백엔드 응답은 'translation' 또는 'vi' 필드를 사용할 수 있음
                         const hasData = isPhonetic
                             ? (translationData.phonetic && translationData.phonetic.length > 0)
                             : ((translationData.translation && translationData.translation.length > 0) || (translationData.vi && translationData.vi.length > 0));
 
                         if (hasData) {
-                            console.log(`[Translator] Using SongDataService cached translation for ${finalTrackId} (${isPhonetic ? 'phonetic' : 'translation'}) from provider: ${provider}`);
-
-                            // 데이터 포맷 표준화 (vi vs translation)
+                            console.log(`[Translator] Using SongDataService cached translation for ${finalTrackId}`);
                             if (!isPhonetic && !translationData.vi && translationData.translation) {
                                 translationData.vi = translationData.translation;
                             }
-
-                            // LyricsCache에도 저장
                             LyricsCache.setTranslation(finalTrackId, userLang, wantSmartPhonetic, translationData, provider).catch(() => { });
-
                             return translationData;
                         }
                     }
                 }
             }
 
-            const requestKey = getTranslatorRequestKey(finalTrackId, wantSmartPhonetic, userLang);
+            // AIAddonManager를 통한 번역 시도
+            if (window.AIAddonManager) {
+                const lyricsProvider = window.AIAddonManager.getProvider('lyrics');
+                if (lyricsProvider) {
+                    console.log(`[Translator] Using AIAddonManager for lyrics (provider: ${lyricsProvider})`);
 
-            if (!ignoreCache && _translatorInflightRequests.has(requestKey)) {
-                return _translatorInflightRequests.get(requestKey);
-            }
-
-            const executeRequest = async (currentApiKey) => {
-                const endpoints = ["https://lyrics.api.ivl.is/lyrics/translate"];
-                const userHash = getUserHash();
-
-                const body = {
-                    trackId: finalTrackId,
-                    artist,
-                    title,
-                    text,
-                    wantSmartPhonetic,
-                    provider,
-                    apiKey: currentApiKey,
-                    ignore_cache: ignoreCache,
-                    lang: userLang,
-                    userHash,
-                };
-
-                const category = wantSmartPhonetic ? 'phonetic' : 'translation';
-                let logId = null;
-                if (window.ApiTracker) {
-                    logId = window.ApiTracker.logRequest(category, endpoints[0], {
-                        trackId: finalTrackId,
-                        artist,
-                        title,
-                        lang: userLang,
-                        wantSmartPhonetic,
-                        textLength: text?.length || 0
-                    });
-                }
-
-                const tryFetch = async (url) => {
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 800000);
-
-                    try {
-                        const res = await fetch(url, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                Accept: "application/json",
-                            },
-                            body: JSON.stringify(body),
-                            signal: controller.signal,
-                            mode: "cors",
-                        });
-
-                        clearTimeout(timeoutId);
-                        return res;
-                    } catch (error) {
-                        clearTimeout(timeoutId);
-                        throw error;
+                    const requestKey = getTranslatorRequestKey(finalTrackId, wantSmartPhonetic, userLang);
+                    if (!ignoreCache && _translatorInflightRequests.has(requestKey)) {
+                        return _translatorInflightRequests.get(requestKey);
                     }
-                };
 
-                try {
-                    let res;
-                    let lastError;
-
-                    for (const url of endpoints) {
+                    const addonPromise = (async () => {
                         try {
-                            res = await tryFetch(url);
-                            if (res.ok) break;
-                        } catch (error) {
-                            lastError = error;
-                            continue;
-                        }
-                    }
+                            const result = await window.AIAddonManager.translateLyrics({
+                                trackId: finalTrackId,
+                                artist,
+                                title,
+                                text,
+                                lang: userLang,
+                                wantSmartPhonetic,
+                                provider: lyricsProvider
+                            });
 
-                    if (!res || !res.ok) {
-                        if (res) {
-                            const errorData = await res.json().catch(() => ({ message: "Unknown error" }));
-
-                            if (res.status === 202 && errorData.status === "translation_in_progress") {
-                                if (_translatorPendingRetries.has(requestKey)) {
-                                    return _translatorPendingRetries.get(requestKey);
-                                }
-
-                                const retryPromise = new Promise((resolve, reject) => {
-                                    const retryDelay = Math.min((errorData.retry_after || 5) * 1000, 30000);
-                                    const maxRetries = 20;
-                                    let retryCount = 0;
-
-                                    const pollStatus = async () => {
-                                        retryCount++;
-
-                                        try {
-                                            const statusUrl = `https://lyrics.api.ivl.is/lyrics/translate?action=status&trackId=${finalTrackId}&lang=${userLang}&isPhonetic=${wantSmartPhonetic}&provider=${encodeURIComponent(provider || 'ivLyrics')}`;
-                                            const statusRes = await fetch(statusUrl);
-                                            const statusData = await statusRes.json();
-
-                                            if (statusData.status === "completed") {
-                                                _translatorPendingRetries.delete(requestKey);
-                                                const result = await window.Translator.callGemini({
-                                                    trackId: finalTrackId,
-                                                    artist,
-                                                    title,
-                                                    text,
-                                                    wantSmartPhonetic,
-                                                    provider,
-                                                    ignoreCache: false,
-                                                });
-                                                resolve(result);
-                                                return;
-                                            } else if (statusData.status === "failed" || statusData.status === "not_found") {
-                                                _translatorPendingRetries.delete(requestKey);
-                                                reject(new Error(statusData.message || "Translation failed"));
-                                                return;
-                                            }
-
-                                            if (retryCount < maxRetries) {
-                                                setTimeout(pollStatus, retryDelay);
-                                            } else {
-                                                _translatorPendingRetries.delete(requestKey);
-                                                reject(new Error("Translation timeout"));
-                                            }
-                                        } catch (pollError) {
-                                            if (retryCount < maxRetries) {
-                                                setTimeout(pollStatus, retryDelay);
-                                            } else {
-                                                _translatorPendingRetries.delete(requestKey);
-                                                reject(pollError);
-                                            }
-                                        }
-                                    };
-
-                                    setTimeout(pollStatus, retryDelay);
-                                });
-
-                                _translatorPendingRetries.set(requestKey, retryPromise);
-                                return retryPromise;
+                            if (result) {
+                                LyricsCache.setTranslation(finalTrackId, userLang, wantSmartPhonetic, result, lyricsProvider).catch(() => { });
+                                return result;
                             }
-
-                            if (res.status === 429) throw new Error("429 Rate Limit Exceeded");
-                            if (res.status === 403) throw new Error("403 Forbidden");
-                            if (errorData.error && errorData.message) throw new Error(errorData.message);
-                            throw new Error(`HTTP ${res.status}`);
+                        } catch (e) {
+                            console.warn('[Translator] AIAddonManager lyrics translation failed:', e);
+                            throw e;
                         }
+                        return null;
+                    })().finally(() => {
+                        _translatorInflightRequests.delete(requestKey);
+                    });
 
-                        throw lastError || new Error("All endpoints failed");
-                    }
-
-                    const data = await res.json();
-
-                    if (data.error) {
-                        const errorStr = typeof data.error === 'string' ? data.error : (data.message || JSON.stringify(data.error));
-                        const isRateLimitError = errorStr.includes('429') || errorStr.includes('RESOURCE_EXHAUSTED');
-                        const isForbiddenError = errorStr.includes('403') || errorStr.includes('Forbidden');
-
-                        if (isRateLimitError) throw new Error(`429 Rate Limit: ${errorStr}`);
-                        if (isForbiddenError) throw new Error(`403 Forbidden: ${errorStr}`);
-                        throw new Error(data.message || "Translation failed");
-                    }
-
-                    if (window.ApiTracker && logId) {
-                        window.ApiTracker.logResponse(logId, {
-                            lineCount: data.phonetic?.length || data.translation?.length || 0,
-                            cached: false
-                        }, 'success');
-                    }
-
-                    LyricsCache.setTranslation(finalTrackId, userLang, wantSmartPhonetic, data, provider).catch(() => { });
-
-                    return data;
-                } catch (error) {
-                    if (window.ApiTracker && logId) {
-                        window.ApiTracker.logResponse(logId, null, 'error', error.message);
-                    }
-                    throw error;
+                    _translatorInflightRequests.set(requestKey, addonPromise);
+                    return addonPromise;
                 }
-            };
-
-            const runWithRotation = async () => {
-                let lastError;
-                for (let i = 0; i < apiKeys.length; i++) {
-                    const key = apiKeys[i];
-                    try {
-                        return await executeRequest(key);
-                    } catch (error) {
-                        lastError = error;
-                        const isRateLimit = error.message.includes("429") || error.message.includes("Rate Limit");
-                        const isForbidden = error.message.includes("403") || error.message.includes("Forbidden");
-
-                        if (isRateLimit || isForbidden) {
-                            console.warn(`[Translator] API Key ${key.substring(0, 8)}... failed. Rotating...`);
-                            if (i === apiKeys.length - 1) break;
-                            continue;
-                        }
-
-                        throw error;
-                    }
-                }
-                throw new Error(`Translation failed: ${lastError ? lastError.message : "All keys failed"}`);
-            };
-
-            const requestPromise = runWithRotation().finally(() => {
-                _translatorInflightRequests.delete(requestKey);
-            });
-
-            if (!ignoreCache) {
-                _translatorInflightRequests.set(requestKey, requestPromise);
             }
 
-            return requestPromise;
+            // AI 제공자가 설정되지 않았으면 에러
+            console.log('[Translator] No AI provider configured for lyrics translation');
+            throw new Error(getTranslatorErrorMessage("translator.noProviderConfigured", "AI 제공자가 설정되지 않았습니다. 설정에서 AI 제공자를 선택해주세요."));
         }
 
         includeExternal(url) {

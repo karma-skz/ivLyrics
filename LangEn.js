@@ -10,6 +10,7 @@ window.LANG_EN = {
     "appearance": "Appearance",
     "behavior": "Behavior",
     "advanced": "Advanced",
+    "aiProviders": "AI Providers",
     "fullscreen": "Fullscreen",
     "nowplaying": "Panel Lyrics",
     "debug": "Debug",
@@ -316,7 +317,18 @@ window.LANG_EN = {
       "chocolate": "Chocolate"
     },
     "solidBackgroundInUse": "ℹ️ Solid Background in use",
-    "fontPlaceholder": "Enter font name (e.g., Arial, Roboto)"
+    "fontPlaceholder": "Enter font name (e.g., Arial, Roboto)",
+    "aiProviders": {
+      "providerSelection": "AI Provider Selection",
+      "providerSelectionDesc": "Select AI providers for translation, pronunciation, and TMI generation",
+      "metadataProvider": "Metadata Translation",
+      "lyricsProvider": "Lyrics Translation/Pronunciation",
+      "tmiProvider": "TMI Generation",
+      "selectProvider": "Select provider...",
+      "addonSettings": "Addon Settings",
+      "addonSettingsDesc": "Configure settings for each AI Addon",
+      "noAddons": "No AI Addons registered. Please check your Addon files."
+    }
   },
   "buttons": {
     "save": "Save",

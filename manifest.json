@@ -53,6 +53,9 @@
 		"SyncDataCreator.js"
 	],
 	"subfiles_extension": [
+		"AIAddonManager.js",
+		"Addon_AI_Gemini.js",
+		"Addon_AI_ChatGPT.js",
 		"LyricsService.js",
 		"PlaybarButton.js",
 		"VideoBackgroundDepend.js",
