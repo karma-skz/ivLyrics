@@ -316,7 +316,37 @@ window.LANG_HI = {
       "chocolate": "चॉकलेट"
     },
     "solidBackgroundInUse": "ℹ️ ठोस बैकग्राउंड उपयोग में है",
-    "fontPlaceholder": "फ़ॉन्ट का नाम दर्ज करें (उदा: Arial, Mangal)"
+    "fontPlaceholder": "फ़ॉन्ट का नाम दर्ज करें (उदा: Arial, Mangal)",
+    "aiProviders": {
+      "providerSelection": "AI प्रदाता चयन",
+      "providerSelectionDesc": "अनुवाद, रोमनकरण और TMI पीढ़ी के लिए उपयोग किए जाने वाले AI प्रदाता का चयन करें",
+      "metadataProvider": "मेटाडेटा अनुवाद",
+      "lyricsProvider": "गीत अनुवाद/रोमनकरण",
+      "tmiProvider": "TMI पीढ़ी",
+      "selectProvider": "प्रदाता चुनें...",
+      "addonSettings": "एडऑन सेटिंग्स",
+      "addonSettingsDesc": "प्रत्येक AI एडऑन की व्यक्तिगत सेटिंग्स कॉन्फ़िगर करें",
+      "noAddons": "कोई AI एडऑन पंजीकृत नहीं है। कृपया अपने एडऑन फ़ाइलों की जाँच करें।"
+    },
+    "lyricsProviders": {
+      "title": "गीत प्रदाता",
+      "description": "गीत प्रदाता चुनें और प्राथमिकता दें। शीर्ष पर स्थित प्रदाताओं को पहले आज़माया जाता है।",
+      "noProviders": "कोई गीत प्रदाता पंजीकृत नहीं है।",
+      "allowedTypes": "अनुमत गीत प्रकार",
+      "moveUp": "ऊपर ले जाएँ",
+      "moveDown": "नीचे ले जाएँ",
+      "types": {
+        "karaoke": "कराओके गीत",
+        "synced": "सिंक किए गए गीत",
+        "unsynced": "सिंक नहीं किए गए गीत"
+      },
+      "supports": {
+        "karaoke": "कराओके",
+        "synced": "सिंक किया गया",
+        "unsynced": "अनसिंक किया गया",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "सहेजें",

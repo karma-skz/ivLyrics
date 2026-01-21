@@ -29,6 +29,82 @@
             this._addons = new Map();
             this._initialized = false;
             this._initPromise = null;
+
+            // EventEmitter 믹스인
+            this._events = new Map();
+            this._onceEvents = new Map();
+        }
+
+        // ============================================
+        // EventEmitter Methods
+        // ============================================
+
+        /**
+         * 이벤트 리스너 등록
+         * @param {string} event - 이벤트 이름
+         * @param {Function} listener - 콜백 함수
+         * @returns {Function} unsubscribe 함수
+         */
+        on(event, listener) {
+            if (!this._events.has(event)) {
+                this._events.set(event, new Set());
+            }
+            this._events.get(event).add(listener);
+            return () => this.off(event, listener);
+        }
+
+        /**
+         * 일회성 이벤트 리스너 등록
+         */
+        once(event, listener) {
+            if (!this._onceEvents.has(event)) {
+                this._onceEvents.set(event, new Set());
+            }
+            this._onceEvents.get(event).add(listener);
+        }
+
+        /**
+         * 이벤트 리스너 제거
+         */
+        off(event, listener) {
+            if (this._events.has(event)) {
+                this._events.get(event).delete(listener);
+            }
+            if (this._onceEvents.has(event)) {
+                this._onceEvents.get(event).delete(listener);
+            }
+        }
+
+        /**
+         * 이벤트 발생
+         */
+        emit(event, ...args) {
+            // 디버그 로깅
+            if (window.AddonDebug?.isEnabled()) {
+                window.AddonDebug.log('events', `AIAddonManager.emit: ${event}`, args[0]);
+            }
+
+            if (this._events.has(event)) {
+                for (const listener of this._events.get(event)) {
+                    try {
+                        listener(...args);
+                    } catch (e) {
+                        console.error(`[AIAddonManager] Error in listener for "${event}":`, e);
+                    }
+                }
+            }
+
+            if (this._onceEvents.has(event)) {
+                const onceListeners = this._onceEvents.get(event);
+                this._onceEvents.delete(event);
+                for (const listener of onceListeners) {
+                    try {
+                        listener(...args);
+                    } catch (e) {
+                        console.error(`[AIAddonManager] Error in once listener for "${event}":`, e);
+                    }
+                }
+            }
         }
 
         /**
@@ -98,7 +174,54 @@
                 });
             }
 
+            // 이벤트 발생
+            this.emit('addon:registered', { id: addon.id, name: addon.name, type: 'ai' });
+
             return true;
+        }
+
+        /**
+         * Addon 등록 검증 (상세 에러 메시지)
+         * @param {Object} addon - 검증할 Addon 객체
+         * @returns {{ valid: boolean, errors: string[] }}
+         */
+        validate(addon) {
+            const errors = [];
+
+            if (!addon) {
+                errors.push('Addon object is null or undefined');
+                return { valid: false, errors };
+            }
+
+            // 필수 필드 검증
+            const requiredFields = ['id', 'name', 'author', 'description', 'version'];
+            for (const field of requiredFields) {
+                if (!addon[field]) {
+                    errors.push(`Missing required field: "${field}"`);
+                }
+            }
+
+            // 필수 메서드 검증
+            if (typeof addon.getSettingsUI !== 'function') {
+                errors.push('Missing required method: getSettingsUI()');
+            }
+
+            // 기능 메서드 중 최소 하나는 있어야 함
+            const featureMethods = ['translateLyrics', 'translateMetadata', 'generateTMI'];
+            const hasAnyFeature = featureMethods.some(m => typeof addon[m] === 'function');
+            if (!hasAnyFeature) {
+                errors.push(`Must implement at least one of: ${featureMethods.join(', ')}`);
+            }
+
+            // 선택 메서드 타입 검증
+            if (addon.init && typeof addon.init !== 'function') {
+                errors.push('Field "init" must be a function if provided');
+            }
+            if (addon.testConnection && typeof addon.testConnection !== 'function') {
+                errors.push('Field "testConnection" must be a function if provided');
+            }
+
+            return { valid: errors.length === 0, errors };
         }
 
         /**
@@ -107,8 +230,13 @@
          */
         unregister(addonId) {
             if (this._addons.has(addonId)) {
+                const addon = this._addons.get(addonId);
                 this._addons.delete(addonId);
                 console.log(`[AIAddonManager] Unregistered addon: ${addonId}`);
+
+                // 이벤트 발생
+                this.emit('addon:unregistered', { id: addonId, name: addon?.name });
+
                 return true;
             }
             return false;
@@ -161,6 +289,10 @@
 
             Spicetify.LocalStorage.set(STORAGE_PREFIX + key, addonId || '');
             console.log(`[AIAddonManager] Set ${type} provider to: ${addonId || '(none)'}`);
+
+            // 이벤트 발생
+            this.emit('ai:provider:changed', { type, addonId });
+
             return true;
         }
 
@@ -263,10 +395,39 @@
                 return null;
             }
 
+            // 디버그 로깅
+            if (window.AddonDebug?.isEnabled()) {
+                window.AddonDebug.log('ai', 'translateMetadata called', { provider: addon.id, ...params });
+                window.AddonDebug.time('ai', 'translateMetadata');
+            }
+
+            // 이벤트 발생
+            this.emit('ai:request:start', { type: 'metadata', provider: addon.id, params });
+
             try {
-                return await addon.translateMetadata(params);
+                const result = await addon.translateMetadata(params);
+
+                // 디버그 타이머 종료
+                if (window.AddonDebug?.isEnabled()) {
+                    window.AddonDebug.timeEnd('ai', 'translateMetadata');
+                }
+
+                // 이벤트 발생
+                this.emit('ai:request:success', { type: 'metadata', provider: addon.id });
+
+                return result;
             } catch (e) {
                 console.error('[AIAddonManager] translateMetadata failed:', e);
+
+                // 디버그 로깅
+                if (window.AddonDebug?.isEnabled()) {
+                    window.AddonDebug.timeEnd('ai', 'translateMetadata');
+                    window.AddonDebug.error('ai', 'translateMetadata error', e);
+                }
+
+                // 이벤트 발생
+                this.emit('ai:request:error', { type: 'metadata', provider: addon.id, error: e.message });
+
                 throw e;
             }
         }
@@ -283,10 +444,44 @@
                 return null;
             }
 
+            // 디버그 로깅
+            if (window.AddonDebug?.isEnabled()) {
+                window.AddonDebug.log('ai', 'translateLyrics called', {
+                    provider: addon.id,
+                    lang: params.lang,
+                    wantSmartPhonetic: params.wantSmartPhonetic,
+                    lineCount: params.text?.split('\n').length
+                });
+                window.AddonDebug.time('ai', 'translateLyrics');
+            }
+
+            // 이벤트 발생
+            this.emit('ai:request:start', { type: 'lyrics', provider: addon.id, params: { ...params, text: '[...]' } });
+
             try {
-                return await addon.translateLyrics(params);
+                const result = await addon.translateLyrics(params);
+
+                // 디버그 타이머 종료
+                if (window.AddonDebug?.isEnabled()) {
+                    window.AddonDebug.timeEnd('ai', 'translateLyrics');
+                }
+
+                // 이벤트 발생
+                this.emit('ai:request:success', { type: 'lyrics', provider: addon.id });
+
+                return result;
             } catch (e) {
                 console.error('[AIAddonManager] translateLyrics failed:', e);
+
+                // 디버그 로깅
+                if (window.AddonDebug?.isEnabled()) {
+                    window.AddonDebug.timeEnd('ai', 'translateLyrics');
+                    window.AddonDebug.error('ai', 'translateLyrics error', e);
+                }
+
+                // 이벤트 발생
+                this.emit('ai:request:error', { type: 'lyrics', provider: addon.id, error: e.message });
+
                 throw e;
             }
         }
@@ -303,10 +498,39 @@
                 return null;
             }
 
+            // 디버그 로깅
+            if (window.AddonDebug?.isEnabled()) {
+                window.AddonDebug.log('ai', 'generateTMI called', { provider: addon.id, ...params });
+                window.AddonDebug.time('ai', 'generateTMI');
+            }
+
+            // 이벤트 발생
+            this.emit('ai:request:start', { type: 'tmi', provider: addon.id, params });
+
             try {
-                return await addon.generateTMI(params);
+                const result = await addon.generateTMI(params);
+
+                // 디버그 타이머 종료
+                if (window.AddonDebug?.isEnabled()) {
+                    window.AddonDebug.timeEnd('ai', 'generateTMI');
+                }
+
+                // 이벤트 발생
+                this.emit('ai:request:success', { type: 'tmi', provider: addon.id });
+
+                return result;
             } catch (e) {
                 console.error('[AIAddonManager] generateTMI failed:', e);
+
+                // 디버그 로깅
+                if (window.AddonDebug?.isEnabled()) {
+                    window.AddonDebug.timeEnd('ai', 'generateTMI');
+                    window.AddonDebug.error('ai', 'generateTMI error', e);
+                }
+
+                // 이벤트 발생
+                this.emit('ai:request:error', { type: 'tmi', provider: addon.id, error: e.message });
+
                 throw e;
             }
         }

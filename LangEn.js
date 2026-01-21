@@ -334,10 +334,19 @@ window.LANG_EN = {
       "title": "Lyrics Providers",
       "description": "Select and prioritize lyrics providers. Providers at the top are tried first.",
       "noProviders": "No lyrics providers registered.",
+      "allowedTypes": "Allowed Lyrics Types",
+      "moveUp": "Move Up",
+      "moveDown": "Move Down",
+      "types": {
+        "karaoke": "Karaoke Lyrics",
+        "synced": "Synced Lyrics",
+        "unsynced": "Plain Text Lyrics"
+      },
       "supports": {
         "karaoke": "Karaoke",
         "synced": "Synced",
-        "unsynced": "Plain"
+        "unsynced": "Plain",
+        "ivLyricsSync": "ivLyrics Sync"
       }
     }
   },

@@ -355,9 +355,94 @@ OUTPUT (${lineCount} lines):`;
             console.log(`[Gemini Addon] Initialized (v${ADDON_INFO.version})`);
         },
 
-        getSettingsUI() {
-            const { useState, useEffect, useCallback } = Spicetify.React;
+        /**
+         * 연결 테스트 (SettingsUIBuilder/AddonUI에서 사용)
+         */
+        async testConnection() {
+            await callGeminiAPIRaw('Reply with just "OK" if you receive this.');
+        },
 
+        getSettingsUI() {
+            const React = Spicetify.React;
+            const { useState, useCallback } = React;
+
+            // AddonUI 사용 가능 여부 확인
+            if (window.AddonUI) {
+                const UI = window.AddonUI;
+
+                return function GeminiSettingsUI() {
+                    const [apiKeys, setApiKeys] = useState(getSetting('api-keys', ''));
+                    const [model, setModel] = useState(getSelectedModel());
+                    const [testStatus, setTestStatus] = useState('');
+                    const [testing, setTesting] = useState(false);
+
+                    const handleApiKeyChange = useCallback((value) => {
+                        setApiKeys(value);
+                        setSetting('api-keys', value);
+                    }, []);
+
+                    const handleModelChange = useCallback((value) => {
+                        setModel(value);
+                        setSetting('model', value);
+                    }, []);
+
+                    const handleTest = useCallback(async () => {
+                        setTesting(true);
+                        setTestStatus('');
+                        try {
+                            await callGeminiAPIRaw('Reply with just "OK" if you receive this.');
+                            setTestStatus('✓ Connection successful!');
+                        } catch (e) {
+                            setTestStatus(`✗ Error: ${e.message}`);
+                        } finally {
+                            setTesting(false);
+                        }
+                    }, []);
+
+                    return React.createElement(UI.SettingsContainer, { addonId: 'gemini' },
+                        // Header
+                        React.createElement(UI.AddonHeader, {
+                            name: ADDON_INFO.name,
+                            version: ADDON_INFO.version,
+                            description: getLocalizedText(ADDON_INFO.description, Spicetify.Locale?.getLocale()?.split('-')[0] || 'en')
+                        }),
+
+                        // API Key
+                        React.createElement(UI.PasswordInput, {
+                            label: 'API Key(s)',
+                            value: apiKeys,
+                            onChange: handleApiKeyChange,
+                            placeholder: 'AIza... (multiple keys: ["key1", "key2"])',
+                            description: 'Enter a single key or JSON array for rotation',
+                            externalUrl: ADDON_INFO.apiKeyUrl,
+                            externalLabel: 'Get API Key'
+                        }),
+
+                        // Model Selection
+                        React.createElement(UI.Select, {
+                            label: 'Model',
+                            value: model,
+                            onChange: handleModelChange,
+                            options: ADDON_INFO.models
+                        }),
+
+                        // Test Button
+                        React.createElement('div', { className: 'addon-ui-test-section' },
+                            React.createElement(UI.Button, {
+                                label: 'Test Connection',
+                                onClick: handleTest,
+                                primary: true,
+                                loading: testing
+                            }),
+                            testStatus && React.createElement('span', {
+                                className: `addon-ui-test-status ${testStatus.startsWith('✓') ? 'success' : testStatus.startsWith('✗') ? 'error' : ''}`
+                            }, testStatus)
+                        )
+                    );
+                };
+            }
+
+            // Fallback: 기존 방식
             return function GeminiSettings() {
                 const [apiKeys, setApiKeys] = useState(getSetting('api-keys', ''));
                 const [model, setModel] = useState(getSelectedModel());
@@ -385,60 +470,39 @@ OUTPUT (${lineCount} lines):`;
                     }
                 }, []);
 
-                const handleGetKey = useCallback(() => {
-                    window.open(ADDON_INFO.apiKeyUrl, '_blank');
-                }, []);
-
-                return Spicetify.React.createElement('div', { className: 'ai-addon-settings gemini-settings' },
-                    // Header
-                    Spicetify.React.createElement('div', { className: 'ai-addon-header' },
-                        Spicetify.React.createElement('h3', null, ADDON_INFO.name),
-                        Spicetify.React.createElement('span', { className: 'ai-addon-version' }, `v${ADDON_INFO.version}`)
+                return React.createElement('div', { className: 'ai-addon-settings gemini-settings' },
+                    React.createElement('div', { className: 'ai-addon-header' },
+                        React.createElement('h3', null, ADDON_INFO.name),
+                        React.createElement('span', { className: 'ai-addon-version' }, `v${ADDON_INFO.version}`)
                     ),
-
-                    // Description
-                    Spicetify.React.createElement('p', { className: 'ai-addon-description' },
+                    React.createElement('p', { className: 'ai-addon-description' },
                         getLocalizedText(ADDON_INFO.description, Spicetify.Locale?.getLocale()?.split('-')[0] || 'en')
                     ),
-
-                    // API Key Setting
-                    Spicetify.React.createElement('div', { className: 'ai-addon-setting' },
-                        Spicetify.React.createElement('label', null, 'API Key(s)'),
-                        Spicetify.React.createElement('div', { className: 'ai-addon-input-group' },
-                            Spicetify.React.createElement('input', {
+                    React.createElement('div', { className: 'ai-addon-setting' },
+                        React.createElement('label', null, 'API Key(s)'),
+                        React.createElement('div', { className: 'ai-addon-input-group' },
+                            React.createElement('input', {
                                 type: 'password',
                                 value: apiKeys,
                                 onChange: handleApiKeyChange,
                                 placeholder: 'AIza... (multiple keys: ["key1", "key2"])'
                             }),
-                            Spicetify.React.createElement('button', {
-                                onClick: handleGetKey,
+                            React.createElement('button', {
+                                onClick: () => window.open(ADDON_INFO.apiKeyUrl, '_blank'),
                                 className: 'ai-addon-btn-secondary'
                             }, 'Get API Key')
                         ),
-                        Spicetify.React.createElement('small', null, 'Enter a single key or JSON array for rotation')
+                        React.createElement('small', null, 'Enter a single key or JSON array for rotation')
                     ),
-
-                    // Model Selection
-                    Spicetify.React.createElement('div', { className: 'ai-addon-setting' },
-                        Spicetify.React.createElement('label', null, 'Model'),
-                        Spicetify.React.createElement('select', {
-                            value: model,
-                            onChange: handleModelChange
-                        },
-                            ADDON_INFO.models.map(m =>
-                                Spicetify.React.createElement('option', { key: m.id, value: m.id }, m.name)
-                            )
+                    React.createElement('div', { className: 'ai-addon-setting' },
+                        React.createElement('label', null, 'Model'),
+                        React.createElement('select', { value: model, onChange: handleModelChange },
+                            ADDON_INFO.models.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
                         )
                     ),
-
-                    // Test Button
-                    Spicetify.React.createElement('div', { className: 'ai-addon-setting' },
-                        Spicetify.React.createElement('button', {
-                            onClick: handleTest,
-                            className: 'ai-addon-btn-primary'
-                        }, 'Test Connection'),
-                        testStatus && Spicetify.React.createElement('span', {
+                    React.createElement('div', { className: 'ai-addon-setting' },
+                        React.createElement('button', { onClick: handleTest, className: 'ai-addon-btn-primary' }, 'Test Connection'),
+                        testStatus && React.createElement('span', {
                             className: `ai-addon-test-status ${testStatus.startsWith('✓') ? 'success' : testStatus.startsWith('✗') ? 'error' : ''}`
                         }, testStatus)
                     )

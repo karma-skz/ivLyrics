@@ -316,7 +316,37 @@ window.LANG_DE = {
       "chocolate": "Schokolade"
     },
     "solidBackgroundInUse": "ℹ️ Einfarbiger Hintergrund aktiv",
-    "fontPlaceholder": "Schriftartname (z.B. Arial, Roboto)"
+    "fontPlaceholder": "Schriftartname (z.B. Arial, Roboto)",
+    "aiProviders": {
+      "providerSelection": "KI-Anbieter auswählen",
+      "providerSelectionDesc": "Wählen Sie den KI-Anbieter für Übersetzungen, Transkriptionen und TMI-Generierung aus",
+      "metadataProvider": "Metadaten-Übersetzung",
+      "lyricsProvider": "Songtext-Übersetzung/Transkription",
+      "tmiProvider": "TMI-Generierung",
+      "selectProvider": "Anbieter wählen...",
+      "addonSettings": "Addon-Einstellungen",
+      "addonSettingsDesc": "Konfigurieren Sie die individuellen Einstellungen für jedes KI-Addon",
+      "noAddons": "Keine KI-Addons registriert. Bitte überprüfen Sie Ihre Addon-Dateien."
+    },
+    "lyricsProviders": {
+      "title": "Songtext-Anbieter",
+      "description": "Wählen Sie Songtext-Anbieter aus und priorisieren Sie diese. Anbieter oben werden zuerst versucht.",
+      "noProviders": "Keine Songtext-Anbieter registriert.",
+      "allowedTypes": "Erlaubte Songtext-Typen",
+      "moveUp": "Nach oben verschieben",
+      "moveDown": "Nach unten verschieben",
+      "types": {
+        "karaoke": "Karaoke-Songtexte",
+        "synced": "Synchronisierte Songtexte",
+        "unsynced": "Nicht-synchronisierte Songtexte"
+      },
+      "supports": {
+        "karaoke": "Karaoke",
+        "synced": "Sync",
+        "unsynced": "Unsync",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "Speichern",

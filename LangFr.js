@@ -316,7 +316,37 @@ window.LANG_FR = {
       "chocolate": "Chocolat"
     },
     "solidBackgroundInUse": "ℹ️ Fond uni en cours d'utilisation",
-    "fontPlaceholder": "Nom de la police (ex: Arial, Roboto)"
+    "fontPlaceholder": "Nom de la police (ex: Arial, Roboto)",
+    "aiProviders": {
+      "providerSelection": "Sélection du fournisseur IA",
+      "providerSelectionDesc": "Choisissez le fournisseur IA pour la traduction, la romanisation et la génération de TMI",
+      "metadataProvider": "Traduction des métadonnées",
+      "lyricsProvider": "Traduction/romanisation des paroles",
+      "tmiProvider": "Génération de TMI",
+      "selectProvider": "Sélectionner un fournisseur...",
+      "addonSettings": "Paramètres des addons",
+      "addonSettingsDesc": "Configurez les paramètres individuels de chaque addon IA",
+      "noAddons": "Aucun addon IA enregistré. Veuillez vérifier vos fichiers d'addons."
+    },
+    "lyricsProviders": {
+      "title": "Fournisseurs de paroles",
+      "description": "Sélectionnez et priorisez les fournisseurs de paroles. Les fournisseurs en haut sont essayés en premier.",
+      "noProviders": "Aucun fournisseur de paroles enregistré.",
+      "allowedTypes": "Types de paroles autorisés",
+      "moveUp": "Déplacer vers le haut",
+      "moveDown": "Déplacer vers le bas",
+      "types": {
+        "karaoke": "Paroles karaoké",
+        "synced": "Paroles synchronisées",
+        "unsynced": "Paroles non synchronisées"
+      },
+      "supports": {
+        "karaoke": "Karaoké",
+        "synced": "Synchro",
+        "unsynced": "Non-synchro",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "Enregistrer",

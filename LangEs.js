@@ -316,7 +316,37 @@ window.LANG_ES = {
       "chocolate": "Chocolate"
     },
     "solidBackgroundInUse": "ℹ️ Fondo de color sólido en uso",
-    "fontPlaceholder": "Nombre de fuente (ej: Arial, Roboto)"
+    "fontPlaceholder": "Nombre de fuente (ej: Arial, Roboto)",
+    "aiProviders": {
+      "providerSelection": "Selección de proveedor de IA",
+      "providerSelectionDesc": "Selecciona el proveedor de IA para traducción, romanización y generación de TMI",
+      "metadataProvider": "Traducción de metadatos",
+      "lyricsProvider": "Traducción/romanización de letras",
+      "tmiProvider": "Generación de TMI",
+      "selectProvider": "Seleccionar proveedor...",
+      "addonSettings": "Ajustes de complementos",
+      "addonSettingsDesc": "Configura los ajustes individuales de cada complemento de IA",
+      "noAddons": "No hay complementos de IA registrados. Por favor, comprueba tus archivos de complementos."
+    },
+    "lyricsProviders": {
+      "title": "Proveedores de letras",
+      "description": "Selecciona y prioriza los proveedores de letras. Los proveedores en la parte superior se intentan primero.",
+      "noProviders": "No hay proveedores de letras registrados.",
+      "allowedTypes": "Tipos de letras permitidos",
+      "moveUp": "Mover arriba",
+      "moveDown": "Mover abajo",
+      "types": {
+        "karaoke": "Letras de Karaoke",
+        "synced": "Letras sincronizadas",
+        "unsynced": "Letras no sincronizadas"
+      },
+      "supports": {
+        "karaoke": "Karaoke",
+        "synced": "Sincr.",
+        "unsynced": "No sincr.",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "Guardar",

@@ -316,7 +316,37 @@ window.LANG_RU = {
       "chocolate": "Шоколадный"
     },
     "solidBackgroundInUse": "ℹ️ Используется сплошной фон",
-    "fontPlaceholder": "Название шрифта (напр. Arial, Roboto)"
+    "fontPlaceholder": "Название шрифта (напр. Arial, Roboto)",
+    "aiProviders": {
+      "providerSelection": "Выбор AI-провайдера",
+      "providerSelectionDesc": "Выберите AI-провайдера для перевода, романизации и генерации TMI",
+      "metadataProvider": "Перевод метаданных",
+      "lyricsProvider": "Перевод/романизация текста",
+      "tmiProvider": "Генерация TMI",
+      "selectProvider": "Выберите провайдера...",
+      "addonSettings": "Настройки плагинов",
+      "addonSettingsDesc": "Настройте индивидуальные параметры для каждого AI-плагина",
+      "noAddons": "AI-плагины не зарегистрированы. Пожалуйста, проверьте файлы плагинов."
+    },
+    "lyricsProviders": {
+      "title": "Поставщики текста",
+      "description": "Выберите и расставьте приоритеты для поставщиков текста. Провайдеры наверху списка будут опрашиваться первыми.",
+      "noProviders": "Поставщики текста не зарегистрированы.",
+      "allowedTypes": "Разрешенные типы текста",
+      "moveUp": "Вверх",
+      "moveDown": "Вниз",
+      "types": {
+        "karaoke": "Караоке",
+        "synced": "Синхронизированный",
+        "unsynced": "Обычный текст"
+      },
+      "supports": {
+        "karaoke": "Караоке",
+        "synced": "Синхр.",
+        "unsynced": "Обычный",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "Сохранить",

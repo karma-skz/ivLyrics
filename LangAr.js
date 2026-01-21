@@ -316,7 +316,37 @@ window.LANG_AR = {
       "chocolate": "شوكولاتة"
     },
     "solidBackgroundInUse": "ℹ️ خلفية اللون الواحد قيد الاستخدام",
-    "fontPlaceholder": "أدخل اسم الخط (مثل: Arial, Cairo)"
+    "fontPlaceholder": "أدخل اسم الخط (مثل: Arial, Cairo)",
+    "aiProviders": {
+      "providerSelection": "اختيار موفر الذكاء الاصطناعي",
+      "providerSelectionDesc": "اختر موفر الذكاء الاصطناعي لاستخدامه في الترجمة والنطق وإنشاء TMI",
+      "metadataProvider": "ترجمة البيانات الوصفية",
+      "lyricsProvider": "ترجمة/نطق الكلمات",
+      "tmiProvider": "إنشاء TMI",
+      "selectProvider": "اختر موفرًا...",
+      "addonSettings": "إعدادات الإضافات",
+      "addonSettingsDesc": "تكوين الإعدادات الفردية لكل إضافة ذكاء اصطناعي",
+      "noAddons": "لم يتم تسجيل أي إضافات ذكاء اصطناعي. يرجى التحقق من ملفات الإضافات الخاصة بك."
+    },
+    "lyricsProviders": {
+      "title": "موفرو الكلمات",
+      "description": "اختر موفري الكلمات وقم بترتيب أولوياتهم. يتم تجربة الموفرين في الأعلى أولاً.",
+      "noProviders": "لم يتم تسجيل أي موفر للكلمات.",
+      "allowedTypes": "أنواع الكلمات المسموح بها",
+      "moveUp": "تحريك للأعلى",
+      "moveDown": "تحريك للأسفل",
+      "types": {
+        "karaoke": "كلمات كاريوكي",
+        "synced": "كلمات متزامنة",
+        "unsynced": "كلمات غير متزامنة"
+      },
+      "supports": {
+        "karaoke": "كاريوكي",
+        "synced": "متزامن",
+        "unsynced": "غير متزامن",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "حفظ",

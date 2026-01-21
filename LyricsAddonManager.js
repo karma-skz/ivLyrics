@@ -31,6 +31,82 @@
             this._addons = new Map();
             this._initialized = false;
             this._initPromise = null;
+
+            // EventEmitter 믹스인 (AddonUtils가 로드된 경우)
+            this._events = new Map();
+            this._onceEvents = new Map();
+        }
+
+        // ============================================
+        // EventEmitter Methods
+        // ============================================
+
+        /**
+         * 이벤트 리스너 등록
+         * @param {string} event - 이벤트 이름
+         * @param {Function} listener - 콜백 함수
+         * @returns {Function} unsubscribe 함수
+         */
+        on(event, listener) {
+            if (!this._events.has(event)) {
+                this._events.set(event, new Set());
+            }
+            this._events.get(event).add(listener);
+            return () => this.off(event, listener);
+        }
+
+        /**
+         * 일회성 이벤트 리스너 등록
+         */
+        once(event, listener) {
+            if (!this._onceEvents.has(event)) {
+                this._onceEvents.set(event, new Set());
+            }
+            this._onceEvents.get(event).add(listener);
+        }
+
+        /**
+         * 이벤트 리스너 제거
+         */
+        off(event, listener) {
+            if (this._events.has(event)) {
+                this._events.get(event).delete(listener);
+            }
+            if (this._onceEvents.has(event)) {
+                this._onceEvents.get(event).delete(listener);
+            }
+        }
+
+        /**
+         * 이벤트 발생
+         */
+        emit(event, ...args) {
+            // 디버그 로깅
+            if (window.AddonDebug?.isEnabled()) {
+                window.AddonDebug.log('events', `LyricsAddonManager.emit: ${event}`, args[0]);
+            }
+
+            if (this._events.has(event)) {
+                for (const listener of this._events.get(event)) {
+                    try {
+                        listener(...args);
+                    } catch (e) {
+                        console.error(`[LyricsAddonManager] Error in listener for "${event}":`, e);
+                    }
+                }
+            }
+
+            if (this._onceEvents.has(event)) {
+                const onceListeners = this._onceEvents.get(event);
+                this._onceEvents.delete(event);
+                for (const listener of onceListeners) {
+                    try {
+                        listener(...args);
+                    } catch (e) {
+                        console.error(`[LyricsAddonManager] Error in once listener for "${event}":`, e);
+                    }
+                }
+            }
         }
 
         /**
@@ -119,7 +195,61 @@
                 });
             }
 
+            // 이벤트 발생
+            this.emit('addon:registered', { id: addon.id, name: addon.name, type: 'lyrics' });
+
             return true;
+        }
+
+        /**
+         * Addon 등록 검증 (상세 에러 메시지)
+         * @param {Object} addon - 검증할 Addon 객체
+         * @returns {{ valid: boolean, errors: string[] }}
+         */
+        validate(addon) {
+            const errors = [];
+
+            if (!addon) {
+                errors.push('Addon object is null or undefined');
+                return { valid: false, errors };
+            }
+
+            // 필수 필드 검증
+            const requiredFields = ['id', 'name', 'author', 'description', 'version', 'supports'];
+            for (const field of requiredFields) {
+                if (!addon[field]) {
+                    errors.push(`Missing required field: "${field}"`);
+                }
+            }
+
+            // supports 객체 검증
+            if (addon.supports) {
+                if (typeof addon.supports !== 'object') {
+                    errors.push('Field "supports" must be an object');
+                } else {
+                    const supportTypes = ['karaoke', 'synced', 'unsynced'];
+                    for (const type of supportTypes) {
+                        if (typeof addon.supports[type] !== 'boolean') {
+                            errors.push(`Field "supports.${type}" must be a boolean`);
+                        }
+                    }
+                }
+            }
+
+            // 필수 메서드 검증
+            if (typeof addon.getLyrics !== 'function') {
+                errors.push('Missing required method: getLyrics(info)');
+            }
+
+            // 선택 메서드 타입 검증
+            if (addon.init && typeof addon.init !== 'function') {
+                errors.push('Field "init" must be a function if provided');
+            }
+            if (addon.getSettingsUI && typeof addon.getSettingsUI !== 'function') {
+                errors.push('Field "getSettingsUI" must be a function if provided');
+            }
+
+            return { valid: errors.length === 0, errors };
         }
 
         /**
@@ -128,8 +258,13 @@
          */
         unregister(addonId) {
             if (this._addons.has(addonId)) {
+                const addon = this._addons.get(addonId);
                 this._addons.delete(addonId);
                 console.log(`[LyricsAddonManager] Unregistered addon: ${addonId}`);
+
+                // 이벤트 발생
+                this.emit('addon:unregistered', { id: addonId, name: addon?.name });
+
                 return true;
             }
             return false;
@@ -171,6 +306,9 @@
         setProviderOrder(order) {
             Spicetify.LocalStorage.set(STORAGE_PREFIX + 'provider-order', JSON.stringify(order));
             console.log('[LyricsAddonManager] Provider order saved:', order);
+
+            // 이벤트 발생
+            this.emit('provider:order:changed', { order });
 
             // Trigger immediate lyrics refresh if possible
             if (window.lyricContainer && typeof window.lyricContainer.fetchLyrics === 'function') {
@@ -214,6 +352,9 @@
          */
         setProviderEnabled(addonId, enabled) {
             Spicetify.LocalStorage.set(STORAGE_PREFIX + `enabled:${addonId}`, enabled ? 'true' : 'false');
+
+            // 이벤트 발생
+            this.emit('provider:enabled:changed', { id: addonId, enabled });
         }
 
         /**
@@ -300,15 +441,42 @@
         async getLyrics(info) {
             const enabledProviders = this.getEnabledProviders();
 
+            // 디버그 로깅
+            if (window.AddonDebug?.isEnabled()) {
+                window.AddonDebug.log('lyrics', 'getLyrics called', {
+                    uri: info.uri,
+                    title: info.title,
+                    artist: info.artist,
+                    providers: enabledProviders.map(p => p.id)
+                });
+                window.AddonDebug.time('lyrics', 'getLyrics:total');
+            }
+
+            // 이벤트 발생
+            this.emit('lyrics:fetch:start', { uri: info.uri, title: info.title, artist: info.artist });
+
             if (enabledProviders.length === 0) {
                 console.warn('[LyricsAddonManager] No enabled lyrics providers');
-                return { error: 'No lyrics providers enabled', uri: info.uri };
+                const error = { error: 'No lyrics providers enabled', uri: info.uri };
+                this.emit('lyrics:fetch:error', { ...error, reason: 'no_providers' });
+                return error;
             }
 
             for (const provider of enabledProviders) {
                 try {
                     console.log(`[LyricsAddonManager] Trying provider: ${provider.id}`);
+
+                    // 디버그 타이머
+                    if (window.AddonDebug?.isEnabled()) {
+                        window.AddonDebug.time('lyrics', `provider:${provider.id}`);
+                    }
+
                     const result = await provider.getLyrics(info);
+
+                    // 디버그 타이머 종료
+                    if (window.AddonDebug?.isEnabled()) {
+                        window.AddonDebug.timeEnd('lyrics', `provider:${provider.id}`);
+                    }
 
                     if (result && !result.error) {
                         // 성공
@@ -341,6 +509,26 @@
                         // Check if specific types are allowed but missing, don't necessarily filter out unless ALL are missing/filtered
                         // If result has lyrics that are allowed, return it.
                         if (result.karaoke || result.synced || result.unsynced) {
+                            // 디버그 타이머 종료
+                            if (window.AddonDebug?.isEnabled()) {
+                                window.AddonDebug.timeEnd('lyrics', 'getLyrics:total');
+                                window.AddonDebug.log('lyrics', 'getLyrics success', {
+                                    provider: result.provider,
+                                    hasKaraoke: !!result.karaoke,
+                                    hasSynced: !!result.synced,
+                                    hasUnsynced: !!result.unsynced
+                                });
+                            }
+
+                            // 이벤트 발생
+                            this.emit('lyrics:fetch:success', {
+                                uri: info.uri,
+                                provider: result.provider,
+                                hasKaraoke: !!result.karaoke,
+                                hasSynced: !!result.synced,
+                                hasUnsynced: !!result.unsynced
+                            });
+
                             return result;
                         } else {
                             console.log(`[LyricsAddonManager] Lyrics from ${provider.id} filtered out by user settings or empty`);
@@ -351,10 +539,25 @@
                     console.log(`[LyricsAddonManager] Provider ${provider.id} returned error:`, result?.error);
                 } catch (e) {
                     console.warn(`[LyricsAddonManager] Provider ${provider.id} failed:`, e);
+
+                    // 디버그 로깅
+                    if (window.AddonDebug?.isEnabled()) {
+                        window.AddonDebug.error('lyrics', `Provider ${provider.id} error`, e);
+                    }
                 }
             }
 
-            return { error: 'No lyrics found', uri: info.uri };
+            // 디버그 타이머 종료
+            if (window.AddonDebug?.isEnabled()) {
+                window.AddonDebug.timeEnd('lyrics', 'getLyrics:total');
+                window.AddonDebug.warn('lyrics', 'No lyrics found from any provider');
+            }
+
+            // 이벤트 발생
+            const errorResult = { error: 'No lyrics found', uri: info.uri };
+            this.emit('lyrics:fetch:error', { ...errorResult, reason: 'not_found' });
+
+            return errorResult;
         }
 
         /**

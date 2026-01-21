@@ -316,7 +316,37 @@ window.LANG_ZH_TW = {
       "chocolate": "巧克力色"
     },
     "solidBackgroundInUse": "ℹ️ 正在使用純色背景",
-    "fontPlaceholder": "輸入字型名稱 (例: Arial, 微軟正黑體)"
+    "fontPlaceholder": "輸入字型名稱 (例: Arial, 微軟正黑體)",
+    "aiProviders": {
+      "providerSelection": "AI 提供者選擇",
+      "providerSelectionDesc": "選擇用於翻譯、發音和 TMI 生成的 AI 提供者",
+      "metadataProvider": "元數據翻譯",
+      "lyricsProvider": "歌詞翻譯/發音",
+      "tmiProvider": "TMI 生成",
+      "selectProvider": "選擇提供者...",
+      "addonSettings": "插件設置",
+      "addonSettingsDesc": "配置每個 AI 插件的設置",
+      "noAddons": "未註冊 AI 插件。請檢查您的插件文件。"
+    },
+    "lyricsProviders": {
+      "title": "歌詞提供者",
+      "description": "選擇並劃分歌詞提供者的優先級。排在頂部的提供者將被優先嘗試。",
+      "noProviders": "未註冊歌詞提供者。",
+      "allowedTypes": "允許的歌詞類型",
+      "moveUp": "上移",
+      "moveDown": "下移",
+      "types": {
+        "karaoke": "卡拉OK歌詞",
+        "synced": "同步歌詞",
+        "unsynced": "普通文本歌詞"
+      },
+      "supports": {
+        "karaoke": "卡拉OK",
+        "synced": "同步",
+        "unsynced": "普通",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "儲存",

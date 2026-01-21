@@ -316,7 +316,37 @@ window.LANG_JA = {
       "chocolate": "チョコレート"
     },
     "solidBackgroundInUse": "ℹ️ 単色背景を使用中",
-    "fontPlaceholder": "フォント名を入力 (例: Arial, Meiryo)"
+    "fontPlaceholder": "フォント名を入力 (例: Arial, Meiryo)",
+    "aiProviders": {
+      "providerSelection": "AIプロバイダーの選択",
+      "providerSelectionDesc": "翻訳、発音、TMI生成に使用するAIプロバイダーを選択します",
+      "metadataProvider": "メタデータ翻訳",
+      "lyricsProvider": "歌詞の翻訳/発音",
+      "tmiProvider": "TMI生成",
+      "selectProvider": "プロバイダーを選択...",
+      "addonSettings": "アドオン設定",
+      "addonSettingsDesc": "各AIアドオンの設定を構成します",
+      "noAddons": "登録されているAIアドオンがありません。アドオンファイルを確認してください。"
+    },
+    "lyricsProviders": {
+      "title": "歌詞プロバイダー",
+      "description": "歌詞を取得するプロバイダーを選択し、優先順位を設定します。上にあるプロバイダーから先に試行されます。",
+      "noProviders": "登録されている歌詞プロバイダーがありません。",
+      "allowedTypes": "許可する歌詞タイプ",
+      "moveUp": "上に移動",
+      "moveDown": "下に移動",
+      "types": {
+        "karaoke": "カラオケ歌詞",
+        "synced": "同期歌詞",
+        "unsynced": "非同期歌詞"
+      },
+      "supports": {
+        "karaoke": "カラオケ",
+        "synced": "同期",
+        "unsynced": "非同期",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "保存",

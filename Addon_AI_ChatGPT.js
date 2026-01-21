@@ -325,9 +325,130 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
             console.log(`[ChatGPT Addon] Initialized (v${ADDON_INFO.version})`);
         },
 
-        getSettingsUI() {
-            const { useState, useCallback } = Spicetify.React;
+        /**
+         * 연결 테스트
+         */
+        async testConnection() {
+            await callChatGPTAPIRaw('Reply with just "OK" if you receive this.');
+        },
 
+        getSettingsUI() {
+            const React = Spicetify.React;
+            const { useState, useCallback } = React;
+
+            // AddonUI 사용 가능 여부 확인
+            if (window.AddonUI) {
+                const UI = window.AddonUI;
+
+                return function ChatGPTSettingsUI() {
+                    const [apiKey, setApiKey] = useState(getSetting('api-key', ''));
+                    const [baseUrl, setBaseUrl] = useState(getSetting('base-url', 'https://api.openai.com/v1'));
+                    const [model, setModel] = useState(getSelectedModel());
+                    const [customModel, setCustomModel] = useState(getSetting('custom-model', ''));
+                    const [testStatus, setTestStatus] = useState('');
+                    const [testing, setTesting] = useState(false);
+
+                    const handleApiKeyChange = useCallback((value) => {
+                        setApiKey(value);
+                        setSetting('api-key', value);
+                    }, []);
+
+                    const handleBaseUrlChange = useCallback((value) => {
+                        setBaseUrl(value);
+                        setSetting('base-url', value);
+                    }, []);
+
+                    const handleModelChange = useCallback((value) => {
+                        setModel(value);
+                        setSetting('model', value);
+                    }, []);
+
+                    const handleCustomModelChange = useCallback((value) => {
+                        setCustomModel(value);
+                        setSetting('custom-model', value);
+                        if (value) {
+                            setSetting('model', value);
+                            setModel(value);
+                        }
+                    }, []);
+
+                    const handleTest = useCallback(async () => {
+                        setTesting(true);
+                        setTestStatus('');
+                        try {
+                            await callChatGPTAPIRaw('Reply with just "OK" if you receive this.');
+                            setTestStatus('✓ Connection successful!');
+                        } catch (e) {
+                            setTestStatus(`✗ Error: ${e.message}`);
+                        } finally {
+                            setTesting(false);
+                        }
+                    }, []);
+
+                    // 모델 옵션 (Custom 포함)
+                    const modelOptions = [...ADDON_INFO.models, { id: '', name: 'Custom...' }];
+                    const isCustomModel = !ADDON_INFO.models.find(m => m.id === model);
+
+                    return React.createElement(UI.SettingsContainer, { addonId: 'chatgpt' },
+                        // Header
+                        React.createElement(UI.AddonHeader, {
+                            name: ADDON_INFO.name,
+                            version: ADDON_INFO.version,
+                            description: getLocalizedText(ADDON_INFO.description, Spicetify.Locale?.getLocale()?.split('-')[0] || 'en')
+                        }),
+
+                        // API Key
+                        React.createElement(UI.PasswordInput, {
+                            label: 'API Key',
+                            value: apiKey,
+                            onChange: handleApiKeyChange,
+                            placeholder: 'sk-...',
+                            externalUrl: ADDON_INFO.apiKeyUrl,
+                            externalLabel: 'Get API Key'
+                        }),
+
+                        // Base URL
+                        React.createElement(UI.TextInput, {
+                            label: 'Base URL',
+                            value: baseUrl,
+                            onChange: handleBaseUrlChange,
+                            placeholder: 'https://api.openai.com/v1',
+                            description: 'Change this to use OpenAI-compatible APIs (e.g., Azure, local models)'
+                        }),
+
+                        // Model Selection
+                        React.createElement(UI.Select, {
+                            label: 'Model',
+                            value: isCustomModel ? '' : model,
+                            onChange: handleModelChange,
+                            options: modelOptions
+                        }),
+
+                        // Custom Model Input (조건부)
+                        (isCustomModel || customModel) && React.createElement(UI.TextInput, {
+                            label: 'Custom Model ID',
+                            value: customModel,
+                            onChange: handleCustomModelChange,
+                            placeholder: 'e.g., claude-3-opus'
+                        }),
+
+                        // Test Button
+                        React.createElement('div', { className: 'addon-ui-test-section' },
+                            React.createElement(UI.Button, {
+                                label: 'Test Connection',
+                                onClick: handleTest,
+                                primary: true,
+                                loading: testing
+                            }),
+                            testStatus && React.createElement('span', {
+                                className: `addon-ui-test-status ${testStatus.startsWith('✓') ? 'success' : testStatus.startsWith('✗') ? 'error' : ''}`
+                            }, testStatus)
+                        )
+                    );
+                };
+            }
+
+            // Fallback: 기존 방식
             return function ChatGPTSettings() {
                 const [apiKey, setApiKey] = useState(getSetting('api-key', ''));
                 const [baseUrl, setBaseUrl] = useState(getSetting('base-url', 'https://api.openai.com/v1'));
@@ -336,21 +457,18 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                 const [testStatus, setTestStatus] = useState('');
 
                 const handleApiKeyChange = useCallback((e) => {
-                    const value = e.target.value;
-                    setApiKey(value);
-                    setSetting('api-key', value);
+                    setApiKey(e.target.value);
+                    setSetting('api-key', e.target.value);
                 }, []);
 
                 const handleBaseUrlChange = useCallback((e) => {
-                    const value = e.target.value;
-                    setBaseUrl(value);
-                    setSetting('base-url', value);
+                    setBaseUrl(e.target.value);
+                    setSetting('base-url', e.target.value);
                 }, []);
 
                 const handleModelChange = useCallback((e) => {
-                    const value = e.target.value;
-                    setModel(value);
-                    setSetting('model', value);
+                    setModel(e.target.value);
+                    setSetting('model', e.target.value);
                 }, []);
 
                 const handleCustomModelChange = useCallback((e) => {
@@ -373,84 +491,41 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                     }
                 }, []);
 
-                const handleGetKey = useCallback(() => {
-                    window.open(ADDON_INFO.apiKeyUrl, '_blank');
-                }, []);
-
-                return Spicetify.React.createElement('div', { className: 'ai-addon-settings chatgpt-settings' },
-                    // Header
-                    Spicetify.React.createElement('div', { className: 'ai-addon-header' },
-                        Spicetify.React.createElement('h3', null, ADDON_INFO.name),
-                        Spicetify.React.createElement('span', { className: 'ai-addon-version' }, `v${ADDON_INFO.version}`)
+                return React.createElement('div', { className: 'ai-addon-settings chatgpt-settings' },
+                    React.createElement('div', { className: 'ai-addon-header' },
+                        React.createElement('h3', null, ADDON_INFO.name),
+                        React.createElement('span', { className: 'ai-addon-version' }, `v${ADDON_INFO.version}`)
                     ),
-
-                    // Description
-                    Spicetify.React.createElement('p', { className: 'ai-addon-description' },
+                    React.createElement('p', { className: 'ai-addon-description' },
                         getLocalizedText(ADDON_INFO.description, Spicetify.Locale?.getLocale()?.split('-')[0] || 'en')
                     ),
-
-                    // API Key Setting
-                    Spicetify.React.createElement('div', { className: 'ai-addon-setting' },
-                        Spicetify.React.createElement('label', null, 'API Key'),
-                        Spicetify.React.createElement('div', { className: 'ai-addon-input-group' },
-                            Spicetify.React.createElement('input', {
-                                type: 'password',
-                                value: apiKey,
-                                onChange: handleApiKeyChange,
-                                placeholder: 'sk-...'
-                            }),
-                            Spicetify.React.createElement('button', {
-                                onClick: handleGetKey,
-                                className: 'ai-addon-btn-secondary'
-                            }, 'Get API Key')
+                    React.createElement('div', { className: 'ai-addon-setting' },
+                        React.createElement('label', null, 'API Key'),
+                        React.createElement('div', { className: 'ai-addon-input-group' },
+                            React.createElement('input', { type: 'password', value: apiKey, onChange: handleApiKeyChange, placeholder: 'sk-...' }),
+                            React.createElement('button', { onClick: () => window.open(ADDON_INFO.apiKeyUrl, '_blank'), className: 'ai-addon-btn-secondary' }, 'Get API Key')
                         )
                     ),
-
-                    // Base URL (for OpenAI-compatible APIs)
-                    Spicetify.React.createElement('div', { className: 'ai-addon-setting' },
-                        Spicetify.React.createElement('label', null, 'Base URL'),
-                        Spicetify.React.createElement('input', {
-                            type: 'text',
-                            value: baseUrl,
-                            onChange: handleBaseUrlChange,
-                            placeholder: 'https://api.openai.com/v1'
-                        }),
-                        Spicetify.React.createElement('small', null, 'Change this to use OpenAI-compatible APIs (e.g., Azure, local models)')
+                    React.createElement('div', { className: 'ai-addon-setting' },
+                        React.createElement('label', null, 'Base URL'),
+                        React.createElement('input', { type: 'text', value: baseUrl, onChange: handleBaseUrlChange, placeholder: 'https://api.openai.com/v1' }),
+                        React.createElement('small', null, 'Change this to use OpenAI-compatible APIs')
                     ),
-
-                    // Model Selection
-                    Spicetify.React.createElement('div', { className: 'ai-addon-setting' },
-                        Spicetify.React.createElement('label', null, 'Model'),
-                        Spicetify.React.createElement('select', {
-                            value: ADDON_INFO.models.find(m => m.id === model) ? model : '',
-                            onChange: handleModelChange
-                        },
-                            ADDON_INFO.models.map(m =>
-                                Spicetify.React.createElement('option', { key: m.id, value: m.id }, m.name)
-                            ),
-                            Spicetify.React.createElement('option', { value: '' }, 'Custom...')
+                    React.createElement('div', { className: 'ai-addon-setting' },
+                        React.createElement('label', null, 'Model'),
+                        React.createElement('select', { value: ADDON_INFO.models.find(m => m.id === model) ? model : '', onChange: handleModelChange },
+                            ADDON_INFO.models.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name)),
+                            React.createElement('option', { value: '' }, 'Custom...')
                         )
                     ),
-
-                    // Custom Model Input
                     (!ADDON_INFO.models.find(m => m.id === model) || customModel) &&
-                    Spicetify.React.createElement('div', { className: 'ai-addon-setting' },
-                        Spicetify.React.createElement('label', null, 'Custom Model ID'),
-                        Spicetify.React.createElement('input', {
-                            type: 'text',
-                            value: customModel,
-                            onChange: handleCustomModelChange,
-                            placeholder: 'e.g., claude-3-opus'
-                        })
+                    React.createElement('div', { className: 'ai-addon-setting' },
+                        React.createElement('label', null, 'Custom Model ID'),
+                        React.createElement('input', { type: 'text', value: customModel, onChange: handleCustomModelChange, placeholder: 'e.g., claude-3-opus' })
                     ),
-
-                    // Test Button
-                    Spicetify.React.createElement('div', { className: 'ai-addon-setting' },
-                        Spicetify.React.createElement('button', {
-                            onClick: handleTest,
-                            className: 'ai-addon-btn-primary'
-                        }, 'Test Connection'),
-                        testStatus && Spicetify.React.createElement('span', {
+                    React.createElement('div', { className: 'ai-addon-setting' },
+                        React.createElement('button', { onClick: handleTest, className: 'ai-addon-btn-primary' }, 'Test Connection'),
+                        testStatus && React.createElement('span', {
                             className: `ai-addon-test-status ${testStatus.startsWith('✓') ? 'success' : testStatus.startsWith('✗') ? 'error' : ''}`
                         }, testStatus)
                     )

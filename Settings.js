@@ -1084,16 +1084,16 @@ const LyricsProviderCard = ({ provider, isEnabled, onToggle, isExpanded, onExpan
   const renderSupportBadges = () => {
     const badges = [];
     if (provider.supports?.karaoke) {
-      badges.push(react.createElement("span", { key: "karaoke", className: "support-badge karaoke" }, "노래방"));
+      badges.push(react.createElement("span", { key: "karaoke", className: "support-badge karaoke" }, I18n.t("settings.lyricsProviders.supports.karaoke") || "Karaoke"));
     }
     if (provider.supports?.synced) {
-      badges.push(react.createElement("span", { key: "synced", className: "support-badge synced" }, "싱크"));
+      badges.push(react.createElement("span", { key: "synced", className: "support-badge synced" }, I18n.t("settings.lyricsProviders.supports.synced") || "Synced"));
     }
     if (provider.supports?.unsynced) {
-      badges.push(react.createElement("span", { key: "unsynced", className: "support-badge unsynced" }, "일반"));
+      badges.push(react.createElement("span", { key: "unsynced", className: "support-badge unsynced" }, I18n.t("settings.lyricsProviders.supports.unsynced") || "Plain"));
     }
     if (provider.useIvLyricsSync) {
-      badges.push(react.createElement("span", { key: "ivsync", className: "support-badge ivsync" }, "ivLyrics Sync"));
+      badges.push(react.createElement("span", { key: "ivsync", className: "support-badge ivsync" }, I18n.t("settings.lyricsProviders.supports.ivLyricsSync") || "ivLyrics Sync"));
     }
     return badges;
   };
@@ -1189,7 +1189,7 @@ const LyricsProviderCard = ({ provider, isEnabled, onToggle, isExpanded, onExpan
     isExpanded && react.createElement("div", { className: "lyrics-provider-card-body" },
       // 가사 유형별 필터 토글 영역
       react.createElement("div", { className: "lyrics-type-toggles-container", style: { marginBottom: "20px", paddingBottom: "16px", borderBottom: "1px solid rgba(255, 255, 255, 0.05)" } },
-        react.createElement("div", { style: { fontSize: "11px", fontWeight: "600", color: "var(--spice-subtext)", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "0.5px" } }, "Allowed Lyrics Types"),
+        react.createElement("div", { style: { fontSize: "11px", fontWeight: "600", color: "var(--spice-subtext)", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "0.5px" } }, I18n.t("settings.lyricsProviders.allowedTypes") || "Allowed Lyrics Types"),
         react.createElement("div", { className: "lyrics-type-toggles", style: { display: "flex", gap: "8px", flexWrap: "wrap" } },
           showKaraokeToggle && react.createElement("div", {
             onClick: () => handleTypeToggle('karaoke', !enableKaraoke),
@@ -1202,7 +1202,7 @@ const LyricsProviderCard = ({ provider, isEnabled, onToggle, isExpanded, onExpan
             }
           },
             enableKaraoke && react.createElement("svg", { width: 14, height: 14, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 3, strokeLinecap: "round", strokeLinejoin: "round" }, react.createElement("polyline", { points: "20 6 9 17 4 12" })),
-            "노래방 가사 (Karaoke)"
+            I18n.t("settings.lyricsProviders.types.karaoke") || "Karaoke Lyrics"
           ),
           showSyncedToggle && react.createElement("div", {
             onClick: () => handleTypeToggle('synced', !enableSynced),
@@ -1215,7 +1215,7 @@ const LyricsProviderCard = ({ provider, isEnabled, onToggle, isExpanded, onExpan
             }
           },
             enableSynced && react.createElement("svg", { width: 14, height: 14, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 3, strokeLinecap: "round", strokeLinejoin: "round" }, react.createElement("polyline", { points: "20 6 9 17 4 12" })),
-            "싱크 가사 (Synced)"
+            I18n.t("settings.lyricsProviders.types.synced") || "Synced Lyrics"
           ),
           showUnsyncedToggle && react.createElement("div", {
             onClick: () => handleTypeToggle('unsynced', !enableUnsynced),
@@ -1228,7 +1228,7 @@ const LyricsProviderCard = ({ provider, isEnabled, onToggle, isExpanded, onExpan
             }
           },
             enableUnsynced && react.createElement("svg", { width: 14, height: 14, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 3, strokeLinecap: "round", strokeLinejoin: "round" }, react.createElement("polyline", { points: "20 6 9 17 4 12" })),
-            "일반 가사 (Unsynced)"
+            I18n.t("settings.lyricsProviders.types.unsynced") || "Unsynced Lyrics"
           )
         )
       ),
@@ -1333,7 +1333,7 @@ const LyricsProvidersTab = () => {
                 className: "order-btn",
                 disabled: index === 0,
                 onClick: () => moveProvider(provider.id, 'up'),
-                title: "위로 이동"
+                title: I18n.t("settings.lyricsProviders.moveUp") || "Move Up"
               },
                 react.createElement("svg", { width: 12, height: 12, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
                   react.createElement("polyline", { points: "18 15 12 9 6 15" })
@@ -1343,7 +1343,7 @@ const LyricsProvidersTab = () => {
                 className: "order-btn",
                 disabled: index === sortedProviders.length - 1,
                 onClick: () => moveProvider(provider.id, 'down'),
-                title: "아래로 이동"
+                title: I18n.t("settings.lyricsProviders.moveDown") || "Move Down"
               },
                 react.createElement("svg", { width: 12, height: 12, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
                   react.createElement("polyline", { points: "6 9 12 15 18 9" })

@@ -334,10 +334,19 @@ window.LANG_KO = {
       "title": "가사 제공자",
       "description": "가사를 가져올 제공자를 선택하고 우선순위를 설정합니다. 위에 있는 제공자부터 먼저 시도합니다.",
       "noProviders": "등록된 가사 제공자가 없습니다.",
+      "allowedTypes": "허용할 가사 유형",
+      "moveUp": "위로 이동",
+      "moveDown": "아래로 이동",
+      "types": {
+        "karaoke": "노래방 가사 (Karaoke)",
+        "synced": "싱크 가사 (Synced)",
+        "unsynced": "일반 가사 (Unsynced)"
+      },
       "supports": {
         "karaoke": "노래방",
         "synced": "싱크",
-        "unsynced": "일반"
+        "unsynced": "일반",
+        "ivLyricsSync": "ivLyrics Sync"
       }
     }
   },
