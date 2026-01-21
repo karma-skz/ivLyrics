@@ -5472,6 +5472,7 @@ class LyricsContainer extends react.Component {
           }),
           react.createElement(SyncAdjustButton, {
             trackUri: this.currentTrackUri,
+            provider: this.state.provider, // Pass provider
             onOffsetChange: (offset) => {
               this.forceUpdate();
             },

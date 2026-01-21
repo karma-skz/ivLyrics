@@ -1256,7 +1256,7 @@ const RegenerateTranslationButton = react.memo(
 );
 
 const SyncAdjustButton = react.memo(
-  ({ trackUri, onOffsetChange }) => {
+  ({ trackUri, provider, onOffsetChange }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [offset, setOffset] = useState(0);
     const [communityData, setCommunityData] = useState(null);
@@ -1280,12 +1280,12 @@ const SyncAdjustButton = react.memo(
       if (isOpen && CONFIG.visual["community-sync-enabled"]) {
         loadCommunityData();
       }
-    }, [isOpen, trackUri]);
+    }, [isOpen, trackUri, provider]);
 
     const loadCommunityData = async () => {
       setIsLoadingCommunity(true);
       try {
-        const data = await Utils.getCommunityOffset(trackUri);
+        const data = await Utils.getCommunityOffset(trackUri, provider);
         setCommunityData(data);
         // 사용자의 기존 피드백 상태 복원
         if (data?.user?.userFeedback !== null && data?.user?.userFeedback !== undefined) {
@@ -1337,7 +1337,7 @@ const SyncAdjustButton = react.memo(
         // 1초 후에 제출 (사용자가 조정을 멈추면)
         submitTimeoutRef.current = setTimeout(async () => {
           try {
-            await Utils.submitCommunityOffset(trackUri, newOffset);
+            await Utils.submitCommunityOffset(trackUri, newOffset, provider);
             loadCommunityData(); // 제출 후 커뮤니티 데이터 새로고침
           } catch (error) {
             console.error("[ivLyrics] Failed to auto-submit offset:", error);
@@ -1379,7 +1379,7 @@ const SyncAdjustButton = react.memo(
       if (!CONFIG.visual["community-sync-enabled"]) return;
       setIsSubmitting(true);
       try {
-        await Utils.submitCommunityOffset(trackUri, offset);
+        await Utils.submitCommunityOffset(trackUri, offset, provider);
         // 로컬 캐시 삭제하여 새 데이터 반영
         const trackId = Utils.extractTrackId(trackUri);
         if (trackId) {
@@ -1403,7 +1403,7 @@ const SyncAdjustButton = react.memo(
         return;
       }
       try {
-        await Utils.submitCommunityFeedback(trackUri, isPositive);
+        await Utils.submitCommunityFeedback(trackUri, isPositive, provider);
         setFeedbackStatus(isPositive ? 'positive' : 'negative');
         Toast.success(
           isPositive ? I18n.t("syncAdjust.feedbackPositiveSuccess") : I18n.t("syncAdjust.feedbackNegativeSuccess")

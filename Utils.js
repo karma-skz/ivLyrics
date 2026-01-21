@@ -1066,7 +1066,7 @@ const Utils = {
    * 커뮤니티 싱크 오프셋 조회
    * SongDataService에서 캐시된 데이터만 반환 (별도 API 요청 없음)
    */
-  async getCommunityOffset(trackUri) {
+  async getCommunityOffset(trackUri, provider) {
     const trackId = this.extractTrackId(trackUri);
     if (!trackId) return null;
 
@@ -1086,7 +1086,7 @@ const Utils = {
   /**
    * 커뮤니티 싱크 오프셋 제출
    */
-  async submitCommunityOffset(trackUri, offsetMs) {
+  async submitCommunityOffset(trackUri, offsetMs, provider) {
     const trackId = this.extractTrackId(trackUri);
     if (!trackId) return null;
 
@@ -1096,7 +1096,7 @@ const Utils = {
     // API 요청 로깅
     let logId = null;
     if (window.ApiTracker) {
-      logId = window.ApiTracker.logRequest('sync', syncUrl, { trackId, offsetMs, userHash, method: 'POST' });
+      logId = window.ApiTracker.logRequest('sync', syncUrl, { trackId, offsetMs, userHash, provider, method: 'POST' });
     }
 
     try {
@@ -1106,7 +1106,8 @@ const Utils = {
         body: JSON.stringify({
           trackId,
           offsetMs,
-          userHash
+          userHash,
+          provider
         })
       });
       const data = await response.json();
@@ -1136,7 +1137,7 @@ const Utils = {
   /**
    * 커뮤니티 싱크 피드백 제출
    */
-  async submitCommunityFeedback(trackUri, isPositive) {
+  async submitCommunityFeedback(trackUri, isPositive, provider) {
     const trackId = this.extractTrackId(trackUri);
     if (!trackId) return null;
 
@@ -1149,7 +1150,8 @@ const Utils = {
         body: JSON.stringify({
           trackId,
           userHash,
-          isPositive
+          isPositive,
+          provider
         })
       });
       const data = await response.json();
