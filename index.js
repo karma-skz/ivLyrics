@@ -4528,24 +4528,30 @@ class LyricsContainer extends react.Component {
     }
 
     this.onQueueChange = async ({ data: queue }) => {
-      // 이전 트랙의 진행 중인 번역 요청 정리
-      const previousTrackId = this.currentTrackUri?.split(':')[2];
-      if (previousTrackId) {
-        window.Translator.clearInflightRequests(previousTrackId);
-      }
+      const newUri = queue.current?.uri;
+      if (!newUri) return;
 
-      this.state.explicitMode = -1; // Auto-detect mode
-      this.currentTrackUri = queue.current.uri;
-      this.fetchLyrics(queue.current, this.state.explicitMode);
-      this.viewPort.scrollTo(0, 0);
+      // 트랙이 변경되었을 때만 실행 (중복 요청 방지)
+      if (this.currentTrackUri !== newUri) {
+        // 이전 트랙의 진행 중인 번역 요청 정리
+        const previousTrackId = this.currentTrackUri?.split(':')[2];
+        if (previousTrackId) {
+          window.Translator.clearInflightRequests(previousTrackId);
+        }
 
-      // 트랙 변경 시 videoInfo 초기화 후 저장된 영상 확인
-      this.setState({ videoInfo: null });
-      this.loadSavedVideoForTrack(queue.current.uri);
+        this.state.explicitMode = -1; // Auto-detect mode
+        this.currentTrackUri = newUri;
+        this.fetchLyrics(queue.current, this.state.explicitMode);
+        this.viewPort.scrollTo(0, 0);
 
-      // 커뮤니티 싱크 오프셋 자동 적용
-      if (CONFIG.visual["community-sync-enabled"] && CONFIG.visual["community-sync-auto-apply"]) {
-        this.applyCommunityOffset(queue.current.uri);
+        // 트랙 변경 시 videoInfo 초기화 후 저장된 영상 확인
+        this.setState({ videoInfo: null });
+        this.loadSavedVideoForTrack(newUri);
+
+        // 커뮤니티 싱크 오프셋 자동 적용
+        if (CONFIG.visual["community-sync-enabled"] && CONFIG.visual["community-sync-auto-apply"]) {
+          this.applyCommunityOffset(newUri);
+        }
       }
 
       // 다음 곡의 모든 요소 프리페치 (가사 → 번역/발음 → 영상 배경)
