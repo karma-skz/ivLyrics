@@ -995,7 +995,8 @@ const AddonSettingsCard = ({ addon, isExpanded, onToggle }) => {
 
   const getLocalizedDescription = (desc) => {
     if (typeof desc === 'string') return desc;
-    const lang = Spicetify.Locale?.getLocale()?.split('-')[0] || 'en';
+    const storedLang = StorageManager.getItem("ivLyrics:visual:language");
+    const lang = storedLang?.split('-')[0] || 'en';
     return desc[lang] || desc['en'] || Object.values(desc)[0] || '';
   };
 
@@ -1071,7 +1072,8 @@ const LyricsProviderCard = ({ provider, isEnabled, onToggle, isExpanded, onExpan
 
   const getLocalizedDescription = (desc) => {
     if (typeof desc === 'string') return desc;
-    const lang = Spicetify.Locale?.getLocale()?.split('-')[0] || 'en';
+    const storedLang = StorageManager.getItem("ivLyrics:visual:language");
+    const lang = storedLang?.split('-')[0] || 'en';
     return desc[lang] || desc['en'] || Object.values(desc)[0] || '';
   };
 
