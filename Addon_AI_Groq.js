@@ -141,7 +141,9 @@
     }
 
     function getLangInfo(lang) {
-        return LANGUAGE_DATA[lang] || LANGUAGE_DATA['en'];
+        if (!lang) return LANGUAGE_DATA['en'];
+        const shortLang = lang.split('-')[0].toLowerCase();
+        return LANGUAGE_DATA[lang] || LANGUAGE_DATA[shortLang] || LANGUAGE_DATA['en'];
     }
 
     // ============================================
@@ -214,21 +216,44 @@ OUTPUT (${lineCount} lines):`;
     function buildTMIPrompt(title, artist, lang) {
         const langInfo = getLangInfo(lang);
 
-        return `Generate interesting facts about the song "${title}" by "${artist}".
+        return `You are a music knowledge expert. Generate interesting facts and trivia about the song "${title}" by "${artist}".
 
-**Output language**: ${langInfo.name} (${langInfo.native})
+IMPORTANT: The output MUST be in ${langInfo.name} (${langInfo.native}).
+Even if the song is English, the description and trivia MUST be written in ${langInfo.native}.
 
-**Output valid JSON**:
+**Output conditions**:
+1. Language: STRICTLY ${langInfo.name} (${langInfo.native})
+2. Format: JSON
+
+**Output JSON Structure**:
 {
   "track": {
-    "description": "2-3 sentence description",
-    "trivia": ["fact 1", "fact 2", "fact 3"],
-    "sources": {"verified": [], "related": [], "other": []},
-    "reliability": {"confidence": "medium", "has_verified_sources": false, "verified_source_count": 0, "related_source_count": 0, "total_source_count": 0}
+    "description": "2-3 sentence description in ${langInfo.native}",
+    "trivia": [
+      "Fact 1 in ${langInfo.native}",
+      "Fact 2 in ${langInfo.native}",
+      "Fact 3 in ${langInfo.native}"
+    ],
+    "sources": {
+      "verified": [],
+      "related": [],
+      "other": []
+    },
+    "reliability": {
+      "confidence": "medium",
+      "has_verified_sources": false,
+      "verified_source_count": 0,
+      "related_source_count": 0,
+      "total_source_count": 0
+    }
   }
 }
 
-Write in ${langInfo.native}. Include 3-5 interesting facts.`;
+**Rules**:
+1. Write in ${langInfo.native}
+2. Include 3-5 interesting facts in the trivia array
+3. Be accurate - if you're not sure about a fact, mark confidence as "low"
+4. Do NOT use markdown code blocks`;
     }
 
     // ============================================
