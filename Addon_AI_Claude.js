@@ -30,17 +30,70 @@
             metadata: true,
             tmi: true
         },
-        models: [
-            { id: 'claude-sonnet-4-20250514', name: 'Claude Sonnet 4', default: true },
-            { id: 'claude-3-7-sonnet-20250219', name: 'Claude 3.7 Sonnet' },
-            { id: 'claude-3-5-sonnet-20241022', name: 'Claude 3.5 Sonnet' },
-            { id: 'claude-3-5-haiku-20241022', name: 'Claude 3.5 Haiku' },
-            { id: 'claude-3-opus-20240229', name: 'Claude 3 Opus' },
-            { id: 'claude-3-haiku-20240307', name: 'Claude 3 Haiku' }
-        ]
+        models: [] // Dynamic from API
     };
 
     const BASE_URL = 'https://api.anthropic.com/v1';
+
+    /**
+     * Fetch available models from Claude API
+     */
+    async function fetchAvailableModels(apiKey) {
+        if (!apiKey) return [];
+
+        try {
+            const response = await fetch(`${BASE_URL}/models`, {
+                method: 'GET',
+                headers: {
+                    'x-api-key': apiKey,
+                    'anthropic-version': '2023-06-01',
+                    'anthropic-dangerous-direct-browser-access': 'true'
+                }
+            });
+
+            if (!response.ok) {
+                console.warn('[Claude Addon] Failed to fetch models:', response.status);
+                return [];
+            }
+
+            const data = await response.json();
+            const models = (data.data || [])
+                .filter(m => m.type === 'model') // Filter only models
+                .map(m => ({
+                    id: m.id,
+                    name: m.display_name || m.id,
+                    created_at: m.created_at
+                }))
+                // Sort to put newest models first (approximate by ID versioning or just specific priority)
+                .sort((a, b) => {
+                    // specific priority
+                    const priority = ['claude-3-7-sonnet', 'claude-3-5-sonnet', 'claude-3-5-haiku', 'claude-3-opus', 'claude-3-haiku'];
+                    const aIdx = priority.findIndex(p => a.id.includes(p));
+                    const bIdx = priority.findIndex(p => b.id.includes(p));
+
+                    if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+                    if (aIdx !== -1) return -1;
+                    if (bIdx !== -1) return 1;
+
+                    return b.created_at?.localeCompare(a.created_at || '') || 0;
+                });
+
+            if (models.length > 0) {
+                models[0].default = true;
+            }
+
+            return models;
+        } catch (e) {
+            console.warn('[Claude Addon] Error fetching models:', e.message);
+            return [];
+        }
+    }
+
+    async function getModels() {
+        const apiKey = getSetting('api-key', '');
+        if (!apiKey) return [];
+        return await fetchAvailableModels(apiKey);
+    }
 
     // ============================================
     // Language Data
@@ -345,6 +398,33 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                     }
                 };
 
+                const [availableModels, setAvailableModels] = useState([]);
+                const [modelsLoading, setModelsLoading] = useState(false);
+
+                const loadModels = useCallback(async () => {
+                    if (!apiKey) {
+                        setAvailableModels([]);
+                        return;
+                    }
+                    setModelsLoading(true);
+                    try {
+                        const models = await getModels();
+                        setAvailableModels(models);
+                        if (models.length > 0) {
+                            ADDON_INFO.models = models;
+                        }
+                    } catch (e) {
+                        console.error('[Claude Addon] Failed to load models:', e);
+                    }
+                    setModelsLoading(false);
+                }, [apiKey]);
+
+                React.useEffect(() => {
+                    if (apiKey) {
+                        loadModels();
+                    }
+                }, [apiKey]);
+
 
 
 
@@ -369,10 +449,21 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                         React.createElement('div', { className: 'ai-addon-input-group' },
                             React.createElement('select', {
                                 value: selectedModel,
-                                onChange: handleModelChange
+                                onChange: handleModelChange,
+                                disabled: modelsLoading
                             },
-                                ADDON_INFO.models.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
-                            )
+                                modelsLoading
+                                    ? React.createElement('option', { value: '' }, 'Loading models...')
+                                    : availableModels.length > 0
+                                        ? availableModels.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
+                                        : React.createElement('option', { value: selectedModel }, selectedModel) // Fallback
+                            ),
+                            React.createElement('button', {
+                                onClick: loadModels,
+                                className: 'ai-addon-btn-secondary',
+                                disabled: modelsLoading || !apiKey,
+                                title: 'Refresh model list'
+                            }, modelsLoading ? '...' : '↻')
                         )
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },

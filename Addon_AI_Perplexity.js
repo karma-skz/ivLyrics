@@ -30,15 +30,67 @@
             metadata: true,
             tmi: true
         },
-        models: [
-            { id: 'sonar-pro', name: 'Sonar Pro (Best)', default: true },
-            { id: 'sonar', name: 'Sonar' },
-            { id: 'sonar-reasoning-pro', name: 'Sonar Reasoning Pro' },
-            { id: 'sonar-reasoning', name: 'Sonar Reasoning' }
-        ]
+        models: [] // Dynamic from API
     };
 
     const BASE_URL = 'https://api.perplexity.ai';
+
+    /**
+     * Fetch available models from Perplexity API
+     */
+    async function fetchAvailableModels(apiKey) {
+        if (!apiKey) return [];
+
+        try {
+            const response = await fetch(`${BASE_URL}/models`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                console.warn('[Perplexity Addon] Failed to fetch models:', response.status);
+                return [];
+            }
+
+            const data = await response.json();
+            const models = (data.data || [])
+                .map(m => ({
+                    id: m.id,
+                    name: m.name || m.id,
+                    context_window: m.context_window
+                }))
+                // Sort by preference
+                .sort((a, b) => {
+                    const priority = ['start-pro', 'sonar-reasoning-pro', 'sonar-pro', 'sonar-reasoning', 'sonar'];
+                    const aIdx = priority.findIndex(p => a.id.includes(p));
+                    const bIdx = priority.findIndex(p => b.id.includes(p));
+
+                    if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+                    if (aIdx !== -1) return -1;
+                    if (bIdx !== -1) return 1;
+
+                    return a.id.localeCompare(b.id);
+                });
+
+            if (models.length > 0) {
+                models[0].default = true;
+            }
+
+            return models;
+        } catch (e) {
+            console.warn('[Perplexity Addon] Error fetching models:', e.message);
+            return [];
+        }
+    }
+
+    async function getModels() {
+        const apiKey = getSetting('api-key', '');
+        if (!apiKey) return [];
+        return await fetchAvailableModels(apiKey);
+    }
 
     // ============================================
     // Language Data
@@ -342,6 +394,33 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                     }
                 };
 
+                const [availableModels, setAvailableModels] = useState([]);
+                const [modelsLoading, setModelsLoading] = useState(false);
+
+                const loadModels = useCallback(async () => {
+                    if (!apiKey) {
+                        setAvailableModels([]);
+                        return;
+                    }
+                    setModelsLoading(true);
+                    try {
+                        const models = await getModels();
+                        setAvailableModels(models);
+                        if (models.length > 0) {
+                            ADDON_INFO.models = models;
+                        }
+                    } catch (e) {
+                        console.error('[Perplexity Addon] Failed to load models:', e);
+                    }
+                    setModelsLoading(false);
+                }, [apiKey]);
+
+                React.useEffect(() => {
+                    if (apiKey) {
+                        loadModels();
+                    }
+                }, [apiKey]);
+
 
 
 
@@ -366,10 +445,21 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                         React.createElement('div', { className: 'ai-addon-input-group' },
                             React.createElement('select', {
                                 value: selectedModel,
-                                onChange: handleModelChange
+                                onChange: handleModelChange,
+                                disabled: modelsLoading
                             },
-                                ADDON_INFO.models.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
-                            )
+                                modelsLoading
+                                    ? React.createElement('option', { value: '' }, 'Loading models...')
+                                    : availableModels.length > 0
+                                        ? availableModels.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
+                                        : React.createElement('option', { value: selectedModel }, selectedModel) // Fallback to current selection
+                            ),
+                            React.createElement('button', {
+                                onClick: loadModels,
+                                className: 'ai-addon-btn-secondary',
+                                disabled: modelsLoading || !apiKey,
+                                title: 'Refresh model list'
+                            }, modelsLoading ? '...' : '↻')
                         ),
                         React.createElement('small', null, 'Sonar models include real-time web search')
                     ),

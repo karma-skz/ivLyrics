@@ -51,7 +51,7 @@
 
             if (!response.ok) {
                 console.warn('[Groq Addon] Failed to fetch models:', response.status);
-                return getDefaultModels();
+                return [];
             }
 
             const data = await response.json();
@@ -77,27 +77,16 @@
                 models[0].default = true;
             }
 
-            return models.length > 0 ? models : getDefaultModels();
+            return models;
         } catch (e) {
             console.warn('[Groq Addon] Error fetching models:', e.message);
-            return getDefaultModels();
+            return [];
         }
-    }
-
-    function getDefaultModels() {
-        return [
-            { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B Versatile', default: true },
-            { id: 'llama-3.1-8b-instant', name: 'Llama 3.1 8B Instant' },
-            { id: 'llama3-70b-8192', name: 'Llama 3 70B' },
-            { id: 'llama3-8b-8192', name: 'Llama 3 8B' },
-            { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B' },
-            { id: 'gemma2-9b-it', name: 'Gemma 2 9B' }
-        ];
     }
 
     async function getModels() {
         const apiKey = getSetting('api-key', '');
-        if (!apiKey) return getDefaultModels();
+        if (!apiKey) return [];
         return await fetchAvailableModels(apiKey);
     }
 
@@ -379,13 +368,13 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
             return function GroqSettings() {
                 const [apiKey, setApiKey] = useState(getSetting('api-key', ''));
                 const [selectedModel, setSelectedModel] = useState(getSetting('model', 'llama-3.3-70b-versatile'));
-                const [availableModels, setAvailableModels] = useState(getDefaultModels());
+                const [availableModels, setAvailableModels] = useState([]);
                 const [modelsLoading, setModelsLoading] = useState(false);
                 const [testStatus, setTestStatus] = useState('');
 
                 const loadModels = useCallback(async () => {
                     if (!apiKey) {
-                        setAvailableModels(getDefaultModels());
+                        setAvailableModels([]);
                         return;
                     }
                     setModelsLoading(true);
