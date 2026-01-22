@@ -1069,92 +1069,6 @@
     // 전역에 등록
     window.LyricsCache = LyricsCache;
 
-    // ============================================
-    // ProviderLRCLIB - LRCLIB API 제공자
-    // ============================================
-    const ProviderLRCLIB = (() => {
-        // LRC 파싱 유틸리티 (Utils.parseLocalLyrics 대체)
-        function parseLRC(lrc) {
-            const lines = lrc.split('\n');
-            const synced = [];
-            const unsynced = [];
-
-            for (const line of lines) {
-                const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)/);
-                if (match) {
-                    const minutes = parseInt(match[1], 10);
-                    const seconds = parseInt(match[2], 10);
-                    const milliseconds = match[3].length === 2
-                        ? parseInt(match[3], 10) * 10
-                        : parseInt(match[3], 10);
-                    const startTime = (minutes * 60 + seconds) * 1000 + milliseconds;
-                    const text = match[4].trim();
-
-                    synced.push({ startTime, text });
-                    unsynced.push({ text });
-                } else if (line.trim() && !line.startsWith('[')) {
-                    unsynced.push({ text: line.trim() });
-                }
-            }
-
-            return { synced: synced.length > 0 ? synced : null, unsynced };
-        }
-
-        async function findLyrics(info) {
-            const baseURL = "https://lrclib.net/api/get";
-            const durr = info.duration / 1000;
-            const params = {
-                track_name: info.title,
-                artist_name: info.artist,
-                album_name: info.album,
-                duration: durr,
-            };
-
-            const finalURL = `${baseURL}?${Object.keys(params)
-                .map((key) => `${key}=${encodeURIComponent(params[key])}`)
-                .join("&")}`;
-
-            const body = await fetch(finalURL, {
-                headers: {
-                    "x-user-agent": `spicetify v${Spicetify.Config.version} (https://github.com/spicetify/cli)`,
-                },
-            });
-
-            if (body.status !== 200) {
-                return {
-                    error: "Request error: Track wasn't found",
-                    uri: info.uri,
-                };
-            }
-
-            return await body.json();
-        }
-
-        function getUnsynced(body) {
-            const unsyncedLyrics = body?.plainLyrics;
-            const isInstrumental = body.instrumental;
-            if (isInstrumental) return [{ text: "♪ Instrumental ♪" }];
-
-            if (!unsyncedLyrics) return null;
-
-            return parseLRC(unsyncedLyrics).unsynced;
-        }
-
-        function getSynced(body) {
-            const syncedLyrics = body?.syncedLyrics;
-            const isInstrumental = body.instrumental;
-            if (isInstrumental) return [{ text: "♪ Instrumental ♪" }];
-
-            if (!syncedLyrics) return null;
-
-            return parseLRC(syncedLyrics).synced;
-        }
-
-        return { findLyrics, getSynced, getUnsynced };
-    })();
-
-    window.ProviderLRCLIB = ProviderLRCLIB;
-
 
     // ============================================
     // SyncDataService - 커뮤니티 싱크 데이터 서비스
@@ -1461,76 +1375,12 @@
             }));
         }
 
-        /**
-         * Provider에서 가사를 가져와 sync_data 적용
-         * @param {Object} info - 트랙 정보
-         * @param {string} preferredProvider - 선호하는 Provider ('spotify', 'lrclib')
-         * @returns {Promise<Object|null>} - karaoke 가사 또는 null
-         */
-        async function getLyricsWithSyncData(info, preferredProvider) {
-            const trackId = info.uri.split(":")[2];
-
-            // 1. 싱크 데이터 조회
-            const syncData = await getSyncData(trackId);
-            if (!syncData) {
-                return null;
-            }
-
-            // sync-data의 provider를 우선 사용 (lrclib이 있으면 lrclib 우선)
-            let provider = syncData.provider;
-
-            // 2. Provider에서 가사 가져오기
-            let lyricsResult;
-            if (provider === 'spotify') {
-                lyricsResult = await window.Providers.spotify(info);
-            } else if (provider === 'lrclib') {
-                lyricsResult = await window.Providers.lrclib(info);
-            } else {
-                console.warn('[SyncDataService] Unknown provider:', provider);
-                return null;
-            }
-
-            if (lyricsResult.error) {
-                console.warn('[SyncDataService] Failed to get lyrics from provider:', provider);
-                return null;
-            }
-
-            // 3. 가사 텍스트 추출 (synced 또는 unsynced)
-            const baseLyrics = lyricsResult.synced || lyricsResult.unsynced;
-            if (!baseLyrics) {
-                return null;
-            }
-
-            // 4. 싱크 데이터 적용
-            const karaoke = applySyncDataToLyrics(baseLyrics, syncData);
-
-            if (karaoke) {
-                // sync-data에서 생성된 karaoke를 synced로도 변환
-                const syncedFromSyncData = convertKaraokeToSynced(karaoke);
-
-                return {
-                    uri: info.uri,
-                    karaoke,
-                    // sync-data가 있으면 기존 synced를 오버라이드
-                    synced: syncedFromSyncData || lyricsResult.synced,
-                    unsynced: lyricsResult.unsynced,
-                    provider: `${lyricsResult.provider} + SyncData`,
-                    copyright: lyricsResult.copyright,
-                    syncDataApplied: true,
-                    syncDataProvider: provider
-                };
-            }
-
-            return null;
-        }
-
         return {
             getSyncData,
             getAvailableProviders,
             hasSyncData,
             submitSyncData,
             applySyncDataToLyrics,
-            getLyricsWithSyncData,
             convertKaraokeToSynced,
             clearCache
         };
@@ -1538,182 +1388,7 @@
 
     window.SyncDataService = SyncDataService;
 
-    // ============================================
-    // Providers - 가사 제공자 통합
-    // ============================================
-    const Providers = {
-        spotify: async (info) => {
-            const result = {
-                uri: info.uri,
-                karaoke: null,
-                synced: null,
-                unsynced: null,
-                provider: "Spotify",
-                copyright: null,
-                spotifyLyricsProvider: null,  // Spotify 내부 가사 provider (musixmatch, syncpower 등)
-            };
 
-            const baseURL = "https://spclient.wg.spotify.com/color-lyrics/v2/track/";
-            const id = info.uri.split(":")[2];
-            let body;
-            try {
-                body = await Spicetify.CosmosAsync.get(
-                    `${baseURL + id}?format=json&vocalRemoval=false&market=from_token`
-                );
-            } catch {
-                return { error: "Request error", uri: info.uri };
-            }
-
-            const lyrics = body.lyrics;
-            if (!lyrics) {
-                return { error: "No lyrics", uri: info.uri };
-            }
-
-            // Spotify 내부 가사 provider 추출 (musixmatch, syncpower, petitlyrics 등)
-            const spotifyLyricsProvider = lyrics.provider || 'unknown';
-            result.spotifyLyricsProvider = spotifyLyricsProvider;
-
-            // provider 필드 업데이트: 세분화된 형식 사용 (예: spotify-musixmatch)
-            // 이를 통해 getFullLyrics 및 번역 API 호출 시 올바른 provider가 전달됨
-            result.provider = `spotify-${spotifyLyricsProvider}`;
-
-            const lines = lyrics.lines;
-            if (lyrics.syncType === "LINE_SYNCED") {
-                result.synced = lines.map((line) => ({
-                    startTime: parseInt(line.startTimeMs, 10) || 0,
-                    text: line.words,
-                }));
-                result.unsynced = result.synced;
-            } else {
-                result.unsynced = lines.map((line) => ({
-                    text: line.words,
-                }));
-            }
-
-            // 커뮤니티 싱크 데이터 확인 및 적용
-            // 세분화된 provider 형식 사용: spotify-{내부provider}
-            if (window.SyncDataService) {
-                try {
-                    const fullProvider = `spotify-${spotifyLyricsProvider}`;
-                    const syncData = await window.SyncDataService.getSyncData(id, fullProvider);
-                    if (syncData && syncData.provider === fullProvider) {
-                        const baseLyrics = result.synced || result.unsynced;
-                        const karaoke = window.SyncDataService.applySyncDataToLyrics(baseLyrics, syncData);
-                        if (karaoke) {
-                            result.karaoke = karaoke;
-                            result.syncDataApplied = true;
-                            result.syncDataProvider = fullProvider;
-                            // sync-data가 있으면 synced도 오버라이드
-                            const syncedFromSyncData = window.SyncDataService.convertKaraokeToSynced(karaoke);
-                            if (syncedFromSyncData) {
-                                result.synced = syncedFromSyncData;
-                            }
-                            // 기여자 정보 추가
-                            if (syncData.contributors || (syncData.syncData && syncData.syncData.contributors)) {
-                                result.contributors = syncData.contributors || syncData.syncData.contributors;
-                            }
-                        }
-                    }
-                } catch (e) {
-                    console.warn('[Providers.spotify] SyncData check failed:', e);
-                }
-            }
-
-            return result;
-        },
-
-        lrclib: async (info) => {
-            const result = {
-                uri: info.uri,
-                karaoke: null,
-                synced: null,
-                unsynced: null,
-                provider: "lrclib",
-                copyright: null,
-            };
-
-            const id = info.uri.split(":")[2];
-
-            let list;
-            try {
-                list = await ProviderLRCLIB.findLyrics(info);
-            } catch {
-                result.error = "No lyrics";
-                return result;
-            }
-
-            const synced = ProviderLRCLIB.getSynced(list);
-            if (synced) {
-                result.synced = synced;
-            }
-
-            const unsynced = synced || ProviderLRCLIB.getUnsynced(list);
-
-            if (unsynced) {
-                result.unsynced = unsynced;
-            }
-
-            // 커뮤니티 싱크 데이터 확인 및 적용
-            if (window.SyncDataService) {
-                try {
-                    const syncData = await window.SyncDataService.getSyncData(id, 'lrclib');
-                    if (syncData && syncData.provider === 'lrclib') {
-                        const baseLyrics = result.synced || result.unsynced;
-                        const karaoke = window.SyncDataService.applySyncDataToLyrics(baseLyrics, syncData);
-                        if (karaoke) {
-                            result.karaoke = karaoke;
-                            result.syncDataApplied = true;
-                            result.syncDataProvider = 'lrclib';
-                            // sync-data가 있으면 synced도 오버라이드
-                            const syncedFromSyncData = window.SyncDataService.convertKaraokeToSynced(karaoke);
-                            if (syncedFromSyncData) {
-                                result.synced = syncedFromSyncData;
-                            }
-                            // 기여자 정보 추가
-                            if (syncData.contributors || (syncData.syncData && syncData.syncData.contributors)) {
-                                result.contributors = syncData.contributors || syncData.syncData.contributors;
-                            }
-                        }
-                    }
-                } catch (e) {
-                    console.warn('[Providers.lrclib] SyncData check failed:', e);
-                }
-            }
-
-            return result;
-        },
-
-        local: (info) => {
-            let result = {
-                uri: info.uri,
-                karaoke: null,
-                synced: null,
-                unsynced: null,
-                provider: "local",
-            };
-
-            try {
-                const savedLyrics = JSON.parse(
-                    Spicetify.LocalStorage.get("ivLyrics:local-lyrics") || "{}"
-                );
-                const lyrics = savedLyrics[info.uri];
-                if (!lyrics) {
-                    throw "";
-                }
-
-                result = {
-                    ...result,
-                    ...lyrics,
-                };
-            } catch {
-                result.error = "No lyrics";
-            }
-
-            return result;
-        },
-    };
-
-    window.Providers = Providers;
 
     // ============================================
     // LyricsService - 통합 API
@@ -1728,9 +1403,6 @@
 
         // API 트래커 접근
         tracker: ApiTracker,
-
-        // 제공자 접근
-        providers: Providers,
 
         // 언어 감지 (Extension 내 Utils에서 직접 참조)
         detectLanguage(lyrics) {
@@ -1757,18 +1429,7 @@
             return hash;
         },
 
-        /**
-         * 가사 가져오기
-         * @param {Object} info - 트랙 정보 (uri, title, artist, album, duration)
-         * @param {string} providerName - 제공자 이름 (spotify, lrclib, local)
-         * @returns {Promise<Object>} - 가사 결과
-         */
-        async getLyrics(info, providerName = 'spotify') {
-            if (!Providers[providerName]) {
-                throw new Error(`Unknown provider: ${providerName}`);
-            }
-            return await Providers[providerName](info);
-        },
+
 
         /**
          * 여러 제공자에서 순차적으로 가사 가져오기
@@ -2135,7 +1796,7 @@
                 // 하지만 호출하는 쪽에서 이미 처리가 되어있어야 함.
                 // 여기서는 있는 그대로 호출.
 
-                const response = await fetch(`https://lyrics.api.ivl.is/sync-data?id=${trackId}&provider=${provider}`);
+                const response = await fetch(`https://lyrics.api.ivl.is/lyrics/sync-data?id=${trackId}&provider=${provider}`);
                 if (response.ok) {
                     const data = await response.json();
                     if (data && data.provider === provider) {
@@ -3786,6 +3447,6 @@
     window.lyricsHelperSender = lyricsHelperSender;
 
     console.log("[LyricsService] LyricsService Extension initialized successfully!");
-    console.log("[LyricsService] Available APIs: window.LyricsService, window.LyricsCache, window.ApiTracker, window.Providers, window.Translator, window.OverlaySender, window.lyricsHelperSender");
+    console.log("[LyricsService] Available APIs: window.LyricsService, window.LyricsCache, window.ApiTracker, window.Translator, window.OverlaySender, window.lyricsHelperSender");
 })();
 

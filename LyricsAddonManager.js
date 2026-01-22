@@ -308,22 +308,8 @@
             // 이벤트 발생
             this.emit('provider:order:changed', { order });
 
-            // Trigger immediate lyrics refresh if possible
-            if (window.lyricContainer && typeof window.lyricContainer.fetchLyrics === 'function') {
-                console.log('[LyricsAddonManager] Triggering lyrics refresh for provider order change');
-                // Force cache clear for current track if needed, or rely on fetchLyrics logic
-                // fetchLyrics calls getLyricsFromProviders which might use cache.
-                // We should probably clear the memory cache in index.js for the current track to ensure re-fetch.
-                if (window.lyricContainer.clearCacheForCurrentTrack) {
-                    // Assuming such method doesn't exist yet, we can manually clear CACHE if exposed, or rely on refresh=true param if we add it
-                }
-
-                // Using refresh=true argument for fetchLyrics (track, mode, refresh)
-                const currentTrack = Spicetify.Player.data?.item;
-                if (currentTrack) {
-                    window.lyricContainer.fetchLyrics(currentTrack, -1, true);
-                }
-            }
+            // 가사 새로고침 트리거
+            this._triggerLyricsRefresh();
         }
 
         /**
@@ -371,6 +357,9 @@
 
             // 이벤트 발생
             this.emit('provider:enabled:changed', { id: addonId, enabled });
+
+            // 가사 새로고침 트리거
+            this._triggerLyricsRefresh();
         }
 
         /**
@@ -409,6 +398,14 @@
             const storageKey = `${STORAGE_PREFIX}addon:${addonId}:${key}`;
             const serialized = typeof value === 'string' ? value : JSON.stringify(value);
             Spicetify.LocalStorage.set(storageKey, serialized);
+
+            // 이벤트 발생 (설정 변경 알림)
+            this.emit('addon:setting:changed', { id: addonId, key, value });
+
+            // 가사 관련 설정이 변경되면 가사 새로고침
+            if (key.startsWith('enable_')) {
+                this._triggerLyricsRefresh();
+            }
         }
 
         /**
@@ -431,6 +428,21 @@
                 return JSON.parse(value);
             } catch {
                 return value;
+            }
+        }
+
+        /**
+         * 가사 새로고침 트리거 (내부 헬퍼)
+         * 설정 변경 후 현재 재생 중인 트랙의 가사를 다시 불러옴
+         */
+        _triggerLyricsRefresh() {
+            if (window.lyricContainer && typeof window.lyricContainer.fetchLyrics === 'function') {
+                console.log('[LyricsAddonManager] Triggering lyrics refresh for settings change');
+                const currentTrack = Spicetify.Player.data?.item;
+                if (currentTrack) {
+                    // refresh=true 파라미터로 캐시 무시하고 새로 불러옴
+                    window.lyricContainer.fetchLyrics(currentTrack, -1, true);
+                }
             }
         }
 
