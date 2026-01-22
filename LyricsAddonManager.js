@@ -31,8 +31,6 @@
             this._addons = new Map();
             this._initialized = false;
             this._initPromise = null;
-
-            // EventEmitter 믹스인 (AddonUtils가 로드된 경우)
             this._events = new Map();
             this._onceEvents = new Map();
         }

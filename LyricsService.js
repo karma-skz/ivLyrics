@@ -1773,39 +1773,18 @@
         /**
          * 여러 제공자에서 순차적으로 가사 가져오기
          * @param {Object} info - 트랙 정보
-         * @param {string[]} providerOrder - 제공자 순서 배열
-         * @param {number} mode - 가사 모드 (0: karaoke, 1: synced, 2: unsynced)
+         * @param {string[]} providerOrder - (deprecated) LyricsAddonManager의 순서 사용
+         * @param {number} mode - (deprecated) 가사 모드
          * @returns {Promise<Object>} - 가사 결과
          */
-        async getLyricsFromProviders(info, providerOrder = ['spotify', 'lrclib', 'local'], mode = 1) {
-            const trackId = info.uri?.split(":")[2];
-
-            // sync-data의 provider를 우선으로 하도록 순서 조정 제거됨
-            // 사용자의 설정된 순서를 그대로 따름
-            let adjustedProviderOrder = [...providerOrder];
-
-            for (const providerName of adjustedProviderOrder) {
-                if (!Providers[providerName]) continue;
-
-                try {
-                    const result = await Providers[providerName](info);
-
-                    if (result.error) continue;
-
-                    // 모드에 따라 적절한 가사가 있는지 확인
-                    if (mode === 0 && result.karaoke) return result;
-                    if (mode === 1 && result.synced) return result;
-                    if (mode === 2 && result.unsynced) return result;
-
-                    // 대체 가사가 있으면 반환
-                    if (result.synced || result.unsynced || result.karaoke) return result;
-                } catch (e) {
-                    console.warn(`[LyricsService] Provider ${providerName} failed:`, e);
-                    continue;
-                }
+        async getLyricsFromProviders(info, providerOrder = [], mode = 1) {
+            // LyricsAddonManager를 통해 가사 가져오기
+            if (window.LyricsAddonManager) {
+                const result = await window.LyricsAddonManager.getLyrics(info);
+                return result;
             }
 
-            return { error: "No lyrics found", uri: info.uri };
+            return { error: "No lyrics providers registered", uri: info.uri };
         },
 
         /**
@@ -1946,13 +1925,12 @@
             const {
                 displayMode1 = null,
                 displayMode2 = null,
-                sendToOverlay = true,
-                providerOrder = ['spotify', 'lrclib', 'local']
+                sendToOverlay = true
             } = options;
 
             try {
-                // 1. 가사 가져오기
-                const lyricsResult = await this.getLyricsFromProviders(info, providerOrder, 1);
+                // 1. 가사 가져오기 (LyricsAddonManager 사용)
+                const lyricsResult = await this.getLyricsFromProviders(info);
 
                 if (lyricsResult.error) {
                     // 가사 없음 - 오버레이에 트랙 정보만 전송
@@ -3322,14 +3300,11 @@
 
                     console.log('[OverlaySender] 트랙 정보:', { title, artist });
 
-                    // Default provider order
-                    const providerOrder = ['spotify', 'lrclib', 'local'];
-
                     // LyricsService.getFullLyrics 통합 API 사용
                     // (가사 로드 + endTime 계산 + 발음/번역 + 오버레이 전송까지 한 번에 처리)
                     await LyricsService.getFullLyrics(
                         { uri, title, artist, duration },
-                        { sendToOverlay: true, providerOrder }
+                        { sendToOverlay: true }
                     );
                 } catch (e) {
                     console.error('[OverlaySender] 가사 가져오기 실패:', e);
@@ -3645,14 +3620,11 @@
 
                         console.log('[lyricsHelperSender] 트랙 정보:', { title, artist });
 
-                        // Default provider order
-                        const providerOrder = ['spotify', 'lrclib', 'local'];
-
                         // LyricsService.getFullLyrics 통합 API 사용
                         // (가사 로드 + endTime 계산 + 발음/번역 + 오버레이 전송까지 한 번에 처리)
                         await LyricsService.getFullLyrics(
                             { uri, title, artist, duration },
-                            { sendToOverlay: true, providerOrder }
+                            { sendToOverlay: true }
                         );
                     } catch (e) {
                         console.error('[lyricsHelperSender] 가사 가져오기 실패:', e);

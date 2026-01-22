@@ -2092,9 +2092,8 @@ const Prefetcher = {
       try {
         console.log(`[Prefetcher] Fetching lyrics for: ${trackInfo.title}`);
 
-        // LyricsService Extension을 통해 가사 로드
-        const providerOrder = ["spotify", "lrclib", "local"];
-        const resp = await window.LyricsService.getLyricsFromProviders(trackInfo, providerOrder, mode);
+        // LyricsService Extension을 통해 가사 로드 (LyricsAddonManager 사용)
+        const resp = await window.LyricsService.getLyricsFromProviders(trackInfo);
         if (!resp.uri) resp.uri = trackInfo.uri;
 
         if (resp?.provider) {
@@ -3103,10 +3102,9 @@ class LyricsContainer extends react.Component {
    * 가사 로드는 Extension(LyricsService)을 통해 처리됨
    */
   async tryServices(trackInfo, mode = -1) {
-    // LyricsService Extension을 통해 가사 로드
+    // LyricsService Extension을 통해 가사 로드 (LyricsAddonManager 사용)
     if (window.LyricsService?.getLyricsFromProviders) {
-      const providerOrder = ["spotify", "lrclib", "local"];
-      const result = await window.LyricsService.getLyricsFromProviders(trackInfo, providerOrder, mode);
+      const result = await window.LyricsService.getLyricsFromProviders(trackInfo);
       if (!result.uri) result.uri = trackInfo.uri;
       return result;
     }
@@ -3169,16 +3167,8 @@ class LyricsContainer extends react.Component {
         this.lastModeBeforeLoading = currentMode !== -1 ? currentMode : SYNCED;
         this.setState({ ...emptyState, provider: "", contributors: null, isLoading: true, isCached: false });
 
-        // LyricsService Extension을 통해 가사 로드
-        let providerOrder = ["spotify", "lrclib", "local"];
-        if (window.LyricsAddonManager && typeof window.LyricsAddonManager.getProviderOrder === 'function') {
-          const order = window.LyricsAddonManager.getProviderOrder();
-          if (order && order.length > 0) {
-            providerOrder = order;
-          }
-        }
-        console.log("[fetchLyrics] Using provider order:", providerOrder);
-        const resp = await window.LyricsService.getLyricsFromProviders(info, providerOrder, mode);
+        // LyricsService Extension을 통해 가사 로드 (LyricsAddonManager 사용)
+        const resp = await window.LyricsService.getLyricsFromProviders(info);
         if (!resp.uri) resp.uri = info.uri;
 
         if (resp.provider) {

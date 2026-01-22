@@ -810,14 +810,8 @@ body.ivlyrics-starrynight-theme .Root__now-playing-bar {
                 // ==========================================
                 // 1단계: 가사만 먼저 로드 (빠르게 표시)
                 // ==========================================
-                // 사용자 설정의 provider 순서 사용 (활성화된 것만 필터)
-                const defaultOrder = ['spotify', 'lrclib', 'local'];
-                const configOrder = window.CONFIG?.providersOrder;
-                const providers = window.CONFIG?.providers || {};
-                const providerOrder = Array.isArray(configOrder) && configOrder.length > 0
-                    ? configOrder.filter(id => providers[id]?.on !== false)
-                    : defaultOrder;
-                const result = await window.LyricsService.getLyricsFromProviders(trackInfo, providerOrder, 0); // mode 0 = karaoke 우선
+                // LyricsAddonManager를 통해 가사 로드
+                const result = await window.LyricsService.getLyricsFromProviders(trackInfo);
 
                 if (result && !result.error) {
                     // 비동기 작업 완료 후 현재 재생 중인 트랙이 로딩을 시작한 트랙과 일치하는지 검증
