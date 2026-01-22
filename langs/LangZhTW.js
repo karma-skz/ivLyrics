@@ -14,6 +14,8 @@ window.LANG_ZH_TW = {
     "nowplaying": "面板歌詞",
     "debug": "除錯",
     "about": "關於",
+    "lyricsProviders": "歌詞提供者",
+    "aiProviders": "AI 提供者",
     "searchResults": "搜尋結果"
   },
   "search": {

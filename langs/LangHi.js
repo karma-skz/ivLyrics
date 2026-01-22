@@ -14,6 +14,8 @@ window.LANG_HI = {
     "nowplaying": "पैनल लिरिक्स",
     "debug": "डिबग",
     "about": "बारे में",
+    "lyricsProviders": "गीत प्रदाता",
+    "aiProviders": "AI प्रदाता",
     "searchResults": "खोज परिणाम"
   },
   "search": {

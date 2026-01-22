@@ -14,6 +14,8 @@ window.LANG_FA = {
     "nowplaying": "متن پنل",
     "debug": "عیب‌یابی",
     "about": "درباره",
+    "lyricsProviders": "ارائه‌دهندگان متن آهنگ",
+    "aiProviders": "ارائه‌دهندگان هوش مصنوعی",
     "searchResults": "نتایج جستجو"
   },
   "search": {
@@ -316,7 +318,37 @@ window.LANG_FA = {
       "chocolate": "شکلاتی"
     },
     "solidBackgroundInUse": "ℹ️ پس‌زمینه تک‌رنگ فعال است",
-    "fontPlaceholder": "نام فونت (مثال: Vazir, Arial)"
+    "fontPlaceholder": "نام فونت (مثال: Vazir, Arial)",
+    "aiProviders": {
+      "providerSelection": "انتخاب ارائه‌دهنده هوش مصنوعی",
+      "providerSelectionDesc": "ارائه‌دهنده هوش مصنوعی را برای ترجمه، تلفظ و تولید TMI انتخاب کنید",
+      "metadataProvider": "ترجمه متادیتا",
+      "lyricsProvider": "ترجمه/تلفظ متن آهنگ",
+      "tmiProvider": "تولید TMI",
+      "selectProvider": "انتخاب ارائه‌دهنده...",
+      "addonSettings": "تنظیمات افزونه‌ها",
+      "addonSettingsDesc": "پیکربندی تنظیمات فردی برای هر افزونه هوش مصنوعی",
+      "noAddons": "هیچ افزونه هوش مصنوعی ثبت نشده است. لطفاً فایل‌های افزونه خود را بررسی کنید."
+    },
+    "lyricsProviders": {
+      "title": "ارائه‌دهندگان متن آهنگ",
+      "description": "ارائه‌دهندگان متن آهنگ را انتخاب کرده و اولویت‌بندی کنید. ارائه‌دهندگان بالای لیست اول امتحان می‌شوند.",
+      "noProviders": "هیچ ارائه‌دهنده متن آهنگی ثبت نشده است.",
+      "allowedTypes": "انواع متن مجاز",
+      "moveUp": "انتقال به بالا",
+      "moveDown": "انتقال به پایین",
+      "types": {
+        "karaoke": "متن کارائوکه",
+        "synced": "متن هماهنگ شده",
+        "unsynced": "متن ناهماهنگ"
+      },
+      "supports": {
+        "karaoke": "کارائوکه",
+        "synced": "هماهنگ",
+        "unsynced": "ناهماهنگ",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "ذخیره",

@@ -14,6 +14,8 @@ window.LANG_FR = {
     "nowplaying": "Panneau latéral",
     "debug": "Débogage",
     "about": "À propos",
+    "lyricsProviders": "Fournisseurs de paroles",
+    "aiProviders": "Fournisseurs d'IA",
     "searchResults": "Résultats"
   },
   "search": {

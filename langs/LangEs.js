@@ -14,6 +14,8 @@ window.LANG_ES = {
     "nowplaying": "Letras en panel",
     "debug": "Depuración",
     "about": "Acerca de",
+    "lyricsProviders": "Proveedores de letras",
+    "aiProviders": "Proveedores de IA",
     "searchResults": "Resultados de búsqueda"
   },
   "search": {

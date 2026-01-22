@@ -14,6 +14,8 @@ window.LANG_DE = {
     "nowplaying": "Panel-Songtext",
     "debug": "Debug",
     "about": "Über",
+    "lyricsProviders": "Songtext-Anbieter",
+    "aiProviders": "KI-Anbieter",
     "searchResults": "Suchergebnisse"
   },
   "search": {

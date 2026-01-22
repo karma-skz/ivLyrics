@@ -14,6 +14,8 @@ window.LANG_RU = {
     "nowplaying": "Текст в панели",
     "debug": "Отладка",
     "about": "О программе",
+    "lyricsProviders": "Провайдеры текстов",
+    "aiProviders": "Провайдеры ИИ",
     "searchResults": "Результаты поиска"
   },
   "search": {

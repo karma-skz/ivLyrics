@@ -14,6 +14,8 @@ window.LANG_AR = {
     "nowplaying": "كلمات اللوحة",
     "debug": "تصحيح الأخطاء",
     "about": "حول",
+    "lyricsProviders": "موفرو الكلمات",
+    "aiProviders": "موفرو الذكاء الاصطناعي",
     "searchResults": "نتائج البحث"
   },
   "search": {

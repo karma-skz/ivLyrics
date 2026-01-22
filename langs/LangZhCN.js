@@ -14,6 +14,8 @@ window.LANG_ZH_CN = {
     "nowplaying": "面板歌词",
     "debug": "调试",
     "about": "关于",
+    "lyricsProviders": "歌词提供商",
+    "aiProviders": "AI 提供商",
     "searchResults": "搜索结果"
   },
   "search": {

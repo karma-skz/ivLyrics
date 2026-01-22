@@ -14,6 +14,8 @@ window.LANG_JA = {
     "nowplaying": "パネル歌詞",
     "debug": "デバッグ",
     "about": "情報",
+    "lyricsProviders": "歌詞プロバイダー",
+    "aiProviders": "AIプロバイダー",
     "searchResults": "検索結果"
   },
   "search": {

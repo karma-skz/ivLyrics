@@ -14,6 +14,8 @@ window.LANG_ID = {
     "nowplaying": "Lirik Panel",
     "debug": "Debug",
     "about": "Tentang",
+    "lyricsProviders": "Penyedia Lirik",
+    "aiProviders": "Penyedia AI",
     "searchResults": "Hasil Pencarian"
   },
   "search": {
@@ -316,7 +318,37 @@ window.LANG_ID = {
       "chocolate": "Cokelat Tua"
     },
     "solidBackgroundInUse": "ℹ️ Latar belakang warna solid sedang digunakan",
-    "fontPlaceholder": "Nama font (contoh: Arial, Roboto)"
+    "fontPlaceholder": "Nama font (contoh: Arial, Roboto)",
+    "aiProviders": {
+      "providerSelection": "Pilihan Penyedia AI",
+      "providerSelectionDesc": "Pilih penyedia AI untuk terjemahan, romanisasi, dan pembuatan TMI",
+      "metadataProvider": "Terjemahan Metadata",
+      "lyricsProvider": "Terjemahan/Romanisasi Lirik",
+      "tmiProvider": "Pembuatan TMI",
+      "selectProvider": "Pilih Penyedia...",
+      "addonSettings": "Pengaturan Addon",
+      "addonSettingsDesc": "Konfigurasi pengaturan individu untuk setiap addon AI",
+      "noAddons": "Tidak ada addon AI yang terdaftar. Harap periksa file addon Anda."
+    },
+    "lyricsProviders": {
+      "title": "Penyedia Lirik",
+      "description": "Pilih dan prioritaskan penyedia lirik. Penyedia di urutan teratas akan dicoba terlebih dahulu.",
+      "noProviders": "Tidak ada penyedia lirik yang terdaftar.",
+      "allowedTypes": "Tipe Lirik yang Diizinkan",
+      "moveUp": "Pindahkan ke Atas",
+      "moveDown": "Pindahkan ke Bawah",
+      "types": {
+        "karaoke": "Lirik Karaoke",
+        "synced": "Lirik Sinkron",
+        "unsynced": "Lirik Tidak Sinkron"
+      },
+      "supports": {
+        "karaoke": "Karaoke",
+        "synced": "Sinkron",
+        "unsynced": "Tidak Sinkron",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "Simpan",

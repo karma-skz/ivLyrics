@@ -14,6 +14,8 @@ window.LANG_VI = {
     "nowplaying": "Lời bài hát (Panel)",
     "debug": "Gỡ lỗi",
     "about": "Thông tin",
+    "lyricsProviders": "Nhà cung cấp lời bài hát",
+    "aiProviders": "Nhà cung cấp AI",
     "searchResults": "Kết quả tìm kiếm"
   },
   "search": {
@@ -316,7 +318,37 @@ window.LANG_VI = {
       "chocolate": "Socola"
     },
     "solidBackgroundInUse": "ℹ️ Đang sử dụng nền màu đơn sắc",
-    "fontPlaceholder": "Nhập tên phông chữ (VD: Arial, Roboto)"
+    "fontPlaceholder": "Nhập tên phông chữ (VD: Arial, Roboto)",
+    "aiProviders": {
+      "providerSelection": "Lựa chọn nhà cung cấp AI",
+      "providerSelectionDesc": "Chọn nhà cung cấp AI cho dịch thuật, phát âm và tạo TMI",
+      "metadataProvider": "Dịch siêu dữ liệu (Metadata)",
+      "lyricsProvider": "Dịch/Phát âm lời bài hát",
+      "tmiProvider": "Tạo TMI",
+      "selectProvider": "Chọn nhà cung cấp...",
+      "addonSettings": "Cài đặt Addon",
+      "addonSettingsDesc": "Cấu hình cài đặt riêng lẻ cho từng addon AI",
+      "noAddons": "Chưa có addon AI nào được đăng ký. Vui lòng kiểm tra các tệp addon của bạn."
+    },
+    "lyricsProviders": {
+      "title": "Nhà cung cấp lời bài hát",
+      "description": "Lựa chọn và ưu tiên các nhà cung cấp lời bài hát. Các nhà cung cấp ở đầu danh sách sẽ được thử trước.",
+      "noProviders": "Chưa có nhà cung cấp lời bài hát nào được đăng ký.",
+      "allowedTypes": "Các loại lời được phép",
+      "moveUp": "Di chuyển lên",
+      "moveDown": "Di chuyển xuống",
+      "types": {
+        "karaoke": "Lời Karaoke",
+        "synced": "Lời đồng bộ",
+        "unsynced": "Lời chưa đồng bộ"
+      },
+      "supports": {
+        "karaoke": "Karaoke",
+        "synced": "Đồng bộ",
+        "unsynced": "Chưa đồng bộ",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "Lưu",

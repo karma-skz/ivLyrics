@@ -14,6 +14,8 @@ window.LANG_BN = {
     "nowplaying": "প্যানেল লিরিক্স",
     "debug": "ডিবাগ",
     "about": "সম্পর্কে",
+    "lyricsProviders": "লিরিক্স প্রদানকারী",
+    "aiProviders": "এআই প্রদানকারী",
     "searchResults": "অনুসন্ধানের ফলাফল"
   },
   "search": {
@@ -316,7 +318,37 @@ window.LANG_BN = {
       "chocolate": "চকোলেট"
     },
     "solidBackgroundInUse": "ℹ️ সলিড কালার ব্যাকগ্রাউন্ড ব্যবহৃত হচ্ছে",
-    "fontPlaceholder": "ফন্টের নাম লিখুন (যেমন: Arial, Kalpurush)"
+    "fontPlaceholder": "ফন্টের নাম লিখুন (যেমন: Arial, Kalpurush)",
+    "aiProviders": {
+      "providerSelection": "এআই প্রদানকারী নির্বাচন",
+      "providerSelectionDesc": "অনুবাদ, রোমানাইজেশন এবং TMI তৈরির জন্য কোন এআই প্রদানকারী ব্যবহার করা হবে তা নির্বাচন করুন",
+      "metadataProvider": "মেটাডেটা অনুবাদ",
+      "lyricsProvider": "লিরিক্স অনুবাদ/রোমানাইজেশন",
+      "tmiProvider": "TMI তৈরি",
+      "selectProvider": "প্রদানকারী নির্বাচন করুন...",
+      "addonSettings": "অ্যাডঅন সেটিংস",
+      "addonSettingsDesc": "প্রতিটি এআই অ্যাডঅনের নিজস্ব সেটিংস কনফিগার করুন",
+      "noAddons": "কোনো এআই অ্যাডঅন নিবন্ধিত নেই। আপনার অ্যাডঅন ফাইলগুলো পরীক্ষা করুন।"
+    },
+    "lyricsProviders": {
+      "title": "লিরিক্স প্রদানকারী",
+      "description": "লিরিক্স প্রদানকারী নির্বাচন করুন এবং অগ্রাধিকার সেট করুন। তালিকার উপরের প্রদানকারীগুলো আগে ব্যবহার করা হবে।",
+      "noProviders": "কোনো লিরিক্স প্রদানকারী নিবন্ধিত নেই।",
+      "allowedTypes": "অনুমোদিত লিরিক্স ধরণ",
+      "moveUp": "উপরে সরান",
+      "moveDown": "নিচে সরান",
+      "types": {
+        "karaoke": "কারাওকে লিরিক্স",
+        "synced": "সিঙ্ক করা লিরিক্স",
+        "unsynced": "আনসিঙ্ক করা লিরিক্স"
+      },
+      "supports": {
+        "karaoke": "কারাওকে",
+        "synced": "সিঙ্ক করা",
+        "unsynced": "আনসিঙ্ক করা",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "সেভ",

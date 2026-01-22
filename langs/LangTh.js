@@ -14,6 +14,8 @@ window.LANG_TH = {
     "nowplaying": "เนื้อเพลงในแผงควบคุม",
     "debug": "ดีบัก",
     "about": "เกี่ยวกับ",
+    "lyricsProviders": "ผู้ให้บริการเนื้อเพลง",
+    "aiProviders": "ผู้ให้บริการ AI",
     "searchResults": "ผลการค้นหา"
   },
   "search": {
@@ -316,7 +318,37 @@ window.LANG_TH = {
       "chocolate": "ช็อกโกแลต"
     },
     "solidBackgroundInUse": "ℹ️ กำลังใช้งานพื้นหลังสีทึบ",
-    "fontPlaceholder": "ชื่อฟอนต์ (เช่น Arial, Cordia New)"
+    "fontPlaceholder": "ชื่อฟอนต์ (เช่น Arial, Cordia New)",
+    "aiProviders": {
+      "providerSelection": "การเลือกผู้ให้บริการ AI",
+      "providerSelectionDesc": "เลือกผู้ให้บริการ AI สำหรับการแปล, คำอ่าน และการสร้าง TMI",
+      "metadataProvider": "การแปลเมทาดาตา",
+      "lyricsProvider": "การแปลเนื้อเพลง/คำอ่าน",
+      "tmiProvider": "การสร้าง TMI",
+      "selectProvider": "เลือกผู้ให้บริการ...",
+      "addonSettings": "การตั้งค่าส่วนเสริม",
+      "addonSettingsDesc": "กำหนดค่าการตั้งค่าส่วนบุคคลสำหรับแต่ละส่วนเสริม AI",
+      "noAddons": "ไม่ได้ลงทะเบียนส่วนเสริม AI โปรดตรวจสอบไฟล์ส่วนเสริมของคุณ"
+    },
+    "lyricsProviders": {
+      "title": "ผู้ให้บริการเนื้อเพลง",
+      "description": "เลือกและลำดับความสำคัญของผู้ให้บริการเนื้อเพลง ผู้ให้บริการที่อยู่ด้านบนสุดจะถูกลองก่อน",
+      "noProviders": "ไม่ได้ลงทะเบียนผู้ให้บริการเนื้อเพลง",
+      "allowedTypes": "ประเภทเนื้อเพลงที่อนุญาต",
+      "moveUp": "ย้ายขึ้น",
+      "moveDown": "ย้ายลง",
+      "types": {
+        "karaoke": "เนื้อเพลงคาราโอเกะ",
+        "synced": "เนื้อเพลงซิงค์",
+        "unsynced": "เนื้อเพลงไม่ซิงค์"
+      },
+      "supports": {
+        "karaoke": "คาราโอเกะ",
+        "synced": "ซิงค์",
+        "unsynced": "ไม่ซิงค์",
+        "ivLyricsSync": "ivLyrics Sync"
+      }
+    }
   },
   "buttons": {
     "save": "บันทึก",

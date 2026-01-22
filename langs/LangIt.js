@@ -14,6 +14,8 @@ window.LANG_IT = {
     "nowplaying": "Testo nel pannello",
     "debug": "Debug",
     "about": "Info",
+    "lyricsProviders": "Provider di testi",
+    "aiProviders": "Provider AI",
     "searchResults": "Risultati ricerca"
   },
   "search": {
