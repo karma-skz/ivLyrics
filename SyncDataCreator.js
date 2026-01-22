@@ -225,8 +225,8 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 				if (Array.isArray(lyricsSource)) {
 					text = lyricsSource.map(line => {
 						if (typeof line === 'string') return line;
+						if (line.originalText && typeof line.originalText === 'string' && line.originalText.trim().length > 0) return line.originalText;
 						if (line.text) return typeof line.text === 'string' ? line.text : '';
-						if (line.originalText) return typeof line.originalText === 'string' ? line.originalText : '';
 						return '';
 					}).filter(t => t.trim().length > 0).join('\n');
 				} else if (typeof lyricsSource === 'string') {
@@ -254,6 +254,8 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 
 		setIsLoading(false);
 	}, [trackInfo, trackName, artistName]);
+
+
 
 	// 컴포넌트 마운트 시 자동 가사 로드 + 기존 싱크 데이터 불러오기
 	useEffect(() => {
@@ -291,8 +293,8 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 				if (Array.isArray(lyricsSource)) {
 					text = lyricsSource.map(line => {
 						if (typeof line === 'string') return line;
+						if (line.originalText && typeof line.originalText === 'string' && line.originalText.trim().length > 0) return line.originalText;
 						if (line.text) return typeof line.text === 'string' ? line.text : '';
-						if (line.originalText) return typeof line.originalText === 'string' ? line.originalText : '';
 						return '';
 					}).filter(t => t.trim().length > 0).join('\n');
 				} else if (typeof lyricsSource === 'string') {
@@ -326,77 +328,7 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 				return;
 			}
 
-			// 1. 먼저 현재 유저의 Spotify provider를 확인 (가사를 로드해서 확인)
-			let currentUserProvider = null;
-
-			try {
-				const firstArtist = trackInfo?.artists?.[0]?.name ||
-					Spicetify.Player?.data?.item?.artists?.[0]?.name || '';
-
-				const info = {
-					uri: trackInfo?.uri || Spicetify.Player?.data?.item?.uri,
-					title: trackName,
-					name: trackName,
-					artist: firstArtist,
-					album: trackInfo?.album?.name || Spicetify.Player?.data?.item?.album?.name || '',
-					duration: Spicetify.Player?.data?.item?.duration?.milliseconds || 0
-				};
-
-				// Spotify에서 가사를 가져와서 현재 유저의 provider 확인
-				let spotifyResult = null;
-				if (typeof Providers !== 'undefined' && Providers.spotify) {
-					spotifyResult = await Providers.spotify(info);
-				} else if (typeof LyricsService !== 'undefined' && LyricsService.getLyrics) {
-					spotifyResult = await LyricsService.getLyrics(info, 'spotify');
-				}
-
-				if (spotifyResult && (spotifyResult.synced || spotifyResult.unsynced)) {
-					// 현재 유저의 provider 추출
-					currentUserProvider = spotifyResult.provider;
-					if ((currentUserProvider === 'Spotify' || currentUserProvider === 'spotify') && spotifyResult.spotifyLyricsProvider) {
-						currentUserProvider = `spotify-${spotifyResult.spotifyLyricsProvider}`;
-					}
-					console.log('[SyncDataCreator] Current user provider:', currentUserProvider);
-				}
-			} catch (e) {
-				console.warn('[SyncDataCreator] Failed to determine current user provider:', e);
-			}
-
-			// 2. 기존 싱크 데이터가 있는지 확인
-			if (window.SyncDataService && trackId) {
-				try {
-					const existingSyncData = await window.SyncDataService.getSyncData(trackId);
-					if (existingSyncData && existingSyncData.syncData && existingSyncData.syncData.lines) {
-						console.log('[SyncDataCreator] Found existing sync data, provider:', existingSyncData.provider);
-
-						// 3. 현재 유저의 provider와 기존 싱크 데이터의 provider 비교
-						if (currentUserProvider && existingSyncData.provider !== currentUserProvider) {
-							// provider가 다르면 기존 싱크 데이터를 무시하고 현재 유저의 provider로 새로 시작
-							console.log('[SyncDataCreator] Provider mismatch! Existing:', existingSyncData.provider, 'Current:', currentUserProvider);
-							Toast.warning(
-								I18n.t('syncCreator.providerMismatch') ||
-								`기존 싱크 데이터는 ${existingSyncData.provider} 용입니다. 현재 계정은 ${currentUserProvider}를 사용하므로 새로 생성해야 합니다.`
-							);
-							// 현재 유저의 provider로 가사 로드
-							loadLyrics();
-							return;
-						}
-
-						// provider가 일치하면 기존 싱크 데이터 적용
-						await loadLyrics(existingSyncData.provider);
-						setSyncData(existingSyncData.syncData);
-						setProvider(existingSyncData.provider);
-
-						Toast.success(I18n.t('syncCreator.loadedExistingSyncData') || '기존 싱크 데이터를 불러왔습니다');
-						return;
-					}
-				} catch (e) {
-					console.warn('[SyncDataCreator] Failed to load existing sync data:', e);
-				}
-			}
-
-			// 기존 싱크 데이터가 없으면 일반 가사 로드
-			loadLyrics();
+			// initialData가 없으면 자동으로 로드하지 않음 (유저가 '로드' 버튼을 눌러야 함)
 		};
 
 		initWithExistingSyncData();
@@ -1924,7 +1856,7 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 	};
 
 	return react.createElement('div', { style: s.overlay, ref: containerRef },
-		// Header - 가운데 정렬
+		// Header - 유저 요청대로 가운데 정렬 (윈도우 컨트롤과 겹치지 않게)
 		react.createElement('div', { style: s.header },
 			react.createElement('button', {
 				style: s.backBtn, onClick: () => {
@@ -1939,6 +1871,13 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 			),
 			react.createElement('h2', { style: s.title }, I18n.t('syncCreator.title')),
 			react.createElement('span', { style: { ...s.modeBadge, ...getModeStyle() } }, getModeLabel()),
+
+			!lyricsText && react.createElement('button', {
+				style: { ...s.submitBtn, background: 'var(--spice-button)', color: 'var(--spice-button-text)', minWidth: '80px' },
+				onClick: () => loadLyrics(provider),
+				disabled: isLoading
+			}, isLoading ? I18n.t('syncCreator.loading') : (I18n.t('syncCreator.load') || '로드')),
+
 			react.createElement('button', {
 				style: { ...s.submitBtn, opacity: isSubmitting || !syncData ? 0.5 : 1, cursor: isSubmitting || !syncData ? 'not-allowed' : 'pointer' },
 				onClick: handleSubmit,
