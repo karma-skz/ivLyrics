@@ -340,7 +340,9 @@ window.LANG_VI = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "Không có nhà cung cấp AI nào được bật. Vui lòng bật ít nhất một nhà cung cấp trong cài đặt.",
-      "allProvidersFailed": "Tất cả các nhà cung cấp AI đã thất bại khi xử lý yêu cầu."
+      "allProvidersFailed": "Tất cả các nhà cung cấp AI đã thất bại khi xử lý yêu cầu.",
+      "enabledCapabilities": "Khả năng đã kích hoạt",
+      "capabilitiesDesc": "Chọn các tính năng mà nhà cung cấp này xử lý"
     },
     "lyricsProviders": {
       "title": "Nhà cung cấp lời bài hát",

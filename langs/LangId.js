@@ -340,7 +340,9 @@ window.LANG_ID = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "Tidak ada penyedia AI yang diaktifkan. Harap aktifkan setidaknya satu penyedia di pengaturan.",
-      "allProvidersFailed": "Semua penyedia AI gagal memproses permintaan."
+      "allProvidersFailed": "Semua penyedia AI gagal memproses permintaan.",
+      "enabledCapabilities": "Kemampuan yang Diaktifkan",
+      "capabilitiesDesc": "Pilih fitur mana yang ditangani penyedia ini"
     },
     "lyricsProviders": {
       "title": "Penyedia Lirik",

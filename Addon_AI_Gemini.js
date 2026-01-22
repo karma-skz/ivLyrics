@@ -531,16 +531,15 @@ OUTPUT (${lineCount} lines):`;
                     }
                 }, []);
 
+
+
+                // ... (existing code for models)
+
+                // ... (existing code for test)
+
                 const hasApiKey = getApiKeys().length > 0;
 
                 return React.createElement('div', { className: 'ai-addon-settings gemini-settings' },
-                    React.createElement('div', { className: 'ai-addon-header' },
-                        React.createElement('h3', null, ADDON_INFO.name),
-                        React.createElement('span', { className: 'ai-addon-version' }, `v${ADDON_INFO.version}`)
-                    ),
-                    React.createElement('p', { className: 'ai-addon-description' },
-                        getLocalizedText(ADDON_INFO.description, Spicetify.Locale?.getLocale()?.split('-')[0] || 'en')
-                    ),
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'API Key(s)'),
                         React.createElement('div', { className: 'ai-addon-input-group' },

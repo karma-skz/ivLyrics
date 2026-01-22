@@ -340,7 +340,9 @@ window.LANG_AR = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "لم يتم تفعيل أي موفر AI. يرجى تفعيل موفر واحد على الأقل في الإعدادات.",
-      "allProvidersFailed": "فشل جميع موفري AI في معالجة الطلب."
+      "allProvidersFailed": "فشل جميع موفري AI في معالجة الطلب.",
+      "enabledCapabilities": "القدرات المفعلة",
+      "capabilitiesDesc": "حدد الميزات التي يتعامل معها هذا المزود"
     },
     "lyricsProviders": {
       "title": "موفرو الكلمات",

@@ -316,7 +316,7 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
 
         getSettingsUI() {
             const React = Spicetify.React;
-            const { useState } = React;
+            const { useState, useCallback } = React;
 
             return function ClaudeSettings() {
                 const [apiKey, setApiKey] = useState(getSetting('api-key', ''));
@@ -345,26 +345,34 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                     }
                 };
 
-                return React.createElement('div', { className: 'ai-addon-settings' },
+
+
+
+                return React.createElement('div', { className: 'ai-addon-settings claude-settings' },
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'API Key'),
-                        React.createElement('input', {
-                            type: 'password',
-                            value: apiKey,
-                            onChange: handleApiKeyChange,
-                            placeholder: 'sk-ant-...'
-                        }),
-                        React.createElement('small', null,
-                            React.createElement('a', { href: ADDON_INFO.apiKeyUrl, target: '_blank' }, 'Get API Key')
+                        React.createElement('div', { className: 'ai-addon-input-group' },
+                            React.createElement('input', {
+                                type: 'password',
+                                value: apiKey,
+                                onChange: handleApiKeyChange,
+                                placeholder: 'sk-ant-...'
+                            }),
+                            React.createElement('button', {
+                                onClick: () => window.open(ADDON_INFO.apiKeyUrl, '_blank'),
+                                className: 'ai-addon-btn-secondary'
+                            }, 'Get API Key')
                         )
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'Model'),
-                        React.createElement('select', {
-                            value: selectedModel,
-                            onChange: handleModelChange
-                        },
-                            ADDON_INFO.models.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
+                        React.createElement('div', { className: 'ai-addon-input-group' },
+                            React.createElement('select', {
+                                value: selectedModel,
+                                onChange: handleModelChange
+                            },
+                                ADDON_INFO.models.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
+                            )
                         )
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },

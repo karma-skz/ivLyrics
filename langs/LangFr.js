@@ -340,7 +340,9 @@ window.LANG_FR = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "Aucun fournisseur d'IA activé. Veuillez en activer au moins un dans les paramètres.",
-      "allProvidersFailed": "Tous les fournisseurs d'IA ont échoué à traiter la demande."
+      "allProvidersFailed": "Tous les fournisseurs d'IA ont échoué à traiter la demande.",
+      "enabledCapabilities": "Fonctionnalités activées",
+      "capabilitiesDesc": "Sélectionnez les fonctionnalités gérées par ce fournisseur"
     },
     "lyricsProviders": {
       "title": "Fournisseurs de paroles",

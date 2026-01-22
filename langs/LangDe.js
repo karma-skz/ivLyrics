@@ -340,7 +340,9 @@ window.LANG_DE = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "Keine KI-Anbieter aktiviert. Bitte aktiviere mindestens einen Anbieter in den Einstellungen.",
-      "allProvidersFailed": "Alle KI-Anbieter konnten die Anfrage nicht verarbeiten."
+      "allProvidersFailed": "Alle KI-Anbieter konnten die Anfrage nicht verarbeiten.",
+      "enabledCapabilities": "Aktivierte Funktionen",
+      "capabilitiesDesc": "Wählen Sie aus, welche Funktionen dieser Anbieter übernimmt"
     },
     "lyricsProviders": {
       "title": "Songtext-Anbieter",

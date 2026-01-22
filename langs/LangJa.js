@@ -340,7 +340,9 @@ window.LANG_JA = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "有効なAIプロバイダーがありません。設定で少なくとも1つのプロバイダーを有効にしてください。",
-      "allProvidersFailed": "すべてのAIプロバイダーの要求に失败しました。"
+      "allProvidersFailed": "すべてのAIプロバイダーの要求に失败しました。",
+      "enabledCapabilities": "有効な機能",
+      "capabilitiesDesc": "このプロバイダーが処理する機能を選択してください"
     },
     "lyricsProviders": {
       "title": "歌詞プロバイダー",

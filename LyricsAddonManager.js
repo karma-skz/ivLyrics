@@ -333,16 +333,34 @@
          * @returns {string[]}
          */
         getProviderOrder() {
+            let order = [];
             const stored = Spicetify.LocalStorage.get(STORAGE_PREFIX + 'provider-order');
+
             if (stored) {
                 try {
-                    return JSON.parse(stored);
+                    order = JSON.parse(stored);
                 } catch {
-                    // Fall through to default
+                    // Ignore error
                 }
             }
-            // 기본 순서: 등록된 순서대로
-            return this.getAddonIds();
+
+            // Get all currently registered addons
+            const allAddonIds = this.getAddonIds();
+
+            // If we have a stored order, we need to make sure it contains all current addons
+            if (order.length > 0) {
+                // Filter out any IDs that no longer exist (uninstalled)
+                order = order.filter(id => allAddonIds.includes(id));
+
+                // Add any new IDs that aren't in the order yet
+                const newIds = allAddonIds.filter(id => !order.includes(id));
+                order = [...order, ...newIds];
+
+                return order;
+            }
+
+            // Default: validation order (registered order)
+            return allAddonIds;
         }
 
         /**

@@ -340,7 +340,9 @@ window.LANG_RU = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "AI-провайдеры не включены. Пожалуйста, включите хотя бы одного провайдера в настройках.",
-      "allProvidersFailed": "Все AI-провайдеры не смогли обработать запрос."
+      "allProvidersFailed": "Все AI-провайдеры не смогли обработать запрос.",
+      "enabledCapabilities": "Включенные возможности",
+      "capabilitiesDesc": "Выберите, какие функции обрабатывает этот провайдер"
     },
     "lyricsProviders": {
       "title": "Поставщики текста",

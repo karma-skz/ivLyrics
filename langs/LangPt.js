@@ -340,7 +340,9 @@ window.LANG_PT = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "Nenhum provedor de IA habilitado. Por favor, habilite pelo menos um nas configurações.",
-      "allProvidersFailed": "Todos os provedores de IA falharam ao processar a solicitação."
+      "allProvidersFailed": "Todos os provedores de IA falharam ao processar a solicitação.",
+      "enabledCapabilities": "Recursos Ativados",
+      "capabilitiesDesc": "Selecione quais recursos este provedor gerencia"
     },
     "lyricsProviders": {
       "title": "Provedores de letras",

@@ -340,7 +340,9 @@ window.LANG_IT = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "Nessun fornitore AI abilitato. Abilita almeno un fornitore nelle impostazioni.",
-      "allProvidersFailed": "Tutti i fornitori AI hanno fallito nell'elaborazione della richiesta."
+      "allProvidersFailed": "Tutti i fornitori AI hanno fallito nell'elaborazione della richiesta.",
+      "enabledCapabilities": "Funzionalità abilitate",
+      "capabilitiesDesc": "Seleziona quali funzionalità gestisce questo fornitore"
     },
     "lyricsProviders": {
       "title": "Fornitori di testi",

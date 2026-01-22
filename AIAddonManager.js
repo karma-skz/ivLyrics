@@ -331,15 +331,30 @@
          */
         getProviderOrder() {
             const stored = Spicetify.LocalStorage.get(STORAGE_PREFIX + 'provider-order');
+            let order = [];
+
             if (stored) {
                 try {
-                    return JSON.parse(stored);
+                    order = JSON.parse(stored);
                 } catch {
                     // Fall through to default
                 }
             }
-            // 기본 순서: 등록된 순서대로
-            return this.getAddonIds();
+
+            const allIds = this.getAddonIds();
+
+            // 저장된 순서가 없으면 기본 순서 반환
+            if (!order || order.length === 0) {
+                return allIds;
+            }
+
+            // 1. 저장된 순서 중 현재 존재하는 Addon만 유지 (삭제된 Addon 제거)
+            // 2. 저장된 순서에 없는 새로운 Addon을 뒤에 추가
+            const validAttributes = new Set(allIds);
+            const filteredOrder = order.filter(id => validAttributes.has(id));
+            const newIds = allIds.filter(id => !order.includes(id));
+
+            return [...filteredOrder, ...newIds];
         }
 
         /**
@@ -385,9 +400,42 @@
          * @returns {Object[]}
          */
         getEnabledProvidersFor(capability) {
-            return this.getEnabledProviders().filter(addon =>
-                addon.supports && addon.supports[capability] === true
-            );
+            const allProviders = this.getEnabledProviders();
+            // console.log(`[AIAddonManager] Checking providers for ${capability}. Enabled total: ${allProviders.length}`);
+
+            return allProviders.filter(addon => {
+                // 1. Addon 자체가 해당 기능을 지원하는지 확인
+                if (!addon.supports || addon.supports[capability] !== true) {
+                    // console.log(`[AIAddonManager] Filtered out ${addon.id}: does not support ${capability}`);
+                    return false;
+                }
+                // 2. 사용자가 해당 기능을 활성화했는지 확인 (기본값 true)
+                // 메서드가 존재하지 않는 경우(구버전 캐시 등) 안전하게 true 처리
+                if (typeof this.isCapabilityEnabled !== 'function') {
+                    return true;
+                }
+
+                const isEnabled = this.isCapabilityEnabled(addon.id, capability);
+                if (!isEnabled) {
+                    // console.log(`[AIAddonManager] Filtered out ${addon.id}: capability ${capability} disabled by user setting`);
+                    return false;
+                }
+                return true;
+            });
+        }
+
+        /**
+         * 특정 Addon의 특정 기능 활성화 여부 확인
+         */
+        isCapabilityEnabled(addonId, capability) {
+            return this.getAddonSetting(addonId, `capability:${capability}`, true);
+        }
+
+        /**
+         * 특정 Addon의 특정 기능 활성화 설정 저장
+         */
+        setCapabilityEnabled(addonId, capability, enabled) {
+            this.setAddonSetting(addonId, `capability:${capability}`, enabled);
         }
 
 

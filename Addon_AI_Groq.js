@@ -424,22 +424,27 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                     }
                 };
 
-                return React.createElement('div', { className: 'ai-addon-settings' },
+
+
+                return React.createElement('div', { className: 'ai-addon-settings groq-settings' },
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'API Key'),
-                        React.createElement('input', {
-                            type: 'password',
-                            value: apiKey,
-                            onChange: handleApiKeyChange,
-                            placeholder: 'gsk_...'
-                        }),
-                        React.createElement('small', null,
-                            React.createElement('a', { href: ADDON_INFO.apiKeyUrl, target: '_blank' }, 'Get API Key (Free)')
+                        React.createElement('div', { className: 'ai-addon-input-group' },
+                            React.createElement('input', {
+                                type: 'password',
+                                value: apiKey,
+                                onChange: handleApiKeyChange,
+                                placeholder: 'gsk_...'
+                            }),
+                            React.createElement('button', {
+                                onClick: () => window.open(ADDON_INFO.apiKeyUrl, '_blank'),
+                                className: 'ai-addon-btn-secondary'
+                            }, 'Get API Key (Free)')
                         )
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'Model'),
-                        React.createElement('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
+                        React.createElement('div', { className: 'ai-addon-input-group' },
                             React.createElement('select', {
                                 value: selectedModel,
                                 onChange: handleModelChange,

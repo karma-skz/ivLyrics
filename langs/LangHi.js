@@ -340,7 +340,9 @@ window.LANG_HI = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "कोई AI प्रदाता सक्षम नहीं है। कृपया सेटिंग्स में कम से कम एक प्रदाता सक्षम करें।",
-      "allProvidersFailed": "सभी AI प्रदाता अनुरोध को संसाधित करने में विफल रहे।"
+      "allProvidersFailed": "सभी AI प्रदाता अनुरोध को संसाधित करने में विफल रहेा",
+      "enabledCapabilities": "सक्षम क्षमताएँ",
+      "capabilitiesDesc": "चुनें कि यह प्रदाता कौन सी सुविधाएँ संभालता है"
     },
     "lyricsProviders": {
       "title": "गीत प्रदाता",

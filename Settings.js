@@ -993,10 +993,32 @@ const AccountSection = () => {
 const AddonSettingsCard = ({ addon, isEnabled, onToggle, isExpanded, onExpandToggle }) => {
   const SettingsUI = addon.getSettingsUI ? addon.getSettingsUI() : null;
 
+  const [capabilities, setCapabilities] = useState({});
+
+  useEffect(() => {
+    if (window.AIAddonManager && addon.supports) {
+      const initialCaps = {};
+      Object.keys(addon.supports).forEach(cap => {
+        if (addon.supports[cap]) {
+          initialCaps[cap] = window.AIAddonManager.isCapabilityEnabled(addon.id, cap);
+        }
+      });
+      setCapabilities(initialCaps);
+    }
+  }, [addon.id, isExpanded]); // isExpanded가 변경될 때도 상태 동기화 확인
+
+  const toggleCapability = (cap) => {
+    if (window.AIAddonManager) {
+      const newValue = !capabilities[cap];
+      setCapabilities(prev => ({ ...prev, [cap]: newValue }));
+      window.AIAddonManager.setCapabilityEnabled(addon.id, cap, newValue);
+    }
+  };
+
   const getLocalizedDescription = (desc) => {
     if (typeof desc === 'string') return desc;
-    const storedLang = StorageManager.getItem("ivLyrics:visual:language");
-    const lang = storedLang?.split('-')[0] || 'en';
+    const storedLang = Spicetify.LocalStorage.get("ivLyrics:visual:language");
+    const lang = storedLang?.replace(/"/g, '')?.split('-')[0] || 'en'; // StorageManager 대신 Spicetify.LocalStorage 사용 (안전하게)
     return desc[lang] || desc['en'] || Object.values(desc)[0] || '';
   };
 
@@ -1021,6 +1043,8 @@ const AddonSettingsCard = ({ addon, isEnabled, onToggle, isExpanded, onExpandTog
     }
     return badges;
   };
+
+  const hasCapabilities = addon.supports && Object.keys(addon.supports).some(k => addon.supports[k]);
 
   return react.createElement("div", {
     className: `lyrics-provider-card ${isExpanded ? 'expanded' : ''} ${isEnabled ? '' : 'disabled'}`
@@ -1088,9 +1112,31 @@ const AddonSettingsCard = ({ addon, isEnabled, onToggle, isExpanded, onExpandTog
     react.createElement("div", { className: "lyrics-provider-card-description" },
       getLocalizedDescription(addon.description)
     ),
-    // 확장 영역 (설정 UI)
-    isExpanded && SettingsUI && react.createElement("div", { className: "lyrics-provider-card-body" },
-      react.createElement(SettingsUI)
+    // 확장 영역 (설정 UI + Capabilities)
+    isExpanded && (hasCapabilities || SettingsUI) && react.createElement("div", { className: "lyrics-provider-card-body" },
+      // Capabilities Toggles (자동 렌더링)
+      hasCapabilities && react.createElement("div", { className: "ai-addon-settings-group", style: { marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.05)' } },
+        react.createElement("div", { className: "ai-addon-capabilities-title" },
+          I18n.t("settings.aiProviders.enabledCapabilities") || "Enabled Capabilities"
+        ),
+        react.createElement("div", { className: "ai-addon-caps-container" },
+          Object.keys(addon.supports).map(cap =>
+            addon.supports[cap] && react.createElement("div", {
+              key: cap,
+              className: `ai-addon-cap-chip ${capabilities[cap] ? 'active' : ''} cap-${cap}`,
+              onClick: () => toggleCapability(cap)
+            },
+              capabilities[cap] && react.createElement("svg", { width: 14, height: 14, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 3, strokeLinecap: "round", strokeLinejoin: "round" }, react.createElement("polyline", { points: "20 6 9 17 4 12" })),
+              I18n.t(`settings.aiProviders.supports.${cap}`) || cap
+            )
+          )
+        ),
+        react.createElement("div", { style: { fontSize: '11px', color: 'var(--spice-subtext)', marginTop: '8px' } },
+          I18n.t("settings.aiProviders.capabilitiesDesc") || "Select which features this provider handles"
+        )
+      ),
+      // 개별 Addon Custom UI
+      SettingsUI && react.createElement(SettingsUI)
     )
   );
 };

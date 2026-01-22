@@ -340,7 +340,9 @@ window.LANG_ZH_CN = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "未启用 AI 提供商。请在设置中至少启用一个提供商。",
-      "allProvidersFailed": "所有 AI 提供商都无法处理该请求。"
+      "allProvidersFailed": "所有 AI 提供商都无法处理该请求。",
+      "enabledCapabilities": "启用的功能",
+      "capabilitiesDesc": "选择该供应商处理的功能"
     },
     "lyricsProviders": {
       "title": "歌词提供者",

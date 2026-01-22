@@ -340,7 +340,9 @@ window.LANG_EN = {
         "tmi": "TMI"
       },
       "noEnabledProviders": "No AI providers enabled. Please enable at least one provider in settings.",
-      "allProvidersFailed": "All AI providers failed to process the request."
+      "allProvidersFailed": "All AI providers failed to process the request.",
+      "enabledCapabilities": "Enabled Capabilities",
+      "capabilitiesDesc": "Select which features this provider handles"
     },
     "lyricsProviders": {
       "title": "Lyrics Providers",

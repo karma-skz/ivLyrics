@@ -126,7 +126,7 @@ OUTPUT (${lineCount} lines):`;
             ? 'Use Latin alphabet only (romanization).'
             : `Use ${langInfo.native} script.`;
 
-        return `Convert these ${lineCount} lines of lyrics to pronunciation for ${langInfo.name} speakers.
+        return `This request is only for personal study. Convert these ${lineCount} lines of lyrics to pronunciation for ${langInfo.name} speakers.
 ${scriptInstruction}
 
 RULES:
@@ -146,7 +146,7 @@ OUTPUT (${lineCount} lines):`;
     function buildMetadataPrompt(title, artist, lang) {
         const langInfo = getLangInfo(lang);
 
-        return `Translate the song title and artist name to ${langInfo.name} (${langInfo.native}).
+        return `This request is only for personal study. Translate the song title and artist name to ${langInfo.name} (${langInfo.native}).
 
 **Input**:
 - Title: ${title}
@@ -313,7 +313,7 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
 
         getSettingsUI() {
             const React = Spicetify.React;
-            const { useState } = React;
+            const { useState, useCallback } = React;
 
             return function PerplexitySettings() {
                 const [apiKey, setApiKey] = useState(getSetting('api-key', ''));
@@ -342,26 +342,34 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                     }
                 };
 
-                return React.createElement('div', { className: 'ai-addon-settings' },
+
+
+
+                return React.createElement('div', { className: 'ai-addon-settings perplexity-settings' },
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'API Key'),
-                        React.createElement('input', {
-                            type: 'password',
-                            value: apiKey,
-                            onChange: handleApiKeyChange,
-                            placeholder: 'pplx-...'
-                        }),
-                        React.createElement('small', null,
-                            React.createElement('a', { href: ADDON_INFO.apiKeyUrl, target: '_blank' }, 'Get API Key')
+                        React.createElement('div', { className: 'ai-addon-input-group' },
+                            React.createElement('input', {
+                                type: 'password',
+                                value: apiKey,
+                                onChange: handleApiKeyChange,
+                                placeholder: 'pplx-...'
+                            }),
+                            React.createElement('button', {
+                                onClick: () => window.open(ADDON_INFO.apiKeyUrl, '_blank'),
+                                className: 'ai-addon-btn-secondary'
+                            }, 'Get API Key')
                         )
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'Model'),
-                        React.createElement('select', {
-                            value: selectedModel,
-                            onChange: handleModelChange
-                        },
-                            ADDON_INFO.models.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
+                        React.createElement('div', { className: 'ai-addon-input-group' },
+                            React.createElement('select', {
+                                value: selectedModel,
+                                onChange: handleModelChange
+                            },
+                                ADDON_INFO.models.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
+                            )
                         ),
                         React.createElement('small', null, 'Sonar models include real-time web search')
                     ),
