@@ -1091,9 +1091,13 @@ const AddonSettingsCard = ({ addon, isEnabled, onToggle, isExpanded, onExpandTog
                   react.createElement("circle", { cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "2" })
                 )
         ),
-        react.createElement("div", { className: "lyrics-provider-title-group" },
-          react.createElement("span", { className: "lyrics-provider-name" }, addon.name),
-          react.createElement("span", { className: "lyrics-provider-version" }, `v${addon.version}`)
+        react.createElement("div", { className: "lyrics-provider-title-group", style: { display: 'flex', flexDirection: 'column', gap: '1px' } },
+          react.createElement("span", { className: "lyrics-provider-name", style: { lineHeight: '1.2' } }, addon.name),
+          react.createElement("div", { style: { display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', opacity: 0.6 } },
+            react.createElement("span", null, `v${addon.version}`),
+            react.createElement("span", null, "•"),
+            react.createElement("span", null, addon.author)
+          )
         )
       ),
       // 오른쪽: 지원 뱃지, 확장 아이콘
@@ -1241,9 +1245,13 @@ const LyricsProviderCard = ({ provider, isEnabled, onToggle, isExpanded, onExpan
                 react.createElement("circle", { cx: "12", cy: "12", r: "10" })
               )
         ),
-        react.createElement("div", { className: "lyrics-provider-title-group" },
-          react.createElement("span", { className: "lyrics-provider-name" }, provider.name),
-          react.createElement("span", { className: "lyrics-provider-version" }, `v${provider.version}`)
+        react.createElement("div", { className: "lyrics-provider-title-group", style: { display: 'flex', flexDirection: 'column', gap: '1px' } },
+          react.createElement("span", { className: "lyrics-provider-name", style: { lineHeight: '1.2' } }, provider.name),
+          react.createElement("div", { style: { display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', opacity: 0.6 } },
+            react.createElement("span", null, `v${provider.version}`),
+            react.createElement("span", null, "•"),
+            react.createElement("span", null, provider.author)
+          )
         )
       ),
       // 오른쪽: 지원 뱃지, 확장 아이콘

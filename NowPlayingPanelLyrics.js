@@ -1000,7 +1000,7 @@ body.ivlyrics-starrynight-theme .Root__now-playing-bar {
                         wantSmartPhonetic: false,
                         provider
                     });
-                    translationLines = translationResponse?.vi || [];
+                    translationLines = translationResponse?.translation || [];
                 }
 
                 // 결과 병합 전에 현재 재생 중인 트랙이 변경되었는지 확인
