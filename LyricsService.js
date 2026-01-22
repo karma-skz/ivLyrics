@@ -2229,21 +2229,18 @@
 
                 // 2. Addon_AI 요청
                 if (window.AIAddonManager) {
-                    const tmiProvider = window.AIAddonManager.getProvider('tmi');
-                    if (tmiProvider) {
-                        console.log(`[LyricsService] getTMI: Requesting from AIAddonManager (${tmiProvider})`);
-                        const result = await window.AIAddonManager.generateTMI({
-                            trackId,
-                            title,
-                            artist,
-                            lang: userLang
-                        });
+                    console.log(`[LyricsService] getTMI: Requesting from AIAddonManager`);
+                    const result = await window.AIAddonManager.generateTMI({
+                        trackId,
+                        title,
+                        artist,
+                        lang: userLang
+                    });
 
-                        if (result) {
-                            // 캐시 저장
-                            await LyricsCache.setTMI(trackId, userLang, result);
-                            return result;
-                        }
+                    if (result) {
+                        // 캐시 저장
+                        await LyricsCache.setTMI(trackId, userLang, result);
+                        return result;
                     }
                 }
             } catch (e) {
@@ -2391,39 +2388,36 @@
 
             // AIAddonManager를 통한 번역 시도
             if (window.AIAddonManager) {
-                const metadataProvider = window.AIAddonManager.getProvider('metadata');
-                if (metadataProvider) {
-                    console.log(`[Translator] Using AIAddonManager for metadata (provider: ${metadataProvider})`);
+                console.log(`[Translator] Using AIAddonManager for metadata`);
 
-                    if (this._metadataInflightRequests.has(cacheKey)) {
-                        return this._metadataInflightRequests.get(cacheKey);
-                    }
-
-                    const addonPromise = (async () => {
-                        try {
-                            const result = await window.AIAddonManager.translateMetadata({
-                                trackId: finalTrackId,
-                                title,
-                                artist,
-                                lang: userLang
-                            });
-
-                            if (result) {
-                                this._metadataCache.set(cacheKey, result);
-                                LyricsCache.setMetadata(finalTrackId, userLang, result).catch(() => { });
-                                return result;
-                            }
-                        } catch (e) {
-                            console.warn('[Translator] AIAddonManager metadata translation failed:', e);
-                        }
-                        return null;
-                    })().finally(() => {
-                        this._metadataInflightRequests.delete(cacheKey);
-                    });
-
-                    this._metadataInflightRequests.set(cacheKey, addonPromise);
-                    return addonPromise;
+                if (this._metadataInflightRequests.has(cacheKey)) {
+                    return this._metadataInflightRequests.get(cacheKey);
                 }
+
+                const addonPromise = (async () => {
+                    try {
+                        const result = await window.AIAddonManager.translateMetadata({
+                            trackId: finalTrackId,
+                            title,
+                            artist,
+                            lang: userLang
+                        });
+
+                        if (result) {
+                            this._metadataCache.set(cacheKey, result);
+                            LyricsCache.setMetadata(finalTrackId, userLang, result).catch(() => { });
+                            return result;
+                        }
+                    } catch (e) {
+                        console.warn('[Translator] AIAddonManager metadata translation failed:', e);
+                    }
+                    return null;
+                })().finally(() => {
+                    this._metadataInflightRequests.delete(cacheKey);
+                });
+
+                this._metadataInflightRequests.set(cacheKey, addonPromise);
+                return addonPromise;
             }
 
             // AI 제공자가 설정되지 않았으면 null 반환
@@ -2512,43 +2506,40 @@
 
             // AIAddonManager를 통한 번역 시도
             if (window.AIAddonManager) {
-                const lyricsProvider = window.AIAddonManager.getProvider('lyrics');
-                if (lyricsProvider) {
-                    console.log(`[Translator] Using AIAddonManager for lyrics (provider: ${lyricsProvider})`);
+                console.log(`[Translator] Using AIAddonManager for lyrics`);
 
-                    const requestKey = getTranslatorRequestKey(finalTrackId, wantSmartPhonetic, userLang);
-                    if (!ignoreCache && _translatorInflightRequests.has(requestKey)) {
-                        return _translatorInflightRequests.get(requestKey);
-                    }
-
-                    const addonPromise = (async () => {
-                        try {
-                            const result = await window.AIAddonManager.translateLyrics({
-                                trackId: finalTrackId,
-                                artist,
-                                title,
-                                text,
-                                lang: userLang,
-                                wantSmartPhonetic,
-                                provider: lyricsProvider
-                            });
-
-                            if (result) {
-                                LyricsCache.setTranslation(finalTrackId, userLang, wantSmartPhonetic, result, provider).catch(() => { });
-                                return result;
-                            }
-                        } catch (e) {
-                            console.warn('[Translator] AIAddonManager lyrics translation failed:', e);
-                            throw e;
-                        }
-                        return null;
-                    })().finally(() => {
-                        _translatorInflightRequests.delete(requestKey);
-                    });
-
-                    _translatorInflightRequests.set(requestKey, addonPromise);
-                    return addonPromise;
+                const requestKey = getTranslatorRequestKey(finalTrackId, wantSmartPhonetic, userLang);
+                if (!ignoreCache && _translatorInflightRequests.has(requestKey)) {
+                    return _translatorInflightRequests.get(requestKey);
                 }
+
+                const addonPromise = (async () => {
+                    try {
+                        const result = await window.AIAddonManager.translateLyrics({
+                            trackId: finalTrackId,
+                            artist,
+                            title,
+                            text,
+                            lang: userLang,
+                            wantSmartPhonetic,
+                            provider
+                        });
+
+                        if (result) {
+                            LyricsCache.setTranslation(finalTrackId, userLang, wantSmartPhonetic, result, provider).catch(() => { });
+                            return result;
+                        }
+                    } catch (e) {
+                        console.warn('[Translator] AIAddonManager lyrics translation failed:', e);
+                        throw e;
+                    }
+                    return null;
+                })().finally(() => {
+                    _translatorInflightRequests.delete(requestKey);
+                });
+
+                _translatorInflightRequests.set(requestKey, addonPromise);
+                return addonPromise;
             }
 
             // AI 제공자가 설정되지 않았으면 에러

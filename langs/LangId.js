@@ -320,6 +320,8 @@ window.LANG_ID = {
     "solidBackgroundInUse": "ℹ️ Latar belakang warna solid sedang digunakan",
     "fontPlaceholder": "Nama font (contoh: Arial, Roboto)",
     "aiProviders": {
+      "title": "Penyedia AI",
+      "description": "Pilih dan prioritaskan penyedia AI. Penyedia di urutan teratas akan dicoba terlebih dahulu. Jika gagal, penyedia berikutnya akan digunakan secara otomatis.",
       "providerSelection": "Pilihan Penyedia AI",
       "providerSelectionDesc": "Pilih penyedia AI untuk terjemahan, romanisasi, dan pembuatan TMI",
       "metadataProvider": "Terjemahan Metadata",
@@ -328,7 +330,17 @@ window.LANG_ID = {
       "selectProvider": "Pilih Penyedia...",
       "addonSettings": "Pengaturan Addon",
       "addonSettingsDesc": "Konfigurasi pengaturan individu untuk setiap addon AI",
-      "noAddons": "Tidak ada addon AI yang terdaftar. Harap periksa file addon Anda."
+      "noAddons": "Tidak ada addon AI yang terdaftar. Harap periksa file addon Anda.",
+      "noProviders": "Tidak ada penyedia AI yang terdaftar.",
+      "moveUp": "Pindahkan ke Atas",
+      "moveDown": "Pindahkan ke Bawah",
+      "supports": {
+        "translate": "Terjemahan",
+        "metadata": "Metadata",
+        "tmi": "TMI"
+      },
+      "noEnabledProviders": "Tidak ada penyedia AI yang diaktifkan. Harap aktifkan setidaknya satu penyedia di pengaturan.",
+      "allProvidersFailed": "Semua penyedia AI gagal memproses permintaan."
     },
     "lyricsProviders": {
       "title": "Penyedia Lirik",

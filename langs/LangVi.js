@@ -320,6 +320,8 @@ window.LANG_VI = {
     "solidBackgroundInUse": "ℹ️ Đang sử dụng nền màu đơn sắc",
     "fontPlaceholder": "Nhập tên phông chữ (VD: Arial, Roboto)",
     "aiProviders": {
+      "title": "Nhà cung cấp AI",
+      "description": "Lựa chọn và ưu tiên các nhà cung cấp AI. Các nhà cung cấp ở đầu danh sách sẽ được thử trước. Nếu thất bại, nhà cung cấp tiếp theo sẽ tự động được sử dụng.",
       "providerSelection": "Lựa chọn nhà cung cấp AI",
       "providerSelectionDesc": "Chọn nhà cung cấp AI cho dịch thuật, phát âm và tạo TMI",
       "metadataProvider": "Dịch siêu dữ liệu (Metadata)",
@@ -328,7 +330,17 @@ window.LANG_VI = {
       "selectProvider": "Chọn nhà cung cấp...",
       "addonSettings": "Cài đặt Addon",
       "addonSettingsDesc": "Cấu hình cài đặt riêng lẻ cho từng addon AI",
-      "noAddons": "Chưa có addon AI nào được đăng ký. Vui lòng kiểm tra các tệp addon của bạn."
+      "noAddons": "Chưa có addon AI nào được đăng ký. Vui lòng kiểm tra các tệp addon của bạn.",
+      "noProviders": "Chưa có nhà cung cấp AI nào được đăng ký.",
+      "moveUp": "Di chuyển lên",
+      "moveDown": "Di chuyển xuống",
+      "supports": {
+        "translate": "Dịch thuật",
+        "metadata": "Siêu dữ liệu",
+        "tmi": "TMI"
+      },
+      "noEnabledProviders": "Không có nhà cung cấp AI nào được bật. Vui lòng bật ít nhất một nhà cung cấp trong cài đặt.",
+      "allProvidersFailed": "Tất cả các nhà cung cấp AI đã thất bại khi xử lý yêu cầu."
     },
     "lyricsProviders": {
       "title": "Nhà cung cấp lời bài hát",

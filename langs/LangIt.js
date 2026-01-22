@@ -320,6 +320,8 @@ window.LANG_IT = {
     "solidBackgroundInUse": "ℹ️ Sfondo a tinta unita in uso",
     "fontPlaceholder": "Nome font (es: Arial, Roboto)",
     "aiProviders": {
+      "title": "Fornitori IA",
+      "description": "Seleziona e dai priorità ai fornitori IA. I fornitori in alto vengono provati per primi. In caso di errore, verrà utilizzato automaticamente il fornitore successivo.",
       "providerSelection": "Selezione del fornitore IA",
       "providerSelectionDesc": "Seleziona il fornitore IA per la traduzione, la romanizzazione e la generazione di TMI",
       "metadataProvider": "Traduzione dei metadati",
@@ -328,7 +330,17 @@ window.LANG_IT = {
       "selectProvider": "Seleziona fornitore...",
       "addonSettings": "Impostazioni componente aggiuntivo",
       "addonSettingsDesc": "Configura le singole impostazioni per ogni componente aggiuntivo IA",
-      "noAddons": "Nessun componente aggiuntivo IA registrato. Controlla i tuoi file componenti aggiuntivi."
+      "noAddons": "Nessun componente aggiuntivo IA registrato. Controlla i tuoi file componenti aggiuntivi.",
+      "noProviders": "Nessun fornitore IA registrato.",
+      "moveUp": "Sposta su",
+      "moveDown": "Sposta giù",
+      "supports": {
+        "translate": "Traduzione",
+        "metadata": "Metadati",
+        "tmi": "TMI"
+      },
+      "noEnabledProviders": "Nessun fornitore AI abilitato. Abilita almeno un fornitore nelle impostazioni.",
+      "allProvidersFailed": "Tutti i fornitori AI hanno fallito nell'elaborazione della richiesta."
     },
     "lyricsProviders": {
       "title": "Fornitori di testi",

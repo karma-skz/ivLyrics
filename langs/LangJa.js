@@ -320,6 +320,8 @@ window.LANG_JA = {
     "solidBackgroundInUse": "ℹ️ 単色背景を使用中",
     "fontPlaceholder": "フォント名を入力 (例: Arial, Meiryo)",
     "aiProviders": {
+      "title": "AIプロバイダー",
+      "description": "AIプロバイダーを選択し、優先順位を設定します。上にあるプロバイダーから先に試行され、失敗した場合は次のプロバイダーが自動的に使用されます。",
       "providerSelection": "AIプロバイダーの選択",
       "providerSelectionDesc": "翻訳、発音、TMI生成に使用するAIプロバイダーを選択します",
       "metadataProvider": "メタデータ翻訳",
@@ -328,7 +330,17 @@ window.LANG_JA = {
       "selectProvider": "プロバイダーを選択...",
       "addonSettings": "アドオン設定",
       "addonSettingsDesc": "各AIアドオンの設定を構成します",
-      "noAddons": "登録されているAIアドオンがありません。アドオンファイルを確認してください。"
+      "noAddons": "登録されているAIアドオンがありません。アドオンファイルを確認してください。",
+      "noProviders": "登録されているAIプロバイダーがありません。",
+      "moveUp": "上に移動",
+      "moveDown": "下に移動",
+      "supports": {
+        "translate": "翻訳",
+        "metadata": "メタデータ",
+        "tmi": "TMI"
+      },
+      "noEnabledProviders": "有効なAIプロバイダーがありません。設定で少なくとも1つのプロバイダーを有効にしてください。",
+      "allProvidersFailed": "すべてのAIプロバイダーの要求に失败しました。"
     },
     "lyricsProviders": {
       "title": "歌詞プロバイダー",

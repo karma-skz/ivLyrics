@@ -1,6 +1,6 @@
 /**
- * ChatGPT AI Addon for ivLyrics
- * OpenAI ChatGPT를 사용한 번역, 발음, TMI 생성
+ * Pollinations.ai AI Addon for ivLyrics
+ * Pollinations.ai를 사용한 번역, 발음, TMI 생성 (무료 API)
  * 
  * @author ivLis STUDIO
  * @version 1.0.0
@@ -14,123 +14,68 @@
     // ============================================
 
     const ADDON_INFO = {
-        id: 'chatgpt',
-        name: 'OpenAI ChatGPT',
+        id: 'pollinations',
+        name: 'Pollinations.ai',
         author: 'ivLis STUDIO',
         description: {
-            ko: 'OpenAI ChatGPT를 사용한 번역, 발음, TMI 생성 (OpenAI 호환 API 지원)',
-            en: 'Translation, pronunciation, and TMI generation using OpenAI ChatGPT (supports OpenAI-compatible APIs)',
-            ja: 'OpenAI ChatGPTを使用した翻訳、発音、TMI生成（OpenAI互換API対応）',
-            'zh-CN': '使用 OpenAI ChatGPT 进行翻译、发音和 TMI 生成（支持 OpenAI 兼容 API）',
+            ko: 'Pollinations.ai를 사용한 번역, 발음, TMI 생성 (API 키 필요)',
+            en: 'Translation, pronunciation, and TMI generation using Pollinations.ai (API Key Required)',
+            ja: 'Pollinations.aiを使用した翻訳、発音、TMI生成（APIキー必要）',
+            'zh-CN': '使用 Pollinations.ai 进行翻译、发音和 TMI 生成（需要 API 密钥）',
         },
         version: '1.0.0',
-        apiKeyUrl: 'https://platform.openai.com/api-keys',
+        apiKeyUrl: 'https://enter.pollinations.ai',
         // 지원 기능
         supports: {
             translate: true,    // 가사 번역/발음
             metadata: true,     // 메타데이터 번역
             tmi: true           // TMI 생성
         },
-        // 하드코딩된 모델 목록 (fallback용)
-        // models: [
-        //     { id: 'gpt-5.2-2025-12-11', name: 'GPT-5.2', default: true },
-        //     { id: 'gpt-5-mini-2025-08-07', name: 'GPT-5 Mini' },
-        //     { id: 'gpt-5-nano-2025-08-07', name: 'GPT-5 Nano' }
-        // ]
         models: [] // API에서 동적으로 로드
     };
 
+    // API 기본 URL
+    const BASE_URL = 'https://gen.pollinations.ai';
+
     /**
-     * OpenAI API에서 사용 가능한 모델 목록을 가져옴 (채팅/텍스트 생성용 모델만)
+     * Pollinations.ai API에서 사용 가능한 모델 목록을 가져옴 (텍스트 생성용 모델만)
      */
-    async function fetchAvailableModels(apiKey, baseUrl) {
-        if (!apiKey) return [];
-
-        // 제외할 모델 패턴 (이미지 생성, 음성, 임베딩 등)
-        const excludePatterns = [
-            'dall-e',        // 이미지 생성
-            'whisper',       // 음성 인식
-            'tts',           // 텍스트 음성 변환
-            'embedding',     // 임베딩
-            'text-embedding',// 임베딩
-            'davinci',       // 레거시 completion 모델
-            'curie',         // 레거시
-            'babbage',       // 레거시
-            'ada',           // 레거시 (ada만, 단독으로)
-            'audio',         // 오디오 관련
-            'moderation',    // 콘텐츠 모더레이션
-            'search',        // 검색
-            'similarity',    // 유사도
-            'code-',         // 레거시 코드 모델
-            'text-davinci',  // 레거시
-            'gpt-3.5-turbo-instruct', // instruct 모델
-            'image',         // 이미지 관련
-        ];
-
+    async function fetchAvailableModels() {
         try {
-            const endpoint = `${(baseUrl || 'https://api.openai.com/v1').replace(/\/$/, '')}/models`;
-            const response = await fetch(endpoint, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`
-                }
-            });
+            const response = await fetch(`${BASE_URL}/v1/models`);
 
             if (!response.ok) {
-                console.warn('[ChatGPT Addon] Failed to fetch models:', response.status);
+                console.warn('[Pollinations Addon] Failed to fetch models:', response.status);
                 return [];
             }
 
             const data = await response.json();
+
+            // 오디오 전용 모델 제외
+            const excludePatterns = ['audio', 'midijourney'];
+
             const models = (data.data || [])
                 .filter(m => {
                     if (!m.id) return false;
                     const id = m.id.toLowerCase();
-                    // GPT 또는 chat 모델만 포함
-                    if (!id.startsWith('gpt') && !id.includes('chat') && !id.includes('o1') && !id.includes('o3')) return false;
                     // 제외 패턴 체크
                     for (const pattern of excludePatterns) {
-                        if (id.includes(pattern.toLowerCase())) return false;
+                        if (id.includes(pattern)) return false;
                     }
-                    // realtime 모델 제외
-                    if (id.includes('realtime')) return false;
                     return true;
                 })
                 .map(m => ({
                     id: m.id,
                     name: m.id,
-                    owned_by: m.owned_by || ''
                 }))
-                // 정렬: gpt-5 > gpt-4 > o3 > o1 순서
+                // 인기 모델 우선 정렬
                 .sort((a, b) => {
-                    // GPT 모델과 o-시리즈 구분
-                    const aIsGpt = a.id.startsWith('gpt-');
-                    const bIsGpt = b.id.startsWith('gpt-');
-                    const aIsO = a.id.match(/^o(\d)/);
-                    const bIsO = b.id.match(/^o(\d)/);
-
-                    // GPT 모델이 o-시리즈보다 먼저
-                    if (aIsGpt && !bIsGpt) return -1;
-                    if (!aIsGpt && bIsGpt) return 1;
-
-                    // 둘 다 GPT 모델인 경우: gpt-5 > gpt-4 > gpt-3.5
-                    if (aIsGpt && bIsGpt) {
-                        const aMatch = a.id.match(/gpt-(\d+(?:\.\d+)?)/);
-                        const bMatch = b.id.match(/gpt-(\d+(?:\.\d+)?)/);
-                        const aNum = aMatch ? parseFloat(aMatch[1]) : 0;
-                        const bNum = bMatch ? parseFloat(bMatch[1]) : 0;
-                        if (bNum !== aNum) return bNum - aNum;
-
-                        // 같은 버전이면 turbo, mini 순서
-                        if (a.id.includes('turbo') && !b.id.includes('turbo')) return -1;
-                        if (!a.id.includes('turbo') && b.id.includes('turbo')) return 1;
-                    }
-
-                    // 둘 다 o-시리즈인 경우: o3 > o1
-                    if (aIsO && bIsO) {
-                        return parseInt(bIsO[1]) - parseInt(aIsO[1]);
-                    }
-
+                    const priority = ['openai', 'gemini', 'claude', 'deepseek', 'mistral', 'grok', 'qwen', 'perplexity'];
+                    const aIdx = priority.findIndex(p => a.id.includes(p));
+                    const bIdx = priority.findIndex(p => b.id.includes(p));
+                    const aPri = aIdx === -1 ? 999 : aIdx;
+                    const bPri = bIdx === -1 ? 999 : bIdx;
+                    if (aPri !== bPri) return aPri - bPri;
                     return a.id.localeCompare(b.id);
                 });
 
@@ -141,7 +86,7 @@
 
             return models;
         } catch (e) {
-            console.warn('[ChatGPT Addon] Error fetching models:', e.message);
+            console.warn('[Pollinations Addon] Error fetching models:', e.message);
             return [];
         }
     }
@@ -150,10 +95,7 @@
      * 모델 목록 가져오기 (매번 API에서 로드)
      */
     async function getModels() {
-        const apiKey = getSetting('api-key', '');
-        const baseUrl = getSetting('base-url', 'https://api.openai.com/v1');
-        if (!apiKey) return [];
-        return await fetchAvailableModels(apiKey, baseUrl);
+        return await fetchAvailableModels();
     }
 
     // ============================================
@@ -199,15 +141,12 @@
     }
 
     function getApiKey() {
+        // Pollinations.ai는 API 키가 선택적 (무료 사용 가능)
         return getSetting('api-key', '');
     }
 
-    function getBaseUrl() {
-        return getSetting('base-url', 'https://api.openai.com/v1') || 'https://api.openai.com/v1';
-    }
-
     function getSelectedModel() {
-        return getSetting('model', ADDON_INFO.models.find(m => m.default)?.id || ADDON_INFO.models[0]?.id);
+        return getSetting('model', 'gemini-fast');
     }
 
     function getLangInfo(lang) {
@@ -306,28 +245,29 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
     // ============================================
 
     /**
-     * Call ChatGPT API and return raw text response
+     * Call Pollinations.ai API and return raw text response
      */
-    async function callChatGPTAPIRaw(prompt, maxRetries = 3) {
-        const apiKey = getApiKey();
-        if (!apiKey) {
-            throw new Error('[ChatGPT] API key is required. Please configure your API key in settings.');
-        }
-
-        const baseUrl = getBaseUrl();
+    async function callPollinationsAPIRaw(prompt, maxRetries = 3) {
         const model = getSelectedModel();
+        const apiKey = getApiKey();
         let lastError = null;
 
         for (let attempt = 0; attempt < maxRetries; attempt++) {
             try {
-                const endpoint = `${baseUrl.replace(/\/$/, '')}/chat/completions`;
+                const endpoint = `${BASE_URL}/v1/chat/completions`;
+
+                const headers = {
+                    'Content-Type': 'application/json',
+                };
+
+                // API 키가 있으면 추가 (선택적)
+                if (apiKey) {
+                    headers['Authorization'] = `Bearer ${apiKey}`;
+                }
 
                 const response = await fetch(endpoint, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
-                    },
+                    headers: headers,
                     body: JSON.stringify({
                         model: model,
                         messages: [
@@ -339,21 +279,7 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                 });
 
                 if (response.status === 429) {
-                    throw new Error('[ChatGPT] Rate limit exceeded. Please try again later.');
-                }
-
-                if (response.status === 401 || response.status === 403) {
-                    // Try to parse error response for better error messages
-                    let errorMessage = 'Invalid API key or permission denied.';
-                    try {
-                        const errorData = await response.json();
-                        if (errorData.error?.message) {
-                            errorMessage = errorData.error.message;
-                        }
-                    } catch (parseError) {
-                        // Use default error message if parsing fails
-                    }
-                    throw new Error(`[ChatGPT] ${errorMessage}`);
+                    throw new Error('Rate limit exceeded. Please try again later.');
                 }
 
                 if (!response.ok) {
@@ -363,30 +289,27 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                         const errorData = await response.json();
                         if (errorData.error?.message) {
                             errorMessage = errorData.error.message;
+                        } else if (errorData.message) {
+                            errorMessage = errorData.message;
                         }
                     } catch (parseError) {
                         // Use default error message if parsing fails
                     }
-                    throw new Error(`[ChatGPT] ${errorMessage}`);
+                    throw new Error(`[Pollinations.ai] ${errorMessage}`);
                 }
 
                 const data = await response.json();
                 const rawText = data.choices?.[0]?.message?.content || '';
 
                 if (!rawText) {
-                    throw new Error('[ChatGPT] Empty response from API');
+                    throw new Error('[Pollinations.ai] Empty response from API');
                 }
 
                 return rawText;
 
             } catch (e) {
                 lastError = e;
-                console.warn(`[ChatGPT Addon] Attempt ${attempt + 1} failed:`, e.message);
-
-                // Don't retry on auth errors
-                if (e.message.includes('Invalid API key') || e.message.includes('permission denied')) {
-                    throw e;
-                }
+                console.warn(`[Pollinations Addon] Attempt ${attempt + 1} failed:`, e.message);
 
                 if (attempt < maxRetries - 1) {
                     await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
@@ -394,14 +317,14 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
             }
         }
 
-        throw lastError || new Error('[ChatGPT] All retries exhausted');
+        throw lastError || new Error('[Pollinations.ai] All retries exhausted');
     }
 
     /**
-     * Call ChatGPT API and parse JSON response (for metadata, TMI, etc.)
+     * Call Pollinations.ai API and parse JSON response (for metadata, TMI, etc.)
      */
-    async function callChatGPTAPI(prompt, maxRetries = 3) {
-        const rawText = await callChatGPTAPIRaw(prompt, maxRetries);
+    async function callPollinationsAPI(prompt, maxRetries = 3) {
+        const rawText = await callPollinationsAPIRaw(prompt, maxRetries);
         return extractJSON(rawText);
     }
 
@@ -422,12 +345,12 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
 
         // If we have more lines, try to find the correct block
         if (lines.length > expectedLineCount) {
-            console.warn(`[ChatGPT Addon] Got ${lines.length} lines, expected ${expectedLineCount}. Trimming...`);
+            console.warn(`[Pollinations Addon] Got ${lines.length} lines, expected ${expectedLineCount}. Trimming...`);
             return lines.slice(-expectedLineCount);
         }
 
         // If we have fewer lines, pad with empty strings
-        console.warn(`[ChatGPT Addon] Got ${lines.length} lines, expected ${expectedLineCount}. Padding...`);
+        console.warn(`[Pollinations Addon] Got ${lines.length} lines, expected ${expectedLineCount}. Padding...`);
         while (lines.length < expectedLineCount) {
             lines.push('');
         }
@@ -460,83 +383,60 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
     // Addon Implementation
     // ============================================
 
-    const ChatGPTAddon = {
+    const PollinationsAddon = {
         ...ADDON_INFO,
 
         async init() {
-            console.log(`[ChatGPT Addon] Initialized (v${ADDON_INFO.version})`);
+            console.log(`[Pollinations Addon] Initialized (v${ADDON_INFO.version})`);
         },
 
         /**
          * 연결 테스트
          */
         async testConnection() {
-            await callChatGPTAPIRaw('Reply with just "OK" if you receive this.');
+            await callPollinationsAPIRaw('Reply with just "OK" if you receive this.');
         },
 
         getSettingsUI() {
             const React = Spicetify.React;
             const { useState, useCallback, useEffect } = React;
 
-            return function ChatGPTSettings() {
+            return function PollinationsSettings() {
                 const [apiKey, setApiKey] = useState(getSetting('api-key', ''));
-                const [baseUrl, setBaseUrl] = useState(getSetting('base-url', 'https://api.openai.com/v1'));
                 const [model, setModel] = useState(getSelectedModel());
-                const [customModel, setCustomModel] = useState(getSetting('custom-model', ''));
                 const [testStatus, setTestStatus] = useState('');
                 const [availableModels, setAvailableModels] = useState([]);
                 const [modelsLoading, setModelsLoading] = useState(false);
 
                 // 모델 목록 로드
                 const loadModels = useCallback(async () => {
-                    if (!apiKey) {
-                        setAvailableModels([]);
-                        return;
-                    }
                     setModelsLoading(true);
                     try {
                         const models = await getModels();
                         setAvailableModels(models);
-                        // ADDON_INFO.models 업데이트 (다른 곳에서 사용할 수 있도록)
+                        // ADDON_INFO.models 업데이트
                         ADDON_INFO.models = models;
                     } catch (e) {
-                        console.warn('[ChatGPT Addon] Failed to load models:', e);
+                        console.warn('[Pollinations Addon] Failed to load models:', e);
                         setAvailableModels([]);
                     } finally {
                         setModelsLoading(false);
                     }
-                }, [apiKey, baseUrl]);
+                }, []);
 
-                // API 키가 변경되면 모델 목록 다시 로드
+                // 컴포넌트 마운트시 모델 목록 로드
                 useEffect(() => {
-                    if (apiKey) {
-                        loadModels();
-                    }
-                }, [apiKey, baseUrl]);
+                    loadModels();
+                }, []);
 
                 const handleApiKeyChange = useCallback((e) => {
                     setApiKey(e.target.value);
                     setSetting('api-key', e.target.value);
                 }, []);
 
-                const handleBaseUrlChange = useCallback((e) => {
-                    setBaseUrl(e.target.value);
-                    setSetting('base-url', e.target.value);
-                }, []);
-
                 const handleModelChange = useCallback((e) => {
                     setModel(e.target.value);
                     setSetting('model', e.target.value);
-                }, []);
-
-                const handleCustomModelChange = useCallback((e) => {
-                    const value = e.target.value;
-                    setCustomModel(value);
-                    setSetting('custom-model', value);
-                    if (value) {
-                        setSetting('model', value);
-                        setModel(value);
-                    }
                 }, []);
 
                 const handleRefreshModels = useCallback(() => {
@@ -546,16 +446,14 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                 const handleTest = useCallback(async () => {
                     setTestStatus('Testing...');
                     try {
-                        await callChatGPTAPIRaw('Reply with just "OK" if you receive this.');
+                        await callPollinationsAPIRaw('Reply with just "OK" if you receive this.');
                         setTestStatus('✓ Connection successful!');
                     } catch (e) {
                         setTestStatus(`✗ Error: ${e.message}`);
                     }
                 }, []);
 
-                const isModelInList = availableModels.find(m => m.id === model);
-
-                return React.createElement('div', { className: 'ai-addon-settings chatgpt-settings' },
+                return React.createElement('div', { className: 'ai-addon-settings pollinations-settings' },
                     React.createElement('div', { className: 'ai-addon-header' },
                         React.createElement('h3', null, ADDON_INFO.name),
                         React.createElement('span', { className: 'ai-addon-version' }, `v${ADDON_INFO.version}`)
@@ -564,50 +462,43 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                         getLocalizedText(ADDON_INFO.description, Spicetify.Locale?.getLocale()?.split('-')[0] || 'en')
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },
-                        React.createElement('label', null, 'API Key'),
+                        React.createElement('label', null, 'API Key (Optional)'),
                         React.createElement('div', { className: 'ai-addon-input-group' },
-                            React.createElement('input', { type: 'password', value: apiKey, onChange: handleApiKeyChange, placeholder: 'sk-...' }),
-                            React.createElement('button', { onClick: () => window.open(ADDON_INFO.apiKeyUrl, '_blank'), className: 'ai-addon-btn-secondary' }, 'Get API Key')
-                        )
-                    ),
-                    React.createElement('div', { className: 'ai-addon-setting' },
-                        React.createElement('label', null, 'Base URL'),
-                        React.createElement('input', { type: 'text', value: baseUrl, onChange: handleBaseUrlChange, placeholder: 'https://api.openai.com/v1' }),
-                        React.createElement('small', null, 'Change this to use OpenAI-compatible APIs')
+                            React.createElement('input', {
+                                type: 'password',
+                                value: apiKey,
+                                onChange: handleApiKeyChange,
+                                placeholder: 'Optional - for premium features'
+                            }),
+                            React.createElement('button', {
+                                onClick: () => window.open(ADDON_INFO.apiKeyUrl, '_blank'),
+                                className: 'ai-addon-btn-secondary'
+                            }, 'Get API Key')
+                        ),
+                        React.createElement('small', null, '🆓 Free to use without API key. API key unlocks higher rate limits.')
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'Model'),
                         React.createElement('div', { className: 'ai-addon-input-group' },
                             React.createElement('select', {
-                                value: isModelInList ? model : '',
+                                value: model,
                                 onChange: handleModelChange,
                                 disabled: modelsLoading
                             },
                                 modelsLoading
                                     ? React.createElement('option', { value: '' }, 'Loading models...')
                                     : availableModels.length > 0
-                                        ? [
-                                            ...availableModels.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name)),
-                                            React.createElement('option', { key: 'custom', value: '' }, 'Custom...')
-                                        ]
-                                        : [
-                                            React.createElement('option', { key: 'empty', value: '' }, apiKey ? 'No models found' : 'Enter API key first'),
-                                            React.createElement('option', { key: 'custom', value: '' }, 'Custom...')
-                                        ]
+                                        ? availableModels.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
+                                        : React.createElement('option', { value: 'gemini-fast' }, 'gemini-fast')
                             ),
                             React.createElement('button', {
                                 onClick: handleRefreshModels,
                                 className: 'ai-addon-btn-secondary',
-                                disabled: modelsLoading || !apiKey,
+                                disabled: modelsLoading,
                                 title: 'Refresh model list'
                             }, modelsLoading ? '...' : '↻')
                         ),
                         availableModels.length > 0 && React.createElement('small', null, `${availableModels.length} models available`)
-                    ),
-                    (!isModelInList || customModel) &&
-                    React.createElement('div', { className: 'ai-addon-setting' },
-                        React.createElement('label', null, 'Custom Model ID'),
-                        React.createElement('input', { type: 'text', value: customModel, onChange: handleCustomModelChange, placeholder: 'e.g., gpt-4-turbo' })
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('button', { onClick: handleTest, className: 'ai-addon-btn-primary' }, 'Test Connection'),
@@ -630,7 +521,7 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
                 : buildTranslationPrompt(text, lang);
 
             // Get raw text response and parse lines
-            const rawResponse = await callChatGPTAPIRaw(prompt);
+            const rawResponse = await callPollinationsAPIRaw(prompt);
             const lines = parseTextLines(rawResponse, expectedLineCount);
 
             // Return in the format expected by LyricsService
@@ -647,9 +538,9 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
             }
 
             const prompt = buildMetadataPrompt(title, artist, lang);
-            const result = await callChatGPTAPI(prompt);
+            const result = await callPollinationsAPI(prompt);
 
-            // Normalize result to match expected format in FullscreenOverlay.js
+            // Normalize result to match expected format
             return {
                 translated: {
                     title: result.translatedTitle || result.title || title,
@@ -668,7 +559,7 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
             }
 
             const prompt = buildTMIPrompt(title, artist, lang);
-            return await callChatGPTAPI(prompt);
+            return await callPollinationsAPI(prompt);
         }
     };
 
@@ -678,7 +569,7 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
 
     const registerAddon = () => {
         if (window.AIAddonManager) {
-            window.AIAddonManager.register(ChatGPTAddon);
+            window.AIAddonManager.register(PollinationsAddon);
         } else {
             setTimeout(registerAddon, 100);
         }
@@ -686,5 +577,5 @@ Write in ${langInfo.native}. Include 3-5 interesting facts.`;
 
     registerAddon();
 
-    console.log('[ChatGPT Addon] Module loaded');
+    console.log('[Pollinations Addon] Module loaded');
 })();

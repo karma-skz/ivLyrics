@@ -320,6 +320,8 @@ window.LANG_KO = {
     "solidBackgroundInUse": "ℹ️ 단색 배경 사용 중",
     "fontPlaceholder": "폰트명 입력 (예: Arial, 맑은 고딕)",
     "aiProviders": {
+      "title": "AI 제공자",
+      "description": "AI 제공자를 선택하고 우선순위를 설정합니다. 위에 있는 제공자부터 먼저 시도하며, 실패 시 다음 제공자로 자동 전환됩니다.",
       "providerSelection": "AI 제공자 선택",
       "providerSelectionDesc": "번역, 발음 표기, TMI 생성에 사용할 AI 제공자를 선택하세요",
       "metadataProvider": "메타데이터 번역",
@@ -328,7 +330,17 @@ window.LANG_KO = {
       "selectProvider": "제공자 선택...",
       "addonSettings": "Addon 설정",
       "addonSettingsDesc": "각 AI Addon의 개별 설정을 구성하세요",
-      "noAddons": "등록된 AI Addon이 없습니다. Addon 파일을 확인해 주세요."
+      "noAddons": "등록된 AI Addon이 없습니다. Addon 파일을 확인해 주세요.",
+      "noProviders": "등록된 AI 제공자가 없습니다.",
+      "moveUp": "위로 이동",
+      "moveDown": "아래로 이동",
+      "supports": {
+        "translate": "번역",
+        "metadata": "메타데이터",
+        "tmi": "TMI"
+      },
+      "noEnabledProviders": "활성화된 AI 제공자가 없습니다. 설정에서 최소 하나 이상의 제공자를 활성화해주세요.",
+      "allProvidersFailed": "모든 AI 제공자가 요청에 실패했습니다."
     },
     "lyricsProviders": {
       "title": "가사 제공자",

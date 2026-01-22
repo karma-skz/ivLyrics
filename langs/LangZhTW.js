@@ -320,6 +320,8 @@ window.LANG_ZH_TW = {
     "solidBackgroundInUse": "ℹ️ 正在使用純色背景",
     "fontPlaceholder": "輸入字型名稱 (例: Arial, 微軟正黑體)",
     "aiProviders": {
+      "title": "AI 提供者",
+      "description": "選擇並劃分 AI 提供者的優先級。排在頂部的提供者將被優先嘗試。失敗時，將自動使用下一個提供者。",
       "providerSelection": "AI 提供者選擇",
       "providerSelectionDesc": "選擇用於翻譯、發音和 TMI 生成的 AI 提供者",
       "metadataProvider": "元數據翻譯",
@@ -328,7 +330,17 @@ window.LANG_ZH_TW = {
       "selectProvider": "選擇提供者...",
       "addonSettings": "插件設置",
       "addonSettingsDesc": "配置每個 AI 插件的設置",
-      "noAddons": "未註冊 AI 插件。請檢查您的插件文件。"
+      "noAddons": "未註冊 AI 插件。請檢查您的插件文件。",
+      "noProviders": "未註冊 AI 提供者。",
+      "moveUp": "上移",
+      "moveDown": "下移",
+      "supports": {
+        "translate": "翻譯",
+        "metadata": "元數據",
+        "tmi": "TMI"
+      },
+      "noEnabledProviders": "未啟用 AI 提供商。請在設置中至少啟用一個提供商。",
+      "allProvidersFailed": "所有 AI 提供商都無法處理該請求。"
     },
     "lyricsProviders": {
       "title": "歌詞提供者",

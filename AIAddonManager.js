@@ -14,11 +14,16 @@
     // ============================================
 
     const STORAGE_PREFIX = 'ivLyrics:ai:';
-    const PROVIDER_KEYS = {
-        METADATA: 'provider:metadata',
-        LYRICS: 'provider:lyrics',
-        TMI: 'provider:tmi'
+
+    // 기능 유형
+    const AI_CAPABILITIES = {
+        TRANSLATE: 'translate',    // 가사 번역/발음
+        METADATA: 'metadata',      // 메타데이터 번역
+        TMI: 'tmi'                 // TMI 생성
     };
+
+    // 기본 활성화 Addon (모든 AI Addon은 API 키 설정 후 활성화 권장)
+    const DEFAULT_ENABLED_ADDONS = [];
 
     // ============================================
     // AIAddonManager Class
@@ -33,6 +38,17 @@
             // EventEmitter 믹스인
             this._events = new Map();
             this._onceEvents = new Map();
+        }
+
+        // ============================================
+        // Helpers
+        // ============================================
+
+        _t(key, fallback) {
+            if (window.I18n && typeof window.I18n.t === 'function') {
+                return window.I18n.t(key) || fallback;
+            }
+            return fallback;
         }
 
         // ============================================
@@ -139,6 +155,22 @@
         /**
          * Addon 등록
          * @param {Object} addon - Addon 객체
+         * 
+         * 필수 필드:
+         * - id: string (고유 ID)
+         * - name: string (표시 이름)
+         * - author: string (제작자)
+         * - description: string | { en: string, ko: string, ... } (설명)
+         * - version: string (버전)
+         * - supports: { translate: boolean, metadata: boolean, tmi: boolean } (지원 기능)
+         * 
+         * 필수 메서드:
+         * - getSettingsUI(): React.Component (설정 UI)
+         * 
+         * 기능별 메서드:
+         * - translateLyrics(params): Promise<Object> (supports.translate = true인 경우)
+         * - translateMetadata(params): Promise<Object> (supports.metadata = true인 경우)
+         * - generateTMI(params): Promise<Object> (supports.tmi = true인 경우)
          */
         register(addon) {
             if (!addon || !addon.id) {
@@ -155,6 +187,15 @@
                 }
             }
 
+            // supports 필드 기본값 설정 (기존 Addon 호환성)
+            if (!addon.supports) {
+                addon.supports = {
+                    translate: typeof addon.translateLyrics === 'function',
+                    metadata: typeof addon.translateMetadata === 'function',
+                    tmi: typeof addon.generateTMI === 'function'
+                };
+            }
+
             // 필수 메서드 검증
             const requiredMethods = ['getSettingsUI'];
             for (const method of requiredMethods) {
@@ -166,6 +207,7 @@
 
             this._addons.set(addon.id, addon);
             console.log(`[AIAddonManager] Registered addon: ${addon.id} (${addon.name})`);
+            console.log(`[AIAddonManager] Supports: translate=${addon.supports.translate}, metadata=${addon.supports.metadata}, tmi=${addon.supports.tmi}`);
 
             // 이미 초기화 완료된 경우, 새 Addon도 초기화
             if (this._initialized && typeof addon.init === 'function') {
@@ -268,57 +310,86 @@
         }
 
         // ============================================
-        // Provider Selection
+        // Provider Order Management
         // ============================================
 
         /**
-         * 특정 기능의 Provider 설정
-         * @param {'metadata'|'lyrics'|'tmi'} type - 기능 유형
-         * @param {string} addonId - Addon ID
+         * Provider 순서 저장
+         * @param {string[]} order - Provider ID 순서
          */
-        setProvider(type, addonId) {
-            const key = PROVIDER_KEYS[type.toUpperCase()];
-            if (!key) {
-                console.error(`[AIAddonManager] Invalid provider type: ${type}`);
-                return false;
-            }
-
-            if (addonId && !this._addons.has(addonId)) {
-                console.warn(`[AIAddonManager] Addon "${addonId}" not found`);
-            }
-
-            Spicetify.LocalStorage.set(STORAGE_PREFIX + key, addonId || '');
-            console.log(`[AIAddonManager] Set ${type} provider to: ${addonId || '(none)'}`);
+        setProviderOrder(order) {
+            Spicetify.LocalStorage.set(STORAGE_PREFIX + 'provider-order', JSON.stringify(order));
+            console.log('[AIAddonManager] Provider order saved:', order);
 
             // 이벤트 발생
-            this.emit('ai:provider:changed', { type, addonId });
-
-            return true;
+            this.emit('provider:order:changed', { order });
         }
 
         /**
-         * 특정 기능의 Provider 가져오기
-         * @param {'metadata'|'lyrics'|'tmi'} type - 기능 유형
-         * @returns {string|null}
+         * Provider 순서 가져오기
+         * @returns {string[]}
          */
-        getProvider(type) {
-            const key = PROVIDER_KEYS[type.toUpperCase()];
-            if (!key) return null;
-
-            const addonId = Spicetify.LocalStorage.get(STORAGE_PREFIX + key);
-            return addonId || null;
+        getProviderOrder() {
+            const stored = Spicetify.LocalStorage.get(STORAGE_PREFIX + 'provider-order');
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch {
+                    // Fall through to default
+                }
+            }
+            // 기본 순서: 등록된 순서대로
+            return this.getAddonIds();
         }
 
         /**
-         * 특정 기능의 Provider Addon 객체 가져오기
-         * @param {'metadata'|'lyrics'|'tmi'} type - 기능 유형
-         * @returns {Object|null}
+         * Provider 활성화/비활성화
+         * @param {string} addonId - Addon ID
+         * @param {boolean} enabled - 활성화 여부
          */
-        getProviderAddon(type) {
-            const addonId = this.getProvider(type);
-            if (!addonId) return null;
-            return this.getAddon(addonId);
+        setProviderEnabled(addonId, enabled) {
+            Spicetify.LocalStorage.set(STORAGE_PREFIX + `enabled:${addonId}`, enabled ? 'true' : 'false');
+
+            // 이벤트 발생
+            this.emit('provider:enabled:changed', { id: addonId, enabled });
         }
+
+        /**
+         * Provider 활성화 여부 확인
+         * @param {string} addonId - Addon ID
+         * @returns {boolean}
+         */
+        isProviderEnabled(addonId) {
+            const stored = Spicetify.LocalStorage.get(STORAGE_PREFIX + `enabled:${addonId}`);
+            // 저장된 값이 없으면 기본값 확인 (Pollinations만 기본 활성화)
+            if (stored === null || stored === undefined) {
+                return DEFAULT_ENABLED_ADDONS.includes(addonId);
+            }
+            return stored === 'true';
+        }
+
+        /**
+         * 활성화된 Provider 목록 (순서대로)
+         * @returns {Object[]}
+         */
+        getEnabledProviders() {
+            const order = this.getProviderOrder();
+            return order
+                .filter(id => this.isProviderEnabled(id) && this._addons.has(id))
+                .map(id => this._addons.get(id));
+        }
+
+        /**
+         * 특정 기능을 지원하는 활성화된 Provider 목록 (순서대로)
+         * @param {'translate'|'metadata'|'tmi'} capability - 기능 유형
+         * @returns {Object[]}
+         */
+        getEnabledProvidersFor(capability) {
+            return this.getEnabledProviders().filter(addon =>
+                addon.supports && addon.supports[capability] === true
+            );
+        }
+
 
         // ============================================
         // Addon Settings Storage
@@ -380,74 +451,91 @@
         }
 
         // ============================================
-        // API Methods (Delegates to Provider)
+        // API Methods (Priority-based Fallback)
         // ============================================
 
         /**
-         * 메타데이터 번역
+         * 메타데이터 번역 (활성화된 Provider 순서대로 시도)
          * @param {Object} params - { trackId, title, artist, lang }
          * @returns {Promise<Object|null>}
          */
         async translateMetadata(params) {
-            const addon = this.getProviderAddon('metadata');
-            if (!addon || typeof addon.translateMetadata !== 'function') {
-                console.warn('[AIAddonManager] No metadata provider set or method not available');
-                return null;
+            const providers = this.getEnabledProvidersFor('metadata');
+
+            if (providers.length === 0) {
+                console.warn('[AIAddonManager] No metadata providers enabled');
+                throw new Error(this._t('aiProviders.noEnabledProviders', 'No AI providers enabled. Please enable at least one provider in settings.'));
             }
 
             // 디버그 로깅
             if (window.AddonDebug?.isEnabled()) {
-                window.AddonDebug.log('ai', 'translateMetadata called', { provider: addon.id, ...params });
+                window.AddonDebug.log('ai', 'translateMetadata called', {
+                    providers: providers.map(p => p.id),
+                    ...params
+                });
                 window.AddonDebug.time('ai', 'translateMetadata');
             }
 
             // 이벤트 발생
-            this.emit('ai:request:start', { type: 'metadata', provider: addon.id, params });
+            this.emit('ai:request:start', { type: 'metadata', providers: providers.map(p => p.id), params });
 
-            try {
-                const result = await addon.translateMetadata(params);
+            let lastError = null;
 
-                // 디버그 타이머 종료
-                if (window.AddonDebug?.isEnabled()) {
-                    window.AddonDebug.timeEnd('ai', 'translateMetadata');
+            for (const addon of providers) {
+                if (typeof addon.translateMetadata !== 'function') continue;
+
+                try {
+                    console.log(`[AIAddonManager] Trying metadata provider: ${addon.id}`);
+                    const result = await addon.translateMetadata(params);
+
+                    // 디버그 타이머 종료
+                    if (window.AddonDebug?.isEnabled()) {
+                        window.AddonDebug.timeEnd('ai', 'translateMetadata');
+                    }
+
+                    // 이벤트 발생
+                    this.emit('ai:request:success', { type: 'metadata', provider: addon.id });
+
+                    return result;
+                } catch (e) {
+                    console.warn(`[AIAddonManager] Provider ${addon.id} failed for translateMetadata:`, e.message);
+                    lastError = e;
+
+                    // 다음 provider 시도
+                    continue;
                 }
-
-                // 이벤트 발생
-                this.emit('ai:request:success', { type: 'metadata', provider: addon.id });
-
-                return result;
-            } catch (e) {
-                console.error('[AIAddonManager] translateMetadata failed:', e);
-
-                // 디버그 로깅
-                if (window.AddonDebug?.isEnabled()) {
-                    window.AddonDebug.timeEnd('ai', 'translateMetadata');
-                    window.AddonDebug.error('ai', 'translateMetadata error', e);
-                }
-
-                // 이벤트 발생
-                this.emit('ai:request:error', { type: 'metadata', provider: addon.id, error: e.message });
-
-                throw e;
             }
+
+            // 모든 provider 실패
+            console.error('[AIAddonManager] All metadata providers failed');
+
+            if (window.AddonDebug?.isEnabled()) {
+                window.AddonDebug.timeEnd('ai', 'translateMetadata');
+                window.AddonDebug.error('ai', 'translateMetadata all providers failed');
+            }
+
+            const errorMsg = lastError?.message || this._t('aiProviders.allProvidersFailed', 'All AI providers failed to process the request.');
+            this.emit('ai:request:error', { type: 'metadata', error: errorMsg });
+            throw new Error(errorMsg);
         }
 
         /**
-         * 가사 번역/발음 생성
-         * @param {Object} params - { trackId, artist, title, text, lang, wantSmartPhonetic, provider }
+         * 가사 번역/발음 생성 (활성화된 Provider 순서대로 시도)
+         * @param {Object} params - { trackId, artist, title, text, lang, wantSmartPhonetic }
          * @returns {Promise<Object|null>}
          */
         async translateLyrics(params) {
-            const addon = this.getProviderAddon('lyrics');
-            if (!addon || typeof addon.translateLyrics !== 'function') {
-                console.warn('[AIAddonManager] No lyrics provider set or method not available');
-                return null;
+            const providers = this.getEnabledProvidersFor('translate');
+
+            if (providers.length === 0) {
+                console.warn('[AIAddonManager] No translate providers enabled');
+                throw new Error(this._t('aiProviders.noEnabledProviders', 'No AI providers enabled. Please enable at least one provider in settings.'));
             }
 
             // 디버그 로깅
             if (window.AddonDebug?.isEnabled()) {
                 window.AddonDebug.log('ai', 'translateLyrics called', {
-                    provider: addon.id,
+                    providers: providers.map(p => p.id),
                     lang: params.lang,
                     wantSmartPhonetic: params.wantSmartPhonetic,
                     lineCount: params.text?.split('\n').length
@@ -456,83 +544,111 @@
             }
 
             // 이벤트 발생
-            this.emit('ai:request:start', { type: 'lyrics', provider: addon.id, params: { ...params, text: '[...]' } });
+            this.emit('ai:request:start', { type: 'translate', providers: providers.map(p => p.id), params: { ...params, text: '[...]' } });
 
-            try {
-                const result = await addon.translateLyrics(params);
+            let lastError = null;
 
-                // 디버그 타이머 종료
-                if (window.AddonDebug?.isEnabled()) {
-                    window.AddonDebug.timeEnd('ai', 'translateLyrics');
+            for (const addon of providers) {
+                if (typeof addon.translateLyrics !== 'function') continue;
+
+                try {
+                    console.log(`[AIAddonManager] Trying translate provider: ${addon.id}`);
+                    const result = await addon.translateLyrics(params);
+
+                    // 디버그 타이머 종료
+                    if (window.AddonDebug?.isEnabled()) {
+                        window.AddonDebug.timeEnd('ai', 'translateLyrics');
+                    }
+
+                    // 이벤트 발생
+                    this.emit('ai:request:success', { type: 'translate', provider: addon.id });
+
+                    return result;
+                } catch (e) {
+                    console.warn(`[AIAddonManager] Provider ${addon.id} failed for translateLyrics:`, e.message);
+                    lastError = e;
+
+                    // 다음 provider 시도
+                    continue;
                 }
-
-                // 이벤트 발생
-                this.emit('ai:request:success', { type: 'lyrics', provider: addon.id });
-
-                return result;
-            } catch (e) {
-                console.error('[AIAddonManager] translateLyrics failed:', e);
-
-                // 디버그 로깅
-                if (window.AddonDebug?.isEnabled()) {
-                    window.AddonDebug.timeEnd('ai', 'translateLyrics');
-                    window.AddonDebug.error('ai', 'translateLyrics error', e);
-                }
-
-                // 이벤트 발생
-                this.emit('ai:request:error', { type: 'lyrics', provider: addon.id, error: e.message });
-
-                throw e;
             }
+
+            // 모든 provider 실패
+            console.error('[AIAddonManager] All translate providers failed');
+
+            if (window.AddonDebug?.isEnabled()) {
+                window.AddonDebug.timeEnd('ai', 'translateLyrics');
+                window.AddonDebug.error('ai', 'translateLyrics all providers failed');
+            }
+
+            const errorMsg = lastError?.message || this._t('aiProviders.allProvidersFailed', 'All AI providers failed to process the request.');
+            this.emit('ai:request:error', { type: 'translate', error: errorMsg });
+            throw new Error(errorMsg);
         }
 
         /**
-         * TMI 생성
+         * TMI 생성 (활성화된 Provider 순서대로 시도)
          * @param {Object} params - { trackId, title, artist, lang }
          * @returns {Promise<Object|null>}
          */
         async generateTMI(params) {
-            const addon = this.getProviderAddon('tmi');
-            if (!addon || typeof addon.generateTMI !== 'function') {
-                console.warn('[AIAddonManager] No TMI provider set or method not available');
+            const providers = this.getEnabledProvidersFor('tmi');
+
+            if (providers.length === 0) {
+                console.warn('[AIAddonManager] No TMI providers enabled');
                 return null;
             }
 
             // 디버그 로깅
             if (window.AddonDebug?.isEnabled()) {
-                window.AddonDebug.log('ai', 'generateTMI called', { provider: addon.id, ...params });
+                window.AddonDebug.log('ai', 'generateTMI called', {
+                    providers: providers.map(p => p.id),
+                    ...params
+                });
                 window.AddonDebug.time('ai', 'generateTMI');
             }
 
             // 이벤트 발생
-            this.emit('ai:request:start', { type: 'tmi', provider: addon.id, params });
+            this.emit('ai:request:start', { type: 'tmi', providers: providers.map(p => p.id), params });
 
-            try {
-                const result = await addon.generateTMI(params);
+            let lastError = null;
 
-                // 디버그 타이머 종료
-                if (window.AddonDebug?.isEnabled()) {
-                    window.AddonDebug.timeEnd('ai', 'generateTMI');
+            for (const addon of providers) {
+                if (typeof addon.generateTMI !== 'function') continue;
+
+                try {
+                    console.log(`[AIAddonManager] Trying TMI provider: ${addon.id}`);
+                    const result = await addon.generateTMI(params);
+
+                    // 디버그 타이머 종료
+                    if (window.AddonDebug?.isEnabled()) {
+                        window.AddonDebug.timeEnd('ai', 'generateTMI');
+                    }
+
+                    // 이벤트 발생
+                    this.emit('ai:request:success', { type: 'tmi', provider: addon.id });
+
+                    return result;
+                } catch (e) {
+                    console.warn(`[AIAddonManager] Provider ${addon.id} failed for generateTMI:`, e.message);
+                    lastError = e;
+
+                    // 다음 provider 시도
+                    continue;
                 }
-
-                // 이벤트 발생
-                this.emit('ai:request:success', { type: 'tmi', provider: addon.id });
-
-                return result;
-            } catch (e) {
-                console.error('[AIAddonManager] generateTMI failed:', e);
-
-                // 디버그 로깅
-                if (window.AddonDebug?.isEnabled()) {
-                    window.AddonDebug.timeEnd('ai', 'generateTMI');
-                    window.AddonDebug.error('ai', 'generateTMI error', e);
-                }
-
-                // 이벤트 발생
-                this.emit('ai:request:error', { type: 'tmi', provider: addon.id, error: e.message });
-
-                throw e;
             }
+
+            // 모든 provider 실패
+            console.error('[AIAddonManager] All TMI providers failed');
+
+            if (window.AddonDebug?.isEnabled()) {
+                window.AddonDebug.timeEnd('ai', 'generateTMI');
+                window.AddonDebug.error('ai', 'generateTMI all providers failed');
+            }
+
+            const errorMsg = lastError?.message || 'All providers failed';
+            this.emit('ai:request:error', { type: 'tmi', error: errorMsg });
+            return null;  // TMI는 실패해도 null 반환 (중요도 낮음)
         }
 
         // ============================================
@@ -542,21 +658,30 @@
         /**
          * Addon이 특정 기능을 지원하는지 확인
          * @param {string} addonId - Addon ID
-         * @param {'translateMetadata'|'translateLyrics'|'generateTMI'} method - 메서드 이름
+         * @param {'translate'|'metadata'|'tmi'} capability - 기능 유형
          * @returns {boolean}
          */
-        supportsMethod(addonId, method) {
+        supportsCapability(addonId, capability) {
             const addon = this.getAddon(addonId);
-            return addon && typeof addon[method] === 'function';
+            return addon?.supports?.[capability] === true;
         }
 
         /**
          * 특정 기능을 지원하는 Addon 목록 가져오기
-         * @param {'translateMetadata'|'translateLyrics'|'generateTMI'} method - 메서드 이름
+         * @param {'translate'|'metadata'|'tmi'} capability - 기능 유형
          * @returns {Object[]}
          */
-        getAddonsWithMethod(method) {
-            return this.getAddons().filter(addon => typeof addon[method] === 'function');
+        getAddonsWithCapability(capability) {
+            return this.getAddons().filter(addon =>
+                addon.supports && addon.supports[capability] === true
+            );
+        }
+
+        /**
+         * 기능 상수
+         */
+        get CAPABILITIES() {
+            return AI_CAPABILITIES;
         }
     }
 
@@ -582,3 +707,4 @@
 
     console.log('[AIAddonManager] Module loaded');
 })();
+

@@ -320,6 +320,8 @@ window.LANG_EN = {
     "solidBackgroundInUse": "ℹ️ Solid Background in use",
     "fontPlaceholder": "Enter font name (e.g., Arial, Roboto)",
     "aiProviders": {
+      "title": "AI Providers",
+      "description": "Select and prioritize AI providers. Providers at the top are tried first. On failure, the next provider is automatically used.",
       "providerSelection": "AI Provider Selection",
       "providerSelectionDesc": "Select AI providers for translation, pronunciation, and TMI generation",
       "metadataProvider": "Metadata Translation",
@@ -328,7 +330,17 @@ window.LANG_EN = {
       "selectProvider": "Select provider...",
       "addonSettings": "Addon Settings",
       "addonSettingsDesc": "Configure settings for each AI Addon",
-      "noAddons": "No AI Addons registered. Please check your Addon files."
+      "noAddons": "No AI Addons registered. Please check your Addon files.",
+      "noProviders": "No AI providers registered.",
+      "moveUp": "Move Up",
+      "moveDown": "Move Down",
+      "supports": {
+        "translate": "Translation",
+        "metadata": "Metadata",
+        "tmi": "TMI"
+      },
+      "noEnabledProviders": "No AI providers enabled. Please enable at least one provider in settings.",
+      "allProvidersFailed": "All AI providers failed to process the request."
     },
     "lyricsProviders": {
       "title": "Lyrics Providers",

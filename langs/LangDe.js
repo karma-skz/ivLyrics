@@ -320,6 +320,8 @@ window.LANG_DE = {
     "solidBackgroundInUse": "ℹ️ Einfarbiger Hintergrund aktiv",
     "fontPlaceholder": "Schriftartname (z.B. Arial, Roboto)",
     "aiProviders": {
+      "title": "KI-Anbieter",
+      "description": "Wählen Sie KI-Anbieter aus und priorisieren Sie diese. Anbieter oben werden zuerst versucht. Bei Fehlern wird automatisch der nächste Anbieter verwendet.",
       "providerSelection": "KI-Anbieter auswählen",
       "providerSelectionDesc": "Wählen Sie den KI-Anbieter für Übersetzungen, Transkriptionen und TMI-Generierung aus",
       "metadataProvider": "Metadaten-Übersetzung",
@@ -328,7 +330,17 @@ window.LANG_DE = {
       "selectProvider": "Anbieter wählen...",
       "addonSettings": "Addon-Einstellungen",
       "addonSettingsDesc": "Konfigurieren Sie die individuellen Einstellungen für jedes KI-Addon",
-      "noAddons": "Keine KI-Addons registriert. Bitte überprüfen Sie Ihre Addon-Dateien."
+      "noAddons": "Keine KI-Addons registriert. Bitte überprüfen Sie Ihre Addon-Dateien.",
+      "noProviders": "Keine KI-Anbieter registriert.",
+      "moveUp": "Nach oben verschieben",
+      "moveDown": "Nach unten verschieben",
+      "supports": {
+        "translate": "Übersetzung",
+        "metadata": "Metadaten",
+        "tmi": "TMI"
+      },
+      "noEnabledProviders": "Keine KI-Anbieter aktiviert. Bitte aktiviere mindestens einen Anbieter in den Einstellungen.",
+      "allProvidersFailed": "Alle KI-Anbieter konnten die Anfrage nicht verarbeiten."
     },
     "lyricsProviders": {
       "title": "Songtext-Anbieter",

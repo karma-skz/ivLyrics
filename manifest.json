@@ -55,6 +55,7 @@
 	"subfiles_extension": [
 		"Addon_AI_Gemini.js",
 		"Addon_AI_ChatGPT.js",
+		"Addon_AI_Pollinations.js",
 		"Addon_Lyrics_Spotify.js",
 		"Addon_Lyrics_Lrclib.js",
 		"AIAddonManager.js",

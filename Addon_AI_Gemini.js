@@ -25,14 +25,107 @@
         },
         version: '1.0.0',
         apiKeyUrl: 'https://aistudio.google.com/apikey',
-        models: [
-            { id: 'gemini-3-flash-preview', name: 'Gemini 3 Flash Preview', default: true },
-            { id: 'gemini-3-pro-preview', name: 'Gemini 3 Pro Preview' },
-            { id: 'gemini-2.5-flash-lite', name: 'Gemini 2.5 Flash Lite' },
-            { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash' },
-            { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro' }
-        ]
+        // 지원 기능
+        supports: {
+            translate: true,    // 가사 번역/발음
+            metadata: true,     // 메타데이터 번역
+            tmi: true           // TMI 생성
+        },
+        // 하드코딩된 모델 목록 (fallback용)
+        // models: [
+        //     { id: 'gemini-3-flash-preview', name: 'Gemini 3 Flash Preview', default: true },
+        //     { id: 'gemini-3-pro-preview', name: 'Gemini 3 Pro Preview' },
+        //     { id: 'gemini-2.5-flash-lite', name: 'Gemini 2.5 Flash Lite' },
+        //     { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash' },
+        //     { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro' }
+        // ]
+        models: [] // API에서 동적으로 로드
     };
+
+    /**
+     * Gemini API에서 사용 가능한 모델 목록을 가져옴 (텍스트 생성용 모델만)
+     */
+    async function fetchAvailableModels(apiKey) {
+        if (!apiKey) return [];
+
+        try {
+            const response = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`
+            );
+
+            if (!response.ok) {
+                console.warn('[Gemini Addon] Failed to fetch models:', response.status);
+                return [];
+            }
+
+            const data = await response.json();
+            const models = (data.models || [])
+                // 텍스트 생성 지원 모델만 필터링
+                .filter(m => {
+                    if (!m.name) return false;
+                    // generateContent 지원 필수
+                    if (!m.supportedGenerationMethods?.includes('generateContent')) return false;
+                    // gemini 모델만
+                    const id = m.name.replace('models/', '');
+                    if (!id.startsWith('gemini')) return false;
+                    // 이미지/비전 전용 모델 제외
+                    if (id.includes('vision') && !id.includes('pro')) return false;
+                    // embedding 모델 제외
+                    if (id.includes('embedding')) return false;
+                    // imagen 모델 제외
+                    if (id.includes('imagen')) return false;
+                    if (id.includes('image')) return false;
+                    // AQA 모델 제외 (질문응답 전용)
+                    if (id.includes('aqa')) return false;
+                    // robotics 모델 제외
+                    if (id.includes('robotics')) return false;
+                    // tts 모델 제외
+                    if (id.includes('tts')) return false;
+                    // exp 모델 제외
+                    if (id.includes('exp')) return false;
+                    // computer 모델 제외
+                    if (id.includes('computer')) return false;
+                    return true;
+                })
+                .map(m => {
+                    const id = m.name.replace('models/', '');
+                    return {
+                        id: id,
+                        name: m.displayName || id,
+                        description: m.description || ''
+                    };
+                })
+                .sort((a, b) => {
+                    // 최신 버전 우선 정렬
+                    const aNum = parseFloat(a.id.match(/[\d.]+/)?.[0] || '0');
+                    const bNum = parseFloat(b.id.match(/[\d.]+/)?.[0] || '0');
+                    if (bNum !== aNum) return bNum - aNum;
+                    // flash가 pro보다 먼저
+                    if (a.id.includes('flash') && !b.id.includes('flash')) return -1;
+                    if (!a.id.includes('flash') && b.id.includes('flash')) return 1;
+                    return a.id.localeCompare(b.id);
+                });
+
+            // 첫 번째 모델을 기본값으로 설정
+            if (models.length > 0) {
+                models[0].default = true;
+            }
+
+            return models;
+        } catch (e) {
+            console.warn('[Gemini Addon] Error fetching models:', e.message);
+            return [];
+        }
+    }
+
+    /**
+     * 모델 목록 가져오기 (매번 API에서 로드)
+     */
+    async function getModels() {
+        const apiKeys = getApiKeys();
+        if (apiKeys.length === 0) return [];
+        return await fetchAvailableModels(apiKeys[0]);
+    }
 
     // ============================================
     // Language Data
@@ -218,7 +311,7 @@ OUTPUT (${lineCount} lines):`;
     async function callGeminiAPIRaw(prompt, maxRetries = 3) {
         const apiKeys = getApiKeys();
         if (apiKeys.length === 0) {
-            throw new Error('API key is required. Please configure your Gemini API key in settings.');
+            throw new Error('[Gemini] API key is required. Please configure your Gemini API key in settings.');
         }
 
         const model = getSelectedModel();
@@ -253,14 +346,24 @@ OUTPUT (${lineCount} lines):`;
                     }
 
                     if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
+                        // Try to parse error response for better error messages
+                        let errorMessage = `HTTP ${response.status}`;
+                        try {
+                            const errorData = await response.json();
+                            if (errorData.error?.message) {
+                                errorMessage = errorData.error.message;
+                            }
+                        } catch (parseError) {
+                            // Use default error message if parsing fails
+                        }
+                        throw new Error(`[Gemini] ${errorMessage}`);
                     }
 
                     const data = await response.json();
                     const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
                     if (!rawText) {
-                        throw new Error('Empty response from API');
+                        throw new Error('[Gemini] Empty response from API');
                     }
 
                     return rawText;
@@ -276,7 +379,7 @@ OUTPUT (${lineCount} lines):`;
             }
         }
 
-        throw lastError || new Error('All API keys and retries exhausted');
+        throw lastError || new Error('[Gemini] All API keys and retries exhausted');
     }
 
     /**
@@ -364,12 +467,43 @@ OUTPUT (${lineCount} lines):`;
 
         getSettingsUI() {
             const React = Spicetify.React;
-            const { useState, useCallback } = React;
+            const { useState, useCallback, useEffect } = React;
 
             return function GeminiSettings() {
                 const [apiKeys, setApiKeys] = useState(getSetting('api-keys', ''));
                 const [model, setModel] = useState(getSelectedModel());
                 const [testStatus, setTestStatus] = useState('');
+                const [availableModels, setAvailableModels] = useState([]);
+                const [modelsLoading, setModelsLoading] = useState(false);
+
+                // 모델 목록 로드
+                const loadModels = useCallback(async () => {
+                    const keys = getApiKeys();
+                    if (keys.length === 0) {
+                        setAvailableModels([]);
+                        return;
+                    }
+                    setModelsLoading(true);
+                    try {
+                        const models = await getModels();
+                        setAvailableModels(models);
+                        // ADDON_INFO.models 업데이트 (다른 곳에서 사용할 수 있도록)
+                        ADDON_INFO.models = models;
+                    } catch (e) {
+                        console.warn('[Gemini Addon] Failed to load models:', e);
+                        setAvailableModels([]);
+                    } finally {
+                        setModelsLoading(false);
+                    }
+                }, [apiKeys]);
+
+                // API 키가 변경되면 모델 목록 다시 로드
+                useEffect(() => {
+                    const keys = getApiKeys();
+                    if (keys.length > 0) {
+                        loadModels();
+                    }
+                }, [apiKeys]);
 
                 const handleApiKeyChange = useCallback((e) => {
                     const value = e.target.value;
@@ -383,6 +517,10 @@ OUTPUT (${lineCount} lines):`;
                     setSetting('model', value);
                 }, []);
 
+                const handleRefreshModels = useCallback(() => {
+                    loadModels();
+                }, [loadModels]);
+
                 const handleTest = useCallback(async () => {
                     setTestStatus('Testing...');
                     try {
@@ -392,6 +530,8 @@ OUTPUT (${lineCount} lines):`;
                         setTestStatus(`✗ Error: ${e.message}`);
                     }
                 }, []);
+
+                const hasApiKey = getApiKeys().length > 0;
 
                 return React.createElement('div', { className: 'ai-addon-settings gemini-settings' },
                     React.createElement('div', { className: 'ai-addon-header' },
@@ -419,9 +559,26 @@ OUTPUT (${lineCount} lines):`;
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'Model'),
-                        React.createElement('select', { value: model, onChange: handleModelChange },
-                            ADDON_INFO.models.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
-                        )
+                        React.createElement('div', { className: 'ai-addon-input-group' },
+                            React.createElement('select', {
+                                value: model,
+                                onChange: handleModelChange,
+                                disabled: modelsLoading
+                            },
+                                modelsLoading
+                                    ? React.createElement('option', { value: '' }, 'Loading models...')
+                                    : availableModels.length > 0
+                                        ? availableModels.map(m => React.createElement('option', { key: m.id, value: m.id }, m.name))
+                                        : React.createElement('option', { value: '' }, hasApiKey ? 'No models found' : 'Enter API key first')
+                            ),
+                            React.createElement('button', {
+                                onClick: handleRefreshModels,
+                                className: 'ai-addon-btn-secondary',
+                                disabled: modelsLoading || !hasApiKey,
+                                title: 'Refresh model list'
+                            }, modelsLoading ? '...' : '↻')
+                        ),
+                        availableModels.length > 0 && React.createElement('small', null, `${availableModels.length} models available`)
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('button', { onClick: handleTest, className: 'ai-addon-btn-primary' }, 'Test Connection'),

@@ -1,4 +1,4 @@
-﻿// Hindi language file for ivLyrics
+// Hindi language file for ivLyrics
 window.LANG_HI = {
   "meta": {
     "language": "हिन्दी",
@@ -320,6 +320,8 @@ window.LANG_HI = {
     "solidBackgroundInUse": "ℹ️ ठोस बैकग्राउंड उपयोग में है",
     "fontPlaceholder": "फ़ॉन्ट का नाम दर्ज करें (उदा: Arial, Mangal)",
     "aiProviders": {
+      "title": "AI प्रदाता",
+      "description": "AI प्रदाता चुनें और प्राथमिकता दें। शीर्ष पर स्थित प्रदाताओं को पहले आज़माया जाता है। विफलता पर, अगला प्रदाता स्वचालित रूप से उपयोग किया जाता है।",
       "providerSelection": "AI प्रदाता चयन",
       "providerSelectionDesc": "अनुवाद, रोमनकरण और TMI पीढ़ी के लिए उपयोग किए जाने वाले AI प्रदाता का चयन करें",
       "metadataProvider": "मेटाडेटा अनुवाद",
@@ -328,7 +330,17 @@ window.LANG_HI = {
       "selectProvider": "प्रदाता चुनें...",
       "addonSettings": "एडऑन सेटिंग्स",
       "addonSettingsDesc": "प्रत्येक AI एडऑन की व्यक्तिगत सेटिंग्स कॉन्फ़िगर करें",
-      "noAddons": "कोई AI एडऑन पंजीकृत नहीं है। कृपया अपने एडऑन फ़ाइलों की जाँच करें।"
+      "noAddons": "कोई AI एडऑन पंजीकृत नहीं है। कृपया अपने एडऑन फ़ाइलों की जाँच करें।",
+      "noProviders": "कोई AI प्रदाता पंजीकृत नहीं है।",
+      "moveUp": "ऊपर ले जाएँ",
+      "moveDown": "नीचे ले जाएँ",
+      "supports": {
+        "translate": "अनुवाद",
+        "metadata": "मेटाडेटा",
+        "tmi": "TMI"
+      },
+      "noEnabledProviders": "कोई AI प्रदाता सक्षम नहीं है। कृपया सेटिंग्स में कम से कम एक प्रदाता सक्षम करें।",
+      "allProvidersFailed": "सभी AI प्रदाता अनुरोध को संसाधित करने में विफल रहे।"
     },
     "lyricsProviders": {
       "title": "गीत प्रदाता",

@@ -989,8 +989,8 @@ const AccountSection = () => {
   );
 };
 
-// AI Addon 개별 카드 컴포넌트 (아코디언 스타일)
-const AddonSettingsCard = ({ addon, isExpanded, onToggle }) => {
+// AI Addon 개별 카드 컴포넌트 (아코디언 스타일 - LyricsProviderCard와 동일 스타일)
+const AddonSettingsCard = ({ addon, isEnabled, onToggle, isExpanded, onExpandToggle }) => {
   const SettingsUI = addon.getSettingsUI ? addon.getSettingsUI() : null;
 
   const getLocalizedDescription = (desc) => {
@@ -1002,22 +1002,45 @@ const AddonSettingsCard = ({ addon, isExpanded, onToggle }) => {
 
   // 아코디언 헤더 클릭 핸들러
   const handleHeaderClick = (e) => {
-    // 버튼 클릭은 무시
-    if (e.target.closest('button')) return;
-    onToggle();
+    // 버튼, 체크박스 클릭은 무시
+    if (e.target.closest('button') || e.target.closest('input[type="checkbox"]')) return;
+    onExpandToggle();
+  };
+
+  // 지원 기능 뱃지 렌더링
+  const renderSupportBadges = () => {
+    const badges = [];
+    if (addon.supports?.translate) {
+      badges.push(react.createElement("span", { key: "translate", className: "support-badge synced" }, I18n.t("settings.aiProviders.supports.translate") || "번역"));
+    }
+    if (addon.supports?.metadata) {
+      badges.push(react.createElement("span", { key: "metadata", className: "support-badge karaoke" }, I18n.t("settings.aiProviders.supports.metadata") || "메타데이터"));
+    }
+    if (addon.supports?.tmi) {
+      badges.push(react.createElement("span", { key: "tmi", className: "support-badge unsynced" }, I18n.t("settings.aiProviders.supports.tmi") || "TMI"));
+    }
+    return badges;
   };
 
   return react.createElement("div", {
-    className: `addon-card ${isExpanded ? 'expanded' : ''}`
+    className: `lyrics-provider-card ${isExpanded ? 'expanded' : ''} ${isEnabled ? '' : 'disabled'}`
   },
-    // 카드 헤더 (항상 보임)
+    // 카드 헤더
     react.createElement("div", {
-      className: "addon-card-header",
+      className: "lyrics-provider-card-header",
       onClick: handleHeaderClick
     },
-      // 왼쪽: 아이콘, 이름, 버전
-      react.createElement("div", { className: "addon-card-header-left" },
-        react.createElement("div", { className: "addon-card-icon" },
+      // 왼쪽: 활성화 토글, 아이콘, 이름
+      react.createElement("div", { className: "lyrics-provider-card-header-left" },
+        react.createElement("label", { className: "lyrics-provider-toggle" },
+          react.createElement("input", {
+            type: "checkbox",
+            checked: isEnabled,
+            onChange: (e) => onToggle(e.target.checked)
+          }),
+          react.createElement("span", { className: "toggle-slider" })
+        ),
+        react.createElement("div", { className: "lyrics-provider-icon" },
           addon.id === 'gemini'
             ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
               react.createElement("path", {
@@ -1032,35 +1055,41 @@ const AddonSettingsCard = ({ addon, isExpanded, onToggle }) => {
                   stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"
                 })
               )
-              : react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
-                react.createElement("path", {
-                  d: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z",
-                  stroke: "currentColor", strokeWidth: "2"
-                })
-              )
+              : addon.id === 'pollinations'
+                ? react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
+                  react.createElement("circle", { cx: "12", cy: "12", r: "3", stroke: "currentColor", strokeWidth: "2" }),
+                  react.createElement("path", {
+                    d: "M12 2a4 4 0 0 1 4 4v1a4 4 0 0 0 4 4h1a4 4 0 0 1 0 8h-1a4 4 0 0 0-4 4v1a4 4 0 0 1-8 0v-1a4 4 0 0 0-4-4H3a4 4 0 0 1 0-8h1a4 4 0 0 0 4-4V6a4 4 0 0 1 4-4z",
+                    stroke: "currentColor", strokeWidth: "2"
+                  })
+                )
+                : react.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none" },
+                  react.createElement("circle", { cx: "12", cy: "12", r: "10", stroke: "currentColor", strokeWidth: "2" })
+                )
         ),
-        react.createElement("div", { className: "addon-card-title-group" },
-          react.createElement("span", { className: "addon-card-name" }, addon.name),
-          react.createElement("span", { className: "addon-card-version" }, `v${addon.version}`)
+        react.createElement("div", { className: "lyrics-provider-title-group" },
+          react.createElement("span", { className: "lyrics-provider-name" }, addon.name),
+          react.createElement("span", { className: "lyrics-provider-version" }, `v${addon.version}`)
         )
       ),
-      // 오른쪽: 확장 아이콘
-      react.createElement("div", { className: "addon-card-header-right" },
+      // 오른쪽: 지원 뱃지, 확장 아이콘
+      react.createElement("div", { className: "lyrics-provider-card-header-right" },
+        react.createElement("div", { className: "support-badges" }, renderSupportBadges()),
         react.createElement("svg", {
-          className: `addon-expand-icon ${isExpanded ? 'expanded' : ''}`,
+          className: `lyrics-provider-expand-icon ${isExpanded ? 'expanded' : ''}`,
           width: 16, height: 16, viewBox: "0 0 24 24", fill: "none",
-          stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round"
+          stroke: "currentColor", strokeWidth: "2"
         },
           react.createElement("polyline", { points: "6 9 12 15 18 9" })
         )
       )
     ),
-    // 카드 설명 (항상 보임)
-    react.createElement("div", { className: "addon-card-description" },
+    // 설명
+    react.createElement("div", { className: "lyrics-provider-card-description" },
       getLocalizedDescription(addon.description)
     ),
-    // 카드 바디 (확장 시에만 보임)
-    isExpanded && SettingsUI && react.createElement("div", { className: "addon-card-body" },
+    // 확장 영역 (설정 UI)
+    isExpanded && SettingsUI && react.createElement("div", { className: "lyrics-provider-card-body" },
       react.createElement(SettingsUI)
     )
   );
@@ -1372,111 +1401,134 @@ const LyricsProvidersTab = () => {
   );
 };
 
-// AI 제공자 설정 탭 컴포넌트
+// AI 제공자 설정 탭 컴포넌트 (LyricsProvidersTab과 동일 스타일)
 const AIProvidersTab = () => {
-  const [addons, setAddons] = useState([]);
-  const [metadataProvider, setMetadataProvider] = useState('');
-  const [lyricsProvider, setLyricsProvider] = useState('');
-  const [tmiProvider, setTmiProvider] = useState('');
+  const [providers, setProviders] = useState([]);
+  const [providerOrder, setProviderOrder] = useState([]);
+  const [enabledProviders, setEnabledProviders] = useState({});
+  const [expandedProviders, setExpandedProviders] = useState(new Set());
   const [refreshKey, setRefreshKey] = useState(0);
-  const [expandedAddons, setExpandedAddons] = useState(new Set());
 
   useEffect(() => {
-    const loadAddons = () => {
+    const loadProviders = () => {
       if (window.AIAddonManager) {
-        const addonList = window.AIAddonManager.getAddons();
-        setAddons(addonList);
-        setMetadataProvider(window.AIAddonManager.getProvider('metadata') || '');
-        setLyricsProvider(window.AIAddonManager.getProvider('lyrics') || '');
-        setTmiProvider(window.AIAddonManager.getProvider('tmi') || '');
+        const providerList = window.AIAddonManager.getAddons();
+        setProviders(providerList);
+
+        const order = window.AIAddonManager.getProviderOrder();
+        setProviderOrder(order);
+
+        const enabled = {};
+        providerList.forEach(p => {
+          enabled[p.id] = window.AIAddonManager.isProviderEnabled(p.id);
+        });
+        setEnabledProviders(enabled);
       } else {
-        setTimeout(loadAddons, 100);
+        setTimeout(loadProviders, 100);
       }
     };
-    loadAddons();
+    loadProviders();
   }, [refreshKey]);
 
-  const toggleAddon = (addonId) => {
-    setExpandedAddons(prev => {
+  const handleToggleEnabled = (providerId, enabled) => {
+    if (window.AIAddonManager) {
+      window.AIAddonManager.setProviderEnabled(providerId, enabled);
+      setEnabledProviders(prev => ({ ...prev, [providerId]: enabled }));
+    }
+  };
+
+  const toggleExpanded = (providerId) => {
+    setExpandedProviders(prev => {
       const next = new Set(prev);
-      if (next.has(addonId)) {
-        next.delete(addonId);
+      if (next.has(providerId)) {
+        next.delete(providerId);
       } else {
-        next.add(addonId);
+        next.add(providerId);
       }
       return next;
     });
   };
 
-  const handleProviderChange = (type, value) => {
+  // 위/아래 버튼으로 순서 변경
+  const moveProvider = (providerId, direction) => {
+    const currentIndex = providerOrder.indexOf(providerId);
+    if (currentIndex === -1) return;
+
+    const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (newIndex < 0 || newIndex >= providerOrder.length) return;
+
+    const newOrder = [...providerOrder];
+    [newOrder[currentIndex], newOrder[newIndex]] = [newOrder[newIndex], newOrder[currentIndex]];
+
+    setProviderOrder(newOrder);
     if (window.AIAddonManager) {
-      window.AIAddonManager.setProvider(type, value);
-      if (type === 'metadata') setMetadataProvider(value);
-      if (type === 'lyrics') setLyricsProvider(value);
-      if (type === 'tmi') setTmiProvider(value);
+      window.AIAddonManager.setProviderOrder(newOrder);
     }
   };
 
-  const renderProviderSelect = (type, currentValue, label) => {
-    return react.createElement("div", { className: "setting-row" },
-      react.createElement("div", { className: "setting-row-content" },
-        react.createElement("div", { className: "setting-row-left" },
-          react.createElement("div", { className: "setting-name" }, label)
-        ),
-        react.createElement("div", { className: "setting-row-right" },
-          react.createElement("select", {
-            value: currentValue,
-            onChange: (e) => handleProviderChange(type, e.target.value),
-            className: "config-select",
-            style: { minWidth: "180px" }
-          },
-            react.createElement("option", { value: "" }, I18n.t("settings.aiProviders.selectProvider")),
-            addons.map(addon =>
-              react.createElement("option", { key: addon.id, value: addon.id }, addon.name)
-            )
-          )
-        )
-      )
-    );
-  };
+  // 정렬된 provider 목록
+  const sortedProviders = providerOrder
+    .map(id => providers.find(p => p.id === id))
+    .filter(Boolean);
 
-  return react.createElement(react.Fragment, null,
-    // Provider 선택 섹션
-    react.createElement("div", { className: "section-title" },
-      react.createElement("div", { className: "section-text" },
-        react.createElement("h3", null, I18n.t("settings.aiProviders.providerSelection")),
-        react.createElement("p", null, I18n.t("settings.aiProviders.providerSelectionDesc"))
-      )
-    ),
-    react.createElement("div", { className: "option-list-wrapper" },
-      renderProviderSelect('metadata', metadataProvider, I18n.t("settings.aiProviders.metadataProvider")),
-      renderProviderSelect('lyrics', lyricsProvider, I18n.t("settings.aiProviders.lyricsProvider")),
-      renderProviderSelect('tmi', tmiProvider, I18n.t("settings.aiProviders.tmiProvider"))
-    ),
+  // 등록되었지만 순서에 없는 provider 추가
+  providers.forEach(p => {
+    if (!providerOrder.includes(p.id)) {
+      sortedProviders.push(p);
+    }
+  });
 
-    // Addon 설정 섹션 (통합 컨테이너)
-    react.createElement("div", { style: { marginTop: "30px", background: "transparent", border: "none", boxShadow: "none", padding: 0 } },
+  return react.createElement("div", { className: "settings-section lyrics-providers-section" },
+    // 통합 컨테이너
+    react.createElement("div", { className: "lyrics-providers-container" },
       // 헤더
-      react.createElement("div", { className: "addon-settings-header", style: { marginBottom: "16px" } },
-        react.createElement("h3", null, I18n.t("settings.aiProviders.addonSettings")),
-        react.createElement("p", null,
-          addons.length > 0
-            ? I18n.t("settings.aiProviders.addonSettingsDesc")
-            : I18n.t("settings.aiProviders.noAddons")
+      react.createElement("div", { className: "lyrics-providers-header", style: { marginBottom: "16px" } },
+        react.createElement("h3", null, I18n.t("settings.aiProviders.title") || "AI 제공자"),
+        react.createElement("p", null, I18n.t("settings.aiProviders.description") || "AI 번역 및 TMI 생성에 사용할 제공자를 선택하고 우선순위를 설정합니다. 상위 제공자 실패 시 다음 제공자로 자동 전환됩니다.")
+      ),
+
+      // Provider 목록
+      providers.length > 0 && react.createElement("div", { className: "lyrics-providers-list" },
+        sortedProviders.map((provider, index) =>
+          react.createElement("div", { key: provider.id, className: "lyrics-provider-item" },
+            // 순서 변경 버튼
+            react.createElement("div", { className: "lyrics-provider-order-buttons" },
+              react.createElement("button", {
+                className: "order-btn",
+                disabled: index === 0,
+                onClick: () => moveProvider(provider.id, 'up'),
+                title: I18n.t("settings.aiProviders.moveUp") || "Move Up"
+              },
+                react.createElement("svg", { width: 12, height: 12, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
+                  react.createElement("polyline", { points: "18 15 12 9 6 15" })
+                )
+              ),
+              react.createElement("button", {
+                className: "order-btn",
+                disabled: index === sortedProviders.length - 1,
+                onClick: () => moveProvider(provider.id, 'down'),
+                title: I18n.t("settings.aiProviders.moveDown") || "Move Down"
+              },
+                react.createElement("svg", { width: 12, height: 12, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2" },
+                  react.createElement("polyline", { points: "6 9 12 15 18 9" })
+                )
+              )
+            ),
+            // Provider 카드
+            react.createElement(AddonSettingsCard, {
+              addon: provider,
+              isEnabled: enabledProviders[provider.id] !== false,
+              onToggle: (enabled) => handleToggleEnabled(provider.id, enabled),
+              isExpanded: expandedProviders.has(provider.id),
+              onExpandToggle: () => toggleExpanded(provider.id)
+            })
+          )
         )
       ),
 
-      // Addon 카드 목록
-      addons.length > 0 && react.createElement("div", { className: "addon-cards-container" },
-        addons.map(addon => {
-          if (!addon.getSettingsUI) return null;
-          return react.createElement(AddonSettingsCard, {
-            key: addon.id,
-            addon: addon,
-            isExpanded: expandedAddons.has(addon.id),
-            onToggle: () => toggleAddon(addon.id)
-          });
-        })
+      // Provider가 없을 때
+      providers.length === 0 && react.createElement("div", { className: "no-providers-message" },
+        react.createElement("p", null, I18n.t("settings.aiProviders.noProviders") || "등록된 AI 제공자가 없습니다.")
       )
     )
   );
