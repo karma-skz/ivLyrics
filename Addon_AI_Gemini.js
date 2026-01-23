@@ -188,7 +188,9 @@
     }
 
     function getLangInfo(lang) {
-        return LANGUAGE_DATA[lang] || LANGUAGE_DATA['en'];
+        if (!lang) return LANGUAGE_DATA['en'];
+        const shortLang = lang.split('-')[0].toLowerCase();
+        return LANGUAGE_DATA[lang] || LANGUAGE_DATA[shortLang] || LANGUAGE_DATA['en'];
     }
 
     // ============================================
@@ -268,16 +270,21 @@ OUTPUT (${lineCount} lines):`;
 
         return `You are a music knowledge expert. Generate interesting facts and trivia about the song "${title}" by "${artist}".
 
-**Output language**: ${langInfo.name} (${langInfo.native})
+IMPORTANT: The output MUST be in ${langInfo.name} (${langInfo.native}).
+Even if the song is English, the description and trivia MUST be written in ${langInfo.native}.
 
-**Output MUST be valid JSON**:
+**Output conditions**:
+1. Language: STRICTLY ${langInfo.name} (${langInfo.native})
+2. Format: JSON
+
+**Output JSON Structure**:
 {
   "track": {
-    "description": "A 2-3 sentence description of the song and its significance",
+    "description": "2-3 sentence description in ${langInfo.native}",
     "trivia": [
-      "Interesting fact 1 about the song",
-      "Interesting fact 2 about the song",
-      "Interesting fact 3 about the song"
+      "Fact 1 in ${langInfo.native}",
+      "Fact 2 in ${langInfo.native}",
+      "Fact 3 in ${langInfo.native}"
     ],
     "sources": {
       "verified": [],

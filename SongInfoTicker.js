@@ -24,8 +24,8 @@ const SongInfoTMI = (() => {
     // Fetch song info from backend (via LyricsService)
     async function fetchSongInfo(trackId, regenerate = false) {
         // SongDataService와 동일한 언어 설정 사용 (translation-language 우선, language 폴백)
-        const lang = CONFIG.visual["translation-language"] || CONFIG.visual["language"] || 'en';
-        const cacheKey = `${trackId}:${lang}`;
+        const lang = CONFIG.visual["translation-language"] || CONFIG.visual["language"];
+        const cacheKey = `${trackId}:${lang || 'auto'}`;
 
         // Check memory cache first (skip if regenerating)
         if (!regenerate && tmiCache.has(cacheKey)) {
@@ -54,7 +54,8 @@ const SongInfoTMI = (() => {
                 trackId,
                 title,
                 artist,
-                lang
+                lang,
+                ignoreCache: regenerate
             });
 
             if (result) {
