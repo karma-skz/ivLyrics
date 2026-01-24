@@ -1597,7 +1597,7 @@ window.LANG_FR = {
     "getApiKeyDesc": "Obtenir Clé API Gemini",
     "getApiKeyInfo": "Utilisé pour charger les infos. Gratuit sur Google AI Studio.",
     "viewInfo": "Cliquez pour voir des infos variées sur ce titre",
-    "requireKey": "Clé API Gemini requise dans les paramètres",
+    "requireKey": "Un fournisseur d'IA doit être configuré dans les paramètres",
     "settingTitle": "Clé API Gemini",
     "settingDesc": "Nécessaire pour charger les TMI/Infos.",
     "title": "Anecdotes",

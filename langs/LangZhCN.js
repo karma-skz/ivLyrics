@@ -1597,7 +1597,7 @@ window.LANG_ZH_CN = {
     "getApiKeyDesc": "获取 Gemini API 密钥",
     "getApiKeyInfo": "用于加载 TMI。可以在 Google AI Studio 免费获取。",
     "viewInfo": "点击查看关于这首歌的各种信息",
-    "requireKey": "需要在设置中配置 Gemini API 密钥",
+    "requireKey": "需要在设置中配置 AI 提供商",
     "settingTitle": "Gemini API 密钥",
     "settingDesc": "加载歌曲 TMI/信息所需。",
     "title": "TMI (歌曲情报)",

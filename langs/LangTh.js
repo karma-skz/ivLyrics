@@ -1597,7 +1597,7 @@ window.LANG_TH = {
     "getApiKeyDesc": "รับ Gemini API Key",
     "getApiKeyInfo": "ใช้สำหรับโหลด TMI สามารถรับได้ฟรีที่ Google AI Studio",
     "viewInfo": "กดเพื่อดูข้อมูลหลากหลายเกี่ยวกับเพลงนี้",
-    "requireKey": "ต้องตั้งค่า Gemini API Key ในการตั้งค่า",
+    "requireKey": "ต้องตั้งค่าผู้ให้บริการ AI ในการตั้งค่า",
     "settingTitle": "Gemini API Key",
     "settingDesc": "จำเป็นสำหรับการโหลด TMI/ข้อมูลเพลง",
     "title": "เกร็ดความรู้ (TMI)",

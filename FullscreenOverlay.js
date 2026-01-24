@@ -976,10 +976,10 @@ const FullscreenOverlay = (() => {
         const tvModeEnabled = CONFIG?.visual?.["fullscreen-tv-mode"] === true;
         const tvAlbumSize = Number(CONFIG?.visual?.["fullscreen-tv-album-size"]) || 140;
         const trimTitleEnabled = CONFIG?.visual?.["fullscreen-trim-title"] === true;
-        
+
         // Normal mode settings
         const normalShowAlbumName = CONFIG?.visual?.["fullscreen-show-album-name"] !== false;
-        
+
         // TV Mode specific settings
         const tvShowAlbumName = CONFIG?.visual?.["fullscreen-tv-show-album-name"] !== false;
         const tvShowControls = CONFIG?.visual?.["fullscreen-tv-show-controls"] !== false;
@@ -1023,23 +1023,10 @@ const FullscreenOverlay = (() => {
                 return;
             }
 
-            const apiKey = CONFIG.visual?.["gemini-api-key"];
-            if (!apiKey || (apiKey.startsWith('[') && apiKey.includes('""') && apiKey.length < 10)) { // Simple validation
-                // If apiKey is empty list or empty string
-            }
-            // Actually original check was simple !apiKey
-            // If I change to ConfigKeyList, apiKey might be '[""]' string.
-            // !'[""]' is false. So it passes.
-            // I should improve check.
-            let hasKey = !!apiKey;
-            if (apiKey && apiKey.trim().startsWith('[')) {
-                try {
-                    const parsed = JSON.parse(apiKey);
-                    hasKey = parsed.some(k => k && k.trim().length > 0);
-                } catch (e) { hasKey = false; }
-            }
+            // Check if any AI provider is available for TMI generation
+            const hasAIProvider = window.AIAddonManager?.getEnabledProvidersFor('tmi')?.length > 0;
 
-            if (!hasKey) {
+            if (!hasAIProvider) {
                 Toast.error(I18n.t("tmi.requireKey"));
                 return;
             }
@@ -1179,7 +1166,7 @@ const FullscreenOverlay = (() => {
                     },
                         react.createElement("div", { className: "album-tmi-hint-content" },
                             react.createElement("span", { className: "album-tmi-text" },
-                                CONFIG.visual?.["gemini-api-key"]
+                                (window.AIAddonManager?.getEnabledProvidersFor('tmi')?.length > 0)
                                     ? I18n.t("tmi.viewInfo")
                                     : I18n.t("tmi.requireKey")
                             )
@@ -1264,11 +1251,11 @@ const FullscreenOverlay = (() => {
                     )
                 ),
                 // TV Mode Controls & Progress (right side)
-                (tvShowControls || tvShowProgress) && react.createElement("div", { 
+                (tvShowControls || tvShowProgress) && react.createElement("div", {
                     className: "fullscreen-tv-controls-wrapper"
                 },
                     // TV Mode Controls
-                    tvShowControls && react.createElement("div", { 
+                    tvShowControls && react.createElement("div", {
                         className: "fullscreen-tv-controls"
                     },
                         // Previous button
@@ -1276,10 +1263,10 @@ const FullscreenOverlay = (() => {
                             className: "fullscreen-tv-control-btn",
                             onClick: () => Spicetify.Player.back(),
                             title: "Previous"
-                        }, 
+                        },
                             react.createElement("svg", {
                                 width: "24", height: "24", viewBox: "0 0 16 16", fill: "currentColor"
-                            }, 
+                            },
                                 react.createElement("path", { d: "M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7h1.6z" })
                             )
                         ),
@@ -1314,11 +1301,11 @@ const FullscreenOverlay = (() => {
                         )
                     ),
                     // TV Mode Progress bar
-                    tvShowProgress && react.createElement("div", { 
+                    tvShowProgress && react.createElement("div", {
                         className: "fullscreen-tv-progress"
                     },
                         react.createElement("span", { className: "fullscreen-tv-time current" }, formatTime(position)),
-                        react.createElement("div", { 
+                        react.createElement("div", {
                             className: "fullscreen-tv-progress-bar",
                             onClick: (e) => {
                                 const rect = e.currentTarget.getBoundingClientRect();
@@ -1439,12 +1426,12 @@ const FullscreenOverlay = (() => {
                             },
                                 react.createElement("div", { className: "album-tmi-hint-content" },
                                     react.createElement("span", { className: "album-tmi-text" },
-                                        CONFIG.visual?.["gemini-api-key"]
+                                        (window.AIAddonManager?.getEnabledProvidersFor('tmi')?.length > 0)
                                             ? I18n.t("tmi.viewInfo")
                                             : I18n.t("tmi.requireKey")
                                     ),
-                                    CONFIG.visual?.["gemini-api-key"] && react.createElement("span", { 
-                                        className: "album-tmi-disclaimer" 
+                                    (window.AIAddonManager?.getEnabledProvidersFor('tmi')?.length > 0) && react.createElement("span", {
+                                        className: "album-tmi-disclaimer"
                                     }, I18n.t("tmi.disclaimer"))
                                 )
                             )

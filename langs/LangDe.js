@@ -1596,7 +1596,7 @@ window.LANG_DE = {
     "getApiKeyDesc": "Gemini API-Schlüssel holen",
     "getApiKeyInfo": "Wird für TMI-Infos benötigt. Kostenlos im Google AI Studio erhältlich.",
     "viewInfo": "Klicken für mehr Infos zum Song",
-    "requireKey": "Gemini API-Schlüssel in Einstellungen erforderlich",
+    "requireKey": "KI-Anbieter muss in den Einstellungen konfiguriert werden",
     "settingTitle": "Gemini API-Schlüssel",
     "settingDesc": "Erforderlich für Song-TMI/Infos.",
     "title": "Infos",
