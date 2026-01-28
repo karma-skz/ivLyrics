@@ -1596,7 +1596,7 @@ window.LANG_FA = {
     "getApiKeyDesc": "دریافت کلید Gemini API",
     "getApiKeyInfo": "برای بارگذاری TMI استفاده می‌شود. می‌توانید رایگان از Google AI Studio دریافت کنید.",
     "viewInfo": "برای دیدن اطلاعات متنوع درباره این آهنگ کلیک کنید",
-    "requireKey": "نیاز به تنظیم کلید Gemini API در تنظیمات است",
+    "requireKey": "نیاز به پیکربندی ارائه‌دهنده هوش مصنوعی در تنظیمات است",
     "settingTitle": "کلید Gemini API",
     "settingDesc": "برای بارگذاری TMI/اطلاعات آهنگ نیاز است.",
     "title": "TMI",

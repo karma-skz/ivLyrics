@@ -1598,7 +1598,7 @@ window.LANG_EN = {
     "getApiKeyDesc": "Get Gemini API Key",
     "getApiKeyInfo": "Used to fetch Trivia. You can get it for free at Google AI Studio.",
     "viewInfo": "Click to see various info about this song",
-    "requireKey": "Gemini API Key needs to be set in settings",
+    "requireKey": "AI provider needs to be configured in settings",
     "settingTitle": "Gemini API Key",
     "settingDesc": "Required to fetch song Trivia/Info.",
     "title": "Trivia",

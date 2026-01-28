@@ -1598,7 +1598,7 @@ window.LANG_KO = {
     "getApiKeyDesc": "Gemini API 키 발급받기",
     "getApiKeyInfo": "TMI를 불러올 때 사용됩니다. Google AI Studio에서 무료로 발급받을 수 있습니다.",
     "viewInfo": "눌러서 이 곡에 대한 다양한 정보를 확인하세요",
-    "requireKey": "설정에서 Gemini API 키 설정이 필요합니다",
+    "requireKey": "설정에서 AI 제공자 설정이 필요합니다",
     "settingTitle": "Gemini API 키",
     "settingDesc": "곡 TMI/정보를 불러오기 위해 필요합니다.",
     "title": "TMI",

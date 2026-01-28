@@ -1596,7 +1596,7 @@ window.LANG_ID = {
     "getApiKeyDesc": "Dapatkan Kunci API Gemini",
     "getApiKeyInfo": "Digunakan untuk memuat TMI. Gratis dari Google AI Studio.",
     "viewInfo": "Klik untuk melihat berbagai info tentang lagu ini",
-    "requireKey": "Pengaturan Kunci API Gemini diperlukan di pengaturan",
+    "requireKey": "Penyedia AI perlu dikonfigurasi di pengaturan",
     "settingTitle": "Kunci API Gemini",
     "settingDesc": "Diperlukan untuk memuat TMI/Info lagu.",
     "title": "TMI",

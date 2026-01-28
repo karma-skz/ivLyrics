@@ -1597,7 +1597,7 @@ window.LANG_BN = {
     "getApiKeyDesc": "Gemini API কি সংগ্রহ করুন",
     "getApiKeyInfo": "TMI লোড করতে এটি ব্যবহার করা হয়। Google AI Studio থেকে বিনামূল্যে পাওয়া যাবে।",
     "viewInfo": "এই গান সম্পর্কে বিভিন্ন তথ্য জানতে ক্লিক করুন",
-    "requireKey": "সেটিংসে Gemini API কি সেট করা প্রয়োজন",
+    "requireKey": "সেটিংসে AI প্রদানকারী কনফিগার করা প্রয়োজন",
     "settingTitle": "Gemini API কি",
     "settingDesc": "গানের TMI/তথ্য লোড করার জন্য প্রয়োজন।",
     "title": "TMI",

@@ -1597,7 +1597,7 @@ window.LANG_JA = {
     "getApiKeyDesc": "Gemini APIキーを取得",
     "getApiKeyInfo": "TMIを読み込む際に使用されます。Google AI Studioで無料で取得できます。",
     "viewInfo": "クリックしてこの曲に関する様々な情報を確認",
-    "requireKey": "設定でGemini APIキーの設定が必要です",
+    "requireKey": "設定でAIプロバイダーの設定が必要です",
     "settingTitle": "Gemini APIキー",
     "settingDesc": "曲のTMI/情報を読み込むために必要です。",
     "title": "TMI",

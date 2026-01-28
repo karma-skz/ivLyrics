@@ -1849,26 +1849,28 @@
 
         /**
          * TMI(Trivia) 가져오기
-         * @param {Object} info - 트랙 정보 { trackId, title, artist, lang }
+         * @param {Object} info - 트랙 정보 { trackId, title, artist, lang, ignoreCache }
          * @returns {Promise<Object|null>}
          */
         async getTMI(info) {
-            const { trackId, title, artist, lang } = info;
+            const { trackId, title, artist, lang, ignoreCache } = info;
             if (!trackId) return null;
 
             const userLang = lang || Spicetify.Locale?.getLocale()?.split('-')[0] || 'en';
 
             try {
-                // 1. 로컬 캐시 확인
-                const cached = await LyricsCache.getTMI(trackId, userLang);
-                if (cached) {
-                    console.log(`[LyricsService] getTMI: Using cached data for ${trackId}`);
-                    return cached;
+                // 1. 로컬 캐시 확인 (ignoreCache가 true면 스킵)
+                if (!ignoreCache) {
+                    const cached = await LyricsCache.getTMI(trackId, userLang);
+                    if (cached) {
+                        console.log(`[LyricsService] getTMI: Using cached data for ${trackId}`);
+                        return cached;
+                    }
                 }
 
                 // 2. Addon_AI 요청
                 if (window.AIAddonManager) {
-                    console.log(`[LyricsService] getTMI: Requesting from AIAddonManager`);
+                    console.log(`[LyricsService] getTMI: Requesting from AIAddonManager${ignoreCache ? ' (ignoring cache)' : ''}`);
                     const result = await window.AIAddonManager.generateTMI({
                         trackId,
                         title,

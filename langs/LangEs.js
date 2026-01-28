@@ -1597,7 +1597,7 @@ window.LANG_ES = {
     "getApiKeyDesc": "Obtener clave API Gemini",
     "getApiKeyInfo": "Usada para cargar curiosidades (TMI). Gratis en Google AI Studio.",
     "viewInfo": "Haz clic para ver info variada sobre esta canción",
-    "requireKey": "Requiere configurar clave API Gemini en ajustes",
+    "requireKey": "Se necesita configurar un proveedor de IA en ajustes",
     "settingTitle": "Clave API Gemini",
     "settingDesc": "Necesaria para cargar TMI/Info de la canción.",
     "title": "Curiosidades (TMI)",

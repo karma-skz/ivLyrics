@@ -1596,7 +1596,7 @@ window.LANG_AR = {
     "getApiKeyDesc": "الحصول على مفتاح Gemini API",
     "getApiKeyInfo": "يستخدم لجلب معلومات TMI. يمكن الحصول عليه مجانًا من Google AI Studio.",
     "viewInfo": "اضغط للتحقق من معلومات متنوعة حول هذه الأغنية",
-    "requireKey": "يتطلب إعداد مفتاح Gemini API في الإعدادات",
+    "requireKey": "يتطلب إعداد موفر الذكاء الاصطناعي في الإعدادات",
     "settingTitle": "مفتاح Gemini API",
     "settingDesc": "مطلوب لجلب TMI/معلومات الأغنية.",
     "title": "TMI (معلومات إضافية)",

@@ -1597,7 +1597,7 @@ window.LANG_RU = {
     "getApiKeyDesc": "Получить ключ Gemini API",
     "getApiKeyInfo": "Используется для загрузки TMI. Бесплатно в Google AI Studio.",
     "viewInfo": "Нажмите для просмотра информации о треке",
-    "requireKey": "Требуется настроить ключ Gemini API",
+    "requireKey": "Требуется настроить AI-провайдера в настройках",
     "settingTitle": "Ключ Gemini API",
     "settingDesc": "Нужен для загрузки TMI/Инфо.",
     "title": "TMI",
