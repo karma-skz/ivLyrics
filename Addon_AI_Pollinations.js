@@ -140,9 +140,29 @@
         window.AIAddonManager?.setAddonSetting(ADDON_INFO.id, key, value);
     }
 
-    function getApiKey() {
+    function getApiKeys() {
         // Pollinations.ai는 API 키가 선택적 (무료 사용 가능)
-        return getSetting('api-key', '');
+        const raw = getSetting('api-keys', '');
+        if (!raw) return [];
+
+        if (Array.isArray(raw)) {
+            return raw
+                .map(k => typeof k === 'string' ? k.trim() : '')
+                .filter(k => k);
+        }
+
+        if (typeof raw !== 'string') return [];
+
+        try {
+            if (raw.startsWith('[')) {
+                return JSON.parse(raw)
+                    .map(k => typeof k === 'string' ? k.trim() : '')
+                    .filter(k => k);
+            }
+            return [raw.trim()].filter(k => k);
+        } catch {
+            return [raw.trim()].filter(k => k);
+        }
     }
 
     function getSelectedModel() {
@@ -274,75 +294,82 @@ Even if the song is English, the description and trivia MUST be written in ${lan
      */
     async function callPollinationsAPIRaw(prompt, maxRetries = 3) {
         const model = getSelectedModel();
-        const apiKey = getApiKey();
+        const apiKeys = getApiKeys();
         let lastError = null;
 
-        for (let attempt = 0; attempt < maxRetries; attempt++) {
-            try {
-                const endpoint = `${BASE_URL}/v1/chat/completions`;
+        // API 키가 없으면 키 없이 시도
+        const keysToTry = apiKeys.length > 0 ? apiKeys : [null];
 
-                const headers = {
-                    'Content-Type': 'application/json',
-                };
+        for (let keyIndex = 0; keyIndex < keysToTry.length; keyIndex++) {
+            const apiKey = keysToTry[keyIndex];
 
-                // API 키가 있으면 추가 (선택적)
-                if (apiKey) {
-                    headers['Authorization'] = `Bearer ${apiKey}`;
-                }
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const endpoint = `${BASE_URL}/v1/chat/completions`;
 
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify({
-                        model: model,
-                        messages: [
-                            { role: 'user', content: prompt }
-                        ],
-                        temperature: 0.3,
-                        max_tokens: 16000
-                    })
-                });
+                    const headers = {
+                        'Content-Type': 'application/json',
+                    };
 
-                if (response.status === 429) {
-                    throw new Error('Rate limit exceeded. Please try again later.');
-                }
-
-                if (!response.ok) {
-                    // Try to parse error response for better error messages
-                    let errorMessage = `HTTP ${response.status}`;
-                    try {
-                        const errorData = await response.json();
-                        if (errorData.error?.message) {
-                            errorMessage = errorData.error.message;
-                        } else if (errorData.message) {
-                            errorMessage = errorData.message;
-                        }
-                    } catch (parseError) {
-                        // Use default error message if parsing fails
+                    // API 키가 있으면 추가 (선택적)
+                    if (apiKey) {
+                        headers['Authorization'] = `Bearer ${apiKey}`;
                     }
-                    throw new Error(`[Pollinations.ai] ${errorMessage}`);
-                }
 
-                const data = await response.json();
-                const rawText = data.choices?.[0]?.message?.content || '';
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify({
+                            model: model,
+                            messages: [
+                                { role: 'user', content: prompt }
+                            ],
+                            temperature: 0.3,
+                            max_tokens: 16000
+                        })
+                    });
 
-                if (!rawText) {
-                    throw new Error('[Pollinations.ai] Empty response from API');
-                }
+                    if (response.status === 429 || response.status === 403) {
+                        if (apiKey) {
+                            console.warn(`[Pollinations Addon] API key ${keyIndex + 1} failed (${response.status}), trying next...`);
+                        }
+                        break; // Try next key
+                    }
 
-                return rawText;
+                    if (!response.ok) {
+                        let errorMessage = `HTTP ${response.status}`;
+                        try {
+                            const errorData = await response.json();
+                            if (errorData.error?.message) {
+                                errorMessage = errorData.error.message;
+                            } else if (errorData.message) {
+                                errorMessage = errorData.message;
+                            }
+                        } catch (parseError) { }
+                        throw new Error(`[Pollinations.ai] ${errorMessage}`);
+                    }
 
-            } catch (e) {
-                lastError = e;
-                console.warn(`[Pollinations Addon] Attempt ${attempt + 1} failed:`, e.message);
+                    const data = await response.json();
+                    const rawText = data.choices?.[0]?.message?.content || '';
 
-                if (attempt < maxRetries - 1) {
-                    await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+                    if (!rawText) {
+                        throw new Error('[Pollinations.ai] Empty response from API');
+                    }
+
+                    return rawText;
+
+                } catch (e) {
+                    lastError = e;
+                    console.warn(`[Pollinations Addon] Attempt ${attempt + 1} failed:`, e.message);
+
+                    if (attempt < maxRetries - 1) {
+                        await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+                    }
                 }
             }
         }
 
-        throw lastError || new Error('[Pollinations.ai] All retries exhausted');
+        throw lastError || new Error('[Pollinations.ai] All API keys and retries exhausted');
     }
 
     /**
@@ -427,7 +454,7 @@ Even if the song is English, the description and trivia MUST be written in ${lan
             const { useState, useCallback, useEffect } = React;
 
             return function PollinationsSettings() {
-                const [apiKey, setApiKey] = useState(getSetting('api-key', ''));
+                const [apiKeys, setApiKeys] = useState(getSetting('api-keys', ''));
                 const [model, setModel] = useState(getSelectedModel());
                 const [testStatus, setTestStatus] = useState('');
                 const [availableModels, setAvailableModels] = useState([]);
@@ -439,7 +466,6 @@ Even if the song is English, the description and trivia MUST be written in ${lan
                     try {
                         const models = await getModels();
                         setAvailableModels(models);
-                        // ADDON_INFO.models 업데이트
                         ADDON_INFO.models = models;
                     } catch (e) {
                         console.warn('[Pollinations Addon] Failed to load models:', e);
@@ -455,8 +481,8 @@ Even if the song is English, the description and trivia MUST be written in ${lan
                 }, []);
 
                 const handleApiKeyChange = useCallback((e) => {
-                    setApiKey(e.target.value);
-                    setSetting('api-key', e.target.value);
+                    setApiKeys(e.target.value);
+                    setSetting('api-keys', e.target.value);
                 }, []);
 
                 const handleModelChange = useCallback((e) => {
@@ -486,20 +512,20 @@ Even if the song is English, the description and trivia MUST be written in ${lan
 
                 return React.createElement('div', { className: 'ai-addon-settings pollinations-settings' },
                     React.createElement('div', { className: 'ai-addon-setting' },
-                        React.createElement('label', null, 'API Key (Optional)'),
+                        React.createElement('label', null, 'API Key(s) (Optional)'),
                         React.createElement('div', { className: 'ai-addon-input-group' },
                             React.createElement('input', {
-                                type: 'password',
-                                value: apiKey,
+                                type: 'text',
+                                value: apiKeys,
                                 onChange: handleApiKeyChange,
-                                placeholder: 'Optional - for premium features'
+                                placeholder: 'Optional (multiple: ["key1", "key2"])'
                             }),
                             React.createElement('button', {
                                 onClick: () => window.open(ADDON_INFO.apiKeyUrl, '_blank'),
                                 className: 'ai-addon-btn-secondary'
                             }, 'Get API Key')
                         ),
-                        React.createElement('small', null, '🆓 Free to use without API key. API key unlocks higher rate limits.')
+                        React.createElement('small', null, 'Free to use without API key. API key unlocks higher rate limits.')
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'Model'),

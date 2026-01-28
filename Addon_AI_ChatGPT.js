@@ -150,10 +150,10 @@
      * 모델 목록 가져오기 (매번 API에서 로드)
      */
     async function getModels() {
-        const apiKey = getSetting('api-key', '');
+        const apiKeys = getApiKeys();
         const baseUrl = getSetting('base-url', 'https://api.openai.com/v1');
-        if (!apiKey) return [];
-        return await fetchAvailableModels(apiKey, baseUrl);
+        if (apiKeys.length === 0) return [];
+        return await fetchAvailableModels(apiKeys[0], baseUrl);
     }
 
     // ============================================
@@ -198,8 +198,30 @@
         window.AIAddonManager?.setAddonSetting(ADDON_INFO.id, key, value);
     }
 
-    function getApiKey() {
-        return getSetting('api-key', '');
+    function getApiKeys() {
+        const raw = getSetting('api-keys', '');
+        if (!raw) return [];
+
+        // 이미 배열인 경우 (getAddonSetting이 JSON 파싱함)
+        if (Array.isArray(raw)) {
+            return raw
+                .map(k => typeof k === 'string' ? k.trim() : '')
+                .filter(k => k);
+        }
+
+        // 문자열이 아닌 경우
+        if (typeof raw !== 'string') return [];
+
+        try {
+            if (raw.startsWith('[')) {
+                return JSON.parse(raw)
+                    .map(k => typeof k === 'string' ? k.trim() : '')
+                    .filter(k => k);
+            }
+            return [raw.trim()].filter(k => k);
+        } catch {
+            return [raw.trim()].filter(k => k);
+        }
     }
 
     function getBaseUrl() {
@@ -334,8 +356,8 @@ Even if the song is English, the description and trivia MUST be written in ${lan
      * Call ChatGPT API and return raw text response
      */
     async function callChatGPTAPIRaw(prompt, maxRetries = 3) {
-        const apiKey = getApiKey();
-        if (!apiKey) {
+        const apiKeys = getApiKeys();
+        if (apiKeys.length === 0) {
             throw new Error('[ChatGPT] API key is required. Please configure your API key in settings.');
         }
 
@@ -343,83 +365,81 @@ Even if the song is English, the description and trivia MUST be written in ${lan
         const model = getSelectedModel();
         let lastError = null;
 
-        for (let attempt = 0; attempt < maxRetries; attempt++) {
-            try {
-                const endpoint = `${baseUrl.replace(/\/$/, '')}/chat/completions`;
+        for (let keyIndex = 0; keyIndex < apiKeys.length; keyIndex++) {
+            const apiKey = apiKeys[keyIndex];
 
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        messages: [
-                            { role: 'user', content: prompt }
-                        ],
-                        temperature: 0.3,
-                        max_tokens: 16000
-                    })
-                });
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const endpoint = `${baseUrl.replace(/\/$/, '')}/chat/completions`;
 
-                if (response.status === 429) {
-                    throw new Error('[ChatGPT] Rate limit exceeded. Please try again later.');
-                }
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify({
+                            model: model,
+                            messages: [
+                                { role: 'user', content: prompt }
+                            ],
+                            temperature: 0.3,
+                            max_tokens: 16000
+                        })
+                    });
 
-                if (response.status === 401 || response.status === 403) {
-                    // Try to parse error response for better error messages
-                    let errorMessage = 'Invalid API key or permission denied.';
-                    try {
-                        const errorData = await response.json();
-                        if (errorData.error?.message) {
-                            errorMessage = errorData.error.message;
-                        }
-                    } catch (parseError) {
-                        // Use default error message if parsing fails
+                    if (response.status === 429 || response.status === 403) {
+                        console.warn(`[ChatGPT Addon] API key ${keyIndex + 1} failed (${response.status}), trying next...`);
+                        break; // Try next key
                     }
-                    throw new Error(`[ChatGPT] ${errorMessage}`);
-                }
 
-                if (!response.ok) {
-                    // Try to parse error response for better error messages
-                    let errorMessage = `HTTP ${response.status}`;
-                    try {
-                        const errorData = await response.json();
-                        if (errorData.error?.message) {
-                            errorMessage = errorData.error.message;
-                        }
-                    } catch (parseError) {
-                        // Use default error message if parsing fails
+                    if (response.status === 401) {
+                        let errorMessage = 'Invalid API key or permission denied.';
+                        try {
+                            const errorData = await response.json();
+                            if (errorData.error?.message) {
+                                errorMessage = errorData.error.message;
+                            }
+                        } catch (parseError) { }
+                        throw new Error(`[ChatGPT] ${errorMessage}`);
                     }
-                    throw new Error(`[ChatGPT] ${errorMessage}`);
-                }
 
-                const data = await response.json();
-                const rawText = data.choices?.[0]?.message?.content || '';
+                    if (!response.ok) {
+                        let errorMessage = `HTTP ${response.status}`;
+                        try {
+                            const errorData = await response.json();
+                            if (errorData.error?.message) {
+                                errorMessage = errorData.error.message;
+                            }
+                        } catch (parseError) { }
+                        throw new Error(`[ChatGPT] ${errorMessage}`);
+                    }
 
-                if (!rawText) {
-                    throw new Error('[ChatGPT] Empty response from API');
-                }
+                    const data = await response.json();
+                    const rawText = data.choices?.[0]?.message?.content || '';
 
-                return rawText;
+                    if (!rawText) {
+                        throw new Error('[ChatGPT] Empty response from API');
+                    }
 
-            } catch (e) {
-                lastError = e;
-                console.warn(`[ChatGPT Addon] Attempt ${attempt + 1} failed:`, e.message);
+                    return rawText;
 
-                // Don't retry on auth errors
-                if (e.message.includes('Invalid API key') || e.message.includes('permission denied')) {
-                    throw e;
-                }
+                } catch (e) {
+                    lastError = e;
+                    console.warn(`[ChatGPT Addon] Attempt ${attempt + 1} failed:`, e.message);
 
-                if (attempt < maxRetries - 1) {
-                    await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+                    if (e.message.includes('Invalid API key') || e.message.includes('permission denied')) {
+                        throw e;
+                    }
+
+                    if (attempt < maxRetries - 1) {
+                        await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+                    }
                 }
             }
         }
 
-        throw lastError || new Error('[ChatGPT] All retries exhausted');
+        throw lastError || new Error('[ChatGPT] All API keys and retries exhausted');
     }
 
     /**
@@ -504,7 +524,7 @@ Even if the song is English, the description and trivia MUST be written in ${lan
             const { useState, useCallback, useEffect } = React;
 
             return function ChatGPTSettings() {
-                const [apiKey, setApiKey] = useState(getSetting('api-key', ''));
+                const [apiKeys, setApiKeys] = useState(getSetting('api-keys', ''));
                 const [baseUrl, setBaseUrl] = useState(getSetting('base-url', 'https://api.openai.com/v1'));
                 const [model, setModel] = useState(getSelectedModel());
                 const [customModel, setCustomModel] = useState(getSetting('custom-model', ''));
@@ -514,7 +534,8 @@ Even if the song is English, the description and trivia MUST be written in ${lan
 
                 // 모델 목록 로드
                 const loadModels = useCallback(async () => {
-                    if (!apiKey) {
+                    const keys = getApiKeys();
+                    if (keys.length === 0) {
                         setAvailableModels([]);
                         return;
                     }
@@ -522,7 +543,6 @@ Even if the song is English, the description and trivia MUST be written in ${lan
                     try {
                         const models = await getModels();
                         setAvailableModels(models);
-                        // ADDON_INFO.models 업데이트 (다른 곳에서 사용할 수 있도록)
                         ADDON_INFO.models = models;
                     } catch (e) {
                         console.warn('[ChatGPT Addon] Failed to load models:', e);
@@ -530,18 +550,21 @@ Even if the song is English, the description and trivia MUST be written in ${lan
                     } finally {
                         setModelsLoading(false);
                     }
-                }, [apiKey, baseUrl]);
+                }, [apiKeys, baseUrl]);
 
                 // API 키가 변경되면 모델 목록 다시 로드
                 useEffect(() => {
-                    if (apiKey) {
+                    const keys = getApiKeys();
+                    if (keys.length > 0) {
                         loadModels();
+                    } else {
+                        setAvailableModels([]);
                     }
-                }, [apiKey, baseUrl]);
+                }, [apiKeys, baseUrl]);
 
                 const handleApiKeyChange = useCallback((e) => {
-                    setApiKey(e.target.value);
-                    setSetting('api-key', e.target.value);
+                    setApiKeys(e.target.value);
+                    setSetting('api-keys', e.target.value);
                 }, []);
 
                 const handleBaseUrlChange = useCallback((e) => {
@@ -585,14 +608,16 @@ Even if the song is English, the description and trivia MUST be written in ${lan
                 // ... (existing code for test)
 
                 const isModelInList = availableModels.find(m => m.id === model);
+                const hasApiKey = getApiKeys().length > 0;
 
                 return React.createElement('div', { className: 'ai-addon-settings chatgpt-settings' },
                     React.createElement('div', { className: 'ai-addon-setting' },
-                        React.createElement('label', null, 'API Key'),
+                        React.createElement('label', null, 'API Key(s)'),
                         React.createElement('div', { className: 'ai-addon-input-group' },
-                            React.createElement('input', { type: 'password', value: apiKey, onChange: handleApiKeyChange, placeholder: 'sk-...' }),
+                            React.createElement('input', { type: 'text', value: apiKeys, onChange: handleApiKeyChange, placeholder: 'sk-... (multiple: ["key1", "key2"])' }),
                             React.createElement('button', { onClick: () => window.open(ADDON_INFO.apiKeyUrl, '_blank'), className: 'ai-addon-btn-secondary' }, 'Get API Key')
-                        )
+                        ),
+                        React.createElement('small', null, 'Enter a single key or JSON array for rotation')
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'Base URL'),
@@ -615,14 +640,14 @@ Even if the song is English, the description and trivia MUST be written in ${lan
                                             React.createElement('option', { key: 'custom', value: '' }, 'Custom...')
                                         ]
                                         : [
-                                            React.createElement('option', { key: 'empty', value: '' }, apiKey ? 'No models found' : 'Enter API key first'),
+                                            React.createElement('option', { key: 'empty', value: '' }, hasApiKey ? 'No models found' : 'Enter API key first'),
                                             React.createElement('option', { key: 'custom', value: '' }, 'Custom...')
                                         ]
                             ),
                             React.createElement('button', {
                                 onClick: handleRefreshModels,
                                 className: 'ai-addon-btn-secondary',
-                                disabled: modelsLoading || !apiKey,
+                                disabled: modelsLoading || !hasApiKey,
                                 title: 'Refresh model list'
                             }, modelsLoading ? '...' : '↻')
                         ),

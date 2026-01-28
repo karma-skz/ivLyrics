@@ -85,9 +85,9 @@
     }
 
     async function getModels() {
-        const apiKey = getSetting('api-key', '');
-        if (!apiKey) return [];
-        return await fetchAvailableModels(apiKey);
+        const apiKeys = getApiKeys();
+        if (apiKeys.length === 0) return [];
+        return await fetchAvailableModels(apiKeys[0]);
     }
 
     // ============================================
@@ -132,8 +132,28 @@
         window.AIAddonManager?.setAddonSetting(ADDON_INFO.id, key, value);
     }
 
-    function getApiKey() {
-        return getSetting('api-key', '');
+    function getApiKeys() {
+        const raw = getSetting('api-keys', '');
+        if (!raw) return [];
+
+        if (Array.isArray(raw)) {
+            return raw
+                .map(k => typeof k === 'string' ? k.trim() : '')
+                .filter(k => k);
+        }
+
+        if (typeof raw !== 'string') return [];
+
+        try {
+            if (raw.startsWith('[')) {
+                return JSON.parse(raw)
+                    .map(k => typeof k === 'string' ? k.trim() : '')
+                    .filter(k => k);
+            }
+            return [raw.trim()].filter(k => k);
+        } catch {
+            return [raw.trim()].filter(k => k);
+        }
     }
 
     function getSelectedModel() {
@@ -261,84 +281,89 @@ Even if the song is English, the description and trivia MUST be written in ${lan
     // ============================================
 
     async function callOpenRouterAPIRaw(prompt, maxRetries = 3) {
-        const apiKey = getApiKey();
-        if (!apiKey) {
+        const apiKeys = getApiKeys();
+        if (apiKeys.length === 0) {
             throw new Error('[OpenRouter] API key is required. Please configure your API key in settings.');
         }
 
         const model = getSelectedModel();
         let lastError = null;
 
-        for (let attempt = 0; attempt < maxRetries; attempt++) {
-            try {
-                const response = await fetch(`${BASE_URL}/chat/completions`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`,
-                        'HTTP-Referer': 'https://github.com/ivLis-STUDIO/ivLyrics',
-                        'X-Title': 'ivLyrics'
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        messages: [
-                            { role: 'user', content: prompt }
-                        ],
-                        temperature: 0.3,
-                        max_tokens: 16000
-                    })
-                });
+        for (let keyIndex = 0; keyIndex < apiKeys.length; keyIndex++) {
+            const apiKey = apiKeys[keyIndex];
 
-                if (response.status === 429) {
-                    throw new Error('[OpenRouter] Rate limit exceeded. Please try again later.');
-                }
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const response = await fetch(`${BASE_URL}/chat/completions`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`,
+                            'HTTP-Referer': 'https://github.com/ivLis-STUDIO/ivLyrics',
+                            'X-Title': 'ivLyrics'
+                        },
+                        body: JSON.stringify({
+                            model: model,
+                            messages: [
+                                { role: 'user', content: prompt }
+                            ],
+                            temperature: 0.3,
+                            max_tokens: 16000
+                        })
+                    });
 
-                if (response.status === 401 || response.status === 403) {
-                    let errorMessage = 'Invalid API key or permission denied.';
-                    try {
-                        const errorData = await response.json();
-                        if (errorData.error?.message) {
-                            errorMessage = errorData.error.message;
-                        }
-                    } catch (parseError) { }
-                    throw new Error(`[OpenRouter] ${errorMessage}`);
-                }
+                    if (response.status === 429 || response.status === 403) {
+                        console.warn(`[OpenRouter Addon] API key ${keyIndex + 1} failed (${response.status}), trying next...`);
+                        break; // Try next key
+                    }
 
-                if (!response.ok) {
-                    let errorMessage = `HTTP ${response.status}`;
-                    try {
-                        const errorData = await response.json();
-                        if (errorData.error?.message) {
-                            errorMessage = errorData.error.message;
-                        }
-                    } catch (parseError) { }
-                    throw new Error(`[OpenRouter] ${errorMessage}`);
-                }
+                    if (response.status === 401) {
+                        let errorMessage = 'Invalid API key or permission denied.';
+                        try {
+                            const errorData = await response.json();
+                            if (errorData.error?.message) {
+                                errorMessage = errorData.error.message;
+                            }
+                        } catch (parseError) { }
+                        throw new Error(`[OpenRouter] ${errorMessage}`);
+                    }
 
-                const data = await response.json();
-                const rawText = data.choices?.[0]?.message?.content || '';
+                    if (!response.ok) {
+                        let errorMessage = `HTTP ${response.status}`;
+                        try {
+                            const errorData = await response.json();
+                            if (errorData.error?.message) {
+                                errorMessage = errorData.error.message;
+                            }
+                        } catch (parseError) { }
+                        throw new Error(`[OpenRouter] ${errorMessage}`);
+                    }
 
-                if (!rawText) {
-                    throw new Error('[OpenRouter] Empty response from API');
-                }
+                    const data = await response.json();
+                    const rawText = data.choices?.[0]?.message?.content || '';
 
-                return rawText;
+                    if (!rawText) {
+                        throw new Error('[OpenRouter] Empty response from API');
+                    }
 
-            } catch (e) {
-                lastError = e;
-                console.warn(`[OpenRouter Addon] Attempt ${attempt + 1} failed:`, e.message);
+                    return rawText;
 
-                if (e.message.includes('Invalid API key') || e.message.includes('permission denied')) {
-                    throw e;
-                }
+                } catch (e) {
+                    lastError = e;
+                    console.warn(`[OpenRouter Addon] Attempt ${attempt + 1} failed:`, e.message);
 
-                if (attempt < maxRetries - 1) {
-                    await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+                    if (e.message.includes('Invalid API key') || e.message.includes('permission denied')) {
+                        throw e;
+                    }
+
+                    if (attempt < maxRetries - 1) {
+                        await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+                    }
                 }
             }
         }
 
-        throw lastError || new Error('[OpenRouter] All retries exhausted');
+        throw lastError || new Error('[OpenRouter] All API keys and retries exhausted');
     }
 
     async function callOpenRouterAPI(prompt, maxRetries = 3) {
@@ -393,7 +418,7 @@ Even if the song is English, the description and trivia MUST be written in ${lan
             const { useState, useEffect, useCallback } = React;
 
             return function OpenRouterSettings() {
-                const [apiKey, setApiKey] = useState(getSetting('api-key', ''));
+                const [apiKeys, setApiKeys] = useState(getSetting('api-keys', ''));
                 const [selectedModel, setSelectedModel] = useState(getSetting('model', 'anthropic/claude-3.5-sonnet'));
                 const [customModel, setCustomModel] = useState(getSetting('custom-model', ''));
                 const [availableModels, setAvailableModels] = useState([]);
@@ -401,28 +426,34 @@ Even if the song is English, the description and trivia MUST be written in ${lan
                 const [testStatus, setTestStatus] = useState('');
 
                 const loadModels = useCallback(async () => {
-                    if (!apiKey) {
+                    const keys = getApiKeys();
+                    if (keys.length === 0) {
                         setAvailableModels([]);
                         return;
                     }
                     setModelsLoading(true);
                     try {
-                        const models = await fetchAvailableModels(apiKey);
+                        const models = await fetchAvailableModels(keys[0]);
                         setAvailableModels(models);
                     } catch (e) {
                         console.error('[OpenRouter Addon] Failed to load models:', e);
                     }
                     setModelsLoading(false);
-                }, [apiKey]);
+                }, [apiKeys]);
 
                 useEffect(() => {
-                    loadModels();
-                }, [apiKey]);
+                    const keys = getApiKeys();
+                    if (keys.length > 0) {
+                        loadModels();
+                    } else {
+                        setAvailableModels([]);
+                    }
+                }, [apiKeys]);
 
                 const handleApiKeyChange = (e) => {
                     const val = e.target.value;
-                    setApiKey(val);
-                    setSetting('api-key', val);
+                    setApiKeys(val);
+                    setSetting('api-keys', val);
                 };
 
                 const handleModelChange = (e) => {
@@ -457,22 +488,24 @@ Even if the song is English, the description and trivia MUST be written in ${lan
 
 
                 const isModelInList = availableModels.some(m => m.id === selectedModel);
+                const hasApiKey = getApiKeys().length > 0;
 
                 return React.createElement('div', { className: 'ai-addon-settings openrouter-settings' },
                     React.createElement('div', { className: 'ai-addon-setting' },
-                        React.createElement('label', null, 'API Key'),
+                        React.createElement('label', null, 'API Key(s)'),
                         React.createElement('div', { className: 'ai-addon-input-group' },
                             React.createElement('input', {
-                                type: 'password',
-                                value: apiKey,
+                                type: 'text',
+                                value: apiKeys,
                                 onChange: handleApiKeyChange,
-                                placeholder: 'sk-or-...'
+                                placeholder: 'sk-or-... (multiple: ["key1", "key2"])'
                             }),
                             React.createElement('button', {
                                 onClick: () => window.open(ADDON_INFO.apiKeyUrl, '_blank'),
                                 className: 'ai-addon-btn-secondary'
                             }, 'Get API Key')
-                        )
+                        ),
+                        React.createElement('small', null, 'Enter a single key or JSON array for rotation')
                     ),
                     React.createElement('div', { className: 'ai-addon-setting' },
                         React.createElement('label', null, 'Model'),
@@ -490,7 +523,7 @@ Even if the song is English, the description and trivia MUST be written in ${lan
                             React.createElement('button', {
                                 onClick: loadModels,
                                 className: 'ai-addon-btn-secondary',
-                                disabled: modelsLoading || !apiKey,
+                                disabled: modelsLoading || !hasApiKey,
                                 title: 'Refresh model list'
                             }, modelsLoading ? '...' : '↻')
                         ),

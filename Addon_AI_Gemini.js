@@ -173,9 +173,21 @@
         const raw = getSetting('api-keys', '');
         if (!raw) return [];
 
+        // 이미 배열인 경우 (getAddonSetting이 JSON 파싱함)
+        if (Array.isArray(raw)) {
+            return raw
+                .map(k => typeof k === 'string' ? k.trim() : '')
+                .filter(k => k);
+        }
+
+        // 문자열이 아닌 경우
+        if (typeof raw !== 'string') return [];
+
         try {
             if (raw.startsWith('[')) {
-                return JSON.parse(raw).filter(k => k && k.trim());
+                return JSON.parse(raw)
+                    .map(k => typeof k === 'string' ? k.trim() : '')
+                    .filter(k => k);
             }
             return [raw.trim()].filter(k => k);
         } catch {
@@ -509,6 +521,8 @@ Even if the song is English, the description and trivia MUST be written in ${lan
                     const keys = getApiKeys();
                     if (keys.length > 0) {
                         loadModels();
+                    } else {
+                        setAvailableModels([]);
                     }
                 }, [apiKeys]);
 
@@ -551,7 +565,7 @@ Even if the song is English, the description and trivia MUST be written in ${lan
                         React.createElement('label', null, 'API Key(s)'),
                         React.createElement('div', { className: 'ai-addon-input-group' },
                             React.createElement('input', {
-                                type: 'password',
+                                type: 'text',
                                 value: apiKeys,
                                 onChange: handleApiKeyChange,
                                 placeholder: 'AIza... (multiple keys: ["key1", "key2"])'
