@@ -25,8 +25,8 @@
         author: 'ivLis STUDIO',
         version: '1.0.0',
         description: {
-            en: 'Get lyrics from Spotify\'s built-in lyrics service (Musixmatch, PetitLyrics, etc.)',
-            ko: 'Spotify 내장 가사 서비스에서 가사를 가져옵니다 (Musixmatch, PetitLyrics 등)'
+            en: 'Get lyrics from Spotify\'s built-in lyrics service',
+            ko: 'Spotify 내장 가사 서비스에서 가사를 가져옵니다'
         },
         // 지원하는 가사 유형
         supports: {
@@ -124,7 +124,7 @@
             const spotifyLyricsProvider = lyrics.provider || 'unknown';
             result.spotifyLyricsProvider = spotifyLyricsProvider;
 
-            // provider 필드를 세분화 (예: spotify-musixmatch)
+            // provider 필드를 세분화 (예: spotify-abc)
             result.provider = `spotify-${spotifyLyricsProvider}`;
 
             // 가사 파싱

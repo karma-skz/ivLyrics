@@ -1117,7 +1117,7 @@
         /**
          * 특정 provider의 싱크 데이터 조회
          * @param {string} trackId - Spotify Track ID
-         * @param {string} provider - 가사 provider (예: spotify-musixmatch, lrclib)
+         * @param {string} provider - 가사 provider
          * @returns {Promise<Object|null>} - 싱크 데이터 또는 null
          */
         async function getSyncData(trackId, provider = null) {
@@ -1214,7 +1214,7 @@
         /**
          * 해당 provider에 sync-data가 있는지 확인
          * @param {string} trackId - Spotify Track ID
-         * @param {string} provider - 가사 provider (예: spotify-musixmatch, lrclib)
+         * @param {string} provider - 가사 provider (예: spotify-abc, lrclib)
          * @returns {Promise<boolean>}
          */
         async function hasSyncData(trackId, provider) {
@@ -1785,14 +1785,14 @@
         /**
          * 커뮤니티 싱크 데이터 가져오기 (ivLyrics Sync)
          * @param {string} trackId - Spotify 트랙 ID
-         * @param {string} provider - 가사 제공자 (예: spotify-musixmatch, lrclib)
+         * @param {string} provider - 가사 제공자 (예: spotify-abc, lrclib)
          * @returns {Promise<Object|null>}
          */
         async getIvLyricsSyncData(trackId, provider) {
             if (!trackId || !provider) return null;
 
             try {
-                // provider가 spotify인 경우 내부 provider(musixmatch 등)가 붙어있지 않다면 붙여준다
+                // provider가 spotify인 경우 내부 provider(abc 등)가 붙어있지 않다면 붙여준다
                 // 하지만 호출하는 쪽에서 이미 처리가 되어있어야 함.
                 // 여기서는 있는 그대로 호출.
 
