@@ -496,30 +496,43 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
 
     // 통계 업데이트
     useEffect(() => {
-        if (!isPlayerReady) return;
-
         const updateStats = () => {
             // 헬퍼 모드
-            if (useHelper && videoRef.current && videoInfo) {
+            if (useHelper && videoInfo) {  //
                 const video = videoRef.current;
+
+                // 비디오가 준비되지 않았을 때
+                if (!isPlayerReady || !video) {
+                    setStats({
+                        quality: '-',
+                        resolution: '-',
+                        buffered: '-',
+                        videoId: videoInfo?.youtubeVideoId || '-',
+                        videoHelper: 'Helper (Local)',
+                        helperStatus: helperStatus  //
+                    });
+                    return;
+                }
+
+                // 비디오가 준비되었을 때
                 try {
                     const buffered = video.buffered;
                     const bufferedPercent = buffered.length > 0
                         ? Math.round((buffered.end(buffered.length - 1) / video.duration) * 100)
                         : 0;
 
-                setStats({
-                    quality: 'local',
-                    resolution: `${video.videoWidth}x${video.videoHeight}`,
-                    buffered: `${bufferedPercent}%`,
-                    videoId: videoInfo?.youtubeVideoId || '-',
-                    videoHelper: 'Helper (Local)',
-                    helperStatus: helperStatus
-                });
+                    setStats({
+                        quality: 'local',
+                        resolution: `${video.videoWidth}x${video.videoHeight}`,
+                        buffered: `${bufferedPercent}%`,
+                        videoId: videoInfo?.youtubeVideoId || '-',
+                        videoHelper: 'Helper (Local)',
+                        helperStatus: helperStatus
+                    });
                 } catch (e) {}
             }
             // 일반 모드
-            else if (!useHelper && playerRef.current) {
+            else if (!useHelper && playerRef.current && isPlayerReady) {
                 const player = playerRef.current;
                 if (typeof player.getPlaybackQuality !== 'function') return;
 
@@ -541,15 +554,16 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
                         buffered: `${Math.round(videoLoadedFraction * 100)}%`,
                         videoId: videoData?.video_id || '-',
                         videoHelper: 'YouTube (Iframe)',
-                        helperStatus: useHelper ? helperStatus : 'off'
+                        helperStatus: 'off'
                     });
                 } catch (e) {}
             }
         };
 
         const interval = setInterval(updateStats, 1000);
+        updateStats(); //
         return () => clearInterval(interval);
-    }, [useHelper, isPlayerReady, videoInfo]);
+    }, [useHelper, isPlayerReady, videoInfo, helperStatus]);
 
     // 키보드 단축키 (Shift + S)
     useEffect(() => {
