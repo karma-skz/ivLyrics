@@ -1639,7 +1639,7 @@ window.LANG_JA = {
     "loadLyrics": "歌詞を読み込む",
     "reload": "再読み込み",
     "loadingLyrics": "歌詞を読み込み中...",
-    "selectProvider": "歌詞を自動的に読み込みます (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "歌詞が見つかりません",
     "loadError": "歌詞読み込み中にエラーが発生しました",
     "currentLine": "現在の歌詞",

@@ -1639,7 +1639,7 @@ window.LANG_BN = {
     "loadLyrics": "লিরিক্স লোড করুন",
     "reload": "রিলোড",
     "loadingLyrics": "লিরিক্স লোড হচ্ছে...",
-    "selectProvider": "স্বয়ংক্রিয়ভাবে লিরিক্স লোড হবে (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "লিরিক্স পাওয়া যায়নি",
     "loadError": "লিরিক্স লোড করতে ত্রুটি ঘটেছে",
     "currentLine": "বর্তমান লিরিক্স",

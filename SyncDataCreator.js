@@ -6,7 +6,7 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 	const { useState, useEffect, useRef, useCallback, useMemo } = react;
 
 	// 상태 관리
-	const [provider, setProvider] = useState('spotify');
+	const [provider, setProvider] = useState('');
 	const [lyrics, setLyrics] = useState(null);
 	const [lyricsText, setLyricsText] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +26,7 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 	const [isPublishingToLrcLib, setIsPublishingToLrcLib] = useState(false);
 	const [lrcLibPublishProgress, setLrcLibPublishProgress] = useState('');
 	const [publishCancelled, setPublishCancelled] = useState(false);
+	const [availableProviders, setAvailableProviders] = useState([]);
 
 	// Refs
 	const containerRef = useRef(null);
@@ -150,6 +151,29 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 		};
 	}, [trackUri]);
 
+	// Provider 목록 로드
+	useEffect(() => {
+		const loadProviders = () => {
+			if (window.LyricsAddonManager) {
+				const addons = window.LyricsAddonManager.getAddons();
+				// 'lyrics' type만 필터링 필요하다면? 현재는 모두가 lyrics provider임.
+				// id와 name을 사용
+				setAvailableProviders(addons);
+				setAvailableProviders(addons);
+			} else {
+				// Wait for manager
+				setAvailableProviders([]);
+			}
+		};
+		loadProviders();
+
+		// 리스너 등록 (Addon이 나중에 로드될 수 있음)
+		if (window.LyricsAddonManager) {
+			const unsubscribe = window.LyricsAddonManager.on('addon:registered', loadProviders);
+			return () => unsubscribe();
+		}
+	}, []);
+
 	// 가사 로드 (Spotify -> LRCLIB 순서로 자동 시도)
 	// 가사 로드 (Spotify -> LRCLIB 순서로 자동 시도)
 	const loadLyrics = useCallback(async (preferredProvider = null) => {
@@ -166,8 +190,20 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 				Spicetify.Player?.data?.item?.artists?.[0]?.name ||
 				artistName.split(',')[0].trim();
 
-			// 만약 preferredProvider가 지정되어 있다면 그것만 시도, 아니면 기본 순서대로
-			const providersToTry = preferredProvider ? [preferredProvider] : ['spotify', 'lrclib'];
+			// 만약 preferredProvider가 지정되어 있다면 그것만 시도, 아니면 LyricsAddonManager의 순서대로
+			let providersToTry = preferredProvider ? [preferredProvider] : [];
+
+			if (!preferredProvider) {
+				if (window.LyricsAddonManager) {
+					// 활성화된 Provider 순서대로 시도
+					const addons = window.LyricsAddonManager.getEnabledProviders();
+					providersToTry = addons.map(addon => addon.id);
+				} else {
+					// Manager가 없으면 빈 배열 (또는 로드될 때까지 대기해야 함)
+					providersToTry = [];
+				}
+			}
+
 			let result = null;
 			let usedProvider = null;
 
@@ -181,16 +217,20 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 					duration: Spicetify.Player?.data?.item?.duration?.milliseconds || 0
 				};
 
-				// provider 이름 파싱 (예: spotify-syncpower -> realProvider: spotify)
+				// Provider ID 그대로 사용
 				let realProvider = tryProvider;
-				if (tryProvider.startsWith('spotify-')) {
-					realProvider = 'spotify';
-				}
 
-				console.log('[SyncDataCreator] Trying provider:', tryProvider, '(Real:', realProvider, ')');
+				// Legacy compatibility for spotify-xxx IDs if needed, but per user request, we trust the ID.
+				// However, if the old Providers object is used, we might need adjustment. 
+				// But we prioritize LyricsAddonManager now.
+
+				console.log('[SyncDataCreator] Trying provider:', tryProvider);
 
 				try {
-					if (typeof Providers !== 'undefined' && Providers[realProvider]) {
+					if (window.LyricsAddonManager) {
+						result = await window.LyricsAddonManager.getLyricsFrom(realProvider, info);
+						if (result && result.error) throw new Error(result.error);
+					} else if (typeof Providers !== 'undefined' && Providers[realProvider]) {
 						result = await Providers[realProvider](info);
 					} else if (typeof LyricsService !== 'undefined' && LyricsService.getLyrics) {
 						result = await LyricsService.getLyrics(info, realProvider);
@@ -208,17 +248,36 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 
 			if (result && (result.synced || result.unsynced)) {
 				// provider 설정
-				// 1. result.provider가 있으면 최우선 사용 (Providers.spotify가 spotify-xxx 형식 반환)
-				// 2. 아니면 usedProvider (루프에서 찾은 키) 사용
-				let finalProvider = result.provider || usedProvider || preferredProvider;
+				// preferredProvider가 있으면(유저가 선택함) 그것을 유지. 
+				// 아니면 result.provider(제공자가 리턴한 값) 또는 usedProvider 사용.
+				let finalProvider = preferredProvider || result.provider || usedProvider;
 
-				// 혹시라도 'spotify'로 되어있고 내부 provider 정보가 있다면 조합 (안전장치)
-				if ((finalProvider === 'Spotify' || finalProvider === 'spotify') && result.spotifyLyricsProvider) {
-					finalProvider = `spotify-${result.spotifyLyricsProvider}`;
+				// 만약 자동 로드(preferredProvider 없음)였고, Spotify인 경우 상세 provider 표기 (기존 로직 유지)
+				if (!preferredProvider) {
+					if ((finalProvider === 'Spotify' || finalProvider === 'spotify') && result.spotifyLyricsProvider) {
+						finalProvider = `spotify-${result.spotifyLyricsProvider}`;
+					}
 				}
 
 				setProvider(finalProvider);
 				setLyrics(result);
+
+				// 기존 싱크 데이터 로드
+				if (window.SyncDataService && trackId) {
+					try {
+						const existingSyncData = await window.SyncDataService.getSyncData(trackId);
+						if (existingSyncData && existingSyncData.syncData && existingSyncData.syncData.lines) {
+							if (existingSyncData.provider === finalProvider) {
+								console.log('[SyncDataCreator] Found matching existing sync data');
+								setSyncData(existingSyncData.syncData);
+								Toast.success(I18n.t('syncCreator.loadedExistingSyncData') || '기존 싱크 데이터를 불러왔습니다');
+							}
+						}
+					} catch (e) {
+						console.warn('[SyncDataCreator] Failed to load existing sync data:', e);
+					}
+				}
+
 				const lyricsSource = result.synced || result.unsynced;
 				let text = '';
 
@@ -261,7 +320,8 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 	useEffect(() => {
 		const initWithExistingSyncData = async () => {
 			// 0. initialData가 있으면 그것을 우선 사용
-			if (initialData && initialData.provider && initialData.lyrics) {
+			// Auto loading from initialData disabled per user request
+			if (false && initialData && initialData.provider && initialData.lyrics) {
 				console.log('[SyncDataCreator] Using initial data:', initialData.provider);
 				let finalProvider = initialData.provider;
 				const inputLyrics = initialData.lyrics;
@@ -1875,7 +1935,7 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 			!lyricsText && react.createElement('button', {
 				style: { ...s.submitBtn, background: 'var(--spice-button)', color: 'var(--spice-button-text)', minWidth: '80px' },
 				onClick: () => loadLyrics(provider),
-				disabled: isLoading
+				disabled: isLoading || !provider
 			}, isLoading ? I18n.t('syncCreator.loading') : (I18n.t('syncCreator.load') || '로드')),
 
 			react.createElement('button', {
@@ -1906,11 +1966,18 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 					value: provider || '',
 					onChange: (e) => {
 						const newProvider = e.target.value;
-						if (newProvider) loadLyrics(newProvider);
+						if (newProvider) {
+							setProvider(newProvider); // UI 즉시 업데이트
+							loadLyrics(newProvider);
+						}
 					}
 				},
-					react.createElement('option', { value: 'spotify' }, 'Spotify'),
-					react.createElement('option', { value: 'lrclib' }, 'LRCLIB')
+					[
+						react.createElement('option', { key: 'default', value: '', disabled: true }, I18n.t('syncCreator.selectProvider') || '제공자 선택...'),
+						...availableProviders.map(p =>
+							react.createElement('option', { key: p.id, value: p.id }, p.name)
+						)
+					]
 				),
 				react.createElement('button', { style: { ...s.loadBtn, opacity: isLoading ? 0.5 : 1 }, onClick: () => loadLyrics(provider), disabled: isLoading },
 					isLoading ? I18n.t('syncCreator.loading') : I18n.t('syncCreator.reload') || '다시 로드'

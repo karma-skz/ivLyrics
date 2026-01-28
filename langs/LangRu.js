@@ -1639,7 +1639,7 @@ window.LANG_RU = {
     "loadLyrics": "Загрузить текст",
     "reload": "Перезагрузить",
     "loadingLyrics": "Загрузка текста...",
-    "selectProvider": "Автозагрузка текста (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "Текст не найден",
     "loadError": "Ошибка загрузки текста",
     "currentLine": "Текущая строка",

@@ -199,7 +199,11 @@
     }
 
     function getApiKeys() {
-        const raw = getSetting('api-keys', '');
+        // 새 키 먼저 확인, 없으면 기존 키 fallback
+        let raw = getSetting('api-keys', '');
+        if (!raw) {
+            raw = getSetting('api-key', '');
+        }
         if (!raw) return [];
 
         // 이미 배열인 경우 (getAddonSetting이 JSON 파싱함)
@@ -524,7 +528,10 @@ Even if the song is English, the description and trivia MUST be written in ${lan
             const { useState, useCallback, useEffect } = React;
 
             return function ChatGPTSettings() {
-                const [apiKeys, setApiKeys] = useState(getSetting('api-keys', ''));
+                const initialApiKeys = getSetting('api-keys', '') || getSetting('api-key', '');
+                const [apiKeys, setApiKeys] = useState(
+                    Array.isArray(initialApiKeys) ? JSON.stringify(initialApiKeys) : initialApiKeys
+                );
                 const [baseUrl, setBaseUrl] = useState(getSetting('base-url', 'https://api.openai.com/v1'));
                 const [model, setModel] = useState(getSelectedModel());
                 const [customModel, setCustomModel] = useState(getSetting('custom-model', ''));

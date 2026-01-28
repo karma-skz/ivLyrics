@@ -1638,7 +1638,7 @@ window.LANG_AR = {
     "loadLyrics": "تحميل الكلمات",
     "reload": "إعادة التحميل",
     "loadingLyrics": "جارٍ تحميل الكلمات...",
-    "selectProvider": "تحميل الكلمات تلقائيًا (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "تعذر العثور على الكلمات",
     "loadError": "حدث خطأ أثناء تحميل الكلمات",
     "currentLine": "السطر الحالي",

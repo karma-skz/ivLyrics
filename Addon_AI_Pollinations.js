@@ -142,7 +142,11 @@
 
     function getApiKeys() {
         // Pollinations.ai는 API 키가 선택적 (무료 사용 가능)
-        const raw = getSetting('api-keys', '');
+        // 새 키 먼저 확인, 없으면 기존 키 fallback
+        let raw = getSetting('api-keys', '');
+        if (!raw) {
+            raw = getSetting('api-key', '');
+        }
         if (!raw) return [];
 
         if (Array.isArray(raw)) {
@@ -454,7 +458,10 @@ Even if the song is English, the description and trivia MUST be written in ${lan
             const { useState, useCallback, useEffect } = React;
 
             return function PollinationsSettings() {
-                const [apiKeys, setApiKeys] = useState(getSetting('api-keys', ''));
+                const initialApiKeys = getSetting('api-keys', '') || getSetting('api-key', '');
+                const [apiKeys, setApiKeys] = useState(
+                    Array.isArray(initialApiKeys) ? JSON.stringify(initialApiKeys) : initialApiKeys
+                );
                 const [model, setModel] = useState(getSelectedModel());
                 const [testStatus, setTestStatus] = useState('');
                 const [availableModels, setAvailableModels] = useState([]);

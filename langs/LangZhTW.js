@@ -1639,7 +1639,7 @@ window.LANG_ZH_TW = {
     "loadLyrics": "載入歌詞",
     "reload": "重新載入",
     "loadingLyrics": "正在載入歌詞...",
-    "selectProvider": "將自動載入歌詞 (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "找不到歌詞",
     "loadError": "歌詞載入錯誤",
     "currentLine": "目前歌詞",

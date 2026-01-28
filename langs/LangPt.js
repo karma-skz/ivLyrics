@@ -1639,7 +1639,7 @@ window.LANG_PT = {
     "loadLyrics": "Carregar Letra",
     "reload": "Recarregar",
     "loadingLyrics": "Carregando letra...",
-    "selectProvider": "Carrega a letra automaticamente (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "Letra não encontrada",
     "loadError": "Erro ao carregar letra",
     "currentLine": "Letra Atual",

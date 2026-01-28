@@ -1638,7 +1638,7 @@ window.LANG_ID = {
     "loadLyrics": "Muat Lirik",
     "reload": "Muat Ulang",
     "loadingLyrics": "Memuat lirik...",
-    "selectProvider": "Memuat lirik otomatis (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "Lirik tidak ditemukan",
     "loadError": "Gagal memuat lirik",
     "currentLine": "Lirik Saat Ini",

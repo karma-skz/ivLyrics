@@ -138,7 +138,11 @@
     }
 
     function getApiKeys() {
-        const raw = getSetting('api-keys', '');
+        // 새 키 먼저 확인, 없으면 기존 키 fallback
+        let raw = getSetting('api-keys', '');
+        if (!raw) {
+            raw = getSetting('api-key', '');
+        }
         if (!raw) return [];
 
         if (Array.isArray(raw)) {
@@ -422,7 +426,10 @@ Even if the song is English, the description and trivia MUST be written in ${lan
             const { useState, useCallback } = React;
 
             return function ClaudeSettings() {
-                const [apiKeys, setApiKeys] = useState(getSetting('api-keys', ''));
+                const initialApiKeys = getSetting('api-keys', '') || getSetting('api-key', '');
+                const [apiKeys, setApiKeys] = useState(
+                    Array.isArray(initialApiKeys) ? JSON.stringify(initialApiKeys) : initialApiKeys
+                );
                 const [selectedModel, setSelectedModel] = useState(getSetting('model', 'claude-sonnet-4-20250514'));
                 const [testStatus, setTestStatus] = useState('');
 

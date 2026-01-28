@@ -1638,7 +1638,7 @@ window.LANG_HI = {
     "loadLyrics": "लिरिक्स लोड करें",
     "reload": "रीलोड",
     "loadingLyrics": "लिरिक्स लोड हो रहे हैं...",
-    "selectProvider": "लिरिक्स स्वचालित रूप से लोड (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "लिरिक्स नहीं मिले",
     "loadError": "लिरिक्स लोड त्रुटि",
     "currentLine": "वर्तमान लाइन",

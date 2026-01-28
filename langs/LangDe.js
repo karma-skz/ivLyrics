@@ -1638,7 +1638,7 @@ window.LANG_DE = {
     "loadLyrics": "Songtext laden",
     "reload": "Neu laden",
     "loadingLyrics": "Lade Songtext...",
-    "selectProvider": "Lädt Songtext automatisch (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "Songtext nicht gefunden",
     "loadError": "Fehler beim Laden des Songtextes",
     "currentLine": "Aktuelle Zeile",

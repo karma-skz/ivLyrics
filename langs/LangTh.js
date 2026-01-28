@@ -1639,7 +1639,7 @@ window.LANG_TH = {
     "loadLyrics": "โหลดเนื้อเพลง",
     "reload": "โหลดใหม่",
     "loadingLyrics": "กำลังโหลดเนื้อเพลง...",
-    "selectProvider": "โหลดเนื้อเพลงอัตโนมัติ (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "ไม่พบเนื้อเพลง",
     "loadError": "เกิดข้อผิดพลาดในการโหลดเนื้อเพลง",
     "currentLine": "เนื้อเพลงปัจจุบัน",

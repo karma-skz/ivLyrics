@@ -1638,7 +1638,7 @@ window.LANG_FA = {
     "loadLyrics": "بارگذاری متن",
     "reload": "بارگذاری مجدد",
     "loadingLyrics": "در حال دریافت متن...",
-    "selectProvider": "دریافت خودکار متن (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "متن آهنگ یافت نشد",
     "loadError": "خطا در بارگذاری متن",
     "currentLine": "متن جاری",

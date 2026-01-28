@@ -1640,7 +1640,7 @@ window.LANG_EN = {
     "loadLyrics": "Load Lyrics",
     "reload": "Reload",
     "loadingLyrics": "Loading lyrics...",
-    "selectProvider": "Automatically loading lyrics (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "Lyrics not found",
     "loadError": "Error loading lyrics",
     "currentLine": "Current Line",

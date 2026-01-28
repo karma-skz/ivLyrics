@@ -1639,7 +1639,7 @@ window.LANG_FR = {
     "loadLyrics": "Charger paroles",
     "reload": "Recharger",
     "loadingLyrics": "Chargement des paroles...",
-    "selectProvider": "Chargement auto des paroles (Spotify → LRCLIB)",
+    "selectProvider": "Please select a lyrics provider from the top right",
     "noLyrics": "Paroles introuvables",
     "loadError": "Erreur chargement paroles",
     "currentLine": "Ligne actuelle",
