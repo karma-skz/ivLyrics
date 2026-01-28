@@ -1932,12 +1932,6 @@ const SyncDataCreator = ({ trackInfo, initialData, onClose }) => {
 			react.createElement('h2', { style: s.title }, I18n.t('syncCreator.title')),
 			react.createElement('span', { style: { ...s.modeBadge, ...getModeStyle() } }, getModeLabel()),
 
-			!lyricsText && react.createElement('button', {
-				style: { ...s.submitBtn, background: 'var(--spice-button)', color: 'var(--spice-button-text)', minWidth: '80px' },
-				onClick: () => loadLyrics(provider),
-				disabled: isLoading || !provider
-			}, isLoading ? I18n.t('syncCreator.loading') : (I18n.t('syncCreator.load') || '로드')),
-
 			react.createElement('button', {
 				style: { ...s.submitBtn, opacity: isSubmitting || !syncData ? 0.5 : 1, cursor: isSubmitting || !syncData ? 'not-allowed' : 'pointer' },
 				onClick: handleSubmit,
