@@ -14,6 +14,8 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
         helperStatus: 'off'
     });
 
+    const [helperStatus, setHelperStatus] = useState('off');
+
     const [showStats, setShowStats] = useState(false);
 
     const [isPlaying, setIsPlaying] = useState(() => {
