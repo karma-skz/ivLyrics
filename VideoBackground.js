@@ -4,6 +4,18 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
     const [isPlayerReady, setIsPlayerReady] = useState(false);
     const [statusMessage, setStatusMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+
+    const [stats, setStats] = useState({
+        quality: '-',
+        resolution: '-',
+        buffered: '-',
+        videoId: '-',
+        videoHelper: '-',
+        helperStatus: 'off'
+    });
+
+    const [showStats, setShowStats] = useState(false);
+
     const [isPlaying, setIsPlaying] = useState(() => {
         try {
             return Spicetify.Player?.isPlaying?.() ?? false;
@@ -267,6 +279,8 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
         setHelperVideoUrl(null);
         setIsPlayerReady(false);
 
+        setHelperStatus("checking");
+
         const videoId = videoInfo.youtubeVideoId;
         console.log(`[VideoBackground] Helper mode: requesting video ${videoId}`);
 
@@ -283,6 +297,8 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
                 // 헬퍼 서버 연결 확인
                 const isAvailable = await VideoHelperService.isHelperAvailable();
                 if (!isAvailable) {
+                    setHelperStatus("not-connected");
+
                     clearTimeout(preparingToastTimeout);
                     setStatusMessage(I18n.t("videoBackground.helperNotConnected"));
                     Toast.error(I18n.t("videoBackground.helperNotConnected"));
@@ -342,6 +358,9 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
                 // 비디오 요청 (SSE 스트림)
                 abortDownloadRef.current = VideoHelperService.requestVideo(videoId, {
                     onProgress: (progress) => {
+                        if (progress?.status === "downloading") setHelperStatus("downloading");
+                        else if (progress?.status === "processing") setHelperStatus("processing");
+                        else if (progress?.status === "checking") setHelperStatus("checking");
                         // progress 이벤트가 오면 preparing timeout 취소
                         clearTimeout(preparingToastTimeout);
 
@@ -359,6 +378,7 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
                         }
                     },
                     onComplete: (url) => {
+                        setHelperStatus("ready");
                         clearTimeout(preparingToastTimeout);
                         Toast.dismissProgress();
                         console.log(`[VideoBackground] Helper: video ready, setting URL: ${url}`);
@@ -381,6 +401,7 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
                         }
                     },
                     onError: (message) => {
+                        setHelperStatus("error");
                         clearTimeout(preparingToastTimeout);
                         Toast.dismissProgress();
                         console.error(`[VideoBackground] Helper error: ${message}`);
@@ -469,6 +490,75 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
             video.removeEventListener('error', handleError);
         };
     }, [useHelper, helperVideoUrl, videoInfo, firstLyricTime, trackOffsetMs]);
+
+
+    // 통계 업데이트
+    useEffect(() => {
+        if (!isPlayerReady) return;
+
+        const updateStats = () => {
+            // 헬퍼 모드
+            if (useHelper && videoRef.current && videoInfo) {
+                const video = videoRef.current;
+                try {
+                    const buffered = video.buffered;
+                    const bufferedPercent = buffered.length > 0
+                        ? Math.round((buffered.end(buffered.length - 1) / video.duration) * 100)
+                        : 0;
+
+                setStats({
+                    quality: 'local',
+                    resolution: `${video.videoWidth}x${video.videoHeight}`,
+                    buffered: `${bufferedPercent}%`,
+                    videoId: videoInfo?.youtubeVideoId || '-',
+                    videoHelper: 'Helper (Local)',
+                    helperStatus: helperStatus
+                });
+                } catch (e) {}
+            }
+            // 일반 모드
+            else if (!useHelper && playerRef.current) {
+                const player = playerRef.current;
+                if (typeof player.getPlaybackQuality !== 'function') return;
+
+                try {
+                    const quality = player.getPlaybackQuality();
+                    const videoData = player.getVideoData();
+                    const videoLoadedFraction = player.getVideoLoadedFraction();
+
+                    const qualityMap = {
+                        'hd2160': '3840x2160', 'hd1440': '2560x1440',
+                        'hd1080': '1920x1080', 'hd720': '1280x720',
+                        'large': '854x480', 'medium': '640x360',
+                        'small': '426x240', 'tiny': '256x144'
+                    };
+
+                    setStats({
+                        quality: quality || '-',
+                        resolution: qualityMap[quality] || '-',
+                        buffered: `${Math.round(videoLoadedFraction * 100)}%`,
+                        videoId: videoData?.video_id || '-',
+                        videoHelper: 'YouTube (Iframe)',
+                        helperStatus: useHelper ? helperStatus : 'off'
+                    });
+                } catch (e) {}
+            }
+        };
+
+        const interval = setInterval(updateStats, 1000);
+        return () => clearInterval(interval);
+    }, [useHelper, isPlayerReady, videoInfo]);
+
+    // 키보드 단축키 (Shift + S)
+    useEffect(() => {
+        const handleKeyPress = (e) => {
+            if (e.shiftKey && e.key === 'S') {
+                setShowStats(prev => !prev);
+            }
+        };
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+    }, []);
 
     // 헬퍼 모드: 동기화 로직
     useEffect(() => {
@@ -598,6 +688,11 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
             if (!player || !isPlayerReady || !videoInfo) return;
             // Check if player has methods (sometimes it's not fully ready even if object exists)
             if (typeof player.getPlayerState !== 'function') return;
+
+            try {
+                const st = player.getPlayerState();
+                if (st === 1 || st === 3) applyFixedQuality(player);
+            } catch (e) {}
 
             const spotifyIsPlaying = Spicetify.Player.isPlaying();
 
@@ -775,6 +870,108 @@ const VideoBackground = ({ trackUri, firstLyricTime, brightness, blurAmount, cov
             }
         }),
         renderFallback(),
+
+
+        showStats && react.createElement("div", {
+            style: {
+                position: "absolute",
+                top: "20px",
+                right: "20px",
+                zIndex: 100,
+                background: "rgba(0, 0, 0, 0.85)",
+                backdropFilter: "blur(10px)",
+                padding: "16px",
+                borderRadius: "8px",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                fontFamily: "monospace",
+                fontSize: "12px",
+                color: "#fff",
+                minWidth: "200px",
+                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.5)",
+            }
+        },
+            react.createElement("div", {
+                style: { marginBottom: "8px", fontWeight: "bold", fontSize: "13px" }
+            }, "  Video Stats"),
+            react.createElement("div", {
+                style: { display: "flex", justifyContent: "space-between", marginBottom: "4px" }
+            },
+                react.createElement("span", {}, "Quality:"),
+                react.createElement("span", { style: { color: "#1DB954" } }, stats.quality)
+            ),
+            react.createElement("div", {
+                style: { display: "flex", justifyContent: "space-between", marginBottom: "4px" }
+            },
+                react.createElement("span", {}, "Resolution:"),
+                react.createElement("span", { style: { color: "#1DB954" } }, stats.resolution)
+            ),
+            react.createElement("div", {
+                style: { display: "flex", justifyContent: "space-between", marginBottom: "4px" }
+            },
+                react.createElement("span", {}, "Buffered:"),
+                react.createElement("span", { style: { color: "#1DB954" } }, stats.buffered)
+            ),
+            react.createElement("div", {
+                style: { display: "flex", justifyContent: "space-between", marginBottom: "4px" }
+            },
+            react.createElement("span", {}, "Source:"),
+            react.createElement("span", {
+                style: {
+                    color: stats.videoHelper?.includes("Helper") ? "#ff9800" : "#1DB954",
+                    fontWeight: "bold"
+                }
+            }, stats.videoHelper)
+            ),
+
+            react.createElement("div", {
+                style: { display: "flex", justifyContent: "space-between", marginBottom: "4px" }
+            },
+                react.createElement("span", {}, "Helper Status:"),
+                react.createElement("span", {
+                style: {
+                    color:
+                        stats.helperStatus === "ready" ? "#1DB954" :
+                        stats.helperStatus === "downloading" ? "#ff9800" :
+                        stats.helperStatus === "not-connected" ? "#ff5252" :
+                        "#888",
+                    fontWeight: "bold"
+                    }
+            }, stats.helperStatus)
+            ),
+
+
+            react.createElement("div", {
+                style: {
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginTop: "8px",
+                    paddingTop: "8px",
+                    borderTop: "1px solid rgba(255, 255, 255, 0.1)"
+                }
+            },
+                react.createElement("span", {}, "Video ID:"),
+                react.createElement("span", {
+                    style: {
+                        color: "#888",
+                        fontSize: "10px",
+                        maxWidth: "100px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis"
+                    }
+                }, stats.videoId)
+            ),
+            react.createElement("div", {
+                style: {
+                    marginTop: "8px",
+                    paddingTop: "8px",
+                    borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+                    fontSize: "10px",
+                    color: "#888",
+                    textAlign: "center"
+                }
+            }, "Press Shift+S to toggle")
+        ),
+
         // 헬퍼 모드: HTML5 video 태그
         useHelper && react.createElement("video", {
             ref: videoRef,
