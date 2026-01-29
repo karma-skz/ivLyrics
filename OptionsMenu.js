@@ -1025,6 +1025,19 @@ const TranslationMenu = react.memo(({ friendlyLanguage, hasTranslation }) => {
 
     const displayLanguageName = getDisplayLanguageName(friendlyLanguage);
 
+    // Get target language for translation (to display)
+    const getTranslationTargetDisplay = () => {
+      const targetLang = CONFIG.visual?.["translate:target-language"];
+      if (targetLang && targetLang !== "auto") {
+        return getDisplayLanguageName(targetLang);
+      }
+      // If "auto", defaults to interface language.
+      const interfaceLang = I18n.getCurrentLanguage();
+      const autoText = I18n.t("settings.translationTargetLanguage.options.auto") || "Same as interface language";
+      return `${autoText} (${getDisplayLanguageName(interfaceLang)})`;
+    };
+    const translationTargetName = getTranslationTargetDisplay();
+
     // 현재 트랙 URI 가져오기
     const currentTrackUri = Spicetify.Player.data?.item?.uri || "";
 
@@ -1107,6 +1120,15 @@ const TranslationMenu = react.memo(({ friendlyLanguage, hasTranslation }) => {
               CONFIG.visual[`translation-mode-2:${modeKey}`] !== "none",
             renderInline: true,
             info: I18n.t("menu.translationInfo"),
+          },
+          {
+            desc: react.createElement(SettingRowDescription, {
+              icon: ICONS.language,
+              text: `${I18n.t("menu.translationTargetLang")}: ${translationTargetName}`,
+            }),
+            key: "translation-target-display",
+            type: "info",
+            info: I18n.t("menu.translationTargetLangInfo"),
           },
         ],
       },

@@ -405,6 +405,8 @@ window.LANG_TH = {
     "pronunciationInfo": "แสดงคำอ่าน (โรมาจิ) ของเนื้อเพลงต้นฉบับ",
     "translationLabel": "คำแปล",
     "translationInfo": "แปลเนื้อเพลงต้นฉบับเป็นภาษาไทย",
+    "translationTargetLang": "ภาษาเป้าหมาย",
+    "translationTargetLangInfo": "เนื้อเพลงจะถูกแปลเป็นภาษานี้",
     "apiSettings": "ตั้งค่า API",
     "apiSettingsSubtitle": "ตั้งค่า Gemini API",
     "apiKeySettings": "ตั้งค่า API Key",

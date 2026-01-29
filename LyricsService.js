@@ -1945,6 +1945,15 @@
         return Spicetify.Locale?.getLocale()?.split('-')[0] || 'en';
     }
 
+    // get the target language for translation (if auto, use the interface language)
+    function getTranslationTargetLanguage() {
+        const targetLang = window.CONFIG?.visual?.["translate:target-language"];
+        if (targetLang && targetLang !== "auto") {
+            return targetLang;
+        }
+        return getCurrentLanguage();
+    }
+
     class Translator {
         // 메타데이터 번역 캐시 (메모리)
         static _metadataCache = new Map();
@@ -2004,7 +2013,7 @@
                 return null;
             }
 
-            const userLang = getCurrentLanguage();
+            const userLang = getTranslationTargetLanguage();
             const cacheKey = `${finalTrackId}:${userLang}`;
 
             // 메모리 캐시 확인
@@ -2067,7 +2076,7 @@
         }
 
         static getMetadataFromCache(trackId) {
-            const userLang = getCurrentLanguage();
+            const userLang = getTranslationTargetLanguage();
             const cacheKey = `${trackId}:${userLang}`;
             return this._metadataCache.get(cacheKey) || null;
         }
@@ -2122,7 +2131,7 @@
                 throw new Error("No track ID available");
             }
 
-            const userLang = getCurrentLanguage();
+            const userLang = getTranslationTargetLanguage();
 
             // 로컬 캐시 확인
             if (!ignoreCache) {

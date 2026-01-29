@@ -405,6 +405,8 @@ window.LANG_RU = {
     "pronunciationInfo": "Показывать транскрипцию (романизацию) оригинального текста",
     "translationLabel": "Перевод",
     "translationInfo": "Показывать перевод оригинального текста на ваш язык",
+    "translationTargetLang": "Целевой язык",
+    "translationTargetLangInfo": "Тексты будут переведены на этот язык",
     "apiSettings": "Настройки API",
     "apiSettingsSubtitle": "Настройка Gemini API",
     "apiKeySettings": "Настройка ключа API",

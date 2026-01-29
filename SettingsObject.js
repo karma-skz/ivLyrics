@@ -47,6 +47,7 @@ const SettingKeys = [
   "ivLyrics:visual:translation-opacity",
   "ivLyrics:visual:translate:translated-lyrics-source",
   "ivLyrics:visual:translate:display-mode",
+  "ivLyrics:visual:translate:target-language",
   "ivLyrics:visual:translate:detect-language-override",
   "ivLyrics:visual:translation-mode:english",
   "ivLyrics:visual:translation-mode:japanese",

@@ -405,6 +405,8 @@ window.LANG_DE = {
     "pronunciationInfo": "Zeigt die Aussprache (Romaji/Pinyin) des Originaltextes an",
     "translationLabel": "Übersetzung",
     "translationInfo": "Zeigt den übersetzten Songtext an",
+    "translationTargetLang": "Zielsprache",
+    "translationTargetLangInfo": "Texte werden in diese Sprache übersetzt",
     "apiSettings": "API-Einstellungen",
     "apiSettingsSubtitle": "Konfigurieren Sie die Gemini API",
     "apiKeySettings": "API-Schlüssel Einstellungen",

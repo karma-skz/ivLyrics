@@ -405,6 +405,8 @@ window.LANG_HI = {
     "pronunciationInfo": "मूल लिरिक्स का उच्चारण (रोमाजी) दिखाएं",
     "translationLabel": "अनुवाद",
     "translationInfo": "मूल लिरिक्स का अनुवाद दिखाएं",
+    "translationTargetLang": "लक्ष्य भाषा",
+    "translationTargetLangInfo": "गाने इस भाषा में अनुवादित होंगे",
     "apiSettings": "API सेटिंग्स",
     "apiSettingsSubtitle": "Gemini API कॉन्फ़िगर करें",
     "apiKeySettings": "API कुंजी सेटिंग्स",

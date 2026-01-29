@@ -405,6 +405,8 @@ window.LANG_FR = {
     "pronunciationInfo": "Affiche la prononciation (romanisation) des paroles originales",
     "translationLabel": "Traduction",
     "translationInfo": "Traduit et affiche les paroles originales en français",
+    "translationTargetLang": "Langue cible",
+    "translationTargetLangInfo": "Les paroles seront traduites dans cette langue",
     "apiSettings": "Paramètres API",
     "apiSettingsSubtitle": "Configurez l'API Gemini",
     "apiKeySettings": "Réglage clé API",

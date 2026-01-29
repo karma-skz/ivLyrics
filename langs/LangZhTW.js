@@ -405,6 +405,8 @@ window.LANG_ZH_TW = {
     "pronunciationInfo": "顯示原文歌詞的發音 (羅馬拼音)",
     "translationLabel": "翻譯",
     "translationInfo": "將原文歌詞翻譯為中文並顯示",
+    "translationTargetLang": "翻譯目標語言",
+    "translationTargetLangInfo": "歌詞將翻譯為此語言",
     "apiSettings": "API 設定",
     "apiSettingsSubtitle": "設定 Gemini API",
     "apiKeySettings": "API 金鑰設定",

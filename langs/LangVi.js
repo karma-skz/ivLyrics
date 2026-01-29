@@ -405,6 +405,8 @@ window.LANG_VI = {
     "pronunciationInfo": "Hiển thị phát âm (Latinh hóa) của lời gốc",
     "translationLabel": "Dịch nghĩa",
     "translationInfo": "Dịch lời gốc sang Tiếng Việt và hiển thị",
+    "translationTargetLang": "Ngôn ngữ đích",
+    "translationTargetLangInfo": "Lời bài hát sẽ được dịch sang ngôn ngữ này",
     "apiSettings": "Cài đặt API",
     "apiSettingsSubtitle": "Cấu hình API Gemini",
     "apiKeySettings": "Cài đặt khóa API",

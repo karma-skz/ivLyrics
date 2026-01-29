@@ -7105,6 +7105,45 @@ const ConfigModal = () => {
             location.reload();
           },
         }),
+        react.createElement(OptionList, {
+          items: [
+            {
+              desc: I18n.t("settings.translationTargetLanguage.label"),
+              key: "translate:target-language",
+              info: I18n.t("settings.translationTargetLanguage.desc"),
+              type: ConfigSelection,
+              options: {
+                auto: I18n.t("settings.translationTargetLanguage.options.auto"),
+                ko: "한국어",
+                en: "English",
+                "zh-CN": "简体中文",
+                "zh-TW": "繁體中文",
+                ja: "日本語",
+                hi: "हिन्दी",
+                es: "Español",
+                fr: "Français",
+                ar: "العربية",
+                fa: "فارسی",
+                de: "Deutsch",
+                ru: "Русский",
+                pt: "Português",
+                bn: "বাংলা",
+                it: "Italiano",
+                th: "ภาษาไทย",
+                vi: "Tiếng Việt",
+                id: "Bahasa Indonesia",
+              },
+            },
+          ],
+          onChange: (name, value) => {
+            CONFIG.visual[name] = value;
+            StorageManager.saveConfig(name, value);
+            // 설정 페이지로 돌아오기 위해 플래그 저장
+            localStorage.setItem("ivLyrics:return-to-settings", "true");
+            // 자동 새로고침
+            location.reload();
+          },
+        }),
         // 데스크탑 오버레이 섹션
         react.createElement(SectionTitle, {
           title: I18n.t("sections.desktopOverlay"),
