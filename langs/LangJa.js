@@ -405,6 +405,8 @@ window.LANG_JA = {
     "pronunciationInfo": "原文歌詞の発音（ローマ字など）を表示します",
     "translationLabel": "翻訳",
     "translationInfo": "原文歌詞を日本語に翻訳して表示します",
+    "translationTargetLang": "翻訳先言語",
+    "translationTargetLangInfo": "歌詞はこの言語に翻訳されます",
     "apiSettings": "API設定",
     "apiSettingsSubtitle": "Gemini APIを構成してください",
     "apiKeySettings": "APIキー設定",

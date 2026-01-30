@@ -405,6 +405,8 @@ window.LANG_AR = {
     "pronunciationInfo": "عرض نطق الكلمات الأصلية (بالحروف اللاتينية)",
     "translationLabel": "الترجمة",
     "translationInfo": "ترجمة الكلمات الأصلية وعرضها",
+    "translationTargetLang": "لغة الهدف",
+    "translationTargetLangInfo": "ستُترجم الكلمات إلى هذه اللغة",
     "apiSettings": "إعدادات API",
     "apiSettingsSubtitle": "تكوين Gemini API",
     "apiKeySettings": "إعداد مفتاح API",

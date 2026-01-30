@@ -405,6 +405,8 @@ window.LANG_FA = {
     "pronunciationInfo": "نمایش تلفظ (Romanization) متن اصلی",
     "translationLabel": "ترجمه",
     "translationInfo": "ترجمه متن اصلی به فارسی و نمایش آن",
+    "translationTargetLang": "زبان مقصد",
+    "translationTargetLangInfo": "متن به این زبان ترجمه خواهد شد",
     "apiSettings": "تنظیمات API",
     "apiSettingsSubtitle": "پیکربندی Gemini API",
     "apiKeySettings": "تنظیم کلید API",

@@ -405,6 +405,8 @@ window.LANG_ZH_CN = {
     "pronunciationInfo": "显示原文歌词的发音（罗马音等）",
     "translationLabel": "翻译",
     "translationInfo": "将原文歌词翻译为中文显示",
+    "translationTargetLang": "翻译目标语言",
+    "translationTargetLangInfo": "歌词将翻译为此语言",
     "apiSettings": "API 设置",
     "apiSettingsSubtitle": "配置 Gemini API",
     "apiKeySettings": "API 密钥设置",

@@ -405,6 +405,8 @@ window.LANG_IT = {
     "pronunciationInfo": "Mostra la pronuncia del testo originale (romanizzazione)",
     "translationLabel": "Traduzione",
     "translationInfo": "Mostra la traduzione del testo originale in italiano",
+    "translationTargetLang": "Lingua di destinazione",
+    "translationTargetLangInfo": "I testi saranno tradotti in questa lingua",
     "apiSettings": "Impostazioni API",
     "apiSettingsSubtitle": "Configura Gemini API",
     "apiKeySettings": "Impostazioni chiave API",

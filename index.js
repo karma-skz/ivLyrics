@@ -1212,6 +1212,9 @@ const CONFIG = {
     "translate:display-mode":
       StorageManager.getItem("ivLyrics:visual:translate:display-mode") ||
       "replace",
+    "translate:target-language":
+      StorageManager.getItem("ivLyrics:visual:translate:target-language") ||
+      "auto",
     "translate:detect-language-override":
       StorageManager.getItem(
         "ivLyrics:visual:translate:detect-language-override"

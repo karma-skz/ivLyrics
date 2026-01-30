@@ -87,6 +87,13 @@ window.LANG_EN = {
       "label": "Language",
       "desc": "Select the language for the extension"
     },
+    "translationTargetLanguage": {
+      "label": "Translation Target Language",
+      "desc": "Language to translate lyrics into (separate from interface language)",
+      "options": {
+        "auto": "Same"
+      }
+    },
     "alignment": {
       "label": "Alignment",
       "desc": "Select the alignment of the lyrics text",
@@ -405,6 +412,8 @@ window.LANG_EN = {
     "pronunciationInfo": "Display pronunciation (Romanization) of the original lyrics",
     "translationLabel": "Translation",
     "translationInfo": "Translate and display original lyrics in your language",
+    "translationTargetLang": "Target Language",
+    "translationTargetLangInfo": "Lyrics will be translated to this language",
     "apiSettings": "API Settings",
     "apiSettingsSubtitle": "Configure Gemini API",
     "apiKeySettings": "API Key Settings",

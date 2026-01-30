@@ -405,6 +405,8 @@ window.LANG_ID = {
     "pronunciationInfo": "Tampilkan pelafalan (huruf Latin) dari lirik asli",
     "translationLabel": "Terjemahan",
     "translationInfo": "Tampilkan terjemahan lirik asli ke Bahasa Indonesia",
+    "translationTargetLang": "Bahasa target",
+    "translationTargetLangInfo": "Lirik akan diterjemahkan ke bahasa ini",
     "apiSettings": "Pengaturan API",
     "apiSettingsSubtitle": "Konfigurasi Gemini API",
     "apiKeySettings": "Pengaturan Kunci API",

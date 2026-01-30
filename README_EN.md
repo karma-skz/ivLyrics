@@ -78,7 +78,7 @@ iwr -useb https://raw.githubusercontent.com/spicetify/cli/main/install.ps1 | iex
 #### macOS / Linux
 Open Terminal and run the following command:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | bash
 ```
 
 When prompted to install Marketplace during installation, enter Y. Using it with the FullScreen extension from Marketplace provides a better experience.

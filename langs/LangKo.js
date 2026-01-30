@@ -87,6 +87,13 @@ window.LANG_KO = {
       "label": "언어",
       "desc": "확장 프로그램의 언어를 선택합니다"
     },
+    "translationTargetLanguage": {
+      "label": "번역 대상 언어",
+      "desc": "가사를 번역할 언어 (인터페이스 언어와 별도 설정)",
+      "options": {
+        "auto": "인터페이스 언어와 동일"
+      }
+    },
     "alignment": {
       "label": "정렬 방식",
       "desc": "가사 텍스트의 정렬 위치를 선택하세요",
@@ -405,6 +412,8 @@ window.LANG_KO = {
     "pronunciationInfo": "원문 가사의 발음(로마자)을 표시합니다",
     "translationLabel": "번역",
     "translationInfo": "원문 가사를 한국어로 번역하여 표시합니다",
+    "translationTargetLang": "번역 대상 언어",
+    "translationTargetLangInfo": "가사가 이 언어로 번역됩니다",
     "apiSettings": "API 설정",
     "apiSettingsSubtitle": "Gemini API를 구성하세요",
     "apiKeySettings": "API 키 설정",

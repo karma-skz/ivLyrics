@@ -100,7 +100,6 @@ const SettingKeys = [
   "ivLyrics:visual:fullscreen-key",
   "ivLyrics:visual:synced-compact",
   "ivLyrics:visual:global-delay",
-
   "ivLyrics:lock-mode",
   "ivLyrics:local-lyrics",
   "ivLyrics:track-sync-offsets",
@@ -172,6 +171,7 @@ const SettingKeys = [
   "ivLyrics:visual:album-bg-rotate",
   "ivLyrics:visual:album-bg-rotate-speed",
   "ivLyrics:visual:blur-gradient-background",
+  "ivLyrics:visual:translate:target-language",
 ];
 
 const BYTES_FOR_INDEX = Math.ceil(SettingKeys.length / 255);

@@ -405,6 +405,8 @@ window.LANG_BN = {
     "pronunciationInfo": "মূল লিরিক্সের উচ্চারণ (রোমানলিপি) প্রদর্শন করুন",
     "translationLabel": "অনুবাদ",
     "translationInfo": "মূল লিরিক্স বাংলায় অনুবাদ করে প্রদর্শন করুন",
+    "translationTargetLang": "লক্ষ্য ভাষা",
+    "translationTargetLangInfo": "লিরিক্স এই ভাষায় অনুবাদ করা হবে",
     "apiSettings": "API সেটিংস",
     "apiSettingsSubtitle": "Gemini API কনফিগার করুন",
     "apiKeySettings": "API কি সেটিংস",
